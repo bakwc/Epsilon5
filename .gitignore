@@ -10,3 +10,12 @@
 *.lai
 *.la
 *.a
+
+*.user
+
+*/debug*
+*/release*
+
+Makefile*
+
+ui_*.h

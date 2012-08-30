@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        maindisplay.cpp
+        maindisplay.cpp \
+    ../Eps5Proto/Epsilon5.pb.cc
 
-HEADERS  += maindisplay.h
+HEADERS  += maindisplay.h \
+    ../Eps5Proto/Epsilon5.pb.h
 
 FORMS    += maindisplay.ui
+
+LIBS += -lprotobuf

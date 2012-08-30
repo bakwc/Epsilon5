@@ -15,4 +15,10 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    ../Eps5Proto/Epsilon5.pb.cc
+
+HEADERS += \
+    ../Eps5Proto/Epsilon5.pb.h
+
+LIBS += -lprotobuf

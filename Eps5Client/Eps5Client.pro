@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Eps5Client
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++0x
+
 
 SOURCES += main.cpp\
         maindisplay.cpp \
@@ -22,3 +24,6 @@ HEADERS  += maindisplay.h \
 FORMS    += maindisplay.ui
 
 LIBS += -lprotobuf
+
+OTHER_FILES += \
+    ../Eps5Proto/Epsilon5.proto

@@ -2,6 +2,8 @@
 #define WORLD_H
 
 #include <QObject>
+#include <QMap>
+#include "player.h"
 
 class World : public QObject
 {
@@ -12,7 +14,9 @@ public:
 signals:
     
 public slots:
-    
+    void spawnPlayer(quint32 id);
+private:
+    QMap<quint32, Player*> _players;
 };
 
 #endif // WORLD_H

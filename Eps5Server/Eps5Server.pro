@@ -4,13 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core
+QT       += core network
 
 QT       -= gui
 
 TARGET = Eps5Server
 CONFIG   += console
 CONFIG   -= app_bundle
+
+QMAKE_CXXFLAGS += -std=c++0x
 
 TEMPLATE = app
 
@@ -32,3 +34,6 @@ HEADERS += \
     player.h
 
 LIBS += -lprotobuf
+
+OTHER_FILES += \
+    ../Eps5Proto/Epsilon5.proto

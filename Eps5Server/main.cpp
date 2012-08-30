@@ -1,9 +1,13 @@
 #include <QCoreApplication>
+#include "application.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    Application app(argc, argv);
+
+    if (!app.init())
+        return 1;
     
-    return a.exec();
+    return app.exec();
 }

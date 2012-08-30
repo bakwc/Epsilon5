@@ -21,3 +21,6 @@ Makefile*
 ui_*.h
 
 *~
+
+*.Debug
+*.Release

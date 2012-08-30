@@ -91,45 +91,52 @@ class Player : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required double x = 1;
-  inline bool has_x() const;
-  inline void clear_x();
-  static const int kXFieldNumber = 1;
-  inline double x() const;
-  inline void set_x(double value);
-  
-  // required double y = 2;
-  inline bool has_y() const;
-  inline void clear_y();
-  static const int kYFieldNumber = 2;
-  inline double y() const;
-  inline void set_y(double value);
-  
-  // required double vx = 3;
-  inline bool has_vx() const;
-  inline void clear_vx();
-  static const int kVxFieldNumber = 3;
-  inline double vx() const;
-  inline void set_vx(double value);
-  
-  // required double vy = 4;
-  inline bool has_vy() const;
-  inline void clear_vy();
-  static const int kVyFieldNumber = 4;
-  inline double vy() const;
-  inline void set_vy(double value);
-  
-  // required int32 id = 5;
+  // required int32 id = 1;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 5;
+  static const int kIdFieldNumber = 1;
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
   
-  // optional string name = 6;
+  // required double x = 2;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 2;
+  inline double x() const;
+  inline void set_x(double value);
+  
+  // required double y = 3;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 3;
+  inline double y() const;
+  inline void set_y(double value);
+  
+  // required double vx = 4;
+  inline bool has_vx() const;
+  inline void clear_vx();
+  static const int kVxFieldNumber = 4;
+  inline double vx() const;
+  inline void set_vx(double value);
+  
+  // required double vy = 5;
+  inline bool has_vy() const;
+  inline void clear_vy();
+  static const int kVyFieldNumber = 5;
+  inline double vy() const;
+  inline void set_vy(double value);
+  
+  // required double angle = 6;
+  inline bool has_angle() const;
+  inline void clear_angle();
+  static const int kAngleFieldNumber = 6;
+  inline double angle() const;
+  inline void set_angle(double value);
+  
+  // optional string name = 7;
   inline bool has_name() const;
   inline void clear_name();
-  static const int kNameFieldNumber = 6;
+  static const int kNameFieldNumber = 7;
   inline const ::std::string& name() const;
   inline void set_name(const ::std::string& value);
   inline void set_name(const char* value);
@@ -139,6 +146,8 @@ class Player : public ::google::protobuf::Message {
   
   // @@protoc_insertion_point(class_scope:Epsilon5.Player)
  private:
+  inline void set_has_id();
+  inline void clear_has_id();
   inline void set_has_x();
   inline void clear_has_x();
   inline void set_has_y();
@@ -147,8 +156,8 @@ class Player : public ::google::protobuf::Message {
   inline void clear_has_vx();
   inline void set_has_vy();
   inline void clear_has_vy();
-  inline void set_has_id();
-  inline void clear_has_id();
+  inline void set_has_angle();
+  inline void clear_has_angle();
   inline void set_has_name();
   inline void clear_has_name();
   
@@ -158,11 +167,12 @@ class Player : public ::google::protobuf::Message {
   double y_;
   double vx_;
   double vy_;
+  double angle_;
   ::std::string* name_;
   ::google::protobuf::int32 id_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -263,103 +273,15 @@ class World : public ::google::protobuf::Message {
 
 // Player
 
-// required double x = 1;
-inline bool Player::has_x() const {
+// required int32 id = 1;
+inline bool Player::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Player::set_has_x() {
+inline void Player::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void Player::clear_has_x() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void Player::clear_x() {
-  x_ = 0;
-  clear_has_x();
-}
-inline double Player::x() const {
-  return x_;
-}
-inline void Player::set_x(double value) {
-  set_has_x();
-  x_ = value;
-}
-
-// required double y = 2;
-inline bool Player::has_y() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void Player::set_has_y() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void Player::clear_has_y() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void Player::clear_y() {
-  y_ = 0;
-  clear_has_y();
-}
-inline double Player::y() const {
-  return y_;
-}
-inline void Player::set_y(double value) {
-  set_has_y();
-  y_ = value;
-}
-
-// required double vx = 3;
-inline bool Player::has_vx() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void Player::set_has_vx() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void Player::clear_has_vx() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void Player::clear_vx() {
-  vx_ = 0;
-  clear_has_vx();
-}
-inline double Player::vx() const {
-  return vx_;
-}
-inline void Player::set_vx(double value) {
-  set_has_vx();
-  vx_ = value;
-}
-
-// required double vy = 4;
-inline bool Player::has_vy() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void Player::set_has_vy() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void Player::clear_has_vy() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void Player::clear_vy() {
-  vy_ = 0;
-  clear_has_vy();
-}
-inline double Player::vy() const {
-  return vy_;
-}
-inline void Player::set_vy(double value) {
-  set_has_vy();
-  vy_ = value;
-}
-
-// required int32 id = 5;
-inline bool Player::has_id() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void Player::set_has_id() {
-  _has_bits_[0] |= 0x00000010u;
-}
 inline void Player::clear_has_id() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline void Player::clear_id() {
   id_ = 0;
@@ -373,15 +295,125 @@ inline void Player::set_id(::google::protobuf::int32 value) {
   id_ = value;
 }
 
-// optional string name = 6;
-inline bool Player::has_name() const {
+// required double x = 2;
+inline bool Player::has_x() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Player::set_has_x() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Player::clear_has_x() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Player::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline double Player::x() const {
+  return x_;
+}
+inline void Player::set_x(double value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required double y = 3;
+inline bool Player::has_y() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Player::set_has_y() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Player::clear_has_y() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Player::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline double Player::y() const {
+  return y_;
+}
+inline void Player::set_y(double value) {
+  set_has_y();
+  y_ = value;
+}
+
+// required double vx = 4;
+inline bool Player::has_vx() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Player::set_has_vx() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Player::clear_has_vx() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Player::clear_vx() {
+  vx_ = 0;
+  clear_has_vx();
+}
+inline double Player::vx() const {
+  return vx_;
+}
+inline void Player::set_vx(double value) {
+  set_has_vx();
+  vx_ = value;
+}
+
+// required double vy = 5;
+inline bool Player::has_vy() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Player::set_has_vy() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Player::clear_has_vy() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Player::clear_vy() {
+  vy_ = 0;
+  clear_has_vy();
+}
+inline double Player::vy() const {
+  return vy_;
+}
+inline void Player::set_vy(double value) {
+  set_has_vy();
+  vy_ = value;
+}
+
+// required double angle = 6;
+inline bool Player::has_angle() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void Player::set_has_name() {
+inline void Player::set_has_angle() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void Player::clear_has_name() {
+inline void Player::clear_has_angle() {
   _has_bits_[0] &= ~0x00000020u;
+}
+inline void Player::clear_angle() {
+  angle_ = 0;
+  clear_has_angle();
+}
+inline double Player::angle() const {
+  return angle_;
+}
+inline void Player::set_angle(double value) {
+  set_has_angle();
+  angle_ = value;
+}
+
+// optional string name = 7;
+inline bool Player::has_name() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Player::set_has_name() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Player::clear_has_name() {
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void Player::clear_name() {
   if (name_ != &::google::protobuf::internal::kEmptyString) {

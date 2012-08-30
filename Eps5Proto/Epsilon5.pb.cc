@@ -34,12 +34,13 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       "Epsilon5.proto");
   GOOGLE_CHECK(file != NULL);
   Player_descriptor_ = file->message_type(0);
-  static const int Player_offsets_[6] = {
+  static const int Player_offsets_[7] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, y_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, vx_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, vy_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, angle_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, name_),
   };
   Player_reflection_ =
@@ -102,10 +103,11 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016Epsilon5.proto\022\010Epsilon5\"P\n\006Player\022\t\n\001"
-    "x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\n\n\002vx\030\003 \002(\001\022\n\n\002vy\030\004 \002"
-    "(\001\022\n\n\002id\030\005 \002(\005\022\014\n\004name\030\006 \001(\t\"*\n\005World\022!\n"
-    "\007players\030\001 \003(\0132\020.Epsilon5.Player", 152);
+    "\n\016Epsilon5.proto\022\010Epsilon5\"_\n\006Player\022\n\n\002"
+    "id\030\001 \002(\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\n\n\002vx\030\004 \002"
+    "(\001\022\n\n\002vy\030\005 \002(\001\022\r\n\005angle\030\006 \002(\001\022\014\n\004name\030\007 "
+    "\001(\t\"*\n\005World\022!\n\007players\030\001 \003(\0132\020.Epsilon5"
+    ".Player", 167);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -126,11 +128,12 @@ struct StaticDescriptorInitializer_Epsilon5_2eproto {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int Player::kIdFieldNumber;
 const int Player::kXFieldNumber;
 const int Player::kYFieldNumber;
 const int Player::kVxFieldNumber;
 const int Player::kVyFieldNumber;
-const int Player::kIdFieldNumber;
+const int Player::kAngleFieldNumber;
 const int Player::kNameFieldNumber;
 #endif  // !_MSC_VER
 
@@ -150,11 +153,12 @@ Player::Player(const Player& from)
 
 void Player::SharedCtor() {
   _cached_size_ = 0;
+  id_ = 0;
   x_ = 0;
   y_ = 0;
   vx_ = 0;
   vy_ = 0;
-  id_ = 0;
+  angle_ = 0;
   name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -193,11 +197,12 @@ Player* Player::New() const {
 
 void Player::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    id_ = 0;
     x_ = 0;
     y_ = 0;
     vx_ = 0;
     vy_ = 0;
-    id_ = 0;
+    angle_ = 0;
     if (has_name()) {
       if (name_ != &::google::protobuf::internal::kEmptyString) {
         name_->clear();
@@ -214,10 +219,26 @@ bool Player::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required double x = 1;
+      // required int32 id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_x;
+        break;
+      }
+      
+      // required double x = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_x:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &x_)));
@@ -225,12 +246,12 @@ bool Player::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(17)) goto parse_y;
+        if (input->ExpectTag(25)) goto parse_y;
         break;
       }
       
-      // required double y = 2;
-      case 2: {
+      // required double y = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_y:
@@ -241,12 +262,12 @@ bool Player::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(25)) goto parse_vx;
+        if (input->ExpectTag(33)) goto parse_vx;
         break;
       }
       
-      // required double vx = 3;
-      case 3: {
+      // required double vx = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_vx:
@@ -257,12 +278,12 @@ bool Player::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(33)) goto parse_vy;
+        if (input->ExpectTag(41)) goto parse_vy;
         break;
       }
       
-      // required double vy = 4;
-      case 4: {
+      // required double vy = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_vy:
@@ -273,28 +294,28 @@ bool Player::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_id;
+        if (input->ExpectTag(49)) goto parse_angle;
         break;
       }
       
-      // required int32 id = 5;
-      case 5: {
+      // required double angle = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_id:
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_angle:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &id_)));
-          set_has_id();
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &angle_)));
+          set_has_angle();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_name;
+        if (input->ExpectTag(58)) goto parse_name;
         break;
       }
       
-      // optional string name = 6;
-      case 6: {
+      // optional string name = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_name:
@@ -328,38 +349,43 @@ bool Player::MergePartialFromCodedStream(
 
 void Player::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required double x = 1;
-  if (has_x()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->x(), output);
-  }
-  
-  // required double y = 2;
-  if (has_y()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->y(), output);
-  }
-  
-  // required double vx = 3;
-  if (has_vx()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->vx(), output);
-  }
-  
-  // required double vy = 4;
-  if (has_vy()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->vy(), output);
-  }
-  
-  // required int32 id = 5;
+  // required int32 id = 1;
   if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->id(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
   
-  // optional string name = 6;
+  // required double x = 2;
+  if (has_x()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->x(), output);
+  }
+  
+  // required double y = 3;
+  if (has_y()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->y(), output);
+  }
+  
+  // required double vx = 4;
+  if (has_vx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->vx(), output);
+  }
+  
+  // required double vy = 5;
+  if (has_vy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->vy(), output);
+  }
+  
+  // required double angle = 6;
+  if (has_angle()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->angle(), output);
+  }
+  
+  // optional string name = 7;
   if (has_name()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->name().data(), this->name().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      6, this->name(), output);
+      7, this->name(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -370,39 +396,44 @@ void Player::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Player::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required double x = 1;
-  if (has_x()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->x(), target);
-  }
-  
-  // required double y = 2;
-  if (has_y()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->y(), target);
-  }
-  
-  // required double vx = 3;
-  if (has_vx()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->vx(), target);
-  }
-  
-  // required double vy = 4;
-  if (has_vy()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->vy(), target);
-  }
-  
-  // required int32 id = 5;
+  // required int32 id = 1;
   if (has_id()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->id(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
   }
   
-  // optional string name = 6;
+  // required double x = 2;
+  if (has_x()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->x(), target);
+  }
+  
+  // required double y = 3;
+  if (has_y()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->y(), target);
+  }
+  
+  // required double vx = 4;
+  if (has_vx()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->vx(), target);
+  }
+  
+  // required double vy = 5;
+  if (has_vy()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->vy(), target);
+  }
+  
+  // required double angle = 6;
+  if (has_angle()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->angle(), target);
+  }
+  
+  // optional string name = 7;
   if (has_name()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->name().data(), this->name().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        6, this->name(), target);
+        7, this->name(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -416,34 +447,39 @@ int Player::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required double x = 1;
-    if (has_x()) {
-      total_size += 1 + 8;
-    }
-    
-    // required double y = 2;
-    if (has_y()) {
-      total_size += 1 + 8;
-    }
-    
-    // required double vx = 3;
-    if (has_vx()) {
-      total_size += 1 + 8;
-    }
-    
-    // required double vy = 4;
-    if (has_vy()) {
-      total_size += 1 + 8;
-    }
-    
-    // required int32 id = 5;
+    // required int32 id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->id());
     }
     
-    // optional string name = 6;
+    // required double x = 2;
+    if (has_x()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double y = 3;
+    if (has_y()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double vx = 4;
+    if (has_vx()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double vy = 5;
+    if (has_vy()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double angle = 6;
+    if (has_angle()) {
+      total_size += 1 + 8;
+    }
+    
+    // optional string name = 7;
     if (has_name()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -477,6 +513,9 @@ void Player::MergeFrom(const ::google::protobuf::Message& from) {
 void Player::MergeFrom(const Player& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
     if (from.has_x()) {
       set_x(from.x());
     }
@@ -489,8 +528,8 @@ void Player::MergeFrom(const Player& from) {
     if (from.has_vy()) {
       set_vy(from.vy());
     }
-    if (from.has_id()) {
-      set_id(from.id());
+    if (from.has_angle()) {
+      set_angle(from.angle());
     }
     if (from.has_name()) {
       set_name(from.name());
@@ -512,18 +551,19 @@ void Player::CopyFrom(const Player& from) {
 }
 
 bool Player::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
   
   return true;
 }
 
 void Player::Swap(Player* other) {
   if (other != this) {
+    std::swap(id_, other->id_);
     std::swap(x_, other->x_);
     std::swap(y_, other->y_);
     std::swap(vx_, other->vx_);
     std::swap(vy_, other->vy_);
-    std::swap(id_, other->id_);
+    std::swap(angle_, other->angle_);
     std::swap(name_, other->name_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

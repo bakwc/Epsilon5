@@ -43,6 +43,11 @@ QByteArray World::serialize()
     return result;
 }
 
+void World::deSerialize(const QByteArray &data)
+{
+    // TODO: write deSerialization
+}
+
 void World::timerEvent(QTimerEvent *event)
 {
     //TODO: Make physics

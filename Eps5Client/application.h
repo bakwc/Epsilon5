@@ -15,6 +15,7 @@ public:
 private:
     MainDisplay _mainDisplay;
     Network *_network;
+    World *_world;
 };
 
 #endif // APPLICATION_H

@@ -9,6 +9,7 @@
 #include <QMap>
 #include <QByteArray>
 #include "../Eps5World/player.h"
+#include "../Eps5World/drawableObject.h"
 
 /**
  * @brief Класс World
@@ -36,8 +37,28 @@ public:
      */
     void start();
 signals:
-    
+    /**
+     * @brief redraw
+     *  Сигнал вызывается, когда движку необходимо перерисовать мир
+     * @param objects
+     *  Ссылка на список объектов, которые необходимо отрисовать
+     */
+    void redraw(const DrawableObjects &objects);
 public slots:
+    /**
+     * @brief deSerialize
+     *  Восстанавливает состояние игрового мира
+     * @param data
+     *  Массив байт, из которого происходит восстановление
+     */
+    void deSerialize(const QByteArray &data);
+
+    /**
+     * @brief spawnPlayer
+     *  Добавляет в игровой мир игрока
+     * @param id
+     *  Идентификатор игрока
+     */
     void spawnPlayer(quint32 id);
 private:
     void timerEvent(QTimerEvent *event);

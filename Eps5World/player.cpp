@@ -1,3 +1,7 @@
+/**
+* @file
+* Definition of Player
+*/
 #include "../Eps5World/player.h"
 
 Player::Player(QObject *parent) :

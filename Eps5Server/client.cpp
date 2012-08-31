@@ -1,3 +1,7 @@
+/**
+* @file
+* Definition of Client
+*/
 #include <QDebug>
 #include "client.h"
 

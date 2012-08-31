@@ -1,8 +1,17 @@
+/**
+ * @file
+ *  Файл с описанием класса Player
+ */
 #ifndef PLAYER_H
 #define PLAYER_H
 
 #include <QObject>
 
+/**
+ * @brief Класс Player
+ *  Содержит в себе вектор состояния игрока, а так же
+ * различные его параметры
+ */
 class Player : public QObject
 {
     Q_OBJECT

@@ -1,24 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainDisplay</class>
- <widget class="QMainWindow" name="MainDisplay" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainDisplay">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>441</width>
+    <height>325</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainDisplay</string>
   </property>
-  <widget class="QMenuBar" name="menuBar" />
-  <widget class="QToolBar" name="mainToolBar" />
-  <widget class="QWidget" name="centralWidget" />
-  <widget class="QStatusBar" name="statusBar" />
+  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>441</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
 </ui>

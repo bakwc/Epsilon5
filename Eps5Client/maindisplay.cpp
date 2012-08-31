@@ -12,3 +12,8 @@ MainDisplay::~MainDisplay()
 {
     delete ui;
 }
+
+void MainDisplay::redraw(const DrawableObjects &objects)
+{
+    // TODO: Draw received objects
+}

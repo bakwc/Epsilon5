@@ -1,3 +1,7 @@
+/**
+* @file
+* Definition of Application
+*/
 #include "application.h"
 
 Application::Application(int argc, char *argv[]) :
@@ -11,5 +15,15 @@ Application::Application(int argc, char *argv[]) :
 
 bool Application::init()
 {
-    return _server->start();
+    if (_server->start())
+    {
+        _world->start();
+        return true;
+    }
+    return false;
+}
+
+QByteArray Application::getSerialisedWorld()
+{
+    return _world->serialize();
 }

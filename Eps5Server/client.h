@@ -11,6 +11,7 @@ public:
     explicit Client(QObject *parent = 0);
     void setSocket(QTcpSocket *socket);
     quint32 id();
+    void send(const QByteArray &data);
 signals:
 private slots:
     void onDataReceived();

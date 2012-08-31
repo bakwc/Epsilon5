@@ -10,7 +10,7 @@ message Player {
     required double vy = 5;
 
     required double angle = 6;
-    
+
     optional string name = 7;
 }
 

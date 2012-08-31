@@ -9,6 +9,12 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = 0);
     void setId(quint32 id);
+    inline quint32 id() { return _id; }
+    inline double x() { return _x; }
+    inline double y() { return _y; }
+    inline double vx() { return _vx; }
+    inline double vy() { return _vy; }
+    inline double angle() { return _angle; }
     
 signals:
     

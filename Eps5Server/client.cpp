@@ -22,3 +22,8 @@ quint32 Client::id()
 void Client::onDataReceived()
 {
 }
+
+void Client::send(const QByteArray &data)
+{
+    _socket->write(data);
+}

@@ -14,8 +14,3 @@ Player::Player(QObject *parent) :
     _vy=0;
     _angle=0;
 }
-
-void Player::setId(quint32 id)
-{
-    _id=id;
-}

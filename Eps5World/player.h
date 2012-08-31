@@ -17,7 +17,14 @@ class Player : public QObject
     Q_OBJECT
 public:
     explicit Player(QObject *parent = 0);
-    void setId(quint32 id);
+
+    inline void setId(quint32 id) { _id=id; }
+    inline void setX(quint32 x) { _x=x; }
+    inline void setY(quint32 y) { _y=y; }
+    inline void setVx(quint32 vx) { _vx=vx; }
+    inline void setVy(quint32 vy) { _vy=vy; }
+    inline void setAngle(quint32 angle) { _angle=angle; }
+
     inline quint32 id() { return _id; }
     inline double x() { return _x; }
     inline double y() { return _y; }

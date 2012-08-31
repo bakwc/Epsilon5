@@ -1,3 +1,7 @@
+/**
+* @file
+* Definition of Application
+*/
 #include "application.h"
 
 Application::Application(int argc, char *argv[]):
@@ -7,6 +11,8 @@ Application::Application(int argc, char *argv[]):
 {
     connect(_world, SIGNAL(redraw(DrawableObjects)),
             &_mainDisplay, SLOT(redraw(DrawableObjects)));
+    connect(_network, SIGNAL(onDataReceived(QByteArray)),
+            _world, SLOT(deSerialize(QByteArray)));
 }
 
 bool Application::init()

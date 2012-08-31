@@ -46,6 +46,22 @@ QByteArray World::serialize()
 void World::deSerialize(const QByteArray &data)
 {
     // TODO: write deSerialization
+    Epsilon5::World world;
+    world.ParseFromArray(data.data(),data.size());
+    for (int i=0;i!=world.players_size();i++)
+    {
+        const Epsilon5::Player &player = world.players(i);
+        auto plr=_players.find(player.id());
+        if (plr==_players.end())
+            plr=_players.insert(player.id(),new Player(this));
+        Player &newPlayer=*(plr.value());
+        newPlayer.setId(player.id());
+        newPlayer.setX(player.x());
+        newPlayer.setY(player.y());
+        newPlayer.setVx(player.vx());
+        newPlayer.setVy(player.vy());
+        newPlayer.setAngle(player.angle());
+    }
 }
 
 void World::timerEvent(QTimerEvent *event)

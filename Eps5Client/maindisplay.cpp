@@ -1,3 +1,7 @@
+/**
+* @file
+* Definition of MainDisplay
+*/
 #include "maindisplay.h"
 #include "ui_maindisplay.h"
 

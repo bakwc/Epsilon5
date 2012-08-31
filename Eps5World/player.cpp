@@ -1,4 +1,4 @@
-#include "player.h"
+#include "../Eps5World/player.h"
 
 Player::Player(QObject *parent) :
     QObject(parent)

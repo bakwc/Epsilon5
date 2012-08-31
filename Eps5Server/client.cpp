@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "client.h"
 
 Client::Client(QObject *parent) :
@@ -21,6 +22,7 @@ quint32 Client::id()
 
 void Client::onDataReceived()
 {
+    qDebug() << Q_FUNC_INFO;
 }
 
 void Client::send(const QByteArray &data)

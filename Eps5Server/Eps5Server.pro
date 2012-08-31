@@ -21,17 +21,17 @@ SOURCES += main.cpp \
     ../Eps5Proto/Epsilon5.pb.cc \
     application.cpp \
     server.cpp \
-    world.cpp \
+    ../Eps5World/world.cpp \
     client.cpp \
-    player.cpp
+    ../Eps5World/player.cpp
 
 HEADERS += \
     ../Eps5Proto/Epsilon5.pb.h \
     application.h \
     server.h \
-    world.h \
+    ../Eps5World/world.h \
     client.h \
-    player.h
+    ../Eps5World/player.h
 
 LIBS += -lprotobuf
 

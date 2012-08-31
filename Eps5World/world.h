@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QMap>
 #include <QByteArray>
-#include "player.h"
+#include "../Eps5World/player.h"
 
 /**
  * @brief Класс World

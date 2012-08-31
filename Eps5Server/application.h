@@ -7,7 +7,7 @@
 
 #include <QCoreApplication>
 #include "server.h"
-#include "world.h"
+#include "../Eps5World/world.h"
 
 /**
  * @brief Класс Application

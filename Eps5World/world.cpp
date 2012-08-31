@@ -3,7 +3,7 @@
 * Definition of World
 */
 #include <QDebug>
-#include "world.h"
+#include "../Eps5World/world.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
 
 World::World(QObject *parent) :

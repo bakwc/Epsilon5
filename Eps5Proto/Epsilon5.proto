@@ -17,3 +17,22 @@ message Player {
 message World {
     repeated Player players = 1;
 }
+
+message KeyStatus {
+    required bool keyUp = 1;
+    required bool keyDown = 2;
+    required bool keyLeft = 3;
+    required bool keyRight = 4;
+}
+
+message MouseClick {
+    required double x = 1;
+    required double y = 2;
+    optional bool buttonRight = 3;
+}
+
+message Control {
+    required KeyStatus keyStatus = 1;
+    requires double angle = 2;
+    optional MouseClick mouseClick = 3;
+}

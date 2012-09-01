@@ -31,7 +31,8 @@ HEADERS += \
     server.h \
     ../Eps5World/world.h \
     client.h \
-    ../Eps5World/player.h
+    ../Eps5World/player.h \
+    ../Eps5World/drawableObject.h
 
 LIBS += -lprotobuf
 

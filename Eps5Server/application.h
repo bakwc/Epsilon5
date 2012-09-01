@@ -10,7 +10,7 @@
 #include "../Eps5World/world.h"
 
 /**
- * @brief Класс Application
+ * @brief
  * Базовый класс приложения
  */
 class Application : public QCoreApplication
@@ -19,14 +19,15 @@ class Application : public QCoreApplication
 public:
     explicit Application(int argc, char *argv[]);
     /**
-     * @brief init
+     * @brief
      *   Инициализация, запускает сервер
      * @return
      *   TRUE в случае успешной инициализации
      */
     bool init();
+
     /**
-     * @brief getSerialisedWorld
+     * @brief
      * @return
      *  Полное состояние игрового мира в сериализованном виде
      */

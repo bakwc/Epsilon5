@@ -3,6 +3,7 @@
 * Definition of World
 */
 #include <QDebug>
+#include <QString>
 #include "../Eps5World/world.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
 
@@ -13,7 +14,7 @@ World::World(QObject *parent) :
 
 void World::start()
 {
-    startTimer(500); // TODO: Remove MN
+    startTimer(80); // TODO: Remove MN
 }
 
 void World::spawnPlayer(quint32 id)
@@ -67,4 +68,23 @@ void World::deSerialize(const QByteArray &data)
 void World::timerEvent(QTimerEvent *event)
 {
     //TODO: Make physics
+    for (auto i=_players.begin();i!=_players.end();i++)
+    {
+        i.value()->applyPhysics();
+    }
+}
+
+void World::requestRedraw()
+{
+    DrawableObjects objects;
+    for (auto i=_players.begin();i!=_players.end();i++)
+    {
+        DrawableObject tmp;
+        tmp.x=i.value()->x();
+        tmp.y=i.value()->y();
+        tmp.angle=i.value()->angle();
+        tmp.imageName="player";
+        objects.push_back(tmp);
+    }
+    emit redraw(objects);
 }

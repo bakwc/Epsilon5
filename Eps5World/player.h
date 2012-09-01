@@ -8,7 +8,7 @@
 #include <QObject>
 
 /**
- * @brief Класс Player
+ * @brief
  *  Содержит в себе вектор состояния игрока, а так же
  * различные его параметры
  */
@@ -19,11 +19,11 @@ public:
     explicit Player(QObject *parent = 0);
 
     inline void setId(quint32 id) { _id=id; }
-    inline void setX(quint32 x) { _x=x; }
-    inline void setY(quint32 y) { _y=y; }
-    inline void setVx(quint32 vx) { _vx=vx; }
-    inline void setVy(quint32 vy) { _vy=vy; }
-    inline void setAngle(quint32 angle) { _angle=angle; }
+    inline void setX(double x) { _x=x; }
+    inline void setY(double y) { _y=y; }
+    inline void setVx(double vx) { _vx=vx; }
+    inline void setVy(double vy) { _vy=vy; }
+    inline void setAngle(double angle) { _angle=angle; }
 
     inline quint32 id() { return _id; }
     inline double x() { return _x; }
@@ -31,6 +31,8 @@ public:
     inline double vx() { return _vx; }
     inline double vy() { return _vy; }
     inline double angle() { return _angle; }
+
+    void applyPhysics();
     
 signals:
     

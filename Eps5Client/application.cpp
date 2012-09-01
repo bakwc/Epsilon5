@@ -9,6 +9,8 @@ Application::Application(int argc, char *argv[]):
     _network(new Network(this)),
     _world(new World(this))
 {
+    connect(&_mainDisplay, SIGNAL(requestRedrawObjects()),
+            _world, SLOT(requestRedraw()));
     connect(_world, SIGNAL(redraw(DrawableObjects)),
             &_mainDisplay, SLOT(redraw(DrawableObjects)));
     connect(_network, SIGNAL(onDataReceived(QByteArray)),
@@ -18,5 +20,11 @@ Application::Application(int argc, char *argv[]):
 bool Application::init()
 {
     _mainDisplay.show();
-    return true;
+    if (_network->start())
+    {
+        //_world->start(); No client-side physics by now
+        _mainDisplay.start();
+        return true;
+    }
+    return false;
 }

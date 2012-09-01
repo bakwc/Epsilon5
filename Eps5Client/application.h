@@ -11,7 +11,7 @@
 #include "../Eps5World/world.h"
 
 /**
- * @brief Класс Application
+ * @brief
  *  Основной класс приложения, отвечает за отображение (mainDisplay),
  * сеть (network), игровой мир (world)
  */
@@ -22,7 +22,7 @@ public:
     explicit Application(int argc, char *argv[]);
 
     /**
-     * @brief init
+     * @brief
      *  Инициализация - подключение к серверу, включение физики и перерисовки
      * @return
      *  TRUE в случае успешной инициализации

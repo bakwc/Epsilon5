@@ -9,7 +9,7 @@
 #include <QtNetwork/QTcpSocket>
 
 /**
- * @brief Класс Client
+ * @brief
  *  Сетевое взаимодействие с клиентами
  */
 class Client : public QObject
@@ -19,7 +19,7 @@ public:
     explicit Client(QObject *parent = 0);
 
     /**
-     * @brief setSocket
+     * @brief
      *  Устанавливает сокет
      * @param socket
      *  Сокет, через который будет идти связь
@@ -29,7 +29,7 @@ public:
     quint32 id();
 
     /**
-     * @brief send
+     * @brief
      *  Отправляет данные клиенту через сеть
      * @param data
      *  Данные для отправки

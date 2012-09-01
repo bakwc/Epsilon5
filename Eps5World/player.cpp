@@ -14,3 +14,10 @@ Player::Player(QObject *parent) :
     _vy=0;
     _angle=0;
 }
+
+void Player::applyPhysics()
+{
+    _x+=0.01;
+    _y+=0.01;
+    // TODO: Make physics
+}

@@ -9,7 +9,7 @@
 #include <QtNetwork/QTcpSocket>
 
 /**
- * @brief Класс Network
+ * @brief
  *  Обеспечивает подключение к серверу, передачу
  * и приём данных
  */
@@ -20,7 +20,7 @@ public:
     explicit Network(QObject *parent = 0);
 
     /**
-     * @brief start
+     * @brief
      *  Осуществляет подключение к серверу
      * @return
      *  TRUE в случае успешного подключения
@@ -30,7 +30,7 @@ public:
 signals:
 
     /**
-     * @brief onDataReceived
+     * @brief
      *  Вызывается как только поступили данные от сервера
      * @param data
      *  Ссылка на поступившие данные

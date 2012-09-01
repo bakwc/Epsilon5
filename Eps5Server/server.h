@@ -14,7 +14,7 @@
 class Application;
 
 /**
- * @brief Класс Server
+ * @brief
  *  Класс, отвечающий за серверную часть.
  *  Прослушивает порт, обрабатывает новые подключения,
  * добавляет клиентов, пересылает данные.
@@ -25,7 +25,7 @@ class Server : public QObject
 public:
     explicit Server(QObject *parent = 0);
     /**
-     * @brief start
+     * @brief
      *  Запускает сервер - начинает слушать порт и ждать подключений клиентов
      * @return
      *  TRUE в случае успеха
@@ -38,7 +38,7 @@ private slots:
 private:
     void timerEvent(QTimerEvent *event);
     /**
-     * @brief sendWorld
+     * @brief
      * Рассылает всем подключенным игрокам полное состояние игрового мира
      */
     void sendWorld();

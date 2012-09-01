@@ -26,7 +26,8 @@ HEADERS  += maindisplay.h \
     application.h \
     network.h \
     ../Eps5World/world.h \
-    ../Eps5World/player.h
+    ../Eps5World/player.h \
+    ../Eps5World/drawableObject.h
 
 FORMS    += maindisplay.ui
 

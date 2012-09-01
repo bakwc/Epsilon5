@@ -23,7 +23,8 @@ public:
     explicit World(QObject *parent = 0);
 
     /**
-     * @brief serialize
+     * @brief
+     *  Сериализует состояние игрового мира
      * @return
      *  Состояние игрового мира в сериализованном виде
      * Сериализуется с использованием google protobuf
@@ -32,21 +33,28 @@ public:
     QByteArray serialize();
 
     /**
-     * @brief start
+     * @brief
      *  Запускает физику игрового мира
      */
     void start();
 signals:
     /**
-     * @brief redraw
+     * @brief
      *  Сигнал вызывается, когда движку необходимо перерисовать мир
-     * @param objects
+     * @param
      *  Ссылка на список объектов, которые необходимо отрисовать
      */
     void redraw(const DrawableObjects &objects);
 public slots:
+
     /**
-     * @brief deSerialize
+     * @brief
+     *  Готовит список объектов для отрисовки и вызывает сигнал redraw
+     */
+    void requestRedraw();
+
+    /**
+     * @brief
      *  Восстанавливает состояние игрового мира
      * @param data
      *  Массив байт, из которого происходит восстановление
@@ -54,7 +62,7 @@ public slots:
     void deSerialize(const QByteArray &data);
 
     /**
-     * @brief spawnPlayer
+     * @brief
      *  Добавляет в игровой мир игрока
      * @param id
      *  Идентификатор игрока

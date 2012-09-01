@@ -13,7 +13,7 @@ class MainDisplay;
 }
 
 /**
- * @brief Класс MainDisplay
+ * @brief
  *  Отвечает за оторисовку игрового мира
  */
 class MainDisplay : public QMainWindow
@@ -23,15 +23,30 @@ class MainDisplay : public QMainWindow
 public:
     explicit MainDisplay(QWidget *parent = 0);
     ~MainDisplay();
+
+    /**
+     * @brief
+     *  Запускает отрисовку графики
+     */
+    void start();
+signals:
+
+    /**
+     * @brief
+     *  Сигнал вызывается когда необходимо получить объекты для отрисовки
+     */
+    void requestRedrawObjects();
 public slots:
 
     /**
-     * @brief redraw
+     * @brief
      *  Отрисовывает переданные ей объекты
      * @param objects
      *  Объекты для отрисовки
      */
     void redraw(const DrawableObjects &objects);
+private:
+    void timerEvent(QTimerEvent *event);
 private:
     Ui::MainDisplay *ui;
 };

@@ -23,6 +23,15 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* World_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   World_reflection_ = NULL;
+const ::google::protobuf::Descriptor* KeyStatus_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  KeyStatus_reflection_ = NULL;
+const ::google::protobuf::Descriptor* MouseClick_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  MouseClick_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Control_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Control_reflection_ = NULL;
 
 }  // namespace
 
@@ -69,6 +78,58 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(World));
+  KeyStatus_descriptor_ = file->message_type(2);
+  static const int KeyStatus_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keyup_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keydown_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keyleft_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keyright_),
+  };
+  KeyStatus_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      KeyStatus_descriptor_,
+      KeyStatus::default_instance_,
+      KeyStatus_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(KeyStatus));
+  MouseClick_descriptor_ = file->message_type(3);
+  static const int MouseClick_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, x_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, buttonright_),
+  };
+  MouseClick_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      MouseClick_descriptor_,
+      MouseClick::default_instance_,
+      MouseClick_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(MouseClick));
+  Control_descriptor_ = file->message_type(4);
+  static const int Control_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, keystatus_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, angle_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, mouseclick_),
+  };
+  Control_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Control_descriptor_,
+      Control::default_instance_,
+      Control_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Control));
 }
 
 namespace {
@@ -85,6 +146,12 @@ void protobuf_RegisterTypes(const ::std::string&) {
     Player_descriptor_, &Player::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     World_descriptor_, &World::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    KeyStatus_descriptor_, &KeyStatus::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    MouseClick_descriptor_, &MouseClick::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Control_descriptor_, &Control::default_instance());
 }
 
 }  // namespace
@@ -94,6 +161,12 @@ void protobuf_ShutdownFile_Epsilon5_2eproto() {
   delete Player_reflection_;
   delete World::default_instance_;
   delete World_reflection_;
+  delete KeyStatus::default_instance_;
+  delete KeyStatus_reflection_;
+  delete MouseClick::default_instance_;
+  delete MouseClick_reflection_;
+  delete Control::default_instance_;
+  delete Control_reflection_;
 }
 
 void protobuf_AddDesc_Epsilon5_2eproto() {
@@ -107,13 +180,25 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "id\030\001 \002(\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\n\n\002vx\030\004 \002"
     "(\001\022\n\n\002vy\030\005 \002(\001\022\r\n\005angle\030\006 \002(\001\022\014\n\004name\030\007 "
     "\001(\t\"*\n\005World\022!\n\007players\030\001 \003(\0132\020.Epsilon5"
-    ".Player", 167);
+    ".Player\"N\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007k"
+    "eyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010keyRigh"
+    "t\030\004 \002(\010\"7\n\nMouseClick\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 "
+    "\002(\001\022\023\n\013buttonRight\030\003 \001(\010\"j\n\007Control\022&\n\tk"
+    "eyStatus\030\001 \002(\0132\023.Epsilon5.KeyStatus\022\r\n\005a"
+    "ngle\030\002 \002(\001\022(\n\nmouseClick\030\003 \001(\0132\024.Epsilon"
+    "5.MouseClick", 412);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
   World::default_instance_ = new World();
+  KeyStatus::default_instance_ = new KeyStatus();
+  MouseClick::default_instance_ = new MouseClick();
+  Control::default_instance_ = new Control();
   Player::default_instance_->InitAsDefaultInstance();
   World::default_instance_->InitAsDefaultInstance();
+  KeyStatus::default_instance_->InitAsDefaultInstance();
+  MouseClick::default_instance_->InitAsDefaultInstance();
+  Control::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_Epsilon5_2eproto);
 }
 
@@ -781,6 +866,910 @@ void World::Swap(World* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = World_descriptor_;
   metadata.reflection = World_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int KeyStatus::kKeyUpFieldNumber;
+const int KeyStatus::kKeyDownFieldNumber;
+const int KeyStatus::kKeyLeftFieldNumber;
+const int KeyStatus::kKeyRightFieldNumber;
+#endif  // !_MSC_VER
+
+KeyStatus::KeyStatus()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void KeyStatus::InitAsDefaultInstance() {
+}
+
+KeyStatus::KeyStatus(const KeyStatus& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void KeyStatus::SharedCtor() {
+  _cached_size_ = 0;
+  keyup_ = false;
+  keydown_ = false;
+  keyleft_ = false;
+  keyright_ = false;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+KeyStatus::~KeyStatus() {
+  SharedDtor();
+}
+
+void KeyStatus::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void KeyStatus::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* KeyStatus::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return KeyStatus_descriptor_;
+}
+
+const KeyStatus& KeyStatus::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();  return *default_instance_;
+}
+
+KeyStatus* KeyStatus::default_instance_ = NULL;
+
+KeyStatus* KeyStatus::New() const {
+  return new KeyStatus;
+}
+
+void KeyStatus::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    keyup_ = false;
+    keydown_ = false;
+    keyleft_ = false;
+    keyright_ = false;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool KeyStatus::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required bool keyUp = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &keyup_)));
+          set_has_keyup();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_keyDown;
+        break;
+      }
+      
+      // required bool keyDown = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_keyDown:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &keydown_)));
+          set_has_keydown();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_keyLeft;
+        break;
+      }
+      
+      // required bool keyLeft = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_keyLeft:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &keyleft_)));
+          set_has_keyleft();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_keyRight;
+        break;
+      }
+      
+      // required bool keyRight = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_keyRight:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &keyright_)));
+          set_has_keyright();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void KeyStatus::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required bool keyUp = 1;
+  if (has_keyup()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->keyup(), output);
+  }
+  
+  // required bool keyDown = 2;
+  if (has_keydown()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->keydown(), output);
+  }
+  
+  // required bool keyLeft = 3;
+  if (has_keyleft()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->keyleft(), output);
+  }
+  
+  // required bool keyRight = 4;
+  if (has_keyright()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->keyright(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* KeyStatus::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required bool keyUp = 1;
+  if (has_keyup()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->keyup(), target);
+  }
+  
+  // required bool keyDown = 2;
+  if (has_keydown()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->keydown(), target);
+  }
+  
+  // required bool keyLeft = 3;
+  if (has_keyleft()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->keyleft(), target);
+  }
+  
+  // required bool keyRight = 4;
+  if (has_keyright()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->keyright(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int KeyStatus::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required bool keyUp = 1;
+    if (has_keyup()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool keyDown = 2;
+    if (has_keydown()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool keyLeft = 3;
+    if (has_keyleft()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool keyRight = 4;
+    if (has_keyright()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void KeyStatus::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const KeyStatus* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const KeyStatus*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void KeyStatus::MergeFrom(const KeyStatus& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_keyup()) {
+      set_keyup(from.keyup());
+    }
+    if (from.has_keydown()) {
+      set_keydown(from.keydown());
+    }
+    if (from.has_keyleft()) {
+      set_keyleft(from.keyleft());
+    }
+    if (from.has_keyright()) {
+      set_keyright(from.keyright());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void KeyStatus::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void KeyStatus::CopyFrom(const KeyStatus& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool KeyStatus::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  
+  return true;
+}
+
+void KeyStatus::Swap(KeyStatus* other) {
+  if (other != this) {
+    std::swap(keyup_, other->keyup_);
+    std::swap(keydown_, other->keydown_);
+    std::swap(keyleft_, other->keyleft_);
+    std::swap(keyright_, other->keyright_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata KeyStatus::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = KeyStatus_descriptor_;
+  metadata.reflection = KeyStatus_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int MouseClick::kXFieldNumber;
+const int MouseClick::kYFieldNumber;
+const int MouseClick::kButtonRightFieldNumber;
+#endif  // !_MSC_VER
+
+MouseClick::MouseClick()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void MouseClick::InitAsDefaultInstance() {
+}
+
+MouseClick::MouseClick(const MouseClick& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void MouseClick::SharedCtor() {
+  _cached_size_ = 0;
+  x_ = 0;
+  y_ = 0;
+  buttonright_ = false;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+MouseClick::~MouseClick() {
+  SharedDtor();
+}
+
+void MouseClick::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void MouseClick::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* MouseClick::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return MouseClick_descriptor_;
+}
+
+const MouseClick& MouseClick::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();  return *default_instance_;
+}
+
+MouseClick* MouseClick::default_instance_ = NULL;
+
+MouseClick* MouseClick::New() const {
+  return new MouseClick;
+}
+
+void MouseClick::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    x_ = 0;
+    y_ = 0;
+    buttonright_ = false;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool MouseClick::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required double x = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &x_)));
+          set_has_x();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_y;
+        break;
+      }
+      
+      // required double y = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_y:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &y_)));
+          set_has_y();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_buttonRight;
+        break;
+      }
+      
+      // optional bool buttonRight = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_buttonRight:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &buttonright_)));
+          set_has_buttonright();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void MouseClick::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required double x = 1;
+  if (has_x()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->x(), output);
+  }
+  
+  // required double y = 2;
+  if (has_y()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->y(), output);
+  }
+  
+  // optional bool buttonRight = 3;
+  if (has_buttonright()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->buttonright(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* MouseClick::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required double x = 1;
+  if (has_x()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->x(), target);
+  }
+  
+  // required double y = 2;
+  if (has_y()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->y(), target);
+  }
+  
+  // optional bool buttonRight = 3;
+  if (has_buttonright()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->buttonright(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int MouseClick::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required double x = 1;
+    if (has_x()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double y = 2;
+    if (has_y()) {
+      total_size += 1 + 8;
+    }
+    
+    // optional bool buttonRight = 3;
+    if (has_buttonright()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void MouseClick::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const MouseClick* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const MouseClick*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void MouseClick::MergeFrom(const MouseClick& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_x()) {
+      set_x(from.x());
+    }
+    if (from.has_y()) {
+      set_y(from.y());
+    }
+    if (from.has_buttonright()) {
+      set_buttonright(from.buttonright());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void MouseClick::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void MouseClick::CopyFrom(const MouseClick& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool MouseClick::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  return true;
+}
+
+void MouseClick::Swap(MouseClick* other) {
+  if (other != this) {
+    std::swap(x_, other->x_);
+    std::swap(y_, other->y_);
+    std::swap(buttonright_, other->buttonright_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata MouseClick::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = MouseClick_descriptor_;
+  metadata.reflection = MouseClick_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int Control::kKeyStatusFieldNumber;
+const int Control::kAngleFieldNumber;
+const int Control::kMouseClickFieldNumber;
+#endif  // !_MSC_VER
+
+Control::Control()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Control::InitAsDefaultInstance() {
+  keystatus_ = const_cast< ::Epsilon5::KeyStatus*>(&::Epsilon5::KeyStatus::default_instance());
+  mouseclick_ = const_cast< ::Epsilon5::MouseClick*>(&::Epsilon5::MouseClick::default_instance());
+}
+
+Control::Control(const Control& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Control::SharedCtor() {
+  _cached_size_ = 0;
+  keystatus_ = NULL;
+  angle_ = 0;
+  mouseclick_ = NULL;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Control::~Control() {
+  SharedDtor();
+}
+
+void Control::SharedDtor() {
+  if (this != default_instance_) {
+    delete keystatus_;
+    delete mouseclick_;
+  }
+}
+
+void Control::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Control::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Control_descriptor_;
+}
+
+const Control& Control::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();  return *default_instance_;
+}
+
+Control* Control::default_instance_ = NULL;
+
+Control* Control::New() const {
+  return new Control;
+}
+
+void Control::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_keystatus()) {
+      if (keystatus_ != NULL) keystatus_->::Epsilon5::KeyStatus::Clear();
+    }
+    angle_ = 0;
+    if (has_mouseclick()) {
+      if (mouseclick_ != NULL) mouseclick_->::Epsilon5::MouseClick::Clear();
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Control::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required .Epsilon5.KeyStatus keyStatus = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_keystatus()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_angle;
+        break;
+      }
+      
+      // required double angle = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_angle:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &angle_)));
+          set_has_angle();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_mouseClick;
+        break;
+      }
+      
+      // optional .Epsilon5.MouseClick mouseClick = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_mouseClick:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_mouseclick()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Control::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required .Epsilon5.KeyStatus keyStatus = 1;
+  if (has_keystatus()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->keystatus(), output);
+  }
+  
+  // required double angle = 2;
+  if (has_angle()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->angle(), output);
+  }
+  
+  // optional .Epsilon5.MouseClick mouseClick = 3;
+  if (has_mouseclick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->mouseclick(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Control::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required .Epsilon5.KeyStatus keyStatus = 1;
+  if (has_keystatus()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->keystatus(), target);
+  }
+  
+  // required double angle = 2;
+  if (has_angle()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->angle(), target);
+  }
+  
+  // optional .Epsilon5.MouseClick mouseClick = 3;
+  if (has_mouseclick()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        3, this->mouseclick(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Control::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required .Epsilon5.KeyStatus keyStatus = 1;
+    if (has_keystatus()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->keystatus());
+    }
+    
+    // required double angle = 2;
+    if (has_angle()) {
+      total_size += 1 + 8;
+    }
+    
+    // optional .Epsilon5.MouseClick mouseClick = 3;
+    if (has_mouseclick()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->mouseclick());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Control::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Control* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Control*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Control::MergeFrom(const Control& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_keystatus()) {
+      mutable_keystatus()->::Epsilon5::KeyStatus::MergeFrom(from.keystatus());
+    }
+    if (from.has_angle()) {
+      set_angle(from.angle());
+    }
+    if (from.has_mouseclick()) {
+      mutable_mouseclick()->::Epsilon5::MouseClick::MergeFrom(from.mouseclick());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Control::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Control::CopyFrom(const Control& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Control::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  if (has_keystatus()) {
+    if (!this->keystatus().IsInitialized()) return false;
+  }
+  if (has_mouseclick()) {
+    if (!this->mouseclick().IsInitialized()) return false;
+  }
+  return true;
+}
+
+void Control::Swap(Control* other) {
+  if (other != this) {
+    std::swap(keystatus_, other->keystatus_);
+    std::swap(angle_, other->angle_);
+    std::swap(mouseclick_, other->mouseclick_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Control::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Control_descriptor_;
+  metadata.reflection = Control_reflection_;
   return metadata;
 }
 

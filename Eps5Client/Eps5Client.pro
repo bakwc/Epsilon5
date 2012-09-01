@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,7 +29,7 @@ HEADERS  += maindisplay.h \
     ../Eps5World/player.h \
     ../Eps5World/drawableObject.h
 
-FORMS    += maindisplay.ui
+FORMS    +=
 
 LIBS += -lprotobuf
 

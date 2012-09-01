@@ -6,17 +6,16 @@
 #define MAINDISPLAY_H
 
 #include <QMainWindow>
+#include <QGLWidget>
+#include <QtOpenGL>
 #include "../Eps5World/drawableObject.h"
 
-namespace Ui {
-class MainDisplay;
-}
 
 /**
  * @brief
  *  Отвечает за оторисовку игрового мира
  */
-class MainDisplay : public QMainWindow
+class MainDisplay : public QGLWidget
 {
     Q_OBJECT
     
@@ -47,8 +46,9 @@ public slots:
     void redraw(const DrawableObjects &objects);
 private:
     void timerEvent(QTimerEvent *event);
+    void paintEvent(QPaintEvent *event);
 private:
-    Ui::MainDisplay *ui;
+    QImage *_currentFrame;
 };
 
 #endif // MAINDISPLAY_H

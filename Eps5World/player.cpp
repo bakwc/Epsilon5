@@ -17,7 +17,7 @@ Player::Player(QObject *parent) :
 
 void Player::applyPhysics()
 {
-    _x+=0.01;
-    _y+=0.01;
+    _x+=0.4;
+    _y+=0.4;
     // TODO: Make physics
 }

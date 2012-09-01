@@ -14,7 +14,7 @@ World::World(QObject *parent) :
 
 void World::start()
 {
-    startTimer(80); // TODO: Remove MN
+    startTimer(5); // TODO: Remove MN
 }
 
 void World::spawnPlayer(quint32 id)

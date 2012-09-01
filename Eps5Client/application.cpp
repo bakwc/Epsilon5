@@ -22,7 +22,7 @@ bool Application::init()
     _mainDisplay.show();
     if (_network->start())
     {
-        //_world->start(); No client-side physics by now
+        _world->start();    // Client-side physics to more realistic motion
         _mainDisplay.start();
         return true;
     }

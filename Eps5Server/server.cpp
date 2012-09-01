@@ -17,7 +17,7 @@ bool Server::start()
 {
     if (_server->listen(QHostAddress("0.0.0.0"),1238))
     {
-        this->startTimer(1000); // TODO: Remove MN
+        this->startTimer(20); // TODO: Remove MN
         return true;
     }
     return false;

@@ -49,7 +49,7 @@ void Server::onSomethingReceived()
         client->setId(id);
         clientIt = _clients.insert(client->id(),client);
         emit newPlayer(client->id());
-        Player *player = getParrent()->getPlayer(client->id());
+        Player *player = getParent()->getPlayer(client->id());
         connect(client, SIGNAL(controlReceived(Epsilon5::Control)),
                 player, SLOT(applyControl(Epsilon5::Control)));
     }
@@ -64,13 +64,19 @@ void Server::timerEvent(QTimerEvent *event)
 
 void Server::sendWorld()
 {
-    QByteArray world=getParrent()->getSerialisedWorld();
+    Epsilon5::World *world=getParent()->getSerialisedWorld();
 
     for (auto i=_clients.begin();i!=_clients.end();i++)
-        i.value()->send(world);
+    {
+        world->set_playerid (i.value()->id());
+        QByteArray data;
+        data.resize(world->ByteSize());
+        world->SerializeToArray(data.data(),data.size());
+        i.value()->send(data);
+    }
 }
 
-Application* Server::getParrent()
+Application* Server::getParent()
 {
     return (Application*)(parent());
 }

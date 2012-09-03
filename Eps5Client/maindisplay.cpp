@@ -4,11 +4,12 @@
 */
 #include <QDebug>
 #include <QPainter>
+#include <QKeyEvent>
 #include "maindisplay.h"
 #include "ui_maindisplay.h"
 
 MainDisplay::MainDisplay(QWidget *parent) :
-    QGLWidget(parent),
+    QWidget(parent),
     _currentFrame(new QImage(800,600,QImage::Format_ARGB32)),
     _controlStatus(new Epsilon5::Control)
 {
@@ -18,11 +19,16 @@ MainDisplay::MainDisplay(QWidget *parent) :
     _controlStatus->mutable_keystatus()->set_keyleft(false);
     _controlStatus->set_angle(0);
 
+    _peka = new QImage("peka.png");
+    _mad = new QImage("mad.png");
+
     this->resize(800,600);
 }
 
 MainDisplay::~MainDisplay()
 {
+    delete _peka;
+    delete _mad;
     delete _controlStatus;
 }
 
@@ -43,9 +49,14 @@ void MainDisplay::redraw(const DrawableObjects &objects)
 
     for (auto i=objects.begin();i!=objects.end();i++)
     {
-        painter.drawEllipse(400+i->x,300-i->y,20,20); // TODO: Remove MN
+        if (i->imageName == "selfPlayer")
+            painter.drawImage(400+i->x, 300-i->y, *_mad);
+        else
+            painter.drawImage(400+i->x, 300-i->y, *_peka);
+        //painter.drawEllipse(400+i->x,300-i->y,20,20); // TODO: Remove MN
     }
     this->update();
+
 }
 
 void MainDisplay::timerEvent(QTimerEvent *event)

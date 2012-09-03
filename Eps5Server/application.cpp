@@ -23,7 +23,7 @@ bool Application::init()
     return false;
 }
 
-QByteArray Application::getSerialisedWorld()
+Epsilon5::World* Application::getSerialisedWorld()
 {
     return _world->serialize();
 }

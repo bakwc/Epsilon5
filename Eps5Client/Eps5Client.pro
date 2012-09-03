@@ -19,7 +19,9 @@ SOURCES += main.cpp\
     application.cpp \
     network.cpp \
     ../Eps5World/world.cpp \
-    ../Eps5World/player.cpp
+    ../Eps5World/player.cpp \
+    ../Eps5World/bullet.cpp \
+    ../Eps5World/dynamicobject.cpp
 
 HEADERS  += maindisplay.h \
     ../Eps5Proto/Epsilon5.pb.h \
@@ -27,7 +29,9 @@ HEADERS  += maindisplay.h \
     network.h \
     ../Eps5World/world.h \
     ../Eps5World/player.h \
-    ../Eps5World/drawableObject.h
+    ../Eps5World/drawableObject.h \
+    ../Eps5World/bullet.h \
+    ../Eps5World/dynamicobject.h
 
 FORMS    +=
 

@@ -36,6 +36,8 @@ public:
      *  Текущее состояния клавиатуры (нажатые/отпущенные кнопки)
      */
     inline Epsilon5::Control *controlStatus() { return _mainDisplay.controlStatus(); }
+
+    inline quint32 selfId() { return _world->selfId(); }
 private:
     MainDisplay _mainDisplay;
     Network *_network;

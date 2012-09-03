@@ -15,6 +15,7 @@
 
 */debug*
 */release*
+*/binary*
 
 Makefile*
 

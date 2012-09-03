@@ -33,7 +33,7 @@ public:
      * @return
      *  Полное состояние игрового мира в сериализованном виде
      */
-    QByteArray getSerialisedWorld();
+    Epsilon5::World *getSerialisedWorld();
 
     /**
      * @brief

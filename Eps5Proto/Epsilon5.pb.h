@@ -33,6 +33,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto();
 void protobuf_ShutdownFile_Epsilon5_2eproto();
 
 class Player;
+class Bullet;
 class World;
 class Control;
 class Control_KeyStatus;
@@ -186,6 +187,118 @@ class Player : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class Bullet : public ::google::protobuf::Message {
+ public:
+  Bullet();
+  virtual ~Bullet();
+  
+  Bullet(const Bullet& from);
+  
+  inline Bullet& operator=(const Bullet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Bullet& default_instance();
+  
+  void Swap(Bullet* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Bullet* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Bullet& from);
+  void MergeFrom(const Bullet& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required double x = 1;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 1;
+  inline double x() const;
+  inline void set_x(double value);
+  
+  // required double y = 2;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 2;
+  inline double y() const;
+  inline void set_y(double value);
+  
+  // required double vx = 3;
+  inline bool has_vx() const;
+  inline void clear_vx();
+  static const int kVxFieldNumber = 3;
+  inline double vx() const;
+  inline void set_vx(double value);
+  
+  // required double vy = 4;
+  inline bool has_vy() const;
+  inline void clear_vy();
+  static const int kVyFieldNumber = 4;
+  inline double vy() const;
+  inline void set_vy(double value);
+  
+  // @@protoc_insertion_point(class_scope:Epsilon5.Bullet)
+ private:
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_vx();
+  inline void clear_has_vx();
+  inline void set_has_vy();
+  inline void clear_has_vy();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  double x_;
+  double y_;
+  double vx_;
+  double vy_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_Epsilon5_2eproto();
+  friend void protobuf_AssignDesc_Epsilon5_2eproto();
+  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Bullet* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class World : public ::google::protobuf::Message {
  public:
   World();
@@ -252,15 +365,38 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player >*
       mutable_players();
   
+  // repeated .Epsilon5.Bullet bullets = 2;
+  inline int bullets_size() const;
+  inline void clear_bullets();
+  static const int kBulletsFieldNumber = 2;
+  inline const ::Epsilon5::Bullet& bullets(int index) const;
+  inline ::Epsilon5::Bullet* mutable_bullets(int index);
+  inline ::Epsilon5::Bullet* add_bullets();
+  inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >&
+      bullets() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >*
+      mutable_bullets();
+  
+  // required int32 playerId = 3;
+  inline bool has_playerid() const;
+  inline void clear_playerid();
+  static const int kPlayerIdFieldNumber = 3;
+  inline ::google::protobuf::int32 playerid() const;
+  inline void set_playerid(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
+  inline void set_has_playerid();
+  inline void clear_has_playerid();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player > players_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
+  ::google::protobuf::int32 playerid_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -789,6 +925,98 @@ inline ::std::string* Player::release_name() {
 
 // -------------------------------------------------------------------
 
+// Bullet
+
+// required double x = 1;
+inline bool Bullet::has_x() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Bullet::set_has_x() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Bullet::clear_has_x() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Bullet::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline double Bullet::x() const {
+  return x_;
+}
+inline void Bullet::set_x(double value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required double y = 2;
+inline bool Bullet::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Bullet::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Bullet::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Bullet::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline double Bullet::y() const {
+  return y_;
+}
+inline void Bullet::set_y(double value) {
+  set_has_y();
+  y_ = value;
+}
+
+// required double vx = 3;
+inline bool Bullet::has_vx() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Bullet::set_has_vx() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Bullet::clear_has_vx() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Bullet::clear_vx() {
+  vx_ = 0;
+  clear_has_vx();
+}
+inline double Bullet::vx() const {
+  return vx_;
+}
+inline void Bullet::set_vx(double value) {
+  set_has_vx();
+  vx_ = value;
+}
+
+// required double vy = 4;
+inline bool Bullet::has_vy() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Bullet::set_has_vy() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Bullet::clear_has_vy() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Bullet::clear_vy() {
+  vy_ = 0;
+  clear_has_vy();
+}
+inline double Bullet::vy() const {
+  return vy_;
+}
+inline void Bullet::set_vy(double value) {
+  set_has_vy();
+  vy_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // World
 
 // repeated .Epsilon5.Player players = 1;
@@ -814,6 +1042,53 @@ World::players() const {
 inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player >*
 World::mutable_players() {
   return &players_;
+}
+
+// repeated .Epsilon5.Bullet bullets = 2;
+inline int World::bullets_size() const {
+  return bullets_.size();
+}
+inline void World::clear_bullets() {
+  bullets_.Clear();
+}
+inline const ::Epsilon5::Bullet& World::bullets(int index) const {
+  return bullets_.Get(index);
+}
+inline ::Epsilon5::Bullet* World::mutable_bullets(int index) {
+  return bullets_.Mutable(index);
+}
+inline ::Epsilon5::Bullet* World::add_bullets() {
+  return bullets_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >&
+World::bullets() const {
+  return bullets_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >*
+World::mutable_bullets() {
+  return &bullets_;
+}
+
+// required int32 playerId = 3;
+inline bool World::has_playerid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void World::set_has_playerid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void World::clear_has_playerid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void World::clear_playerid() {
+  playerid_ = 0;
+  clear_has_playerid();
+}
+inline ::google::protobuf::int32 World::playerid() const {
+  return playerid_;
+}
+inline void World::set_playerid(::google::protobuf::int32 value) {
+  set_has_playerid();
+  playerid_ = value;
 }
 
 // -------------------------------------------------------------------

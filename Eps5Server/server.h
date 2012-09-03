@@ -45,7 +45,7 @@ private:
      * Рассылает всем подключенным игрокам полное состояние игрового мира
      */
     void sendWorld();
-    Application *getParrent();
+    Application *getParent();
 private:
     QMap<quint32, Client*> _clients;
     QUdpSocket *_server;

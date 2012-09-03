@@ -6,8 +6,8 @@
 #define MAINDISPLAY_H
 
 #include <QMainWindow>
-#include <QGLWidget>
-#include <QtOpenGL>
+#include <QWidget>
+#include <QImage>
 #include "../Eps5World/drawableObject.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
 
@@ -15,7 +15,7 @@
  * @brief
  *  Отвечает за оторисовку игрового мира
  */
-class MainDisplay : public QGLWidget
+class MainDisplay : public QWidget
 {
     Q_OBJECT
     
@@ -60,6 +60,8 @@ private:
 private:
     QImage *_currentFrame;
     Epsilon5::Control *_controlStatus;
+    QImage *_peka;
+    QImage *_mad;
 };
 
 #endif // MAINDISPLAY_H

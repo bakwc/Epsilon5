@@ -8,7 +8,10 @@
 #include <QObject>
 #include <QMap>
 #include <QByteArray>
+#include <QVector>
+#include "../Eps5Proto/Epsilon5.pb.h"
 #include "../Eps5World/player.h"
+#include "../Eps5World/bullet.h"
 #include "../Eps5World/drawableObject.h"
 
 /**
@@ -21,6 +24,7 @@ class World : public QObject
     Q_OBJECT
 public:
     explicit World(QObject *parent = 0);
+    ~World();
 
     /**
      * @brief
@@ -30,7 +34,7 @@ public:
      * Сериализуется с использованием google protobuf
      * @see ../Eps5Proto/Epsilon5.proto
      */
-    QByteArray serialize();
+    Epsilon5::World* serialize();
 
     /**
      * @brief
@@ -46,6 +50,8 @@ public:
      *  Игрока с заданным id
      */
     Player *getPlayer(quint32 id);
+
+    inline quint32 selfId() { return _selfId; }
 signals:
 
     /**
@@ -55,7 +61,6 @@ signals:
      *  Ссылка на список объектов, которые необходимо отрисовать
      */
     void redraw(const DrawableObjects &objects);
-
 public slots:
 
     /**
@@ -83,6 +88,9 @@ private:
     void timerEvent(QTimerEvent *event);
 private:
     QMap<quint32, Player*> _players;
+    QVector<Bullet*> _bullets;
+    Epsilon5::World *_worldState;
+    quint32 _selfId;
 };
 
 #endif // WORLD_H

@@ -14,8 +14,18 @@ message Player {
     optional string name = 7;
 }
 
+message Bullet {
+    required double x = 1;
+    required double y = 2;
+
+    required double vx = 3;
+    required double vy = 4;
+}
+
 message World {
     repeated Player players = 1;
+    repeated Bullet bullets = 2;
+    required int32 playerId = 3;
 }
 
 message Control {

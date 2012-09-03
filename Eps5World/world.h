@@ -37,7 +37,17 @@ public:
      *  Запускает физику игрового мира
      */
     void start();
+
+    /**
+     * @brief
+     * @param id
+     *  Идентификатор игрока
+     * @return
+     *  Игрока с заданным id
+     */
+    Player *getPlayer(quint32 id);
 signals:
+
     /**
      * @brief
      *  Сигнал вызывается, когда движку необходимо перерисовать мир
@@ -45,6 +55,7 @@ signals:
      *  Ссылка на список объектов, которые необходимо отрисовать
      */
     void redraw(const DrawableObjects &objects);
+
 public slots:
 
     /**

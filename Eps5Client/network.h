@@ -6,7 +6,9 @@
 #define NETWORK_H
 
 #include <QObject>
-#include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QUdpSocket>
+
+class Application;
 
 /**
  * @brief
@@ -40,7 +42,10 @@ public slots:
 private slots:
     void onReadyRead();
 private:
-    QTcpSocket *_socket;
+    Application *getParrent();
+    void sendControls();
+private:
+    QUdpSocket *_socket;
 };
 
 #endif // NETWORK_H

@@ -34,9 +34,9 @@ void protobuf_ShutdownFile_Epsilon5_2eproto();
 
 class Player;
 class World;
-class KeyStatus;
-class MouseClick;
 class Control;
+class Control_KeyStatus;
+class Control_MouseClick;
 
 // ===================================================================
 
@@ -271,14 +271,14 @@ class World : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class KeyStatus : public ::google::protobuf::Message {
+class Control_KeyStatus : public ::google::protobuf::Message {
  public:
-  KeyStatus();
-  virtual ~KeyStatus();
+  Control_KeyStatus();
+  virtual ~Control_KeyStatus();
   
-  KeyStatus(const KeyStatus& from);
+  Control_KeyStatus(const Control_KeyStatus& from);
   
-  inline KeyStatus& operator=(const KeyStatus& from) {
+  inline Control_KeyStatus& operator=(const Control_KeyStatus& from) {
     CopyFrom(from);
     return *this;
   }
@@ -292,17 +292,17 @@ class KeyStatus : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const KeyStatus& default_instance();
+  static const Control_KeyStatus& default_instance();
   
-  void Swap(KeyStatus* other);
+  void Swap(Control_KeyStatus* other);
   
   // implements Message ----------------------------------------------
   
-  KeyStatus* New() const;
+  Control_KeyStatus* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const KeyStatus& from);
-  void MergeFrom(const KeyStatus& from);
+  void CopyFrom(const Control_KeyStatus& from);
+  void MergeFrom(const Control_KeyStatus& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -353,7 +353,7 @@ class KeyStatus : public ::google::protobuf::Message {
   inline bool keyright() const;
   inline void set_keyright(bool value);
   
-  // @@protoc_insertion_point(class_scope:Epsilon5.KeyStatus)
+  // @@protoc_insertion_point(class_scope:Epsilon5.Control.KeyStatus)
  private:
   inline void set_has_keyup();
   inline void clear_has_keyup();
@@ -379,18 +379,18 @@ class KeyStatus : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_Epsilon5_2eproto();
   
   void InitAsDefaultInstance();
-  static KeyStatus* default_instance_;
+  static Control_KeyStatus* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class MouseClick : public ::google::protobuf::Message {
+class Control_MouseClick : public ::google::protobuf::Message {
  public:
-  MouseClick();
-  virtual ~MouseClick();
+  Control_MouseClick();
+  virtual ~Control_MouseClick();
   
-  MouseClick(const MouseClick& from);
+  Control_MouseClick(const Control_MouseClick& from);
   
-  inline MouseClick& operator=(const MouseClick& from) {
+  inline Control_MouseClick& operator=(const Control_MouseClick& from) {
     CopyFrom(from);
     return *this;
   }
@@ -404,17 +404,17 @@ class MouseClick : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const MouseClick& default_instance();
+  static const Control_MouseClick& default_instance();
   
-  void Swap(MouseClick* other);
+  void Swap(Control_MouseClick* other);
   
   // implements Message ----------------------------------------------
   
-  MouseClick* New() const;
+  Control_MouseClick* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const MouseClick& from);
-  void MergeFrom(const MouseClick& from);
+  void CopyFrom(const Control_MouseClick& from);
+  void MergeFrom(const Control_MouseClick& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -458,7 +458,7 @@ class MouseClick : public ::google::protobuf::Message {
   inline bool buttonright() const;
   inline void set_buttonright(bool value);
   
-  // @@protoc_insertion_point(class_scope:Epsilon5.MouseClick)
+  // @@protoc_insertion_point(class_scope:Epsilon5.Control.MouseClick)
  private:
   inline void set_has_x();
   inline void clear_has_x();
@@ -481,7 +481,7 @@ class MouseClick : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_Epsilon5_2eproto();
   
   void InitAsDefaultInstance();
-  static MouseClick* default_instance_;
+  static Control_MouseClick* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -537,15 +537,18 @@ class Control : public ::google::protobuf::Message {
   
   // nested types ----------------------------------------------------
   
+  typedef Control_KeyStatus KeyStatus;
+  typedef Control_MouseClick MouseClick;
+  
   // accessors -------------------------------------------------------
   
-  // required .Epsilon5.KeyStatus keyStatus = 1;
+  // required .Epsilon5.Control.KeyStatus keyStatus = 1;
   inline bool has_keystatus() const;
   inline void clear_keystatus();
   static const int kKeyStatusFieldNumber = 1;
-  inline const ::Epsilon5::KeyStatus& keystatus() const;
-  inline ::Epsilon5::KeyStatus* mutable_keystatus();
-  inline ::Epsilon5::KeyStatus* release_keystatus();
+  inline const ::Epsilon5::Control_KeyStatus& keystatus() const;
+  inline ::Epsilon5::Control_KeyStatus* mutable_keystatus();
+  inline ::Epsilon5::Control_KeyStatus* release_keystatus();
   
   // required double angle = 2;
   inline bool has_angle() const;
@@ -554,13 +557,13 @@ class Control : public ::google::protobuf::Message {
   inline double angle() const;
   inline void set_angle(double value);
   
-  // optional .Epsilon5.MouseClick mouseClick = 3;
+  // optional .Epsilon5.Control.MouseClick mouseClick = 3;
   inline bool has_mouseclick() const;
   inline void clear_mouseclick();
   static const int kMouseClickFieldNumber = 3;
-  inline const ::Epsilon5::MouseClick& mouseclick() const;
-  inline ::Epsilon5::MouseClick* mutable_mouseclick();
-  inline ::Epsilon5::MouseClick* release_mouseclick();
+  inline const ::Epsilon5::Control_MouseClick& mouseclick() const;
+  inline ::Epsilon5::Control_MouseClick* mutable_mouseclick();
+  inline ::Epsilon5::Control_MouseClick* release_mouseclick();
   
   // @@protoc_insertion_point(class_scope:Epsilon5.Control)
  private:
@@ -573,9 +576,9 @@ class Control : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::Epsilon5::KeyStatus* keystatus_;
+  ::Epsilon5::Control_KeyStatus* keystatus_;
   double angle_;
-  ::Epsilon5::MouseClick* mouseclick_;
+  ::Epsilon5::Control_MouseClick* mouseclick_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
@@ -815,162 +818,162 @@ World::mutable_players() {
 
 // -------------------------------------------------------------------
 
-// KeyStatus
+// Control_KeyStatus
 
 // required bool keyUp = 1;
-inline bool KeyStatus::has_keyup() const {
+inline bool Control_KeyStatus::has_keyup() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void KeyStatus::set_has_keyup() {
+inline void Control_KeyStatus::set_has_keyup() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void KeyStatus::clear_has_keyup() {
+inline void Control_KeyStatus::clear_has_keyup() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void KeyStatus::clear_keyup() {
+inline void Control_KeyStatus::clear_keyup() {
   keyup_ = false;
   clear_has_keyup();
 }
-inline bool KeyStatus::keyup() const {
+inline bool Control_KeyStatus::keyup() const {
   return keyup_;
 }
-inline void KeyStatus::set_keyup(bool value) {
+inline void Control_KeyStatus::set_keyup(bool value) {
   set_has_keyup();
   keyup_ = value;
 }
 
 // required bool keyDown = 2;
-inline bool KeyStatus::has_keydown() const {
+inline bool Control_KeyStatus::has_keydown() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void KeyStatus::set_has_keydown() {
+inline void Control_KeyStatus::set_has_keydown() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void KeyStatus::clear_has_keydown() {
+inline void Control_KeyStatus::clear_has_keydown() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void KeyStatus::clear_keydown() {
+inline void Control_KeyStatus::clear_keydown() {
   keydown_ = false;
   clear_has_keydown();
 }
-inline bool KeyStatus::keydown() const {
+inline bool Control_KeyStatus::keydown() const {
   return keydown_;
 }
-inline void KeyStatus::set_keydown(bool value) {
+inline void Control_KeyStatus::set_keydown(bool value) {
   set_has_keydown();
   keydown_ = value;
 }
 
 // required bool keyLeft = 3;
-inline bool KeyStatus::has_keyleft() const {
+inline bool Control_KeyStatus::has_keyleft() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void KeyStatus::set_has_keyleft() {
+inline void Control_KeyStatus::set_has_keyleft() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void KeyStatus::clear_has_keyleft() {
+inline void Control_KeyStatus::clear_has_keyleft() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void KeyStatus::clear_keyleft() {
+inline void Control_KeyStatus::clear_keyleft() {
   keyleft_ = false;
   clear_has_keyleft();
 }
-inline bool KeyStatus::keyleft() const {
+inline bool Control_KeyStatus::keyleft() const {
   return keyleft_;
 }
-inline void KeyStatus::set_keyleft(bool value) {
+inline void Control_KeyStatus::set_keyleft(bool value) {
   set_has_keyleft();
   keyleft_ = value;
 }
 
 // required bool keyRight = 4;
-inline bool KeyStatus::has_keyright() const {
+inline bool Control_KeyStatus::has_keyright() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void KeyStatus::set_has_keyright() {
+inline void Control_KeyStatus::set_has_keyright() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void KeyStatus::clear_has_keyright() {
+inline void Control_KeyStatus::clear_has_keyright() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void KeyStatus::clear_keyright() {
+inline void Control_KeyStatus::clear_keyright() {
   keyright_ = false;
   clear_has_keyright();
 }
-inline bool KeyStatus::keyright() const {
+inline bool Control_KeyStatus::keyright() const {
   return keyright_;
 }
-inline void KeyStatus::set_keyright(bool value) {
+inline void Control_KeyStatus::set_keyright(bool value) {
   set_has_keyright();
   keyright_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// MouseClick
+// Control_MouseClick
 
 // required double x = 1;
-inline bool MouseClick::has_x() const {
+inline bool Control_MouseClick::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void MouseClick::set_has_x() {
+inline void Control_MouseClick::set_has_x() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void MouseClick::clear_has_x() {
+inline void Control_MouseClick::clear_has_x() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void MouseClick::clear_x() {
+inline void Control_MouseClick::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline double MouseClick::x() const {
+inline double Control_MouseClick::x() const {
   return x_;
 }
-inline void MouseClick::set_x(double value) {
+inline void Control_MouseClick::set_x(double value) {
   set_has_x();
   x_ = value;
 }
 
 // required double y = 2;
-inline bool MouseClick::has_y() const {
+inline bool Control_MouseClick::has_y() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void MouseClick::set_has_y() {
+inline void Control_MouseClick::set_has_y() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void MouseClick::clear_has_y() {
+inline void Control_MouseClick::clear_has_y() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void MouseClick::clear_y() {
+inline void Control_MouseClick::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline double MouseClick::y() const {
+inline double Control_MouseClick::y() const {
   return y_;
 }
-inline void MouseClick::set_y(double value) {
+inline void Control_MouseClick::set_y(double value) {
   set_has_y();
   y_ = value;
 }
 
 // optional bool buttonRight = 3;
-inline bool MouseClick::has_buttonright() const {
+inline bool Control_MouseClick::has_buttonright() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void MouseClick::set_has_buttonright() {
+inline void Control_MouseClick::set_has_buttonright() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void MouseClick::clear_has_buttonright() {
+inline void Control_MouseClick::clear_has_buttonright() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void MouseClick::clear_buttonright() {
+inline void Control_MouseClick::clear_buttonright() {
   buttonright_ = false;
   clear_has_buttonright();
 }
-inline bool MouseClick::buttonright() const {
+inline bool Control_MouseClick::buttonright() const {
   return buttonright_;
 }
-inline void MouseClick::set_buttonright(bool value) {
+inline void Control_MouseClick::set_buttonright(bool value) {
   set_has_buttonright();
   buttonright_ = value;
 }
@@ -979,7 +982,7 @@ inline void MouseClick::set_buttonright(bool value) {
 
 // Control
 
-// required .Epsilon5.KeyStatus keyStatus = 1;
+// required .Epsilon5.Control.KeyStatus keyStatus = 1;
 inline bool Control::has_keystatus() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -990,20 +993,20 @@ inline void Control::clear_has_keystatus() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void Control::clear_keystatus() {
-  if (keystatus_ != NULL) keystatus_->::Epsilon5::KeyStatus::Clear();
+  if (keystatus_ != NULL) keystatus_->::Epsilon5::Control_KeyStatus::Clear();
   clear_has_keystatus();
 }
-inline const ::Epsilon5::KeyStatus& Control::keystatus() const {
+inline const ::Epsilon5::Control_KeyStatus& Control::keystatus() const {
   return keystatus_ != NULL ? *keystatus_ : *default_instance_->keystatus_;
 }
-inline ::Epsilon5::KeyStatus* Control::mutable_keystatus() {
+inline ::Epsilon5::Control_KeyStatus* Control::mutable_keystatus() {
   set_has_keystatus();
-  if (keystatus_ == NULL) keystatus_ = new ::Epsilon5::KeyStatus;
+  if (keystatus_ == NULL) keystatus_ = new ::Epsilon5::Control_KeyStatus;
   return keystatus_;
 }
-inline ::Epsilon5::KeyStatus* Control::release_keystatus() {
+inline ::Epsilon5::Control_KeyStatus* Control::release_keystatus() {
   clear_has_keystatus();
-  ::Epsilon5::KeyStatus* temp = keystatus_;
+  ::Epsilon5::Control_KeyStatus* temp = keystatus_;
   keystatus_ = NULL;
   return temp;
 }
@@ -1030,7 +1033,7 @@ inline void Control::set_angle(double value) {
   angle_ = value;
 }
 
-// optional .Epsilon5.MouseClick mouseClick = 3;
+// optional .Epsilon5.Control.MouseClick mouseClick = 3;
 inline bool Control::has_mouseclick() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1041,20 +1044,20 @@ inline void Control::clear_has_mouseclick() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void Control::clear_mouseclick() {
-  if (mouseclick_ != NULL) mouseclick_->::Epsilon5::MouseClick::Clear();
+  if (mouseclick_ != NULL) mouseclick_->::Epsilon5::Control_MouseClick::Clear();
   clear_has_mouseclick();
 }
-inline const ::Epsilon5::MouseClick& Control::mouseclick() const {
+inline const ::Epsilon5::Control_MouseClick& Control::mouseclick() const {
   return mouseclick_ != NULL ? *mouseclick_ : *default_instance_->mouseclick_;
 }
-inline ::Epsilon5::MouseClick* Control::mutable_mouseclick() {
+inline ::Epsilon5::Control_MouseClick* Control::mutable_mouseclick() {
   set_has_mouseclick();
-  if (mouseclick_ == NULL) mouseclick_ = new ::Epsilon5::MouseClick;
+  if (mouseclick_ == NULL) mouseclick_ = new ::Epsilon5::Control_MouseClick;
   return mouseclick_;
 }
-inline ::Epsilon5::MouseClick* Control::release_mouseclick() {
+inline ::Epsilon5::Control_MouseClick* Control::release_mouseclick() {
   clear_has_mouseclick();
-  ::Epsilon5::MouseClick* temp = mouseclick_;
+  ::Epsilon5::Control_MouseClick* temp = mouseclick_;
   mouseclick_ = NULL;
   return temp;
 }

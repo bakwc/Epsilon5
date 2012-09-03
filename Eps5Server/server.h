@@ -7,7 +7,8 @@
 
 #include <QObject>
 #include <QMap>
-#include <QtNetwork/QTcpServer>
+//#include <QtNetwork/QTcpServer>
+#include <QtNetwork/QUdpSocket>
 #include "client.h"
 
 
@@ -31,10 +32,12 @@ public:
      *  TRUE в случае успеха
      */
     bool start();
+
+    void send(const QHostAddress &ip, quint16 port, const QByteArray &data);
 signals:
     void newPlayer(quint32 id);
 private slots:
-    void onClientConnected();
+    void onSomethingReceived();
 private:
     void timerEvent(QTimerEvent *event);
     /**
@@ -45,7 +48,7 @@ private:
     Application *getParrent();
 private:
     QMap<quint32, Client*> _clients;
-    QTcpServer *_server;
+    QUdpSocket *_server;
 };
 
 #endif // SERVER_H

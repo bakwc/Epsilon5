@@ -9,6 +9,7 @@
 #include "maindisplay.h"
 #include "network.h"
 #include "../Eps5World/world.h"
+#include "../Eps5Proto/Epsilon5.pb.h"
 
 /**
  * @brief
@@ -28,6 +29,13 @@ public:
      *  TRUE в случае успешной инициализации
      */
     bool init();
+
+    /**
+     * @brief
+     * @return
+     *  Текущее состояния клавиатуры (нажатые/отпущенные кнопки)
+     */
+    inline Epsilon5::Control *controlStatus() { return _mainDisplay.controlStatus(); }
 private:
     MainDisplay _mainDisplay;
     Network *_network;

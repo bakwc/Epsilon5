@@ -6,6 +6,7 @@
 #define PLAYER_H
 
 #include <QObject>
+#include "../Eps5Proto/Epsilon5.pb.h"
 
 /**
  * @brief
@@ -37,7 +38,7 @@ public:
 signals:
     
 public slots:
-
+    void applyControl(const Epsilon5::Control &control);
 private:
     quint32 _id;
     double _x,_y,_vx,_vy;

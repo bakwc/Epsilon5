@@ -7,6 +7,11 @@
 
 #include <QObject>
 #include <QtNetwork/QTcpSocket>
+#include <QHostAddress>
+#include "../Eps5Proto/Epsilon5.pb.h"
+
+
+class Server;
 
 /**
  * @brief
@@ -18,13 +23,9 @@ class Client : public QObject
 public:
     explicit Client(QObject *parent = 0);
 
-    /**
-     * @brief
-     *  Устанавливает сокет
-     * @param socket
-     *  Сокет, через который будет идти связь
-     */
-    void setSocket(QTcpSocket *socket);
+    inline void setIp(QHostAddress addr) { _ip=addr; }
+    inline void setPort(quint16 port) { _port=port; }
+    inline void setId(quint32 id) { _id=id; }
 
     quint32 id();
 
@@ -36,12 +37,16 @@ public:
      */
     void send(const QByteArray &data);
 
+    void onDataReceived(const QByteArray &data);
+
 signals:
-private slots:
-    void onDataReceived();
+    void controlReceived(const Epsilon5::Control &control);
 private:
-    QTcpSocket *_socket;
+    Server *getParent();
+private:
     quint32 _id;
+    QHostAddress _ip;
+    quint16 _port;
 };
 
 #endif // CLIENT_H

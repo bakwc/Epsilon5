@@ -23,15 +23,15 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* World_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   World_reflection_ = NULL;
-const ::google::protobuf::Descriptor* KeyStatus_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  KeyStatus_reflection_ = NULL;
-const ::google::protobuf::Descriptor* MouseClick_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  MouseClick_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Control_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Control_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Control_KeyStatus_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Control_KeyStatus_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Control_MouseClick_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Control_MouseClick_reflection_ = NULL;
 
 }  // namespace
 
@@ -78,42 +78,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(World));
-  KeyStatus_descriptor_ = file->message_type(2);
-  static const int KeyStatus_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keyup_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keydown_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keyleft_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, keyright_),
-  };
-  KeyStatus_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      KeyStatus_descriptor_,
-      KeyStatus::default_instance_,
-      KeyStatus_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(KeyStatus, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(KeyStatus));
-  MouseClick_descriptor_ = file->message_type(3);
-  static const int MouseClick_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, x_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, y_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, buttonright_),
-  };
-  MouseClick_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      MouseClick_descriptor_,
-      MouseClick::default_instance_,
-      MouseClick_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MouseClick, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(MouseClick));
-  Control_descriptor_ = file->message_type(4);
+  Control_descriptor_ = file->message_type(2);
   static const int Control_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, keystatus_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, angle_),
@@ -130,6 +95,41 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Control));
+  Control_KeyStatus_descriptor_ = Control_descriptor_->nested_type(0);
+  static const int Control_KeyStatus_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyup_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keydown_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyleft_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyright_),
+  };
+  Control_KeyStatus_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Control_KeyStatus_descriptor_,
+      Control_KeyStatus::default_instance_,
+      Control_KeyStatus_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Control_KeyStatus));
+  Control_MouseClick_descriptor_ = Control_descriptor_->nested_type(1);
+  static const int Control_MouseClick_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_MouseClick, x_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_MouseClick, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_MouseClick, buttonright_),
+  };
+  Control_MouseClick_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Control_MouseClick_descriptor_,
+      Control_MouseClick::default_instance_,
+      Control_MouseClick_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_MouseClick, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_MouseClick, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Control_MouseClick));
 }
 
 namespace {
@@ -147,11 +147,11 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     World_descriptor_, &World::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    KeyStatus_descriptor_, &KeyStatus::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    MouseClick_descriptor_, &MouseClick::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Control_descriptor_, &Control::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Control_KeyStatus_descriptor_, &Control_KeyStatus::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Control_MouseClick_descriptor_, &Control_MouseClick::default_instance());
 }
 
 }  // namespace
@@ -161,12 +161,12 @@ void protobuf_ShutdownFile_Epsilon5_2eproto() {
   delete Player_reflection_;
   delete World::default_instance_;
   delete World_reflection_;
-  delete KeyStatus::default_instance_;
-  delete KeyStatus_reflection_;
-  delete MouseClick::default_instance_;
-  delete MouseClick_reflection_;
   delete Control::default_instance_;
   delete Control_reflection_;
+  delete Control_KeyStatus::default_instance_;
+  delete Control_KeyStatus_reflection_;
+  delete Control_MouseClick::default_instance_;
+  delete Control_MouseClick_reflection_;
 }
 
 void protobuf_AddDesc_Epsilon5_2eproto() {
@@ -180,25 +180,25 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "id\030\001 \002(\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\n\n\002vx\030\004 \002"
     "(\001\022\n\n\002vy\030\005 \002(\001\022\r\n\005angle\030\006 \002(\001\022\014\n\004name\030\007 "
     "\001(\t\"*\n\005World\022!\n\007players\030\001 \003(\0132\020.Epsilon5"
-    ".Player\"N\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007k"
-    "eyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010keyRigh"
-    "t\030\004 \002(\010\"7\n\nMouseClick\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 "
-    "\002(\001\022\023\n\013buttonRight\030\003 \001(\010\"j\n\007Control\022&\n\tk"
-    "eyStatus\030\001 \002(\0132\023.Epsilon5.KeyStatus\022\r\n\005a"
-    "ngle\030\002 \002(\001\022(\n\nmouseClick\030\003 \001(\0132\024.Epsilon"
-    "5.MouseClick", 412);
+    ".Player\"\203\002\n\007Control\022.\n\tkeyStatus\030\001 \002(\0132\033"
+    ".Epsilon5.Control.KeyStatus\022\r\n\005angle\030\002 \002"
+    "(\001\0220\n\nmouseClick\030\003 \001(\0132\034.Epsilon5.Contro"
+    "l.MouseClick\032N\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010"
+    "\022\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010ke"
+    "yRight\030\004 \002(\010\0327\n\nMouseClick\022\t\n\001x\030\001 \002(\001\022\t\n"
+    "\001y\030\002 \002(\001\022\023\n\013buttonRight\030\003 \001(\010", 429);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
   World::default_instance_ = new World();
-  KeyStatus::default_instance_ = new KeyStatus();
-  MouseClick::default_instance_ = new MouseClick();
   Control::default_instance_ = new Control();
+  Control_KeyStatus::default_instance_ = new Control_KeyStatus();
+  Control_MouseClick::default_instance_ = new Control_MouseClick();
   Player::default_instance_->InitAsDefaultInstance();
   World::default_instance_->InitAsDefaultInstance();
-  KeyStatus::default_instance_->InitAsDefaultInstance();
-  MouseClick::default_instance_->InitAsDefaultInstance();
   Control::default_instance_->InitAsDefaultInstance();
+  Control_KeyStatus::default_instance_->InitAsDefaultInstance();
+  Control_MouseClick::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_Epsilon5_2eproto);
 }
 
@@ -873,27 +873,27 @@ void World::Swap(World* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int KeyStatus::kKeyUpFieldNumber;
-const int KeyStatus::kKeyDownFieldNumber;
-const int KeyStatus::kKeyLeftFieldNumber;
-const int KeyStatus::kKeyRightFieldNumber;
+const int Control_KeyStatus::kKeyUpFieldNumber;
+const int Control_KeyStatus::kKeyDownFieldNumber;
+const int Control_KeyStatus::kKeyLeftFieldNumber;
+const int Control_KeyStatus::kKeyRightFieldNumber;
 #endif  // !_MSC_VER
 
-KeyStatus::KeyStatus()
+Control_KeyStatus::Control_KeyStatus()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void KeyStatus::InitAsDefaultInstance() {
+void Control_KeyStatus::InitAsDefaultInstance() {
 }
 
-KeyStatus::KeyStatus(const KeyStatus& from)
+Control_KeyStatus::Control_KeyStatus(const Control_KeyStatus& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void KeyStatus::SharedCtor() {
+void Control_KeyStatus::SharedCtor() {
   _cached_size_ = 0;
   keyup_ = false;
   keydown_ = false;
@@ -902,36 +902,36 @@ void KeyStatus::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-KeyStatus::~KeyStatus() {
+Control_KeyStatus::~Control_KeyStatus() {
   SharedDtor();
 }
 
-void KeyStatus::SharedDtor() {
+void Control_KeyStatus::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void KeyStatus::SetCachedSize(int size) const {
+void Control_KeyStatus::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* KeyStatus::descriptor() {
+const ::google::protobuf::Descriptor* Control_KeyStatus::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return KeyStatus_descriptor_;
+  return Control_KeyStatus_descriptor_;
 }
 
-const KeyStatus& KeyStatus::default_instance() {
+const Control_KeyStatus& Control_KeyStatus::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();  return *default_instance_;
 }
 
-KeyStatus* KeyStatus::default_instance_ = NULL;
+Control_KeyStatus* Control_KeyStatus::default_instance_ = NULL;
 
-KeyStatus* KeyStatus::New() const {
-  return new KeyStatus;
+Control_KeyStatus* Control_KeyStatus::New() const {
+  return new Control_KeyStatus;
 }
 
-void KeyStatus::Clear() {
+void Control_KeyStatus::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     keyup_ = false;
     keydown_ = false;
@@ -942,7 +942,7 @@ void KeyStatus::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool KeyStatus::MergePartialFromCodedStream(
+bool Control_KeyStatus::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1027,7 +1027,7 @@ bool KeyStatus::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void KeyStatus::SerializeWithCachedSizes(
+void Control_KeyStatus::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required bool keyUp = 1;
   if (has_keyup()) {
@@ -1055,7 +1055,7 @@ void KeyStatus::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* KeyStatus::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* Control_KeyStatus::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required bool keyUp = 1;
   if (has_keyup()) {
@@ -1084,7 +1084,7 @@ void KeyStatus::SerializeWithCachedSizes(
   return target;
 }
 
-int KeyStatus::ByteSize() const {
+int Control_KeyStatus::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1120,10 +1120,10 @@ int KeyStatus::ByteSize() const {
   return total_size;
 }
 
-void KeyStatus::MergeFrom(const ::google::protobuf::Message& from) {
+void Control_KeyStatus::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const KeyStatus* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const KeyStatus*>(
+  const Control_KeyStatus* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Control_KeyStatus*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1132,7 +1132,7 @@ void KeyStatus::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void KeyStatus::MergeFrom(const KeyStatus& from) {
+void Control_KeyStatus::MergeFrom(const Control_KeyStatus& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_keyup()) {
@@ -1151,25 +1151,25 @@ void KeyStatus::MergeFrom(const KeyStatus& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void KeyStatus::CopyFrom(const ::google::protobuf::Message& from) {
+void Control_KeyStatus::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void KeyStatus::CopyFrom(const KeyStatus& from) {
+void Control_KeyStatus::CopyFrom(const Control_KeyStatus& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool KeyStatus::IsInitialized() const {
+bool Control_KeyStatus::IsInitialized() const {
   if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
 
-void KeyStatus::Swap(KeyStatus* other) {
+void Control_KeyStatus::Swap(Control_KeyStatus* other) {
   if (other != this) {
     std::swap(keyup_, other->keyup_);
     std::swap(keydown_, other->keydown_);
@@ -1181,38 +1181,38 @@ void KeyStatus::Swap(KeyStatus* other) {
   }
 }
 
-::google::protobuf::Metadata KeyStatus::GetMetadata() const {
+::google::protobuf::Metadata Control_KeyStatus::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = KeyStatus_descriptor_;
-  metadata.reflection = KeyStatus_reflection_;
+  metadata.descriptor = Control_KeyStatus_descriptor_;
+  metadata.reflection = Control_KeyStatus_reflection_;
   return metadata;
 }
 
 
-// ===================================================================
+// -------------------------------------------------------------------
 
 #ifndef _MSC_VER
-const int MouseClick::kXFieldNumber;
-const int MouseClick::kYFieldNumber;
-const int MouseClick::kButtonRightFieldNumber;
+const int Control_MouseClick::kXFieldNumber;
+const int Control_MouseClick::kYFieldNumber;
+const int Control_MouseClick::kButtonRightFieldNumber;
 #endif  // !_MSC_VER
 
-MouseClick::MouseClick()
+Control_MouseClick::Control_MouseClick()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void MouseClick::InitAsDefaultInstance() {
+void Control_MouseClick::InitAsDefaultInstance() {
 }
 
-MouseClick::MouseClick(const MouseClick& from)
+Control_MouseClick::Control_MouseClick(const Control_MouseClick& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void MouseClick::SharedCtor() {
+void Control_MouseClick::SharedCtor() {
   _cached_size_ = 0;
   x_ = 0;
   y_ = 0;
@@ -1220,36 +1220,36 @@ void MouseClick::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-MouseClick::~MouseClick() {
+Control_MouseClick::~Control_MouseClick() {
   SharedDtor();
 }
 
-void MouseClick::SharedDtor() {
+void Control_MouseClick::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void MouseClick::SetCachedSize(int size) const {
+void Control_MouseClick::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* MouseClick::descriptor() {
+const ::google::protobuf::Descriptor* Control_MouseClick::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return MouseClick_descriptor_;
+  return Control_MouseClick_descriptor_;
 }
 
-const MouseClick& MouseClick::default_instance() {
+const Control_MouseClick& Control_MouseClick::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();  return *default_instance_;
 }
 
-MouseClick* MouseClick::default_instance_ = NULL;
+Control_MouseClick* Control_MouseClick::default_instance_ = NULL;
 
-MouseClick* MouseClick::New() const {
-  return new MouseClick;
+Control_MouseClick* Control_MouseClick::New() const {
+  return new Control_MouseClick;
 }
 
-void MouseClick::Clear() {
+void Control_MouseClick::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     x_ = 0;
     y_ = 0;
@@ -1259,7 +1259,7 @@ void MouseClick::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool MouseClick::MergePartialFromCodedStream(
+bool Control_MouseClick::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1328,7 +1328,7 @@ bool MouseClick::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void MouseClick::SerializeWithCachedSizes(
+void Control_MouseClick::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required double x = 1;
   if (has_x()) {
@@ -1351,7 +1351,7 @@ void MouseClick::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* MouseClick::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* Control_MouseClick::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required double x = 1;
   if (has_x()) {
@@ -1375,7 +1375,7 @@ void MouseClick::SerializeWithCachedSizes(
   return target;
 }
 
-int MouseClick::ByteSize() const {
+int Control_MouseClick::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1406,10 +1406,10 @@ int MouseClick::ByteSize() const {
   return total_size;
 }
 
-void MouseClick::MergeFrom(const ::google::protobuf::Message& from) {
+void Control_MouseClick::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const MouseClick* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const MouseClick*>(
+  const Control_MouseClick* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Control_MouseClick*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1418,7 +1418,7 @@ void MouseClick::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void MouseClick::MergeFrom(const MouseClick& from) {
+void Control_MouseClick::MergeFrom(const Control_MouseClick& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_x()) {
@@ -1434,25 +1434,25 @@ void MouseClick::MergeFrom(const MouseClick& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void MouseClick::CopyFrom(const ::google::protobuf::Message& from) {
+void Control_MouseClick::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void MouseClick::CopyFrom(const MouseClick& from) {
+void Control_MouseClick::CopyFrom(const Control_MouseClick& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool MouseClick::IsInitialized() const {
+bool Control_MouseClick::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
 
-void MouseClick::Swap(MouseClick* other) {
+void Control_MouseClick::Swap(Control_MouseClick* other) {
   if (other != this) {
     std::swap(x_, other->x_);
     std::swap(y_, other->y_);
@@ -1463,16 +1463,16 @@ void MouseClick::Swap(MouseClick* other) {
   }
 }
 
-::google::protobuf::Metadata MouseClick::GetMetadata() const {
+::google::protobuf::Metadata Control_MouseClick::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = MouseClick_descriptor_;
-  metadata.reflection = MouseClick_reflection_;
+  metadata.descriptor = Control_MouseClick_descriptor_;
+  metadata.reflection = Control_MouseClick_reflection_;
   return metadata;
 }
 
 
-// ===================================================================
+// -------------------------------------------------------------------
 
 #ifndef _MSC_VER
 const int Control::kKeyStatusFieldNumber;
@@ -1486,8 +1486,8 @@ Control::Control()
 }
 
 void Control::InitAsDefaultInstance() {
-  keystatus_ = const_cast< ::Epsilon5::KeyStatus*>(&::Epsilon5::KeyStatus::default_instance());
-  mouseclick_ = const_cast< ::Epsilon5::MouseClick*>(&::Epsilon5::MouseClick::default_instance());
+  keystatus_ = const_cast< ::Epsilon5::Control_KeyStatus*>(&::Epsilon5::Control_KeyStatus::default_instance());
+  mouseclick_ = const_cast< ::Epsilon5::Control_MouseClick*>(&::Epsilon5::Control_MouseClick::default_instance());
 }
 
 Control::Control(const Control& from)
@@ -1538,11 +1538,11 @@ Control* Control::New() const {
 void Control::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_keystatus()) {
-      if (keystatus_ != NULL) keystatus_->::Epsilon5::KeyStatus::Clear();
+      if (keystatus_ != NULL) keystatus_->::Epsilon5::Control_KeyStatus::Clear();
     }
     angle_ = 0;
     if (has_mouseclick()) {
-      if (mouseclick_ != NULL) mouseclick_->::Epsilon5::MouseClick::Clear();
+      if (mouseclick_ != NULL) mouseclick_->::Epsilon5::Control_MouseClick::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1555,7 +1555,7 @@ bool Control::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .Epsilon5.KeyStatus keyStatus = 1;
+      // required .Epsilon5.Control.KeyStatus keyStatus = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1584,7 +1584,7 @@ bool Control::MergePartialFromCodedStream(
         break;
       }
       
-      // optional .Epsilon5.MouseClick mouseClick = 3;
+      // optional .Epsilon5.Control.MouseClick mouseClick = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1616,7 +1616,7 @@ bool Control::MergePartialFromCodedStream(
 
 void Control::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .Epsilon5.KeyStatus keyStatus = 1;
+  // required .Epsilon5.Control.KeyStatus keyStatus = 1;
   if (has_keystatus()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->keystatus(), output);
@@ -1627,7 +1627,7 @@ void Control::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->angle(), output);
   }
   
-  // optional .Epsilon5.MouseClick mouseClick = 3;
+  // optional .Epsilon5.Control.MouseClick mouseClick = 3;
   if (has_mouseclick()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->mouseclick(), output);
@@ -1641,7 +1641,7 @@ void Control::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Control::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .Epsilon5.KeyStatus keyStatus = 1;
+  // required .Epsilon5.Control.KeyStatus keyStatus = 1;
   if (has_keystatus()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1653,7 +1653,7 @@ void Control::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->angle(), target);
   }
   
-  // optional .Epsilon5.MouseClick mouseClick = 3;
+  // optional .Epsilon5.Control.MouseClick mouseClick = 3;
   if (has_mouseclick()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1671,7 +1671,7 @@ int Control::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .Epsilon5.KeyStatus keyStatus = 1;
+    // required .Epsilon5.Control.KeyStatus keyStatus = 1;
     if (has_keystatus()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1683,7 +1683,7 @@ int Control::ByteSize() const {
       total_size += 1 + 8;
     }
     
-    // optional .Epsilon5.MouseClick mouseClick = 3;
+    // optional .Epsilon5.Control.MouseClick mouseClick = 3;
     if (has_mouseclick()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1718,13 +1718,13 @@ void Control::MergeFrom(const Control& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_keystatus()) {
-      mutable_keystatus()->::Epsilon5::KeyStatus::MergeFrom(from.keystatus());
+      mutable_keystatus()->::Epsilon5::Control_KeyStatus::MergeFrom(from.keystatus());
     }
     if (from.has_angle()) {
       set_angle(from.angle());
     }
     if (from.has_mouseclick()) {
-      mutable_mouseclick()->::Epsilon5::MouseClick::MergeFrom(from.mouseclick());
+      mutable_mouseclick()->::Epsilon5::Control_MouseClick::MergeFrom(from.mouseclick());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());

@@ -9,7 +9,7 @@
 #include <QGLWidget>
 #include <QtOpenGL>
 #include "../Eps5World/drawableObject.h"
-
+#include "../Eps5Proto/Epsilon5.pb.h"
 
 /**
  * @brief
@@ -25,6 +25,13 @@ public:
 
     /**
      * @brief
+     * @return
+     *  Текущее состояния клавиатуры (нажатые/отпущенные кнопки)
+     */
+    inline Epsilon5::Control *controlStatus() { return _controlStatus; }
+
+    /**
+     * @brief
      *  Запускает отрисовку графики
      */
     void start();
@@ -35,6 +42,7 @@ signals:
      *  Сигнал вызывается когда необходимо получить объекты для отрисовки
      */
     void requestRedrawObjects();
+
 public slots:
 
     /**
@@ -47,8 +55,11 @@ public slots:
 private:
     void timerEvent(QTimerEvent *event);
     void paintEvent(QPaintEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 private:
     QImage *_currentFrame;
+    Epsilon5::Control *_controlStatus;
 };
 
 #endif // MAINDISPLAY_H

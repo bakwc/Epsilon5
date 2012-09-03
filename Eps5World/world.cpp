@@ -14,7 +14,7 @@ World::World(QObject *parent) :
 
 void World::start()
 {
-    startTimer(5); // TODO: Remove MN
+    startTimer(10); // TODO: Remove MN
 }
 
 void World::spawnPlayer(quint32 id)
@@ -63,6 +63,7 @@ void World::deSerialize(const QByteArray &data)
         newPlayer.setVy(player.vy());
         newPlayer.setAngle(player.angle());
     }
+    requestRedraw();
 }
 
 void World::timerEvent(QTimerEvent *event)
@@ -87,4 +88,12 @@ void World::requestRedraw()
         objects.push_back(tmp);
     }
     emit redraw(objects);
+}
+
+Player *World::getPlayer(quint32 id)
+{
+    auto playerIt = _players.find(id);
+    if (playerIt == _players.end())
+        return NULL;
+    return playerIt.value();
 }

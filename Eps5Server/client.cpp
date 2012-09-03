@@ -4,19 +4,12 @@
 */
 #include <QDebug>
 #include "client.h"
+#include "server.h"
 
 Client::Client(QObject *parent) :
     QObject(parent),
-    _socket(NULL),
     _id(0)
 {
-}
-
-void Client::setSocket(QTcpSocket *socket)
-{
-    _socket=socket;
-    _id=socket->socketDescriptor();
-    connect(_socket, SIGNAL(readyRead()), SLOT(onDataReceived()));
 }
 
 quint32 Client::id()
@@ -24,12 +17,19 @@ quint32 Client::id()
     return _id;
 }
 
-void Client::onDataReceived()
+void Client::onDataReceived(const QByteArray &data)
 {
-    qDebug() << Q_FUNC_INFO;
+    Epsilon5::Control control;
+    control.ParseFromArray(data.data(),data.size());
+    emit controlReceived(control);
 }
 
 void Client::send(const QByteArray &data)
 {
-    _socket->write(data);
+    getParent()->send(_ip, _port, data);
+}
+
+Server *Client::getParent()
+{
+    return qobject_cast<Server*>(parent());
 }

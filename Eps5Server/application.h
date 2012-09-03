@@ -9,6 +9,8 @@
 #include "server.h"
 #include "../Eps5World/world.h"
 
+class Player;
+
 /**
  * @brief
  * Базовый класс приложения
@@ -32,6 +34,15 @@ public:
      *  Полное состояние игрового мира в сериализованном виде
      */
     QByteArray getSerialisedWorld();
+
+    /**
+     * @brief
+     * @param id
+     *  Идентификатор игрока
+     * @return
+     *  Игрока с заданным id
+     */
+    inline Player *getPlayer(quint32 id) { return _world->getPlayer(id); }
 signals:
 
 public slots:

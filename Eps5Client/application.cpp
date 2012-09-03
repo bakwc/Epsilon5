@@ -9,8 +9,8 @@ Application::Application(int argc, char *argv[]):
     _network(new Network(this)),
     _world(new World(this))
 {
-    connect(&_mainDisplay, SIGNAL(requestRedrawObjects()),
-            _world, SLOT(requestRedraw()));
+    //connect(&_mainDisplay, SIGNAL(requestRedrawObjects()),
+    //        _world, SLOT(requestRedraw()));
     connect(_world, SIGNAL(redraw(DrawableObjects)),
             &_mainDisplay, SLOT(redraw(DrawableObjects)));
     connect(_network, SIGNAL(onDataReceived(QByteArray)),
@@ -22,7 +22,7 @@ bool Application::init()
     _mainDisplay.show();
     if (_network->start())
     {
-        _world->start();    // Client-side physics to more realistic motion
+        //_world->start();    // Client-side physics to more realistic motion
         _mainDisplay.start();
         return true;
     }

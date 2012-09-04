@@ -18,12 +18,14 @@ public:
     inline void setDamage(double damage) { _damage=damage; }
 
     inline double damage() { return _damage; }
+    inline qint32 ttl() { return _ttl; }
 
     void applyPhysics();
 
 private:
     double _damage;
     double _x,_y,_vx,_vy;
+    qint32 _ttl;
     double _angle;
 };
 

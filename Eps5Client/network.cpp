@@ -16,7 +16,7 @@ Network::Network(QObject *parent) :
 
 bool Network::start()
 {
-    _socket->connectToHost(QHostAddress("193.169.33.254"), 1238);
+    _socket->connectToHost(QHostAddress("127.0.0.1"), 1238);
                                             // TODO: Remove HC & MN
     sendControls();
     return true;

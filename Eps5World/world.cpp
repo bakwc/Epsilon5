@@ -48,7 +48,7 @@ Epsilon5::World *World::serialize()
     world.clear_players();
     for (auto i=_players.begin();i!=_players.end();i++)
     {
-        Epsilon5::Player *player=world.add_players();
+        auto player=world.add_players();
         player->set_id(i.key());
         player->set_x(i.value()->x());
         player->set_y(i.value()->y());
@@ -57,18 +57,15 @@ Epsilon5::World *World::serialize()
         player->set_angle(i.value()->angle());
     }
 
-   /*
-    for (QVector<Bullet*>::iterator i=_bullets.begin();i!=_bullets.end();i++)
+
+    for (auto i=_bullets.begin();i!=_bullets.end();i++)
     {
-        Epsilon5::Bullet *bullet=world.add_bullets();
-        Bullet *b=*i;
-        quint32 x=i->damage();
-        bullet->set_x(i->x());
-        bullet->set_y(i->y());
-        bullet->set_vx(i->vx());
-        bullet->set_vy(i->vy());
-        bullet->set_angle(i->angle());
-    }*/
+        auto bullet=world.add_bullets();
+        bullet->set_x((*i)->x());
+        bullet->set_y((*i)->y());
+        bullet->set_vx((*i)->vx());
+        bullet->set_vy((*i)->vy());
+    }
     //QByteArray result;
     //result.resize(world.ByteSize());
     //world.SerializeToArray(result.data(),result.size());
@@ -98,22 +95,19 @@ void World::deSerialize(const QByteArray &data)
         newPlayer.setAngle(player.angle());
     }
 
-/*
-    for (int i=0;i!=world.players_size();i++)
+    _bullets.clear();
+
+    for (int i=0;i!=world.bullets_size();i++)
     {
         const Epsilon5::Bullet &bullet = world.bullets(i);
-
-        _bullets.clear();
-
-        auto bull=_bullets.push_back(new Bullet(this));
-        Bullet &newBullet=*(bull.value());
-        newBullet.setX(bull.x());
-        newBullet.setY(bull.y());
-        newBullet.setVx(bull.vx());
-        newBullet.setVy(bull.vy());
-        newBullet.setAngle(bull.angle());
+        _bullets.push_back(new Bullet(this));
+        Bullet &newBullet=*_bullets[_bullets.size()-1];
+        newBullet.setX(bullet.x());
+        newBullet.setY(bullet.y());
+        newBullet.setVx(bullet.vx());
+        newBullet.setVy(bullet.vy());
     }
-    */
+
     requestRedraw();
 }
 
@@ -123,6 +117,17 @@ void World::timerEvent(QTimerEvent *event)
     for (auto i=_players.begin();i!=_players.end();i++)
     {
         i.value()->applyPhysics();
+    }
+
+    auto i=_bullets.begin();
+
+    while (i!=_bullets.end())
+    {
+        (*i)->applyPhysics();
+        if ((*i)->ttl()<=0)
+            _bullets.erase(i++);
+        else
+            i++;
     }
 }
 

@@ -6,7 +6,6 @@
 #include <QPainter>
 #include <QKeyEvent>
 #include "maindisplay.h"
-#include "ui_maindisplay.h"
 
 MainDisplay::MainDisplay(QWidget *parent) :
     QWidget(parent),

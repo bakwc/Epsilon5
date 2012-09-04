@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QMap>
 #include <QByteArray>
-#include <QVector>
+#include <QList>
 #include "../Eps5Proto/Epsilon5.pb.h"
 #include "../Eps5World/player.h"
 #include "../Eps5World/bullet.h"
@@ -90,7 +90,7 @@ private:
     void timerEvent(QTimerEvent *event);
 private:
     QMap<quint32, Player*> _players;
-    QVector<Bullet*> _bullets;
+    QList<Bullet*> _bullets;
     Epsilon5::World *_worldState;
     quint32 _selfId;
 };

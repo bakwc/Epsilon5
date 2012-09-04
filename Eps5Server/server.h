@@ -36,8 +36,9 @@ public:
     void send(const QHostAddress &ip, quint16 port, const QByteArray &data);
 signals:
     void newPlayer(quint32 id);
+    void playerDisconnected(quint32 id);
 private slots:
-    void onSomethingReceived();
+    void dataReceived();
 private:
     void timerEvent(QTimerEvent *event);
     /**
@@ -45,8 +46,10 @@ private:
      * Рассылает всем подключенным игрокам полное состояние игрового мира
      */
     void sendWorld();
+    void disconnectInactive();
     Application *getParent();
 private:
+    QMap<quint32, quint16> _ips;
     QMap<quint32, Client*> _clients;
     QUdpSocket *_server;
 };

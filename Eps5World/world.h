@@ -83,7 +83,9 @@ public slots:
      * @param id
      *  Идентификатор игрока
      */
-    void spawnPlayer(quint32 id);
+    void playerEnter(quint32 id);
+
+    void playerExit(quint32 id);
 private:
     void timerEvent(QTimerEvent *event);
 private:

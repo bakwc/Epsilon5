@@ -26,6 +26,10 @@ public:
     inline void setIp(QHostAddress addr) { _ip=addr; }
     inline void setPort(quint16 port) { _port=port; }
     inline void setId(quint32 id) { _id=id; }
+    void setSeen();
+    quint32 lastSeen();
+    inline QString ip() { return _ip.toString(); }
+    inline quint32 ipNum() { return _ip.toIPv4Address(); }
 
     quint32 id();
 
@@ -47,6 +51,7 @@ private:
     quint32 _id;
     QHostAddress _ip;
     quint16 _port;
+    qint64 _lastSeen;
 };
 
 #endif // CLIENT_H

@@ -11,8 +11,7 @@ Server::Server(QObject *parent) :
     QObject(parent),
     _server(new QUdpSocket(this))
 {
-    //connect(_server, SIGNAL(newConnection()), SLOT(onClientConnected()));
-    connect(_server, SIGNAL(readyRead()), SLOT(onSomethingReceived()));
+    connect(_server, SIGNAL(readyRead()), SLOT(dataReceived()));
 }
 
 bool Server::start()
@@ -25,7 +24,7 @@ bool Server::start()
     return false;
 }
 
-void Server::onSomethingReceived()
+void Server::dataReceived()
 {
     QHostAddress sender;
     quint16 senderPort;
@@ -38,11 +37,22 @@ void Server::onSomethingReceived()
         return;
     data.remove(size,data.size());
 
-    quint32 id=sender.toIPv4Address()+senderPort; // TODO: remake without collisions
+    quint32 ip=sender.toIPv4Address();
+
+    quint32 id=ip+senderPort; // TODO: remake without collisions
 
     auto clientIt = _clients.find(id);  // Search if client exists
     if (clientIt == _clients.end())
     {       // If not = new client connected
+        auto ipIt = _ips.find(ip);
+        if (ipIt == _ips.end())
+            ipIt = _ips.insert(ip, 0);
+
+        if (ipIt.value() >= 2)  // TODO: Remove MN
+            return; // Connection rejected
+
+        ipIt.value()++;
+
         Client *client = new Client(this);
         client->setIp(sender);
         client->setPort(senderPort);
@@ -59,7 +69,23 @@ void Server::onSomethingReceived()
 
 void Server::timerEvent(QTimerEvent *event)
 {
+    disconnectInactive();
     sendWorld();
+}
+
+void Server::disconnectInactive()
+{
+    for (auto i=_clients.begin();i!=_clients.end();i++)
+        if (i.value()->lastSeen() > 1500)
+        {
+            qDebug() << "Client" << i.value()->ip() << "disconnected";
+            auto ipIt = _ips.find(i.value()->ipNum());
+            if (ipIt != _ips.end() && ipIt.value()>0)
+                ipIt.value()--;
+            emit playerDisconnected(i.value()->id());
+            i.value()->deleteLater();
+            _clients.erase(i);
+        }
 }
 
 void Server::sendWorld()

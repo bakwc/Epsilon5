@@ -23,12 +23,22 @@ void World::start()
     startTimer(10); // TODO: Remove MN
 }
 
-void World::spawnPlayer(quint32 id)
+void World::playerEnter(quint32 id)
 {
     qDebug() << Q_FUNC_INFO;
     Player *player = new Player(this);
     player->setId(id);
     _players.insert(id,player);
+}
+
+void World::playerExit(quint32 id)
+{
+    auto playerIt = _players.find(id);
+    if (playerIt != _players.end())
+    {
+        playerIt.value()->deleteLater();
+        _players.erase(playerIt);
+    }
 }
 
 Epsilon5::World *World::serialize()
@@ -73,12 +83,12 @@ void World::deSerialize(const QByteArray &data)
 
     _selfId = world.playerid();
 
+    _players.clear();
+
     for (int i=0;i!=world.players_size();i++)
     {
         const Epsilon5::Player &player = world.players(i);
-        auto plr=_players.find(player.id());
-        if (plr==_players.end())
-            plr=_players.insert(player.id(),new Player(this));
+        auto plr=_players.insert(player.id(),new Player(this));
         Player &newPlayer=*(plr.value());
         newPlayer.setId(player.id());
         newPlayer.setX(player.x());
@@ -87,6 +97,7 @@ void World::deSerialize(const QByteArray &data)
         newPlayer.setVy(player.vy());
         newPlayer.setAngle(player.angle());
     }
+
 /*
     for (int i=0;i!=world.players_size();i++)
     {

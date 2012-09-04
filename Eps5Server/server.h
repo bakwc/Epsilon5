@@ -40,7 +40,7 @@ signals:
 private slots:
     void dataReceived();
 private:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *);
     /**
      * @brief
      * Рассылает всем подключенным игрокам полное состояние игрового мира

@@ -27,6 +27,7 @@ public:
     inline void setPort(quint16 port) { _port=port; }
     inline void setId(quint32 id) { _id=id; }
     void setSeen();
+    void enlargeSeen();
     quint32 lastSeen();
     inline QString ip() { return _ip.toString(); }
     inline quint32 ipNum() { return _ip.toIPv4Address(); }

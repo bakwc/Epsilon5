@@ -3,7 +3,6 @@
 * Definition of Client
 */
 #include <QDebug>
-#include <QDateTime>
 #include "client.h"
 #include "server.h"
 
@@ -40,11 +39,15 @@ Server *Client::getParent()
 
 void Client::setSeen()
 {
-    _lastSeen = QDateTime::currentMSecsSinceEpoch();
+    _lastSeen = 0;
+}
+
+void Client::enlargeSeen()
+{
+    _lastSeen++;
 }
 
 quint32 Client::lastSeen()
 {
-    qint64 now = QDateTime::currentMSecsSinceEpoch();
-    return now - _lastSeen;
+    return _lastSeen;
 }

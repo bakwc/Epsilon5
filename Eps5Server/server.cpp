@@ -67,7 +67,7 @@ void Server::dataReceived()
     clientIt.value()->onDataReceived(data);
 }
 
-void Server::timerEvent(QTimerEvent *event)
+void Server::timerEvent(QTimerEvent*)
 {
     disconnectInactive();
     sendWorld();
@@ -76,7 +76,9 @@ void Server::timerEvent(QTimerEvent *event)
 void Server::disconnectInactive()
 {
     for (auto i=_clients.begin();i!=_clients.end();i++)
-        if (i.value()->lastSeen() > 1500)
+    {
+        i.value()->enlargeSeen();
+        if (i.value()->lastSeen() > 30)
         {
             qDebug() << "Client" << i.value()->ip() << "disconnected";
             auto ipIt = _ips.find(i.value()->ipNum());
@@ -86,6 +88,7 @@ void Server::disconnectInactive()
             i.value()->deleteLater();
             _clients.erase(i);
         }
+    }
 }
 
 void Server::sendWorld()

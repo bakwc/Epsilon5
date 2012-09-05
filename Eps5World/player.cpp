@@ -26,4 +26,6 @@ void Player::applyControl(const Epsilon5::Control &control)
     if (control.keystatus().keyleft()) _vx=-0.8;
     else if (control.keystatus().keyright()) _vx=0.8;
     else _vx=0;
+
+    _angle=control.angle();
 }

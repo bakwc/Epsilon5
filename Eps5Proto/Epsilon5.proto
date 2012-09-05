@@ -35,15 +35,11 @@ message Control {
         required bool keyDown = 2;
         required bool keyLeft = 3;
         required bool keyRight = 4;
-    }
 
-    message MouseClick {
-        required double x = 1;
-        required double y = 2;
-        optional bool buttonRight = 3;
+        required bool keyAttack1 = 5;
+        required bool keyAttack2 = 6;
     }
 
     required KeyStatus keyStatus = 1;
     required double angle = 2;
-    optional MouseClick mouseClick = 3;
 }

@@ -5,7 +5,9 @@
 #include <QDebug>
 #include <QPainter>
 #include <QKeyEvent>
+#include <cmath>
 #include "maindisplay.h"
+#include "utils.h"
 
 MainDisplay::MainDisplay(QWidget *parent) :
     QWidget(parent),
@@ -16,6 +18,8 @@ MainDisplay::MainDisplay(QWidget *parent) :
     _controlStatus->mutable_keystatus()->set_keydown(false);
     _controlStatus->mutable_keystatus()->set_keyright(false);
     _controlStatus->mutable_keystatus()->set_keyleft(false);
+    _controlStatus->mutable_keystatus()->set_keyattack1(false);
+    _controlStatus->mutable_keystatus()->set_keyattack2(false);
     _controlStatus->set_angle(0);
 
     _peka = new QImage("peka.png");
@@ -46,16 +50,31 @@ void MainDisplay::redraw(const DrawableObjects &objects)
     painter.setPen(pen);
     painter.setRenderHint(QPainter::Antialiasing);
 
+    QPoint gamerPos, cursorPos;
+
+    QImage *tmp;
+
     for (auto i=objects.begin();i!=objects.end();i++)
     {
         if (i->imageName == "selfPlayer")
-            painter.drawImage(400+i->x, 300-i->y, *_mad);
+        {
+            tmp=_mad;
+            gamerPos.setX(400+i->x);
+            gamerPos.setY(300-i->y);
+        }
         else
-            painter.drawImage(400+i->x, 300-i->y, *_peka);
-        //painter.drawEllipse(400+i->x,300-i->y,20,20); // TODO: Remove MN
+            tmp=_peka;
+
+        painter.drawImage(400+i->x,300-i->y, *tmp);
     }
+
     this->update();
 
+    cursorPos = this->mapFromGlobal(QCursor::pos());
+
+    double angle = getAngle(cursorPos - gamerPos);
+
+    _controlStatus->set_angle(angle);
 }
 
 void MainDisplay::timerEvent(QTimerEvent *event)
@@ -68,6 +87,16 @@ void MainDisplay::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter painter(this);
     painter.drawImage(0, 0, *_currentFrame);
+}
+
+void MainDisplay::mousePressEvent(QMouseEvent *)
+{
+    _controlStatus->mutable_keystatus()->set_keyattack1(true);
+}
+
+void MainDisplay::mouseReleaseEvent(QMouseEvent *)
+{
+    _controlStatus->mutable_keystatus()->set_keyattack1(false);
 }
 
 void MainDisplay::keyPressEvent(QKeyEvent *event)

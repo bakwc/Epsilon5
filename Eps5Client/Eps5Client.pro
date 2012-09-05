@@ -31,7 +31,8 @@ HEADERS  += maindisplay.h \
     ../Eps5World/player.h \
     ../Eps5World/drawableObject.h \
     ../Eps5World/bullet.h \
-    ../Eps5World/dynamicobject.h
+    ../Eps5World/dynamicobject.h \
+    utils.h
 
 FORMS    +=
 

@@ -93,6 +93,7 @@ void World::deSerialize(const QByteArray &data)
         newPlayer.setVx(player.vx());
         newPlayer.setVy(player.vy());
         newPlayer.setAngle(player.angle());
+        //qDebug() << "Income angle:" << player.angle();
     }
 
     _bullets.clear();

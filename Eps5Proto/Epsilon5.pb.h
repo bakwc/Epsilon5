@@ -37,7 +37,6 @@ class Bullet;
 class World;
 class Control;
 class Control_KeyStatus;
-class Control_MouseClick;
 
 // ===================================================================
 
@@ -489,6 +488,20 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   inline bool keyright() const;
   inline void set_keyright(bool value);
   
+  // required bool keyAttack1 = 5;
+  inline bool has_keyattack1() const;
+  inline void clear_keyattack1();
+  static const int kKeyAttack1FieldNumber = 5;
+  inline bool keyattack1() const;
+  inline void set_keyattack1(bool value);
+  
+  // required bool keyAttack2 = 6;
+  inline bool has_keyattack2() const;
+  inline void clear_keyattack2();
+  static const int kKeyAttack2FieldNumber = 6;
+  inline bool keyattack2() const;
+  inline void set_keyattack2(bool value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Control.KeyStatus)
  private:
   inline void set_has_keyup();
@@ -499,6 +512,10 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   inline void clear_has_keyleft();
   inline void set_has_keyright();
   inline void clear_has_keyright();
+  inline void set_has_keyattack1();
+  inline void clear_has_keyattack1();
+  inline void set_has_keyattack2();
+  inline void clear_has_keyattack2();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -506,9 +523,11 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   bool keydown_;
   bool keyleft_;
   bool keyright_;
+  bool keyattack1_;
+  bool keyattack2_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -516,108 +535,6 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static Control_KeyStatus* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class Control_MouseClick : public ::google::protobuf::Message {
- public:
-  Control_MouseClick();
-  virtual ~Control_MouseClick();
-  
-  Control_MouseClick(const Control_MouseClick& from);
-  
-  inline Control_MouseClick& operator=(const Control_MouseClick& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Control_MouseClick& default_instance();
-  
-  void Swap(Control_MouseClick* other);
-  
-  // implements Message ----------------------------------------------
-  
-  Control_MouseClick* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Control_MouseClick& from);
-  void MergeFrom(const Control_MouseClick& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // required double x = 1;
-  inline bool has_x() const;
-  inline void clear_x();
-  static const int kXFieldNumber = 1;
-  inline double x() const;
-  inline void set_x(double value);
-  
-  // required double y = 2;
-  inline bool has_y() const;
-  inline void clear_y();
-  static const int kYFieldNumber = 2;
-  inline double y() const;
-  inline void set_y(double value);
-  
-  // optional bool buttonRight = 3;
-  inline bool has_buttonright() const;
-  inline void clear_buttonright();
-  static const int kButtonRightFieldNumber = 3;
-  inline bool buttonright() const;
-  inline void set_buttonright(bool value);
-  
-  // @@protoc_insertion_point(class_scope:Epsilon5.Control.MouseClick)
- private:
-  inline void set_has_x();
-  inline void clear_has_x();
-  inline void set_has_y();
-  inline void clear_has_y();
-  inline void set_has_buttonright();
-  inline void clear_has_buttonright();
-  
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  
-  double x_;
-  double y_;
-  bool buttonright_;
-  
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
-  
-  friend void  protobuf_AddDesc_Epsilon5_2eproto();
-  friend void protobuf_AssignDesc_Epsilon5_2eproto();
-  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
-  
-  void InitAsDefaultInstance();
-  static Control_MouseClick* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -674,7 +591,6 @@ class Control : public ::google::protobuf::Message {
   // nested types ----------------------------------------------------
   
   typedef Control_KeyStatus KeyStatus;
-  typedef Control_MouseClick MouseClick;
   
   // accessors -------------------------------------------------------
   
@@ -693,31 +609,20 @@ class Control : public ::google::protobuf::Message {
   inline double angle() const;
   inline void set_angle(double value);
   
-  // optional .Epsilon5.Control.MouseClick mouseClick = 3;
-  inline bool has_mouseclick() const;
-  inline void clear_mouseclick();
-  static const int kMouseClickFieldNumber = 3;
-  inline const ::Epsilon5::Control_MouseClick& mouseclick() const;
-  inline ::Epsilon5::Control_MouseClick* mutable_mouseclick();
-  inline ::Epsilon5::Control_MouseClick* release_mouseclick();
-  
   // @@protoc_insertion_point(class_scope:Epsilon5.Control)
  private:
   inline void set_has_keystatus();
   inline void clear_has_keystatus();
   inline void set_has_angle();
   inline void clear_has_angle();
-  inline void set_has_mouseclick();
-  inline void clear_has_mouseclick();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::Epsilon5::Control_KeyStatus* keystatus_;
   double angle_;
-  ::Epsilon5::Control_MouseClick* mouseclick_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1183,74 +1088,48 @@ inline void Control_KeyStatus::set_keyright(bool value) {
   keyright_ = value;
 }
 
-// -------------------------------------------------------------------
-
-// Control_MouseClick
-
-// required double x = 1;
-inline bool Control_MouseClick::has_x() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
+// required bool keyAttack1 = 5;
+inline bool Control_KeyStatus::has_keyattack1() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void Control_MouseClick::set_has_x() {
-  _has_bits_[0] |= 0x00000001u;
+inline void Control_KeyStatus::set_has_keyattack1() {
+  _has_bits_[0] |= 0x00000010u;
 }
-inline void Control_MouseClick::clear_has_x() {
-  _has_bits_[0] &= ~0x00000001u;
+inline void Control_KeyStatus::clear_has_keyattack1() {
+  _has_bits_[0] &= ~0x00000010u;
 }
-inline void Control_MouseClick::clear_x() {
-  x_ = 0;
-  clear_has_x();
+inline void Control_KeyStatus::clear_keyattack1() {
+  keyattack1_ = false;
+  clear_has_keyattack1();
 }
-inline double Control_MouseClick::x() const {
-  return x_;
+inline bool Control_KeyStatus::keyattack1() const {
+  return keyattack1_;
 }
-inline void Control_MouseClick::set_x(double value) {
-  set_has_x();
-  x_ = value;
+inline void Control_KeyStatus::set_keyattack1(bool value) {
+  set_has_keyattack1();
+  keyattack1_ = value;
 }
 
-// required double y = 2;
-inline bool Control_MouseClick::has_y() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+// required bool keyAttack2 = 6;
+inline bool Control_KeyStatus::has_keyattack2() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void Control_MouseClick::set_has_y() {
-  _has_bits_[0] |= 0x00000002u;
+inline void Control_KeyStatus::set_has_keyattack2() {
+  _has_bits_[0] |= 0x00000020u;
 }
-inline void Control_MouseClick::clear_has_y() {
-  _has_bits_[0] &= ~0x00000002u;
+inline void Control_KeyStatus::clear_has_keyattack2() {
+  _has_bits_[0] &= ~0x00000020u;
 }
-inline void Control_MouseClick::clear_y() {
-  y_ = 0;
-  clear_has_y();
+inline void Control_KeyStatus::clear_keyattack2() {
+  keyattack2_ = false;
+  clear_has_keyattack2();
 }
-inline double Control_MouseClick::y() const {
-  return y_;
+inline bool Control_KeyStatus::keyattack2() const {
+  return keyattack2_;
 }
-inline void Control_MouseClick::set_y(double value) {
-  set_has_y();
-  y_ = value;
-}
-
-// optional bool buttonRight = 3;
-inline bool Control_MouseClick::has_buttonright() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void Control_MouseClick::set_has_buttonright() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void Control_MouseClick::clear_has_buttonright() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void Control_MouseClick::clear_buttonright() {
-  buttonright_ = false;
-  clear_has_buttonright();
-}
-inline bool Control_MouseClick::buttonright() const {
-  return buttonright_;
-}
-inline void Control_MouseClick::set_buttonright(bool value) {
-  set_has_buttonright();
-  buttonright_ = value;
+inline void Control_KeyStatus::set_keyattack2(bool value) {
+  set_has_keyattack2();
+  keyattack2_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1306,35 +1185,6 @@ inline double Control::angle() const {
 inline void Control::set_angle(double value) {
   set_has_angle();
   angle_ = value;
-}
-
-// optional .Epsilon5.Control.MouseClick mouseClick = 3;
-inline bool Control::has_mouseclick() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void Control::set_has_mouseclick() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void Control::clear_has_mouseclick() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void Control::clear_mouseclick() {
-  if (mouseclick_ != NULL) mouseclick_->::Epsilon5::Control_MouseClick::Clear();
-  clear_has_mouseclick();
-}
-inline const ::Epsilon5::Control_MouseClick& Control::mouseclick() const {
-  return mouseclick_ != NULL ? *mouseclick_ : *default_instance_->mouseclick_;
-}
-inline ::Epsilon5::Control_MouseClick* Control::mutable_mouseclick() {
-  set_has_mouseclick();
-  if (mouseclick_ == NULL) mouseclick_ = new ::Epsilon5::Control_MouseClick;
-  return mouseclick_;
-}
-inline ::Epsilon5::Control_MouseClick* Control::release_mouseclick() {
-  clear_has_mouseclick();
-  ::Epsilon5::Control_MouseClick* temp = mouseclick_;
-  mouseclick_ = NULL;
-  return temp;
 }
 
 

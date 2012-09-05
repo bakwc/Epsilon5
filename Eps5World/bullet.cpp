@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include <QDebug>
 
 Bullet::Bullet(QObject *parent) :
     DynamicObject(parent)
@@ -9,7 +10,7 @@ Bullet::Bullet(QObject *parent) :
 void Bullet::applyPhysics()
 {
     _ttl--;
-    _x+=_vx;
-    _y+=_vy;
+    DynamicObject::_x+=DynamicObject::_vx;
+    DynamicObject::_y+=DynamicObject::_vy;
     // TODO: Make physics
 }

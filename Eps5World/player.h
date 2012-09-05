@@ -8,6 +8,7 @@
 #include <QObject>
 #include "../Eps5World/dynamicobject.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
+#include "../Eps5World/bullet.h"
 
 /**
  * @brief
@@ -27,7 +28,7 @@ public:
     void applyPhysics();
     
 signals:
-    
+    void spawnBullet(Bullet* bullet);
 public slots:
     void applyControl(const Epsilon5::Control &control);
 private:

@@ -53,7 +53,7 @@ void MainDisplay::redraw(const DrawableObjects &objects)
     QPoint gamerPos, cursorPos;
 
     QImage *tmp;
-
+    //qDebug() << "Objs:" << objects.size();
     for (auto i=objects.begin();i!=objects.end();i++)
     {
         if (i->imageName == "selfPlayer")
@@ -62,8 +62,9 @@ void MainDisplay::redraw(const DrawableObjects &objects)
             gamerPos.setX(400+i->x);
             gamerPos.setY(300-i->y);
         }
-        else
+        else if (i->imageName == "enemyPlayer")
             tmp=_peka;
+        else tmp=_peka;
 
         painter.drawImage(400+i->x,300-i->y, *tmp);
     }

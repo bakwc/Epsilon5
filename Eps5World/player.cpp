@@ -4,6 +4,8 @@
 */
 #include "../Eps5World/player.h"
 
+const float PI=3.1415926f;
+
 Player::Player(QObject *parent) :
     DynamicObject(parent)
 {
@@ -12,20 +14,30 @@ Player::Player(QObject *parent) :
 
 void Player::applyPhysics()
 {
-    _x+=_vx;
-    _y+=_vy;
+    DynamicObject::_x+=DynamicObject::_vx;
+    DynamicObject::_y+=DynamicObject::_vy;
     // TODO: Make physics
 }
 
 void Player::applyControl(const Epsilon5::Control &control)
 {
-    if (control.keystatus().keydown()) _vy=-0.8;
-    else if (control.keystatus().keyup()) _vy=0.8;
-    else _vy=0;
+    if (control.keystatus().keydown()) DynamicObject::_vy=-0.8;
+    else if (control.keystatus().keyup()) DynamicObject::_vy=0.8;
+    else DynamicObject::_vy=0;
 
-    if (control.keystatus().keyleft()) _vx=-0.8;
-    else if (control.keystatus().keyright()) _vx=0.8;
-    else _vx=0;
+    if (control.keystatus().keyleft()) DynamicObject::_vx=-0.8;
+    else if (control.keystatus().keyright()) DynamicObject::_vx=0.8;
+    else DynamicObject::_vx=0;
 
-    _angle=control.angle();
+    if (control.keystatus().keyattack1())   // FIRE!!
+    {
+        Bullet *bullet = new Bullet(this);
+        bullet->setX(this->x());
+        bullet->setY(this->y());
+        bullet->setVx(2.8*sin(angle()+PI/2));
+        bullet->setVy(2.8*cos(angle()+PI/2));
+        emit spawnBullet(bullet);
+    }
+
+    DynamicObject::_angle=control.angle();
 }

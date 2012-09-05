@@ -40,6 +40,7 @@ void Network::sendControls()
     Epsilon5::Control *control = getParrent()->controlStatus();
     message.resize(control->ByteSize());
     control->SerializeToArray(message.data(),message.size());
+    control->mutable_keystatus()->set_keyattack1(false);
     _socket->write(message);
 }
 

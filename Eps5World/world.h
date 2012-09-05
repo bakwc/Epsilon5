@@ -86,6 +86,8 @@ public slots:
     void playerEnter(quint32 id);
 
     void playerExit(quint32 id);
+
+    void spawnBullet(Bullet *bullet);
 private:
     void timerEvent(QTimerEvent *event);
 private:

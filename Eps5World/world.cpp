@@ -27,6 +27,7 @@ void World::playerEnter(quint32 id)
 {
     qDebug() << Q_FUNC_INFO;
     Player *player = new Player(this);
+    connect(player, SIGNAL(spawnBullet(Bullet*)), SLOT(spawnBullet(Bullet*)));
     player->setId(id);
     _players.insert(id,player);
 }
@@ -121,7 +122,6 @@ void World::timerEvent(QTimerEvent *event)
     }
 
     auto i=_bullets.begin();
-
     while (i!=_bullets.end())
     {
         (*i)->applyPhysics();
@@ -147,6 +147,17 @@ void World::requestRedraw()
             tmp.imageName="enemyPlayer";
         objects.push_back(tmp);
     }
+
+    for (auto i=_bullets.begin();i!=_bullets.end();i++)
+    {
+        DrawableObject tmp;
+        tmp.x=(*i)->x();
+        tmp.y=(*i)->y();
+        tmp.angle=(*i)->angle();
+        tmp.imageName="bullet";
+        objects.push_back(tmp);
+    }
+
     emit redraw(objects);
 }
 
@@ -156,4 +167,10 @@ Player *World::getPlayer(quint32 id)
     if (playerIt == _players.end())
         return NULL;
     return playerIt.value();
+}
+
+void World::spawnBullet(Bullet *bullet)
+{
+    bullet->setParent(this);
+    _bullets.insert(_bullets.end(),bullet);
 }

@@ -9,3 +9,4 @@ DynamicObject::DynamicObject(QObject *parent) :
     _vy=0;
     _angle=0;
 }
+

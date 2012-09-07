@@ -12,9 +12,12 @@ World::World(QObject *parent) :
     QObject(parent)
 {
     _worldState = new Epsilon5::World;
+    b2Vec2 gravity(0, 0);
+    _b2world = new b2World(gravity);
 }
 World::~World()
 {
+    delete _b2world;
     delete _worldState;
 }
 
@@ -142,9 +145,9 @@ void World::requestRedraw()
         tmp.y=i.value()->y();
         tmp.angle=i.value()->angle();
         if (i.value()->id() == _selfId)
-            tmp.imageName="selfPlayer";
+            tmp.imageName="player";
         else
-            tmp.imageName="enemyPlayer";
+            tmp.imageName="enemy";
         objects.push_back(tmp);
     }
 

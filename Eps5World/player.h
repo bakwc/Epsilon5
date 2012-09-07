@@ -6,6 +6,7 @@
 #define PLAYER_H
 
 #include <QObject>
+#include <Box2D/Box2D.h>
 #include "../Eps5World/dynamicobject.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
 #include "../Eps5World/bullet.h"
@@ -33,6 +34,7 @@ public slots:
     void applyControl(const Epsilon5::Control &control);
 private:
     quint32 _id;
+    b2CircleShape _circle;
 };
 
 #endif // PLAYER_H

@@ -10,6 +10,8 @@ Player::Player(QObject *parent) :
     DynamicObject(parent)
 {
     _id=0;
+    _circle.m_p.Set(DynamicObject::_x, DynamicObject::_y);
+    _circle.m_radius = 15f;
 }
 
 void Player::applyPhysics()

@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     ../Eps5World/world.cpp \
     ../Eps5World/player.cpp \
     ../Eps5World/bullet.cpp \
-    ../Eps5World/dynamicobject.cpp
+    ../Eps5World/dynamicobject.cpp \
+    imagestorage.cpp
 
 HEADERS  += maindisplay.h \
     ../Eps5Proto/Epsilon5.pb.h \
@@ -32,11 +33,12 @@ HEADERS  += maindisplay.h \
     ../Eps5World/drawableObject.h \
     ../Eps5World/bullet.h \
     ../Eps5World/dynamicobject.h \
-    utils.h
+    utils.h \
+    imagestorage.h
 
 FORMS    +=
 
-LIBS += -lprotobuf
+LIBS += -lprotobuf -lbox2d -lglui -lfreeglut_static
 
 OTHER_FILES += \
     ../Eps5Proto/Epsilon5.proto

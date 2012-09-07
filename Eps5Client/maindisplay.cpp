@@ -11,6 +11,7 @@
 
 MainDisplay::MainDisplay(QWidget *parent) :
     QWidget(parent),
+    _images(new ImageStorage(this)),
     _currentFrame(new QImage(800,600,QImage::Format_ARGB32)),
     _controlStatus(new Epsilon5::Control)
 {
@@ -22,16 +23,13 @@ MainDisplay::MainDisplay(QWidget *parent) :
     _controlStatus->mutable_keystatus()->set_keyattack2(false);
     _controlStatus->set_angle(0);
 
-    _peka = new QImage("peka.png");
-    _mad = new QImage("mad.png");
+    _images->loadAll();
 
     this->resize(800,600);
 }
 
 MainDisplay::~MainDisplay()
 {
-    delete _peka;
-    delete _mad;
     delete _controlStatus;
 }
 
@@ -53,25 +51,26 @@ void MainDisplay::redraw(const DrawableObjects &objects)
     QPoint gamerPos, cursorPos;
 
     QImage *tmp;
-    //qDebug() << "Objs:" << objects.size();
+
     for (auto i=objects.begin();i!=objects.end();i++)
     {
-        if (i->imageName == "selfPlayer")
+        if (i->imageName == "player")
         {
-            tmp=_mad;
             gamerPos.setX(400+i->x);
             gamerPos.setY(300-i->y);
         }
-        else if (i->imageName == "enemyPlayer")
-            tmp=_peka;
-        else tmp=_peka;
 
-        painter.drawImage(400+i->x,300-i->y, *tmp);
+        tmp=_images->getImage(i->imageName);
+
+        painter.drawImage(400+i->x-tmp->width()/2,300-i->y-tmp->height()/2, *tmp);
     }
 
     this->update();
 
     cursorPos = this->mapFromGlobal(QCursor::pos());
+
+    qDebug() << "Cursor pos:" << cursorPos;
+    qDebug() << "Gamer pos:" << gamerPos;
 
     double angle = getAngle(cursorPos - gamerPos);
 

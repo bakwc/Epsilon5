@@ -10,6 +10,7 @@
 #include <QImage>
 #include "../Eps5World/drawableObject.h"
 #include "../Eps5Proto/Epsilon5.pb.h"
+#include "imagestorage.h"
 
 /**
  * @brief
@@ -60,10 +61,9 @@ private:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 private:
+    ImageStorage *_images;
     QImage *_currentFrame;
     Epsilon5::Control *_controlStatus;
-    QImage *_peka;
-    QImage *_mad;
 };
 
 #endif // MAINDISPLAY_H

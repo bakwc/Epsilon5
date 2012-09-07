@@ -9,6 +9,7 @@
 #include <QMap>
 #include <QByteArray>
 #include <QList>
+#include <Box2D/Box2D.h>
 #include "../Eps5Proto/Epsilon5.pb.h"
 #include "../Eps5World/player.h"
 #include "../Eps5World/bullet.h"
@@ -95,6 +96,7 @@ private:
     QList<Bullet*> _bullets;
     Epsilon5::World *_worldState;
     quint32 _selfId;
+    b2World *_b2world;
 };
 
 #endif // WORLD_H

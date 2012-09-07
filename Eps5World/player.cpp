@@ -3,6 +3,7 @@
 * Definition of Player
 */
 #include "../Eps5World/player.h"
+#include <cmath>
 
 const float PI=3.1415926f;
 

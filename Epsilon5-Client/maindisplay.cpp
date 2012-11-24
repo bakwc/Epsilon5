@@ -30,7 +30,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Application(application)
     , Frame(new QImage(800, 600, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
-    , Map(new TMap("test.e5m"))
+    , Map(new TMap("test.e5m", this))
 {
     Images->LoadAll();
     setFixedSize(800, 600);
@@ -47,6 +47,8 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
 
 TMainDisplay::~TMainDisplay()
 {
+    if( Frame )
+        delete Frame;
 }
 
 void TMainDisplay::RedrawWorld() {

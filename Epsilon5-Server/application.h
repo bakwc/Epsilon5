@@ -9,7 +9,7 @@ class TApplication : public QCoreApplication
 {
     Q_OBJECT
 public:
-    TApplication(int argc, char *argv[]);
+    TApplication(int& argc, char *argv[]);
     bool Init();
     inline TWorld* GetWorld() {
         return World;

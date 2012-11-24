@@ -33,7 +33,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Map(new TMap("test.e5m"))
 {
     Images->LoadAll();
-    this->resize(800, 600);
+    setFixedSize(800, 600);
     Control.set_angle(0);
     Control.mutable_keystatus()->set_keyattack1(false);
     Control.mutable_keystatus()->set_keyattack2(false);

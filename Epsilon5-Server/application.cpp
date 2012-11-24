@@ -1,6 +1,6 @@
 #include "application.h"
 
-TApplication::TApplication(int argc, char *argv[])
+TApplication::TApplication(int& argc, char *argv[])
     : QCoreApplication(argc, argv)
     , World(new TWorld(this))
     , Server(new TServer(this))

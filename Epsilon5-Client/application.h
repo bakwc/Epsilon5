@@ -8,7 +8,7 @@ class TApplication : public QApplication
 {
     Q_OBJECT
 public:
-    TApplication(int argc, char *argv[]);
+    TApplication(int& argc, char *argv[]);
     bool Init();
     inline TMainDisplay* GetMainDisplay() {
         return &MainDisplay;

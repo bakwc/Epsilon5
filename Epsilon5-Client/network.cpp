@@ -41,7 +41,9 @@ TApplication* TNetwork::Application() {
 bool TNetwork::Start() {
     Socket->connectToHost(QHostAddress("193.169.33.254"), 14567);
                                             // TODO: Remove HC & MN
-    SendControls();
+    QByteArray nicknameData = Application()->GetSettings()->GetNickname().toLocal8Bit();
+    nicknameData = nicknameData.left(12);
+    Socket->write(nicknameData + ":");
     return true;
 }
 

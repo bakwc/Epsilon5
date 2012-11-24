@@ -14,8 +14,7 @@ TServer::TServer(QObject *parent)
 bool TServer::Start() {
     if (Server->bind(QHostAddress("0.0.0.0"), 14567))
     {
-        qDebug() << Q_FUNC_INFO;
-        this->startTimer(20); // TODO: Remove MN
+        this->startTimer(40); // TODO: Remove MN
         return true;
     }
     return false;
@@ -51,6 +50,9 @@ void TServer::DataReceived() {
     {       // New client connected
         auto ipIt = Ips.find(sender);
         if (ipIt == Ips.end()) {
+            if (data.indexOf(":") == -1) {
+                return;
+            }
             ipIt = Ips.insert(sender, 0);
         }
 
@@ -59,17 +61,20 @@ void TServer::DataReceived() {
         }
         ipIt.value()++;
 
+        QString nickName = data.left(data.indexOf(":"));
+
         TClient* client = new TClient(sender, senderPort, id, this);
 
         QByteArray dataId = QString(QString::number(id)+":").toLocal8Bit();
         client->Send(dataId);
-        qDebug() << "ID: " << dataId << "\n";
 
         clientIt = Clients.insert(id, client);
         emit NewPlayer(id);
         TPlayer *player = Application()->GetWorld()->GetPlayer(id);
+        player->SetNickname(nickName);
         connect(client, SIGNAL(ControlReceived(Epsilon5::Control)),
                 player, SLOT(ApplyControl(Epsilon5::Control)));
+        return;
     }
 
     clientIt.value()->OnDataReceived(data);

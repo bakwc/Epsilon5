@@ -8,15 +8,21 @@
 
 const float PI=3.1415926f;
 
+int GetCorrect(int player, int enemy) {
+    return enemy - player;
+}
+
 static double getAngle(const QPoint& point)
 {
+    double angle;
     double x=point.x();
     double y=point.y();
-    if (x>0) return atan(y/x);
-    if (x<0 && y>0) return PI + atan(y/x);
-    if (x<0 && y<0) return -PI + atan(y/x);
-    if (x==0 && y>0) return PI/2;
-    return -PI/2;
+    if (x>0) angle = atan(y/x); else
+    if (x<0 && y>0) angle = PI + atan(y/x); else
+    if (x<0 && y<0) angle = -PI + atan(y/x); else
+    if (x==0 && y>0) angle = PI/2; else
+    angle = -PI/2;
+    return -angle;
 }
 
 TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
@@ -24,6 +30,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Application(application)
     , Frame(new QImage(800, 600, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
+    , Map(new TMap("test.e5m"))
 {
     Images->LoadAll();
     this->resize(800, 600);
@@ -34,7 +41,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     Control.mutable_keystatus()->set_keyright(false);
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
-    Started = false;
+    //Started = false;
     //startTimer(10);
 }
 
@@ -44,33 +51,50 @@ TMainDisplay::~TMainDisplay()
 
 void TMainDisplay::RedrawWorld() {
     Epsilon5::World world = ((TNetwork*)(QObject::sender()))->GetWorld();
-    Frame->fill(Qt::black);
+    //Frame->fill(Qt::black);
     QPainter painter(Frame);
 
     QPoint gamerPos, cursorPos;
 
+    int playerX = 0;
+    int playerY = 0;
+
+    for (int i = 0; i != world.players_size(); i++) {
+        const Epsilon5::Player &player = world.players(i);
+        if (player.id() == Application->GetNetwork()->GetId()) {
+            playerX = player.x();
+            playerY = player.y();
+        }
+    }
+    QImage background = Map->GetFrame(playerX, playerY);
+    painter.drawImage(0, 0, background);
+
     const QImage* img;
     for (int i = 0; i != world.players_size(); i++) {
         const Epsilon5::Player &player = world.players(i);
-        int cx = player.x() * 10;
-        int cy = player.y() * 10;
+
+        int cx = GetCorrect(playerX, player.x());
+        int cy = GetCorrect(playerY, player.y());
+        QString nickName = player.name().c_str();
         if (player.id() == Application->GetNetwork()->GetId()) {
             gamerPos.setX(400 + cx);
-            gamerPos.setY(300 - cy);
+            gamerPos.setY(300 + cy);
             img = &Images->GetImage("player");
         } else {
             img = &Images->GetImage("enemy");
         }
-        painter.drawImage(400 + cx - img->width() / 2, 300 - cy - img->height() / 2, *img);
+        painter.drawImage(400 + cx - img->width() / 2, 300 + cy - img->height() / 2, *img);
+        painter.setPen(Qt::yellow);
+        painter.drawText(400 + cx - 5, 300 + cy - 18, nickName);
     }
 
     img = &Images->GetImage("bullet");
     //qDebug() << "bullets: " << world.bullets_size();
     for (int i = 0; i != world.bullets_size(); i++) {
         const Epsilon5::Bullet &bullet = world.bullets(i);
-        int cx = bullet.x() * 10;
-        int cy = bullet.y() * 10;
-        painter.drawImage(400 + cx - img->width() / 2, 300 - cy - img->height() / 2, *img);
+        int cx = GetCorrect(playerX, bullet.x());
+        int cy = GetCorrect(playerY, bullet.y());;
+        painter.drawImage(400 + cx - img->width() / 2, 300 + cy - img->height() / 2, *img);
     }
 
     cursorPos = this->mapFromGlobal(QCursor::pos());

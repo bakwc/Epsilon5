@@ -11,7 +11,7 @@ message Player {
 
     required double angle = 6;
 
-    optional string name = 7;
+    required string name = 7;
 }
 
 message Bullet {

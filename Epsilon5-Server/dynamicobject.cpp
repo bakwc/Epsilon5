@@ -16,3 +16,7 @@ TDynamicObject::TDynamicObject(double x, double y, double vx,
 b2World* TDynamicObject::B2World() {
     return ((TWorld*)(parent()))->GetB2World();
 }
+
+TDynamicObject::~TDynamicObject() {
+    B2World()->DestroyBody(Body);
+}

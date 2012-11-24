@@ -1,12 +1,10 @@
-#include <cmath>
+#include <qmath.h>
 #include <QPainter>
 #include <QKeyEvent>
 #include "../Epslion5-Proto/Epsilon5.pb.h"
 #include "network.h"
 #include "maindisplay.h"
 #include "application.h"
-
-const float PI=3.1415926f;
 
 int GetCorrect(int player, int enemy) {
     return enemy - player;
@@ -18,10 +16,10 @@ static double getAngle(const QPoint& point)
     double x=point.x();
     double y=point.y();
     if (x>0) angle = atan(y/x); else
-    if (x<0 && y>0) angle = PI + atan(y/x); else
-    if (x<0 && y<0) angle = -PI + atan(y/x); else
-    if (x==0 && y>0) angle = PI/2; else
-    angle = -PI/2;
+    if (x<0 && y>0) angle = M_PI + atan(y/x); else
+    if (x<0 && y<0) angle = -M_PI + atan(y/x); else
+    if (x==0 && y>0) angle = M_PI/2; else
+    angle = -M_PI/2;
     return -angle;
 }
 

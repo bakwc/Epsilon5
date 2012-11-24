@@ -13,6 +13,11 @@ public:
     TPlayer(size_t id, QObject *parent = 0);
     inline size_t GetId() { return Id; }
     void ApplyCustomPhysics();
+    void SetNickname(const QString& nickName);
+    inline QString GetNickname() {
+        return NickName;
+    }
+
 signals:
     void SpawnBullet(TBullet*);
 public slots:
@@ -21,4 +26,5 @@ private:
     b2Vec2 Force;
     size_t Id;
     QTime lastShoot;
+    QString NickName;
 };

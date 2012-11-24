@@ -4,6 +4,7 @@
 #include <QQueue>
 #include "../Epslion5-Proto/Epsilon5.pb.h"
 #include "imagestorage.h"
+#include "map.h"
 
 class TApplication;
 
@@ -30,5 +31,5 @@ private:
     TImageStorage* Images;
     QQueue<Epsilon5::World> PacketsQueue;
     Epsilon5::Control Control;
-    bool Started;
+    TMap* Map;
 };

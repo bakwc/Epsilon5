@@ -17,13 +17,17 @@ SOURCES += main.cpp\
     ../Epslion5-Proto/Epsilon5.pb.cc \
     application.cpp \
     network.cpp \
-    imagestorage.cpp
+    imagestorage.cpp \
+    map.cpp \
+    settings.cpp
 
 HEADERS  += maindisplay.h \
     ../Epslion5-Proto/Epsilon5.pb.h \
     application.h \
     network.h \
-    imagestorage.h
+    imagestorage.h \
+    map.h \
+    settings.h
 
 FORMS    +=
 

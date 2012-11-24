@@ -3,6 +3,7 @@
 #include <QApplication>
 #include "maindisplay.h"
 #include "network.h"
+#include "settings.h"
 
 class TApplication : public QApplication
 {
@@ -16,7 +17,12 @@ public:
     inline TNetwork* GetNetwork() {
         return Network;
     }
+    inline TSettings* GetSettings() {
+        return Settings;
+    }
+
 private:
     TMainDisplay MainDisplay;
     TNetwork* Network;
+    TSettings* Settings;
 };

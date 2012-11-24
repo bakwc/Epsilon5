@@ -25,25 +25,27 @@ QByteArray TWorld::Serialize() {
     {
         auto player = world.add_players();
         player->set_id(i.key());
-        player->set_x(i.value()->GetX());
-        player->set_y(i.value()->GetY());
-        player->set_vx(i.value()->GetVx());
-        player->set_vy(i.value()->GetVy());
+        player->set_x(i.value()->GetX() * 10);
+        player->set_y(i.value()->GetY() * 10);
+        player->set_vx(i.value()->GetVx() * 10);
+        player->set_vy(i.value()->GetVy() * 10);
         player->set_angle(i.value()->GetAngle());
+        QByteArray playerName = i.value()->GetNickname().toLocal8Bit();
+        player->set_name(playerName.data(), playerName.size());
     }
 
     for (auto i = Bullets.begin(); i != Bullets.end();i++)
     {
         auto bullet=world.add_bullets();
-        bullet->set_x((*i)->GetX());
-        bullet->set_y((*i)->GetY());
-        bullet->set_vx((*i)->GetVx());
-        bullet->set_vy((*i)->GetVy());
+        bullet->set_x((*i)->GetX() * 10);
+        bullet->set_y((*i)->GetY() * 10);
+        bullet->set_vx((*i)->GetVx() * 10);
+        bullet->set_vy((*i)->GetVy() * 10);
     }
 
     QByteArray result;
     result.resize(world.ByteSize());
-    world.SerializeToArray(result.data(),result.size());
+    world.SerializeToArray(result.data(), result.size());
     return result;
 }
 

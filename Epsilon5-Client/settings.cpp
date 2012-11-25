@@ -13,3 +13,11 @@ TSettings::TSettings(QObject *parent)
 QString TSettings::GetNickname() {
     return GetParameter("nickname");
 }
+
+QString TSettings::GetServerAddr() {
+    return GetParameter("server.address").trimmed();
+}
+
+quint16 TSettings::GetServerPort() {
+    return GetParameter("server.port").toUInt();
+}

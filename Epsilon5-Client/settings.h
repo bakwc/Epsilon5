@@ -12,4 +12,6 @@ class TSettings: public USettings
 public:
     TSettings(QObject* parent);
     QString GetNickname();
+    QString GetServerAddr();
+    quint16 GetServerPort();
 };

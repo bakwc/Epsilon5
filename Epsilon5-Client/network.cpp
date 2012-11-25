@@ -1,3 +1,4 @@
+#include <QAbstractSocket>
 #include "../utils/uexception.h"
 #include "maindisplay.h"
 #include "application.h"
@@ -9,6 +10,9 @@ TNetwork::TNetwork(QObject *parent)
     , Id(0)
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
+    connect(Socket, SIGNAL(error(QAbstractSocket::SocketError)),
+        SLOT(OnError(QAbstractSocket::SocketError)));
+    connect(Socket, SIGNAL(connected()), SLOT(OnConnected()));
     Status = PS_NotConnected;
 }
 
@@ -58,8 +62,19 @@ void TNetwork::OnDataReceived() {
             break;
         }
     } catch(const std::exception& e) {
-        qDebug() << Q_FUNC_INFO << "Excpetion:" << e.what();
+        qDebug() << Q_FUNC_INFO << "Exception:" << e.what();
     }
+}
+
+void TNetwork::OnError(QAbstractSocket::SocketError socketError)
+{
+    qDebug() << Q_FUNC_INFO << "Socket error:" << socketError;
+    Status = PS_NotConnected;
+}
+
+void TNetwork::OnConnected()
+{
+    SendPlayerAuth();
 }
 
 TApplication* TNetwork::Application() {
@@ -67,9 +82,9 @@ TApplication* TNetwork::Application() {
 }
 
 void TNetwork::Start() {
-    Socket->connectToHost(QHostAddress("127.0.0.1"), 14567);
-                                            // TODO: Remove HC & MN
-    SendPlayerAuth();
+    Socket->connectToHost(QHostAddress(
+        Application()->GetSettings()->GetServerAddr()),
+        Application()->GetSettings()->GetServerPort());
 }
 
 void TNetwork::SendControls() {

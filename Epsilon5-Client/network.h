@@ -19,6 +19,8 @@ signals:
     void WorldReceived();
 private slots:
     void OnDataReceived();
+    void OnError(QAbstractSocket::SocketError socketError);
+    void OnConnected();
 private:
     void SendControls();
     void SendPlayerAuth();

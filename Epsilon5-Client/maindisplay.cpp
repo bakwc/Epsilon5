@@ -166,6 +166,9 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     case Qt::Key_Left:
         Control.mutable_keystatus()->set_keyleft(false);
         break;
+    case Qt::Key_F12:
+        close();
+        break;
     default:
         break;
     }

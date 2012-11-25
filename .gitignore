@@ -17,6 +17,8 @@
 */release*
 binary/*
 
+*-build-*/*
+
 Makefile*
 
 ui_*.h

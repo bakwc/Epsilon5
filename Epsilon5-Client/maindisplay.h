@@ -28,6 +28,8 @@ private:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 
+    void drawFps(QPainter& painter);
+
 private:
     TApplication* Application;
     QImage* Frame;

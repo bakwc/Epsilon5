@@ -1,4 +1,5 @@
 #include <qmath.h>
+#include <QTime>
 #include <QDesktopWidget>
 #include <QPainter>
 #include <QKeyEvent>
@@ -140,6 +141,7 @@ void TMainDisplay::timerEvent(QTimerEvent *) {
 void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     painter.drawImage(0, 0, *Frame);
+    drawFps(painter);
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -217,4 +219,30 @@ void TMainDisplay::toggleFullscreen()
         return;
     }
     setFixedSize(baseSize());
+}
+
+void TMainDisplay::drawFps(QPainter& painter)
+{
+    // TODO: move fps calculation to another place, here must be only drawing
+    static int frames = 0;
+    static int fps = 0;
+    static QTime lasttime = QTime::currentTime();
+
+    const QTime& time = QTime::currentTime();
+    if( lasttime.msecsTo(time) >= 1000 )
+    {
+        fps = frames;
+        frames = 0;
+        lasttime = time;
+    }
+
+    const QPen penOld = painter.pen();
+    const QString& fpsString = QString("FPS: %1").arg(fps);
+    painter.setPen(Qt::black);
+    painter.drawText(1, 11, fpsString);
+    painter.setPen(Qt::darkGray);
+    painter.drawText(0, 10, fpsString);
+    painter.setPen(penOld);
+
+    ++frames;
 }

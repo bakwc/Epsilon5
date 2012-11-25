@@ -9,6 +9,15 @@ TWorld::TWorld(QObject *parent)
 {
 }
 
+TWorld::~TWorld()
+{
+    if( B2World )
+    {
+        delete B2World;
+        B2World = NULL;
+    }
+}
+
 TPlayer* TWorld::GetPlayer(size_t id) {
     if (Players.find(id) == Players.end()) {
         throw UException(QString("Player #%1 not found!").arg(id));

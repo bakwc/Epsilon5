@@ -15,6 +15,7 @@ class TWorld : public QObject
     Q_OBJECT
 public:
     TWorld(QObject *parent = 0);
+    ~TWorld();
     void Start();
     inline b2World* GetB2World() {
         return B2World;

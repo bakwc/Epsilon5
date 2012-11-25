@@ -1,3 +1,4 @@
+#include "../utils/uexception.h"
 #include "maindisplay.h"
 #include "application.h"
 #include "network.h"
@@ -15,43 +16,75 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
-    QByteArray data = Socket->readAll();
-    if (Id == 0) {
-        size_t n = data.indexOf(":");
-        QByteArray begin = data.left(n);
-        qDebug() << begin;
-        Id = begin.toInt();
-        data = data.mid(n+1);
-        SendControls();
-        return;
+    try {
+        QByteArray data = Socket->readAll();
+        if (data.size() <= 0) {
+            throw UException("Empty packet received");
+        }
+        EPacketType packetType = (EPacketType)(char)(data[0]);
+        QByteArray content = data.mid(1);
+
+        switch (packetType) {
+        case PT_PlayerInfo: {
+            Epsilon5::PlayerInfo info;
+            if (info.ParseFromArray(content.data(), content.size())) {
+                Id = info.id();
+                SendControls();
+            } else {
+                throw UException("Error parsing player info");
+            }
+        }
+            break;
+        case PT_World: {
+            World.Clear();
+            if (World.ParseFromArray(content.data(), content.size())) {
+                emit WorldReceived();
+                SendControls();
+            } else {
+                throw UException("Error parsing world");
+            }
+        }
+            break;
+        default:
+            throw UException("Unknown packet type");
+            break;
+        }
+    } catch(const std::exception& e) {
+        qDebug() << Q_FUNC_INFO << "Excpetion:" << e.what();
     }
-    World.Clear();
-    if (World.ParseFromArray(data.data(),data.size())) {
-        emit WorldReceived();
-    } else {
-        qDebug() << "Error parsing!\n";
-    }
-    SendControls();
 }
 
 TApplication* TNetwork::Application() {
     return (TApplication*)(parent());
 }
 
-bool TNetwork::Start() {
+void TNetwork::Start() {
     Socket->connectToHost(QHostAddress("193.169.33.254"), 14567);
                                             // TODO: Remove HC & MN
-    QByteArray nicknameData = Application()->GetSettings()->GetNickname().toLocal8Bit();
-    nicknameData = nicknameData.left(12);
-    Socket->write(nicknameData + ":");
-    return true;
+    SendPlayerAuth();
 }
 
-void TNetwork::SendControls()
-{
+void TNetwork::SendControls() {
     const Epsilon5::Control& control = Application()->GetMainDisplay()->GetControl();
     QByteArray message;
     message.resize(control.ByteSize());
     control.SerializeToArray(message.data(),message.size());
-    Socket->write(message);
+    Send(message, PT_Control);
+}
+
+void TNetwork::SendPlayerAuth() {
+    Epsilon5::Auth auth;
+    QByteArray nickName = Application()->GetSettings()->GetNickname().toLocal8Bit();
+    auth.set_name(nickName.data(), nickName.size());
+    QByteArray data;
+    data.resize(auth.ByteSize());
+    auth.SerializeToArray(data.data(), data.size());
+    Send(data, PT_PlayerAuth);
+}
+
+void TNetwork::Send(const QByteArray& data, EPacketType packetType) {
+    QByteArray newData;
+    newData += QChar(packetType);
+    newData += data;
+    Socket->write(newData);
 }

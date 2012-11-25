@@ -40,7 +40,8 @@ HEADERS += \
     player.h \
     bullet.h \
     ../utils/usettings.h \
-    ../utils/uexception.h
+    ../utils/uexception.h \
+    ../Epslion5-Proto/defines.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

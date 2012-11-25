@@ -14,14 +14,14 @@ TMap::TMap(const QString &fileName, QObject *parent) :
     QFile file(QDir::currentPath() + "/" +fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         //throw TException("Error opening file");
-        qDebug() << "Error loading file!!!";
+        //qDebug() << "Error loading file!!!";
     }
     QHash<QString, QString> parameters;
     QTextStream in(&file);
     QString line = "";
     while (!line.isNull()) {
         line = in.readLine();
-        qDebug() << line;
+        //qDebug() << line;
         if (line.isEmpty() || line[0] == '#') {
             continue;
         }
@@ -35,7 +35,7 @@ TMap::TMap(const QString &fileName, QObject *parent) :
     Height = parameters["height"].toInt();
     QString imgFileName = QDir::currentPath() + "/" + parameters["background"];
     Background = new QImage(imgFileName);
-    qDebug() << imgFileName;
+    //qDebug() << imgFileName;
 }
 
 TMap::~TMap()

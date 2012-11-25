@@ -5,11 +5,11 @@ TApplication::TApplication(int& argc, char *argv[])
     , World(new TWorld(this))
     , Server(new TServer(this))
 {
-    connect(Server, SIGNAL(NewPlayer(quint32)),
-            World, SLOT(PlayerEnter(quint32)));
+    connect(Server, SIGNAL(NewPlayer(size_t)),
+            World, SLOT(PlayerEnter(size_t)));
 
-    connect(Server, SIGNAL(PlayerDisconnected(quint32)),
-            World, SLOT(PlayerExit(quint32)));
+    connect(Server, SIGNAL(PlayerDisconnected(size_t)),
+            World, SLOT(PlayerExit(size_t)));
 }
 
 bool TApplication::Init() {

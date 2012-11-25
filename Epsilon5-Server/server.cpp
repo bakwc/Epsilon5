@@ -50,9 +50,6 @@ void TServer::DataReceived() {
     {       // New client connected
         auto ipIt = Ips.find(sender);
         if (ipIt == Ips.end()) {
-            if (data.indexOf(":") == -1) {
-                return;
-            }
             ipIt = Ips.insert(sender, 0);
         }
 
@@ -61,20 +58,9 @@ void TServer::DataReceived() {
         }
         ipIt.value()++;
 
-        QString nickName = data.left(data.indexOf(":"));
-
         TClient* client = new TClient(sender, senderPort, id, this);
-
-        QByteArray dataId = QString(QString::number(id)+":").toLocal8Bit();
-        client->Send(dataId);
-
+        connect(client, SIGNAL(SpawnPlayer(size_t)), this, SIGNAL(NewPlayer(size_t)));
         clientIt = Clients.insert(id, client);
-        emit NewPlayer(id);
-        TPlayer *player = Application()->GetWorld()->GetPlayer(id);
-        player->SetNickname(nickName);
-        connect(client, SIGNAL(ControlReceived(Epsilon5::Control)),
-                player, SLOT(ApplyControl(Epsilon5::Control)));
-        return;
     }
 
     clientIt.value()->OnDataReceived(data);
@@ -109,7 +95,7 @@ void TServer::SendWorld()
 {
     QByteArray data=Application()->GetWorld()->Serialize();
     for (auto i = Clients.begin(); i != Clients.end(); i++) {
-        i.value()->Send(data);
+        i.value()->SendWorld(data);
     }
 }
 
@@ -117,6 +103,9 @@ TApplication* TServer::Application() {
     return (TApplication*)(parent());
 }
 
-void TServer::Send(const QHostAddress &ip, quint16 port, const QByteArray &data) {
-    Server->writeDatagram(data, ip, port);
+void TServer::Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType) {
+    QByteArray newData;
+    newData += QChar(packetType);
+    newData += data;
+    Server->writeDatagram(newData, ip, port);
 }

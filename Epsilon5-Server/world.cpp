@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
+#include "../utils/uexception.h"
 #include "world.h"
 
 TWorld::TWorld(QObject *parent)
@@ -9,11 +10,10 @@ TWorld::TWorld(QObject *parent)
 }
 
 TPlayer* TWorld::GetPlayer(size_t id) {
-    if (Players.find(id) != Players.end()) {
-        return Players[id];
+    if (Players.find(id) == Players.end()) {
+        throw UException(QString("Player #%1 not found!").arg(id));
     }
-    // throw exception here!
-    return 0;
+    return Players[id];
 }
 
 QByteArray TWorld::Serialize() {
@@ -53,14 +53,14 @@ void TWorld::Start() {
     startTimer(20);
 }
 
-void TWorld::PlayerEnter(quint32 id) {
+void TWorld::PlayerEnter(size_t id) {
     qDebug() << Q_FUNC_INFO;
     TPlayer* player = new TPlayer(id, this);
     connect(player, SIGNAL(SpawnBullet(TBullet*)), SLOT(SpawnBullet(TBullet*)));
     Players.insert(id, player);
 }
 
-void TWorld::PlayerExit(quint32 id) {
+void TWorld::PlayerExit(size_t id) {
     auto playerIt = Players.find(id);
     if (playerIt != Players.end())
     {

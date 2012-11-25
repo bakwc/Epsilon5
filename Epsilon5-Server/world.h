@@ -22,8 +22,8 @@ public:
     TPlayer* GetPlayer(size_t id);
     QByteArray Serialize();
 public slots:
-    void PlayerEnter(quint32 id);
-    void PlayerExit(quint32 id);
+    void PlayerEnter(size_t id);
+    void PlayerExit(size_t id);
     void SpawnBullet(TBullet *bullet);
 private:
     void timerEvent(QTimerEvent *);

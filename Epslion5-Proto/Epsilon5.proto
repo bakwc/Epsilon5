@@ -6,20 +6,18 @@ message Player {
     required double x = 2;
     required double y = 3;
 
-    required double vx = 4;
-    required double vy = 5;
+    optional double vx = 4;
+    optional double vy = 5;
 
-    required double angle = 6;
-
-    required string name = 7;
+    optional double angle = 6;
 }
 
 message Bullet {
     required double x = 1;
     required double y = 2;
 
-    required double vx = 3;
-    required double vy = 4;
+    optional double vx = 3;
+    optional double vy = 4;
 }
 
 message World {
@@ -41,4 +39,12 @@ message Control {
 
     required KeyStatus keyStatus = 1;
     required double angle = 2;
+}
+
+message Auth {
+    required string name = 1;
+}
+
+message PlayerInfo {
+    required int32 id = 1;
 }

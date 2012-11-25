@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QTime>
-#include "../Epslion5-Proto/Epsilon5.pb.h"
+#include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "dynamicobject.h"
 
 class TBullet;

@@ -16,32 +16,32 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    ../Epslion5-Proto/Epsilon5.pb.cc \
+    ../Epsilon5-Proto/Epsilon5.pb.cc \
+    ../utils/usettings.cpp \
+    ../utils/uexception.cpp \
     application.cpp \
     server.cpp \
     client.cpp \
     dynamicobject.cpp \
     world.cpp \
     player.cpp \
-    bullet.cpp \
-    ../utils/usettings.cpp \
-    ../utils/uexception.cpp
+    bullet.cpp
 
 OTHER_FILES += \
     ../Epslion5-Proto/Epsilon5.proto
 
 HEADERS += \
-    ../Epslion5-Proto/Epsilon5.pb.h \
+    ../Epsilon5-Proto/Epsilon5.pb.h \
+    ../Epsilon5-Proto/defines.h \
+    ../utils/usettings.h \
+    ../utils/uexception.h \
     application.h \
     server.h \
     client.h \
     dynamicobject.h \
     world.h \
     player.h \
-    bullet.h \
-    ../utils/usettings.h \
-    ../utils/uexception.h \
-    ../Epslion5-Proto/defines.h
+    bullet.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

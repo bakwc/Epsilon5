@@ -1,7 +1,7 @@
 #include <qmath.h>
 #include <QPainter>
 #include <QKeyEvent>
-#include "../Epslion5-Proto/Epsilon5.pb.h"
+#include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "network.h"
 #include "maindisplay.h"
 #include "application.h"

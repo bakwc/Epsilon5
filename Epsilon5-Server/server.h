@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QtNetwork/QUdpSocket>
 #include <QHash>
-#include "../Epslion5-Proto/defines.h"
+#include "../Epsilon5-Proto/defines.h"
 
 class TApplication;
 class TClient;

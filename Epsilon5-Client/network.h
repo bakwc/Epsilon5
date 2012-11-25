@@ -2,8 +2,8 @@
 
 #include <QObject>
 #include <QtNetwork/QUdpSocket>
-#include "../Epslion5-Proto/Epsilon5.pb.h"
-#include "../Epslion5-Proto/defines.h"
+#include "../Epsilon5-Proto/Epsilon5.pb.h"
+#include "../Epsilon5-Proto/defines.h"
 
 class TApplication;
 

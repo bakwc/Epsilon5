@@ -1,4 +1,4 @@
-#include "../Epslion5-Proto/Epsilon5.pb.h"
+#include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "application.h"
 
 int main(int argc, char *argv[])

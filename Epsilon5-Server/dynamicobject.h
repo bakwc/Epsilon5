@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include <Box2D/Box2D.h>
-#include "../Epslion5-Proto/Epsilon5.pb.h"
+#include "../Epsilon5-Proto/Epsilon5.pb.h"
 
 class TDynamicObject : public QObject
 {

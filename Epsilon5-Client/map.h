@@ -8,6 +8,7 @@ class TMap : public QObject
     Q_OBJECT
 public:
     TMap(const QString& fileName, QObject *parent = 0);
+    ~TMap();
     QImage GetFrame(int x, int y);
 private:
     size_t Width;

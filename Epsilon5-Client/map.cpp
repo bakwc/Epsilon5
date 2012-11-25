@@ -38,6 +38,12 @@ TMap::TMap(const QString &fileName, QObject *parent) :
     qDebug() << imgFileName;
 }
 
+TMap::~TMap()
+{
+    if( Background )
+        delete Background;
+}
+
 QImage TMap::GetFrame(int x, int y) {
     int centerX = Background->width() / 2;
     int centerY = Background->height() / 2;

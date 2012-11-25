@@ -3,6 +3,7 @@
 enum EPlayerStatus {
     PS_NotConnected,
     PS_AuthWait,
+    PS_InfoWait,
     PS_Spawned,
     PS_Dead
 };

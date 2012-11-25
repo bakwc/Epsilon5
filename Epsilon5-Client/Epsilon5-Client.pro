@@ -11,8 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Epsilon5-Client
 TEMPLATE = app
 
-include(../utils/utils.pro)
-
 SOURCES += main.cpp\
         maindisplay.cpp \
     ../Epslion5-Proto/Epsilon5.pb.cc \
@@ -32,7 +30,8 @@ HEADERS  += maindisplay.h \
     map.h \
     settings.h \
     ../utils/usettings.h \
-    ../utils/uexception.h
+    ../utils/uexception.h \
+    ../Epslion5-Proto/defines.h
 
 FORMS    +=
 

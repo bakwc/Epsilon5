@@ -9,6 +9,7 @@ TNetwork::TNetwork(QObject *parent)
     , Id(0)
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
+    Status = PS_NotConnected;
 }
 
 const Epsilon5::World& TNetwork::GetWorld() const {
@@ -26,9 +27,13 @@ void TNetwork::OnDataReceived() {
 
         switch (packetType) {
         case PT_PlayerInfo: {
+            if (Status != PS_InfoWait) {
+                throw UException("Wrong packet: PT_PlayerInfo");
+            }
             Epsilon5::PlayerInfo info;
             if (info.ParseFromArray(content.data(), content.size())) {
                 Id = info.id();
+                Status = PS_Spawned;
                 SendControls();
             } else {
                 throw UException("Error parsing player info");
@@ -36,6 +41,9 @@ void TNetwork::OnDataReceived() {
         }
             break;
         case PT_World: {
+            if (Status != PS_Spawned) {
+                throw UException("Wrong packet: PT_World");
+            }
             World.Clear();
             if (World.ParseFromArray(content.data(), content.size())) {
                 emit WorldReceived();
@@ -80,6 +88,7 @@ void TNetwork::SendPlayerAuth() {
     data.resize(auth.ByteSize());
     auth.SerializeToArray(data.data(), data.size());
     Send(data, PT_PlayerAuth);
+    Status = PS_InfoWait;
 }
 
 void TNetwork::Send(const QByteArray& data, EPacketType packetType) {

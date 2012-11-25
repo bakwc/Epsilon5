@@ -28,4 +28,5 @@ private:
     QUdpSocket* Socket;
     Epsilon5::World World;
     size_t Id;
+    EPlayerStatus Status;
 };

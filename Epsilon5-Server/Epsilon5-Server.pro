@@ -23,7 +23,9 @@ SOURCES += main.cpp \
     dynamicobject.cpp \
     world.cpp \
     player.cpp \
-    bullet.cpp
+    bullet.cpp \
+    ../utils/usettings.cpp \
+    ../utils/uexception.cpp
 
 OTHER_FILES += \
     ../Epslion5-Proto/Epsilon5.proto
@@ -36,8 +38,10 @@ HEADERS += \
     dynamicobject.h \
     world.h \
     player.h \
-    bullet.h
+    bullet.h \
+    ../utils/usettings.h \
+    ../utils/uexception.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 
-LIBS += -lprotobuf -lbox2d
+LIBS += -lprotobuf -lBox2D

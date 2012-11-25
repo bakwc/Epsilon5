@@ -4,13 +4,12 @@
 #include <QString>
 #include <QHash>
 
-class TSettings: public QObject
+#include "../utils/usettings.h"
+
+class TSettings: public USettings
 {
     Q_OBJECT
 public:
     TSettings(QObject* parent);
-    void load(const QString& fname);
     QString GetNickname();
-private:
-    QHash<QString, QString> Parameters;
 };

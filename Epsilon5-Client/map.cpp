@@ -44,13 +44,13 @@ TMap::~TMap()
         delete Background;
 }
 
-QImage TMap::GetFrame(int x, int y) {
+QImage TMap::GetFrame(int x, int y, const QSize& frameSize) {
     int centerX = Background->width() / 2;
     int centerY = Background->height() / 2;
     int newPekaPosX = centerX + x;
     int newPekaPosY = centerY + y;
-    int cutX = newPekaPosX - 400;
-    int cutY = newPekaPosY - 300;
-    return Background->copy(cutX, cutY, 800, 600);
+    int cutX = newPekaPosX - frameSize.width() / 2;
+    int cutY = newPekaPosY - frameSize.height() / 2;
+    return Background->copy(cutX, cutY, frameSize.width(), frameSize.height());
     //return *Background;
 }

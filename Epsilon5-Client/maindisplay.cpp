@@ -1,4 +1,5 @@
 #include <qmath.h>
+#include <QDesktopWidget>
 #include <QPainter>
 #include <QKeyEvent>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
@@ -26,12 +27,15 @@ static double getAngle(const QPoint& point)
 TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     : QWidget(parent)
     , Application(application)
-    , Frame(new QImage(800, 600, QImage::Format_ARGB32))
+    , Frame(new QImage(1680, 1050, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
     , Map(new TMap("test.e5m", this))
 {
     Images->LoadAll();
-    setFixedSize(800, 600);
+
+    setBaseSize(800, 600);
+    setFixedSize(baseSize());
+
     Control.set_angle(0);
     Control.mutable_keystatus()->set_keyattack1(false);
     Control.mutable_keystatus()->set_keyattack2(false);
@@ -53,21 +57,29 @@ void TMainDisplay::RedrawWorld() {
     Epsilon5::World world = ((TNetwork*)(QObject::sender()))->GetWorld();
     //Frame->fill(Qt::black);
     QPainter painter(Frame);
-
     QPoint gamerPos, cursorPos;
 
+    const int nickMaxWidth = 200;
     int playerX = 0;
     int playerY = 0;
 
     for (int i = 0; i != world.players_size(); i++) {
         const Epsilon5::Player &player = world.players(i);
-        if (player.id() == Application->GetNetwork()->GetId()) {
+        if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
             playerX = player.x();
             playerY = player.y();
         }
     }
-    QImage background = Map->GetFrame(playerX, playerY);
+
+    QPoint widgetCenter(width() / 2, height() / 2);
+    QImage background = Map->GetFrame(playerX, playerY, size());
     painter.drawImage(0, 0, background);
+
+    const QFont oldFont = painter.font();
+    const QPen oldPen = painter.pen();
+    QFont nickFont(oldFont);
+    nickFont.setBold(true);
+    nickFont.setPointSize(12);
 
     const QImage* img;
     for (int i = 0; i != world.players_size(); i++) {
@@ -76,16 +88,30 @@ void TMainDisplay::RedrawWorld() {
         int cx = GetCorrect(playerX, player.x());
         int cy = GetCorrect(playerY, player.y());
         QString nickName = player.name().c_str();
-        if (player.id() == Application->GetNetwork()->GetId()) {
-            gamerPos.setX(400 + cx);
-            gamerPos.setY(300 + cy);
+        if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
+            gamerPos.setX(widgetCenter.x() + cx);
+            gamerPos.setY(widgetCenter.y() + cy);
             img = &Images->GetImage("player");
         } else {
             img = &Images->GetImage("enemy");
         }
-        painter.drawImage(400 + cx - img->width() / 2, 300 + cy - img->height() / 2, *img);
+        painter.drawImage(
+            widgetCenter.x() + cx - img->width() / 2,
+            widgetCenter.y() + cy - img->height() / 2,
+            *img);
         painter.setPen(Qt::yellow);
-        painter.drawText(400 + cx - 5, 300 + cy - 18, nickName);
+        painter.setFont(nickFont);
+        QRect nickRect = QRect(
+            widgetCenter.x() + cx - nickMaxWidth/2,
+            widgetCenter.y() + cy - img->height()/2 - painter.fontInfo().pixelSize(),
+            nickMaxWidth,
+            painter.fontInfo().pixelSize());
+        painter.drawText(
+            nickRect,
+            Qt::AlignTop | Qt::AlignHCenter,
+            nickName);
+        painter.setPen(oldPen);
+        painter.setFont(oldFont);
     }
 
     img = &Images->GetImage("bullet");
@@ -94,7 +120,10 @@ void TMainDisplay::RedrawWorld() {
         const Epsilon5::Bullet &bullet = world.bullets(i);
         int cx = GetCorrect(playerX, bullet.x());
         int cy = GetCorrect(playerY, bullet.y());;
-        painter.drawImage(400 + cx - img->width() / 2, 300 + cy - img->height() / 2, *img);
+        painter.drawImage(
+            widgetCenter.x() + cx - img->width() / 2,
+            widgetCenter.y() + cy - img->height() / 2,
+            *img);
     }
 
     cursorPos = this->mapFromGlobal(QCursor::pos());
@@ -166,6 +195,9 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     case Qt::Key_Left:
         Control.mutable_keystatus()->set_keyleft(false);
         break;
+    case Qt::Key_F11:
+        toggleFullscreen();
+        break;
     case Qt::Key_F12:
         close();
         break;
@@ -174,3 +206,15 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void TMainDisplay::toggleFullscreen()
+{
+    setWindowState( windowState() ^ Qt::WindowFullScreen );
+    if( isFullScreen() )
+    {
+        QDesktopWidget dw;
+        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
+        setFixedSize(screenRect.size());
+        return;
+    }
+    setFixedSize(baseSize());
+}

@@ -14,10 +14,12 @@ class TMainDisplay : public QWidget
 public:
     explicit TMainDisplay(TApplication* application, QWidget *parent = 0);
     ~TMainDisplay();
-
     inline const Epsilon5::Control& GetControl() { return Control; }
+
 public slots:
     void RedrawWorld();
+    void toggleFullscreen();
+
 private:
     void paintEvent(QPaintEvent *);
     void timerEvent(QTimerEvent *);
@@ -25,6 +27,7 @@ private:
     void keyReleaseEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+
 private:
     TApplication* Application;
     QImage* Frame;

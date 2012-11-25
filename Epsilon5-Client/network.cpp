@@ -1,3 +1,4 @@
+#include <QtEndian>
 #include <QAbstractSocket>
 #include "../utils/uexception.h"
 #include "maindisplay.h"
@@ -21,45 +22,52 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
-    try {
-        QByteArray data = Socket->readAll();
-        if (data.size() <= 0) {
-            throw UException("Empty packet received");
-        }
-        EPacketType packetType = (EPacketType)(char)(data[0]);
-        QByteArray content = data.mid(1);
+    QByteArray data = Socket->readAll();
+    EPacketType packetType;
+    quint16 dataSize;
+    QByteArray content;
 
-        switch (packetType) {
-        case PT_PlayerInfo: {
-            if (Status != PS_InfoWait) {
-                throw UException("Wrong packet: PT_PlayerInfo");
+    try {
+        while( data.size() > 0 )
+        {
+            packetType = (EPacketType)(char)(data[0]);
+            dataSize = qFromBigEndian<quint16>(
+                (const uchar*)data.mid(sizeof(char), sizeof(quint16)).constData());
+            content = data.mid(sizeof(char) + sizeof(quint16), dataSize);
+            data = data.mid(dataSize + sizeof(char) + sizeof(quint16));
+
+            switch (packetType) {
+            case PT_PlayerInfo: {
+                if (Status != PS_InfoWait) {
+                    throw UException("Wrong packet: PT_PlayerInfo");
+                }
+                Epsilon5::PlayerInfo info;
+                if (info.ParseFromArray(content.data(), content.size())) {
+                    Id = info.id();
+                    Status = PS_Spawned;
+                    SendControls();
+                } else {
+                    throw UException("Error parsing player info");
+                }
             }
-            Epsilon5::PlayerInfo info;
-            if (info.ParseFromArray(content.data(), content.size())) {
-                Id = info.id();
-                Status = PS_Spawned;
-                SendControls();
-            } else {
-                throw UException("Error parsing player info");
+                break;
+            case PT_World: {
+                if (Status != PS_Spawned) {
+                    throw UException("Wrong packet: PT_World");
+                }
+                World.Clear();
+                if (World.ParseFromArray(content.data(), content.size())) {
+                    emit WorldReceived();
+                    SendControls();
+                } else {
+                    throw UException("Error parsing world");
+                }
             }
-        }
-            break;
-        case PT_World: {
-            if (Status != PS_Spawned) {
-                throw UException("Wrong packet: PT_World");
+                break;
+            default:
+                throw UException("Unknown packet type");
+                break;
             }
-            World.Clear();
-            if (World.ParseFromArray(content.data(), content.size())) {
-                emit WorldReceived();
-                SendControls();
-            } else {
-                throw UException("Error parsing world");
-            }
-        }
-            break;
-        default:
-            throw UException("Unknown packet type");
-            break;
         }
     } catch(const std::exception& e) {
         qDebug() << Q_FUNC_INFO << "Exception:" << e.what();

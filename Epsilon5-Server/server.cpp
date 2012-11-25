@@ -1,3 +1,4 @@
+#include <QtEndian>
 #include "application.h"
 #include "client.h"
 #include "server.h"
@@ -105,7 +106,9 @@ TApplication* TServer::Application() {
 
 void TServer::Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType) {
     QByteArray newData;
+    quint16 dataSize = qToBigEndian<quint16>(data.size());
     newData += QChar(packetType);
+    newData += QByteArray((const char*) &dataSize, sizeof(quint16));
     newData += data;
     Server->writeDatagram(newData, ip, port);
 }

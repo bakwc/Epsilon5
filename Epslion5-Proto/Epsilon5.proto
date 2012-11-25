@@ -10,6 +10,8 @@ message Player {
     optional double vy = 5;
 
     optional double angle = 6;
+
+    required string name = 7;
 }
 
 message Bullet {
@@ -18,6 +20,14 @@ message Bullet {
 
     optional double vx = 3;
     optional double vy = 4;
+}
+
+message Object {
+    required int32 id = 1;
+
+    required double x = 2;
+    required double y = 3;
+    required double angle = 4;
 }
 
 message World {
@@ -47,4 +57,5 @@ message Auth {
 
 message PlayerInfo {
     required int32 id = 1;
+    optional string map = 2;
 }

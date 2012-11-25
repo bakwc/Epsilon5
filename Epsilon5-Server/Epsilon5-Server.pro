@@ -25,7 +25,10 @@ SOURCES += main.cpp \
     player.cpp \
     bullet.cpp \
     ../utils/usettings.cpp \
-    ../utils/uexception.cpp
+    ../utils/uexception.cpp \
+    maps.cpp \
+    objects.cpp \
+    staticobject.cpp
 
 OTHER_FILES += \
     ../Epslion5-Proto/Epsilon5.proto
@@ -41,7 +44,10 @@ HEADERS += \
     bullet.h \
     ../utils/usettings.h \
     ../utils/uexception.h \
-    ../Epslion5-Proto/defines.h
+    ../Epslion5-Proto/defines.h \
+    maps.h \
+    objects.h \
+    staticobject.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

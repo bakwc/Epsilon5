@@ -59,7 +59,7 @@ TApplication* TNetwork::Application() {
 }
 
 void TNetwork::Start() {
-    Socket->connectToHost(QHostAddress("193.169.33.254"), 14567);
+    Socket->connectToHost(QHostAddress("127.0.0.1"), 14567);
                                             // TODO: Remove HC & MN
     SendPlayerAuth();
 }

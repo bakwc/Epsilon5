@@ -2,8 +2,10 @@
 
 TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *parent)
     : TDynamicObject(x, y, vx, vy, 0, parent)
-    //: TDynamicObject(0, 0, 0, 0, 0, parent)
 {
+    // TODO: Find usage for the unused variable
+    Q_UNUSED(d);
+
     b2CircleShape circle;
     circle.m_p.Set(0, 0);
     circle.m_radius = 0.5f;

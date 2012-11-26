@@ -98,3 +98,11 @@ void TWorld::timerEvent(QTimerEvent *) {
 void TWorld::SpawnBullet(TBullet* bullet) {
     Bullets.insert(Bullets.end(), bullet);
 }
+
+void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
+
+}
+
+void TWorld::ClearObjects() {
+
+}

@@ -3,20 +3,26 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QPoint>
 
 class TMaps : public QObject
 {
     Q_OBJECT
 public:
     explicit TMaps(QObject *parent = 0);
-    void LoadMaplist(const QString& filename);
+    void LoadMaplist(const QString& fileName);
+    void LoadFirstMap();
     void LoadNextMap();
     QString GetCurrentMap();
+    QPoint GetMapSize();
 signals:
-    void SpawnObject(size_t id, double x, double y);
+    void SpawnObject(size_t id, int x, int y, double angle);
+    void ClearObjects();
 private:
-    void LoadMap(const QString& filename);
+    void LoadConfig(const QString& fileName);
+    void LoadObjects(const QString& fileName);
 private:
     QStringList MapFiles;
-    size_t currentMap;
+    int CurrentMap;
+    QPoint MapSize;
 };

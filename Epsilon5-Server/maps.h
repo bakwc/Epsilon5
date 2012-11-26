@@ -5,14 +5,22 @@
 #include <QStringList>
 #include <QPoint>
 
+enum EMapStatus {
+    MS_NoMap,
+    MS_Loading,
+    MS_Ready
+};
+
 class TMaps : public QObject
 {
     Q_OBJECT
 public:
     explicit TMaps(QObject *parent = 0);
     void LoadMaplist(const QString& fileName);
-    void LoadFirstMap();
     void LoadNextMap();
+    inline EMapStatus GetStatus() {
+        return MapStatus;
+    }
     QString GetCurrentMap();
     QPoint GetMapSize();
 signals:
@@ -25,4 +33,5 @@ private:
     QStringList MapFiles;
     int CurrentMap;
     QPoint MapSize;
+    EMapStatus MapStatus;
 };

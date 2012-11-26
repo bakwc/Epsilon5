@@ -885,7 +885,7 @@ class PlayerInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
   
-  // optional string map = 2;
+  // required string map = 2;
   inline bool has_map() const;
   inline void clear_map();
   static const int kMapFieldNumber = 2;
@@ -1632,7 +1632,7 @@ inline void PlayerInfo::set_id(::google::protobuf::int32 value) {
   id_ = value;
 }
 
-// optional string map = 2;
+// required string map = 2;
 inline bool PlayerInfo::has_map() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }

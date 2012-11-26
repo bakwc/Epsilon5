@@ -12,6 +12,8 @@
 #include "staticobject.h"
 #include "dynamicobject.h"
 
+class TApplication;
+
 class TWorld : public QObject
 {
     Q_OBJECT
@@ -31,6 +33,7 @@ public slots:
     void ClearObjects();
 private:
     void timerEvent(QTimerEvent *);
+    TApplication* Application();
 private:
     b2World* B2World;
     QHash<size_t, TPlayer*> Players;

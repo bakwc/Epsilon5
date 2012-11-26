@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include "../utils/uexception.h"
+#include "application.h"
 #include "world.h"
 
 TWorld::TWorld(QObject *parent)
@@ -100,9 +101,28 @@ void TWorld::SpawnBullet(TBullet* bullet) {
 }
 
 void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
-
+    bool dynamic = Application()->GetObjects()->IsDynamicObject(id);
+    if (dynamic) {
+        TDynamicObject* obj = new TDynamicObject(0.1 * x, 0.1 * y, 0, 0, angle, this);
+        DynamicObjects.insert(DynamicObjects.end(), obj);
+    } else {
+        TStaticObject* obj = new TStaticObject(0.1 * x, 0.1 * y, angle, this);
+        StaticObjects.insert(StaticObjects.end(), obj);
+    }
 }
 
 void TWorld::ClearObjects() {
+    for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
+        (*i)->deleteLater();
+    }
+    StaticObjects.clear();
 
+    for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
+        (*i)->deleteLater();
+    }
+    DynamicObjects.clear();
+}
+
+TApplication* TWorld::Application() {
+    return (TApplication*)(parent());
 }

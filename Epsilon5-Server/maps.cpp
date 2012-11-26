@@ -6,6 +6,7 @@
 
 TMaps::TMaps(QObject *parent)
     : QObject(parent)
+    , MapStatus(MS_NoMap)
 {
 }
 
@@ -24,9 +25,11 @@ void TMaps::LoadMaplist(const QString& fileName) {
         MapFiles.push_back(line);
     }
     CurrentMap = -1;
+    MapStatus = MS_NoMap;
 }
 
 void TMaps::LoadNextMap() {
+    MapStatus = MS_Loading;
     if (MapFiles.size() == 0) {
         throw UException("No maps found");
     }
@@ -34,8 +37,10 @@ void TMaps::LoadNextMap() {
     if (CurrentMap >= MapFiles.size()) {
         CurrentMap = 0;
     }
+    emit ClearObjects();
     LoadConfig("maps/" + MapFiles[CurrentMap] + "/config.ini");
     LoadObjects("maps/" + MapFiles[CurrentMap] + "/objects.txt");
+    MapStatus = MS_Ready;
 }
 
 void TMaps::LoadConfig(const QString& fileName) {

@@ -263,7 +263,7 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyA"
     "ttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"\024\n\004Auth"
     "\022\014\n\004name\030\001 \002(\t\"%\n\nPlayerInfo\022\n\n\002id\030\001 \002(\005"
-    "\022\013\n\003map\030\002 \001(\t", 573);
+    "\022\013\n\003map\030\002 \002(\t", 573);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -2607,7 +2607,7 @@ bool PlayerInfo::MergePartialFromCodedStream(
         break;
       }
       
-      // optional string map = 2;
+      // required string map = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -2647,7 +2647,7 @@ void PlayerInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
   
-  // optional string map = 2;
+  // required string map = 2;
   if (has_map()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->map().data(), this->map().length(),
@@ -2669,7 +2669,7 @@ void PlayerInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
   }
   
-  // optional string map = 2;
+  // required string map = 2;
   if (has_map()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->map().data(), this->map().length(),
@@ -2697,7 +2697,7 @@ int PlayerInfo::ByteSize() const {
           this->id());
     }
     
-    // optional string map = 2;
+    // required string map = 2;
     if (has_map()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2754,7 +2754,7 @@ void PlayerInfo::CopyFrom(const PlayerInfo& from) {
 }
 
 bool PlayerInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }

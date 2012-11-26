@@ -39,7 +39,7 @@ public:
     inline void setAngle(double angle) {
         Body->SetTransform(Body->GetPosition(), angle);
     }
-    virtual void ApplyCustomPhysics() = 0;
+    virtual void ApplyCustomPhysics() {}
 protected:
     b2World* B2World();
 protected:

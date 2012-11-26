@@ -57,5 +57,5 @@ message Auth {
 
 message PlayerInfo {
     required int32 id = 1;
-    optional string map = 2;
+    required string map = 2;
 }

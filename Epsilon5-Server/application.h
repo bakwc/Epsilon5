@@ -16,6 +16,12 @@ public:
     inline TWorld* GetWorld() {
         return World;
     }
+    inline TObjects* GetObjects() {
+        return Objects;
+    }
+    inline TMaps* GetMaps() {
+        return Maps;
+    }
 private:
     TWorld* World;
     TServer* Server;

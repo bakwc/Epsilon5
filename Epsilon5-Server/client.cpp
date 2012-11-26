@@ -96,6 +96,8 @@ void TClient::EnlargeSeen()
 void TClient::SendPlayerInfo() {
     Epsilon5::PlayerInfo info;
     info.set_id(Id);
+    QByteArray map = Server()->Application()->GetMaps()->GetCurrentMap().toLocal8Bit();
+    info.set_map(map.data(), map.size());
     QByteArray data;
     data.resize(info.ByteSize());
     info.SerializeToArray(data.data(), data.size());

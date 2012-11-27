@@ -12,18 +12,19 @@
 
 TMap::TMap(QObject *parent)
     : QObject(parent)
+    , Background(new QImage)
     , Loaded(false)
 {
 }
 
 void TMap::LoadMap(QString map) {
-    Background = new QImage("maps/" + map + "/background.png");
+    Background->load("maps/" + map + "/background.png");
     Loaded = true;
 }
 
 TMap::~TMap()
 {
-    if( Background )
+    if(Background)
         delete Background;
 }
 

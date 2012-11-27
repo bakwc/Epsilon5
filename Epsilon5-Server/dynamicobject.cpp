@@ -20,3 +20,12 @@ b2World* TDynamicObject::B2World() {
 TDynamicObject::~TDynamicObject() {
     B2World()->DestroyBody(Body);
 }
+
+void TDynamicObject::SetRectSize(double width, double height) {
+    b2PolygonShape polygon;
+    polygon.SetAsBox(width, height);
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape = &polygon;
+    fixtureDef.density = 0.8f;
+    Body->CreateFixture(&fixtureDef);
+}

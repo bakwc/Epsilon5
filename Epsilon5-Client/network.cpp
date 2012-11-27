@@ -44,8 +44,10 @@ void TNetwork::OnDataReceived() {
                 Epsilon5::PlayerInfo info;
                 if (info.ParseFromArray(content.data(), content.size())) {
                     Id = info.id();
+                    QString map = info.map().c_str();
+                    emit LoadMap(map);
                     Status = PS_Spawned;
-                    SendControls();
+                    //SendControls();
                 } else {
                     throw UException("Error parsing player info");
                 }

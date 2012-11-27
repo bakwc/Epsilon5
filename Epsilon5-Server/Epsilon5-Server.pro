@@ -25,7 +25,10 @@ SOURCES += main.cpp \
     dynamicobject.cpp \
     world.cpp \
     player.cpp \
-    bullet.cpp
+    bullet.cpp \
+    maps.cpp \
+    objects.cpp \
+    staticobject.cpp
 
 OTHER_FILES += \
     ../Epslion5-Proto/Epsilon5.proto
@@ -41,7 +44,10 @@ HEADERS += \
     dynamicobject.h \
     world.h \
     player.h \
-    bullet.h
+    bullet.h \
+    maps.h \
+    objects.h \
+    staticobject.h
 
 QMAKE_CXXFLAGS += -std=c++0x
 

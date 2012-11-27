@@ -17,6 +17,7 @@ public:
     inline size_t GetId() { return Id; }
 signals:
     void WorldReceived();
+    void LoadMap(QString map);
 private slots:
     void OnDataReceived();
     void OnError(QAbstractSocket::SocketError socketError);

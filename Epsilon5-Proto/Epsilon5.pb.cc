@@ -23,6 +23,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* Bullet_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Bullet_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Object_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Object_reflection_ = NULL;
 const ::google::protobuf::Descriptor* World_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   World_reflection_ = NULL;
@@ -87,10 +90,29 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Bullet));
-  World_descriptor_ = file->message_type(2);
-  static const int World_offsets_[2] = {
+  Object_descriptor_ = file->message_type(2);
+  static const int Object_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Object, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Object, x_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Object, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Object, angle_),
+  };
+  Object_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Object_descriptor_,
+      Object::default_instance_,
+      Object_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Object, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Object, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Object));
+  World_descriptor_ = file->message_type(3);
+  static const int World_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, players_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, bullets_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, objects_),
   };
   World_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -103,7 +125,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(World));
-  Control_descriptor_ = file->message_type(3);
+  Control_descriptor_ = file->message_type(4);
   static const int Control_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, keystatus_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, angle_),
@@ -139,7 +161,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Control_KeyStatus));
-  Auth_descriptor_ = file->message_type(4);
+  Auth_descriptor_ = file->message_type(5);
   static const int Auth_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Auth, name_),
   };
@@ -154,9 +176,10 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Auth));
-  PlayerInfo_descriptor_ = file->message_type(5);
-  static const int PlayerInfo_offsets_[1] = {
+  PlayerInfo_descriptor_ = file->message_type(6);
+  static const int PlayerInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerInfo, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerInfo, map_),
   };
   PlayerInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -186,6 +209,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Bullet_descriptor_, &Bullet::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Object_descriptor_, &Object::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     World_descriptor_, &World::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Control_descriptor_, &Control::default_instance());
@@ -204,6 +229,8 @@ void protobuf_ShutdownFile_Epsilon5_2eproto() {
   delete Player_reflection_;
   delete Bullet::default_instance_;
   delete Bullet_reflection_;
+  delete Object::default_instance_;
+  delete Object_reflection_;
   delete World::default_instance_;
   delete World_reflection_;
   delete Control::default_instance_;
@@ -224,22 +251,26 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\016Epsilon5.proto\022\010Epsilon5\"_\n\006Player\022\n\n\002"
-    "id\030\001 \002(\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\n\n\002vx\030\004 \002"
-    "(\001\022\n\n\002vy\030\005 \002(\001\022\r\n\005angle\030\006 \002(\001\022\014\n\004name\030\007 "
+    "id\030\001 \002(\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\n\n\002vx\030\004 \001"
+    "(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007 "
     "\002(\t\"6\n\006Bullet\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\n\n\002v"
-    "x\030\003 \002(\001\022\n\n\002vy\030\004 \002(\001\"M\n\005World\022!\n\007players\030"
-    "\001 \003(\0132\020.Epsilon5.Player\022!\n\007bullets\030\002 \003(\013"
-    "2\020.Epsilon5.Bullet\"\300\001\n\007Control\022.\n\tkeySta"
-    "tus\030\001 \002(\0132\033.Epsilon5.Control.KeyStatus\022\r"
-    "\n\005angle\030\002 \002(\001\032v\n\tKeyStatus\022\r\n\005keyUp\030\001 \002("
-    "\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010k"
-    "eyRight\030\004 \002(\010\022\022\n\nkeyAttack1\030\005 \002(\010\022\022\n\nkey"
-    "Attack2\030\006 \002(\010\"\024\n\004Auth\022\014\n\004name\030\001 \002(\t\"\030\n\nP"
-    "layerInfo\022\n\n\002id\030\001 \002(\005", 501);
+    "x\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\"9\n\006Object\022\n\n\002id\030\001 \002("
+    "\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\r\n\005angle\030\004 \002(\001\"p"
+    "\n\005World\022!\n\007players\030\001 \003(\0132\020.Epsilon5.Play"
+    "er\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\022!\n"
+    "\007objects\030\003 \003(\0132\020.Epsilon5.Object\"\300\001\n\007Con"
+    "trol\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5.Contr"
+    "ol.KeyStatus\022\r\n\005angle\030\002 \002(\001\032v\n\tKeyStatus"
+    "\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyL"
+    "eft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyAttack"
+    "1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"\024\n\004Auth\022\014\n\004n"
+    "ame\030\001 \002(\t\"%\n\nPlayerInfo\022\n\n\002id\030\001 \002(\005\022\013\n\003m"
+    "ap\030\002 \002(\t", 608);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
   Bullet::default_instance_ = new Bullet();
+  Object::default_instance_ = new Object();
   World::default_instance_ = new World();
   Control::default_instance_ = new Control();
   Control_KeyStatus::default_instance_ = new Control_KeyStatus();
@@ -247,6 +278,7 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
   PlayerInfo::default_instance_ = new PlayerInfo();
   Player::default_instance_->InitAsDefaultInstance();
   Bullet::default_instance_->InitAsDefaultInstance();
+  Object::default_instance_->InitAsDefaultInstance();
   World::default_instance_->InitAsDefaultInstance();
   Control::default_instance_->InitAsDefaultInstance();
   Control_KeyStatus::default_instance_->InitAsDefaultInstance();
@@ -404,7 +436,7 @@ bool Player::MergePartialFromCodedStream(
         break;
       }
       
-      // required double vx = 4;
+      // optional double vx = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
@@ -420,7 +452,7 @@ bool Player::MergePartialFromCodedStream(
         break;
       }
       
-      // required double vy = 5;
+      // optional double vy = 5;
       case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
@@ -436,7 +468,7 @@ bool Player::MergePartialFromCodedStream(
         break;
       }
       
-      // required double angle = 6;
+      // optional double angle = 6;
       case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
@@ -502,17 +534,17 @@ void Player::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->y(), output);
   }
   
-  // required double vx = 4;
+  // optional double vx = 4;
   if (has_vx()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->vx(), output);
   }
   
-  // required double vy = 5;
+  // optional double vy = 5;
   if (has_vy()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->vy(), output);
   }
   
-  // required double angle = 6;
+  // optional double angle = 6;
   if (has_angle()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->angle(), output);
   }
@@ -549,17 +581,17 @@ void Player::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->y(), target);
   }
   
-  // required double vx = 4;
+  // optional double vx = 4;
   if (has_vx()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->vx(), target);
   }
   
-  // required double vy = 5;
+  // optional double vy = 5;
   if (has_vy()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->vy(), target);
   }
   
-  // required double angle = 6;
+  // optional double angle = 6;
   if (has_angle()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->angle(), target);
   }
@@ -602,17 +634,17 @@ int Player::ByteSize() const {
       total_size += 1 + 8;
     }
     
-    // required double vx = 4;
+    // optional double vx = 4;
     if (has_vx()) {
       total_size += 1 + 8;
     }
     
-    // required double vy = 5;
+    // optional double vy = 5;
     if (has_vy()) {
       total_size += 1 + 8;
     }
     
-    // required double angle = 6;
+    // optional double angle = 6;
     if (has_angle()) {
       total_size += 1 + 8;
     }
@@ -689,7 +721,7 @@ void Player::CopyFrom(const Player& from) {
 }
 
 bool Player::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000007f) != 0x0000007f) return false;
+  if ((_has_bits_[0] & 0x00000047) != 0x00000047) return false;
   
   return true;
 }
@@ -827,7 +859,7 @@ bool Bullet::MergePartialFromCodedStream(
         break;
       }
       
-      // required double vx = 3;
+      // optional double vx = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
@@ -843,7 +875,7 @@ bool Bullet::MergePartialFromCodedStream(
         break;
       }
       
-      // required double vy = 4;
+      // optional double vy = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
@@ -887,12 +919,12 @@ void Bullet::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->y(), output);
   }
   
-  // required double vx = 3;
+  // optional double vx = 3;
   if (has_vx()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->vx(), output);
   }
   
-  // required double vy = 4;
+  // optional double vy = 4;
   if (has_vy()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->vy(), output);
   }
@@ -915,12 +947,12 @@ void Bullet::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->y(), target);
   }
   
-  // required double vx = 3;
+  // optional double vx = 3;
   if (has_vx()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->vx(), target);
   }
   
-  // required double vy = 4;
+  // optional double vy = 4;
   if (has_vy()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->vy(), target);
   }
@@ -946,12 +978,12 @@ int Bullet::ByteSize() const {
       total_size += 1 + 8;
     }
     
-    // required double vx = 3;
+    // optional double vx = 3;
     if (has_vx()) {
       total_size += 1 + 8;
     }
     
-    // required double vy = 4;
+    // optional double vy = 4;
     if (has_vy()) {
       total_size += 1 + 8;
     }
@@ -1012,7 +1044,7 @@ void Bullet::CopyFrom(const Bullet& from) {
 }
 
 bool Bullet::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
@@ -1041,8 +1073,331 @@ void Bullet::Swap(Bullet* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int Object::kIdFieldNumber;
+const int Object::kXFieldNumber;
+const int Object::kYFieldNumber;
+const int Object::kAngleFieldNumber;
+#endif  // !_MSC_VER
+
+Object::Object()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Object::InitAsDefaultInstance() {
+}
+
+Object::Object(const Object& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Object::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = 0;
+  x_ = 0;
+  y_ = 0;
+  angle_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Object::~Object() {
+  SharedDtor();
+}
+
+void Object::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Object::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Object::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Object_descriptor_;
+}
+
+const Object& Object::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();  return *default_instance_;
+}
+
+Object* Object::default_instance_ = NULL;
+
+Object* Object::New() const {
+  return new Object;
+}
+
+void Object::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    id_ = 0;
+    x_ = 0;
+    y_ = 0;
+    angle_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Object::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_x;
+        break;
+      }
+      
+      // required double x = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_x:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &x_)));
+          set_has_x();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(25)) goto parse_y;
+        break;
+      }
+      
+      // required double y = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_y:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &y_)));
+          set_has_y();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(33)) goto parse_angle;
+        break;
+      }
+      
+      // required double angle = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_angle:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &angle_)));
+          set_has_angle();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Object::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required int32 id = 1;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
+  }
+  
+  // required double x = 2;
+  if (has_x()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->x(), output);
+  }
+  
+  // required double y = 3;
+  if (has_y()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->y(), output);
+  }
+  
+  // required double angle = 4;
+  if (has_angle()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->angle(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Object::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required int32 id = 1;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  }
+  
+  // required double x = 2;
+  if (has_x()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->x(), target);
+  }
+  
+  // required double y = 3;
+  if (has_y()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->y(), target);
+  }
+  
+  // required double angle = 4;
+  if (has_angle()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->angle(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Object::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->id());
+    }
+    
+    // required double x = 2;
+    if (has_x()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double y = 3;
+    if (has_y()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double angle = 4;
+    if (has_angle()) {
+      total_size += 1 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Object::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Object* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Object*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Object::MergeFrom(const Object& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_x()) {
+      set_x(from.x());
+    }
+    if (from.has_y()) {
+      set_y(from.y());
+    }
+    if (from.has_angle()) {
+      set_angle(from.angle());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Object::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Object::CopyFrom(const Object& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Object::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  
+  return true;
+}
+
+void Object::Swap(Object* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(x_, other->x_);
+    std::swap(y_, other->y_);
+    std::swap(angle_, other->angle_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Object::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Object_descriptor_;
+  metadata.reflection = Object_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int World::kPlayersFieldNumber;
 const int World::kBulletsFieldNumber;
+const int World::kObjectsFieldNumber;
 #endif  // !_MSC_VER
 
 World::World()
@@ -1096,6 +1451,7 @@ World* World::New() const {
 void World::Clear() {
   players_.Clear();
   bullets_.Clear();
+  objects_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1132,6 +1488,21 @@ bool World::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(18)) goto parse_bullets;
+        if (input->ExpectTag(26)) goto parse_objects;
+        break;
+      }
+      
+      // repeated .Epsilon5.Object objects = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_objects:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_objects()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_objects;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -1166,6 +1537,12 @@ void World::SerializeWithCachedSizes(
       2, this->bullets(i), output);
   }
   
+  // repeated .Epsilon5.Object objects = 3;
+  for (int i = 0; i < this->objects_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->objects(i), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1186,6 +1563,13 @@ void World::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         2, this->bullets(i), target);
+  }
+  
+  // repeated .Epsilon5.Object objects = 3;
+  for (int i = 0; i < this->objects_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        3, this->objects(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1212,6 +1596,14 @@ int World::ByteSize() const {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         this->bullets(i));
+  }
+  
+  // repeated .Epsilon5.Object objects = 3;
+  total_size += 1 * this->objects_size();
+  for (int i = 0; i < this->objects_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->objects(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -1241,6 +1633,7 @@ void World::MergeFrom(const World& from) {
   GOOGLE_CHECK_NE(&from, this);
   players_.MergeFrom(from.players_);
   bullets_.MergeFrom(from.bullets_);
+  objects_.MergeFrom(from.objects_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1264,6 +1657,9 @@ bool World::IsInitialized() const {
   for (int i = 0; i < bullets_size(); i++) {
     if (!this->bullets(i).IsInitialized()) return false;
   }
+  for (int i = 0; i < objects_size(); i++) {
+    if (!this->objects(i).IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -1271,6 +1667,7 @@ void World::Swap(World* other) {
   if (other != this) {
     players_.Swap(&other->players_);
     bullets_.Swap(&other->bullets_);
+    objects_.Swap(&other->objects_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2165,6 +2562,7 @@ void Auth::Swap(Auth* other) {
 
 #ifndef _MSC_VER
 const int PlayerInfo::kIdFieldNumber;
+const int PlayerInfo::kMapFieldNumber;
 #endif  // !_MSC_VER
 
 PlayerInfo::PlayerInfo()
@@ -2184,6 +2582,7 @@ PlayerInfo::PlayerInfo(const PlayerInfo& from)
 void PlayerInfo::SharedCtor() {
   _cached_size_ = 0;
   id_ = 0;
+  map_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2192,6 +2591,9 @@ PlayerInfo::~PlayerInfo() {
 }
 
 void PlayerInfo::SharedDtor() {
+  if (map_ != &::google::protobuf::internal::kEmptyString) {
+    delete map_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2219,6 +2621,11 @@ PlayerInfo* PlayerInfo::New() const {
 void PlayerInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     id_ = 0;
+    if (has_map()) {
+      if (map_ != &::google::protobuf::internal::kEmptyString) {
+        map_->clear();
+      }
+    }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -2238,6 +2645,23 @@ bool PlayerInfo::MergePartialFromCodedStream(
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &id_)));
           set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_map;
+        break;
+      }
+      
+      // required string map = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_map:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_map()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->map().data(), this->map().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -2268,6 +2692,15 @@ void PlayerInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
   }
   
+  // required string map = 2;
+  if (has_map()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->map().data(), this->map().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->map(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2279,6 +2712,16 @@ void PlayerInfo::SerializeWithCachedSizes(
   // required int32 id = 1;
   if (has_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  }
+  
+  // required string map = 2;
+  if (has_map()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->map().data(), this->map().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->map(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2297,6 +2740,13 @@ int PlayerInfo::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->id());
+    }
+    
+    // required string map = 2;
+    if (has_map()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->map());
     }
     
   }
@@ -2329,6 +2779,9 @@ void PlayerInfo::MergeFrom(const PlayerInfo& from) {
     if (from.has_id()) {
       set_id(from.id());
     }
+    if (from.has_map()) {
+      set_map(from.map());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2346,7 +2799,7 @@ void PlayerInfo::CopyFrom(const PlayerInfo& from) {
 }
 
 bool PlayerInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
@@ -2354,6 +2807,7 @@ bool PlayerInfo::IsInitialized() const {
 void PlayerInfo::Swap(PlayerInfo* other) {
   if (other != this) {
     std::swap(id_, other->id_);
+    std::swap(map_, other->map_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

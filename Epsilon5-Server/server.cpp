@@ -77,7 +77,7 @@ void TServer::DisconnectInactive() {
     for (; i != Clients.end();)
     {
         i.value()->EnlargeSeen();
-        if (i.value()->GetLastSeen() > 30)
+        if (i.value()->GetLastSeen() > 100)
         {
             qDebug() << "Client" << i.value()->GetAddr().toString() << "disconnected";
             auto ipIt = Ips.find(i.value()->GetAddr());

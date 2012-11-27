@@ -13,6 +13,7 @@ class TMainDisplay : public QWidget
     Q_OBJECT
 public:
     explicit TMainDisplay(TApplication* application, QWidget *parent = 0);
+    void Init();
     ~TMainDisplay();
     inline const Epsilon5::Control& GetControl() { return Control; }
 

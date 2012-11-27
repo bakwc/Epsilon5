@@ -34,6 +34,7 @@ void protobuf_ShutdownFile_Epsilon5_2eproto();
 
 class Player;
 class Bullet;
+class Object;
 class World;
 class Control;
 class Control_KeyStatus;
@@ -117,21 +118,21 @@ class Player : public ::google::protobuf::Message {
   inline double y() const;
   inline void set_y(double value);
   
-  // required double vx = 4;
+  // optional double vx = 4;
   inline bool has_vx() const;
   inline void clear_vx();
   static const int kVxFieldNumber = 4;
   inline double vx() const;
   inline void set_vx(double value);
   
-  // required double vy = 5;
+  // optional double vy = 5;
   inline bool has_vy() const;
   inline void clear_vy();
   static const int kVyFieldNumber = 5;
   inline double vy() const;
   inline void set_vy(double value);
   
-  // required double angle = 6;
+  // optional double angle = 6;
   inline bool has_angle() const;
   inline void clear_angle();
   static const int kAngleFieldNumber = 6;
@@ -256,14 +257,14 @@ class Bullet : public ::google::protobuf::Message {
   inline double y() const;
   inline void set_y(double value);
   
-  // required double vx = 3;
+  // optional double vx = 3;
   inline bool has_vx() const;
   inline void clear_vx();
   static const int kVxFieldNumber = 3;
   inline double vx() const;
   inline void set_vx(double value);
   
-  // required double vy = 4;
+  // optional double vy = 4;
   inline bool has_vy() const;
   inline void clear_vy();
   static const int kVyFieldNumber = 4;
@@ -297,6 +298,118 @@ class Bullet : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static Bullet* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Object : public ::google::protobuf::Message {
+ public:
+  Object();
+  virtual ~Object();
+  
+  Object(const Object& from);
+  
+  inline Object& operator=(const Object& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Object& default_instance();
+  
+  void Swap(Object* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Object* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Object& from);
+  void MergeFrom(const Object& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+  
+  // required double x = 2;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 2;
+  inline double x() const;
+  inline void set_x(double value);
+  
+  // required double y = 3;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 3;
+  inline double y() const;
+  inline void set_y(double value);
+  
+  // required double angle = 4;
+  inline bool has_angle() const;
+  inline void clear_angle();
+  static const int kAngleFieldNumber = 4;
+  inline double angle() const;
+  inline void set_angle(double value);
+  
+  // @@protoc_insertion_point(class_scope:Epsilon5.Object)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_angle();
+  inline void clear_has_angle();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  double x_;
+  double y_;
+  double angle_;
+  ::google::protobuf::int32 id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_Epsilon5_2eproto();
+  friend void protobuf_AssignDesc_Epsilon5_2eproto();
+  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Object* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -378,6 +491,18 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >*
       mutable_bullets();
   
+  // repeated .Epsilon5.Object objects = 3;
+  inline int objects_size() const;
+  inline void clear_objects();
+  static const int kObjectsFieldNumber = 3;
+  inline const ::Epsilon5::Object& objects(int index) const;
+  inline ::Epsilon5::Object* mutable_objects(int index);
+  inline ::Epsilon5::Object* add_objects();
+  inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >&
+      objects() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
+      mutable_objects();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
   
@@ -385,9 +510,10 @@ class World : public ::google::protobuf::Message {
   
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player > players_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -772,17 +898,31 @@ class PlayerInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
   
+  // required string map = 2;
+  inline bool has_map() const;
+  inline void clear_map();
+  static const int kMapFieldNumber = 2;
+  inline const ::std::string& map() const;
+  inline void set_map(const ::std::string& value);
+  inline void set_map(const char* value);
+  inline void set_map(const char* value, size_t size);
+  inline ::std::string* mutable_map();
+  inline ::std::string* release_map();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.PlayerInfo)
  private:
   inline void set_has_id();
   inline void clear_has_id();
+  inline void set_has_map();
+  inline void clear_has_map();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
+  ::std::string* map_;
   ::google::protobuf::int32 id_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -864,7 +1004,7 @@ inline void Player::set_y(double value) {
   y_ = value;
 }
 
-// required double vx = 4;
+// optional double vx = 4;
 inline bool Player::has_vx() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -886,7 +1026,7 @@ inline void Player::set_vx(double value) {
   vx_ = value;
 }
 
-// required double vy = 5;
+// optional double vy = 5;
 inline bool Player::has_vy() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -908,7 +1048,7 @@ inline void Player::set_vy(double value) {
   vy_ = value;
 }
 
-// required double angle = 6;
+// optional double angle = 6;
 inline bool Player::has_angle() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -1036,7 +1176,7 @@ inline void Bullet::set_y(double value) {
   y_ = value;
 }
 
-// required double vx = 3;
+// optional double vx = 3;
 inline bool Bullet::has_vx() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1058,7 +1198,7 @@ inline void Bullet::set_vx(double value) {
   vx_ = value;
 }
 
-// required double vy = 4;
+// optional double vy = 4;
 inline bool Bullet::has_vy() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -1078,6 +1218,98 @@ inline double Bullet::vy() const {
 inline void Bullet::set_vy(double value) {
   set_has_vy();
   vy_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Object
+
+// required int32 id = 1;
+inline bool Object::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Object::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Object::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Object::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 Object::id() const {
+  return id_;
+}
+inline void Object::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// required double x = 2;
+inline bool Object::has_x() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Object::set_has_x() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Object::clear_has_x() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Object::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline double Object::x() const {
+  return x_;
+}
+inline void Object::set_x(double value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required double y = 3;
+inline bool Object::has_y() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Object::set_has_y() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Object::clear_has_y() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Object::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline double Object::y() const {
+  return y_;
+}
+inline void Object::set_y(double value) {
+  set_has_y();
+  y_ = value;
+}
+
+// required double angle = 4;
+inline bool Object::has_angle() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Object::set_has_angle() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Object::clear_has_angle() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Object::clear_angle() {
+  angle_ = 0;
+  clear_has_angle();
+}
+inline double Object::angle() const {
+  return angle_;
+}
+inline void Object::set_angle(double value) {
+  set_has_angle();
+  angle_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1132,6 +1364,31 @@ World::bullets() const {
 inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >*
 World::mutable_bullets() {
   return &bullets_;
+}
+
+// repeated .Epsilon5.Object objects = 3;
+inline int World::objects_size() const {
+  return objects_.size();
+}
+inline void World::clear_objects() {
+  objects_.Clear();
+}
+inline const ::Epsilon5::Object& World::objects(int index) const {
+  return objects_.Get(index);
+}
+inline ::Epsilon5::Object* World::mutable_objects(int index) {
+  return objects_.Mutable(index);
+}
+inline ::Epsilon5::Object* World::add_objects() {
+  return objects_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >&
+World::objects() const {
+  return objects_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
+World::mutable_objects() {
+  return &objects_;
 }
 
 // -------------------------------------------------------------------
@@ -1411,6 +1668,64 @@ inline ::google::protobuf::int32 PlayerInfo::id() const {
 inline void PlayerInfo::set_id(::google::protobuf::int32 value) {
   set_has_id();
   id_ = value;
+}
+
+// required string map = 2;
+inline bool PlayerInfo::has_map() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PlayerInfo::set_has_map() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PlayerInfo::clear_has_map() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PlayerInfo::clear_map() {
+  if (map_ != &::google::protobuf::internal::kEmptyString) {
+    map_->clear();
+  }
+  clear_has_map();
+}
+inline const ::std::string& PlayerInfo::map() const {
+  return *map_;
+}
+inline void PlayerInfo::set_map(const ::std::string& value) {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  map_->assign(value);
+}
+inline void PlayerInfo::set_map(const char* value) {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  map_->assign(value);
+}
+inline void PlayerInfo::set_map(const char* value, size_t size) {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  map_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerInfo::mutable_map() {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  return map_;
+}
+inline ::std::string* PlayerInfo::release_map() {
+  clear_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = map_;
+    map_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 

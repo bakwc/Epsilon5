@@ -7,12 +7,14 @@ class TMap : public QObject
 {
     Q_OBJECT
 public:
-    TMap(const QString& fileName, QObject *parent = 0);
+    TMap(QObject *parent = 0);
     ~TMap();
     QImage GetFrame(int x, int y, const QSize& frameSize);
-
+public slots:
+    void LoadMap(QString map);
 private:
     size_t Width;
     size_t Height;
     QImage* Background;
+    bool Loaded;
 };

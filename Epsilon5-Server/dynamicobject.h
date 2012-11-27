@@ -10,7 +10,8 @@ class TDynamicObject : public QObject
 public:
     explicit TDynamicObject(double x, double y, double vx,
                             double vy, double angle, QObject *parent = 0);
-    ~TDynamicObject();
+    virtual ~TDynamicObject();
+    void SetRectSize(double width, double height);
     inline double GetX() { return Body->GetPosition()(0); }
     inline double GetY() { return Body->GetPosition()(1); }
     inline double GetVx() { return Body->GetLinearVelocity()(0); }
@@ -39,7 +40,7 @@ public:
     inline void setAngle(double angle) {
         Body->SetTransform(Body->GetPosition(), angle);
     }
-    virtual void ApplyCustomPhysics() = 0;
+    virtual void ApplyCustomPhysics() {}
 protected:
     b2World* B2World();
 protected:

@@ -1,3 +1,4 @@
+#include "../utils/uexception.h"
 #include "imagestorage.h"
 
 TImageStorage::TImageStorage(QObject *parent) :
@@ -6,15 +7,15 @@ TImageStorage::TImageStorage(QObject *parent) :
 }
 
 void TImageStorage::LoadAll() {
-    LoadImage("player", "mad.png");
-    LoadImage("enemy", "peka.png");
-    LoadImage("bullet", "arbuz.png");
+    LoadImage("player", "resources/mad.png");
+    LoadImage("enemy", "resources/peka.png");
+    LoadImage("bullet", "resources/arbuz.png");
 }
 
 const QImage& TImageStorage::GetImage(const QString& imageName) {
     auto it = Images.find(imageName);
     if (it == Images.end()) {
-        // TODO: throw exception here
+        throw UException("Image not found!");
     }
     return *it.value();
 }

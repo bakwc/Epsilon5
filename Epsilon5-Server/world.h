@@ -9,6 +9,10 @@
 
 #include "player.h"
 #include "bullet.h"
+#include "staticobject.h"
+#include "dynamicobject.h"
+
+class TApplication;
 
 class TWorld : public QObject
 {
@@ -26,10 +30,15 @@ public slots:
     void PlayerEnter(size_t id);
     void PlayerExit(size_t id);
     void SpawnBullet(TBullet *bullet);
+    void SpawnObject(size_t id, int x, int y, double angle);
+    void ClearObjects();
 private:
     void timerEvent(QTimerEvent *);
+    TApplication* Application();
 private:
     b2World* B2World;
     QHash<size_t, TPlayer*> Players;
     QList<TBullet*> Bullets;
+    QList<TStaticObject*> StaticObjects;
+    QList<TDynamicObject*> DynamicObjects;
 };

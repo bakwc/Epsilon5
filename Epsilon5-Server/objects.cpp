@@ -45,7 +45,7 @@ void TObjects::LoadObjects(const QString &fileName) {
     }
 }
 
-QPointF TObjects::GetObjectSize(size_t id) {
+QPoint TObjects::GetObjectSize(size_t id) {
     if (Objects.find(id) == Objects.end()) {
         throw UException("Object not found!");
     }

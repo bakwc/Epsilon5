@@ -33,6 +33,7 @@ message Object {
 message World {
     repeated Player players = 1;
     repeated Bullet bullets = 2;
+    repeated Object objects = 3;
 }
 
 message Control {

@@ -1,3 +1,4 @@
+#include <QTime>
 #include "../utils/uexception.h"
 #include "client.h"
 #include "server.h"
@@ -50,6 +51,12 @@ void TClient::OnDataReceived(const QByteArray &data)
             SetSeen();
             NickName = auth.name().c_str();
             SendPlayerInfo();
+
+            QTime dieTime= QTime::currentTime().addSecs(1);
+            while( QTime::currentTime() < dieTime ) {
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            }
+
             emit SpawnPlayer(Id);
             TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
             player->SetNickname(NickName);

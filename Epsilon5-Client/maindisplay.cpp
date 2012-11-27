@@ -28,7 +28,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Application(application)
     , Frame(new QImage(800, 600, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
-    , Map(new TMap("test.e5m", this))
+    , Map(new TMap(this))
 {
     Images->LoadAll();
     setFixedSize(800, 600);
@@ -43,6 +43,11 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     //startTimer(10);
 }
 
+void TMainDisplay::Init() {
+    connect(Application->GetNetwork(), SIGNAL(LoadMap(QString)),
+            Map, SLOT(LoadMap(QString)));
+}
+
 TMainDisplay::~TMainDisplay()
 {
     if( Frame )
@@ -51,7 +56,7 @@ TMainDisplay::~TMainDisplay()
 
 void TMainDisplay::RedrawWorld() {
     Epsilon5::World world = ((TNetwork*)(QObject::sender()))->GetWorld();
-    //Frame->fill(Qt::black);
+    Frame->fill(Qt::black);
     QPainter painter(Frame);
 
     QPoint gamerPos, cursorPos;

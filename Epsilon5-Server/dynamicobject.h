@@ -11,6 +11,7 @@ public:
     explicit TDynamicObject(double x, double y, double vx,
                             double vy, double angle, QObject *parent = 0);
     virtual ~TDynamicObject();
+    void SetRectSize(double width, double height);
     inline double GetX() { return Body->GetPosition()(0); }
     inline double GetY() { return Body->GetPosition()(1); }
     inline double GetVx() { return Body->GetLinearVelocity()(0); }

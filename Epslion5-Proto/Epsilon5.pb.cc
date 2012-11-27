@@ -109,9 +109,10 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Object));
   World_descriptor_ = file->message_type(3);
-  static const int World_offsets_[2] = {
+  static const int World_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, players_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, bullets_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, objects_),
   };
   World_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -254,16 +255,17 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007 "
     "\002(\t\"6\n\006Bullet\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\n\n\002v"
     "x\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\"9\n\006Object\022\n\n\002id\030\001 \002("
-    "\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\r\n\005angle\030\004 \002(\001\"M"
+    "\005\022\t\n\001x\030\002 \002(\001\022\t\n\001y\030\003 \002(\001\022\r\n\005angle\030\004 \002(\001\"p"
     "\n\005World\022!\n\007players\030\001 \003(\0132\020.Epsilon5.Play"
-    "er\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\"\300\001"
-    "\n\007Control\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5."
-    "Control.KeyStatus\022\r\n\005angle\030\002 \002(\001\032v\n\tKeyS"
-    "tatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n"
-    "\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyA"
-    "ttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"\024\n\004Auth"
-    "\022\014\n\004name\030\001 \002(\t\"%\n\nPlayerInfo\022\n\n\002id\030\001 \002(\005"
-    "\022\013\n\003map\030\002 \002(\t", 573);
+    "er\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\022!\n"
+    "\007objects\030\003 \003(\0132\020.Epsilon5.Object\"\300\001\n\007Con"
+    "trol\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5.Contr"
+    "ol.KeyStatus\022\r\n\005angle\030\002 \002(\001\032v\n\tKeyStatus"
+    "\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyL"
+    "eft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyAttack"
+    "1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"\024\n\004Auth\022\014\n\004n"
+    "ame\030\001 \002(\t\"%\n\nPlayerInfo\022\n\n\002id\030\001 \002(\005\022\013\n\003m"
+    "ap\030\002 \002(\t", 608);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -1395,6 +1397,7 @@ void Object::Swap(Object* other) {
 #ifndef _MSC_VER
 const int World::kPlayersFieldNumber;
 const int World::kBulletsFieldNumber;
+const int World::kObjectsFieldNumber;
 #endif  // !_MSC_VER
 
 World::World()
@@ -1448,6 +1451,7 @@ World* World::New() const {
 void World::Clear() {
   players_.Clear();
   bullets_.Clear();
+  objects_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1484,6 +1488,21 @@ bool World::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(18)) goto parse_bullets;
+        if (input->ExpectTag(26)) goto parse_objects;
+        break;
+      }
+      
+      // repeated .Epsilon5.Object objects = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_objects:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_objects()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_objects;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -1518,6 +1537,12 @@ void World::SerializeWithCachedSizes(
       2, this->bullets(i), output);
   }
   
+  // repeated .Epsilon5.Object objects = 3;
+  for (int i = 0; i < this->objects_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      3, this->objects(i), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1538,6 +1563,13 @@ void World::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         2, this->bullets(i), target);
+  }
+  
+  // repeated .Epsilon5.Object objects = 3;
+  for (int i = 0; i < this->objects_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        3, this->objects(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1564,6 +1596,14 @@ int World::ByteSize() const {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         this->bullets(i));
+  }
+  
+  // repeated .Epsilon5.Object objects = 3;
+  total_size += 1 * this->objects_size();
+  for (int i = 0; i < this->objects_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->objects(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -1593,6 +1633,7 @@ void World::MergeFrom(const World& from) {
   GOOGLE_CHECK_NE(&from, this);
   players_.MergeFrom(from.players_);
   bullets_.MergeFrom(from.bullets_);
+  objects_.MergeFrom(from.objects_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1616,6 +1657,9 @@ bool World::IsInitialized() const {
   for (int i = 0; i < bullets_size(); i++) {
     if (!this->bullets(i).IsInitialized()) return false;
   }
+  for (int i = 0; i < objects_size(); i++) {
+    if (!this->objects(i).IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -1623,6 +1667,7 @@ void World::Swap(World* other) {
   if (other != this) {
     players_.Swap(&other->players_);
     bullets_.Swap(&other->bullets_);
+    objects_.Swap(&other->objects_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

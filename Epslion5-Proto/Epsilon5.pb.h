@@ -491,6 +491,18 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >*
       mutable_bullets();
   
+  // repeated .Epsilon5.Object objects = 3;
+  inline int objects_size() const;
+  inline void clear_objects();
+  static const int kObjectsFieldNumber = 3;
+  inline const ::Epsilon5::Object& objects(int index) const;
+  inline ::Epsilon5::Object* mutable_objects(int index);
+  inline ::Epsilon5::Object* add_objects();
+  inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >&
+      objects() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
+      mutable_objects();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
   
@@ -498,9 +510,10 @@ class World : public ::google::protobuf::Message {
   
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player > players_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1351,6 +1364,31 @@ World::bullets() const {
 inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet >*
 World::mutable_bullets() {
   return &bullets_;
+}
+
+// repeated .Epsilon5.Object objects = 3;
+inline int World::objects_size() const {
+  return objects_.size();
+}
+inline void World::clear_objects() {
+  objects_.Clear();
+}
+inline const ::Epsilon5::Object& World::objects(int index) const {
+  return objects_.Get(index);
+}
+inline ::Epsilon5::Object* World::mutable_objects(int index) {
+  return objects_.Mutable(index);
+}
+inline ::Epsilon5::Object* World::add_objects() {
+  return objects_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >&
+World::objects() const {
+  return objects_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
+World::mutable_objects() {
+  return &objects_;
 }
 
 // -------------------------------------------------------------------

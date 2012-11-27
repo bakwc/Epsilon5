@@ -44,6 +44,12 @@ QByteArray TWorld::Serialize() {
         bullet->set_vy((*i)->GetVy() * 10);
     }
 
+    /*
+    for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
+        auto object = world.add_objects();
+        object->set_id((*i)->Get);
+    }*/
+
     QByteArray result;
     result.resize(world.ByteSize());
     world.SerializeToArray(result.data(), result.size());
@@ -89,7 +95,7 @@ void TWorld::timerEvent(QTimerEvent *) {
         }
     }
 
-    float step = 1.0f / 60.0f;
+    float step = 1.0f / 100.0f;
     qint32 velocityIterations = 10;
     qint32 positionIterations = 8;
     B2World->Step(step, velocityIterations, positionIterations);
@@ -102,11 +108,14 @@ void TWorld::SpawnBullet(TBullet* bullet) {
 
 void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
     bool dynamic = Application()->GetObjects()->IsDynamicObject(id);
+    QPoint size = Application()->GetObjects()->GetObjectSize(id);
     if (dynamic) {
         TDynamicObject* obj = new TDynamicObject(0.1 * x, 0.1 * y, 0, 0, angle, this);
+        obj->SetRectSize(0.1 * size.x(), 0.1 * size.y());
         DynamicObjects.insert(DynamicObjects.end(), obj);
     } else {
         TStaticObject* obj = new TStaticObject(0.1 * x, 0.1 * y, angle, this);
+        obj->SetRectSize(0.1 * size.x(), 0.1 * size.y());
         StaticObjects.insert(StaticObjects.end(), obj);
     }
 }

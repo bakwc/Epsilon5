@@ -10,6 +10,7 @@ TApplication::TApplication(int& argc, char *argv[])
 }
 
 bool TApplication::Init() {
+    MainDisplay.Init();
     MainDisplay.show();
     Network->Start();
     return true; // TODO: normal initialisation

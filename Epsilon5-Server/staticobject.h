@@ -10,6 +10,7 @@ class TStaticObject : public QObject
 public:
     explicit TStaticObject(double x, double y, double angle,QObject *parent = 0);
     virtual ~TStaticObject() {}
+    void SetRectSize(double width, double height);
 protected:
     b2World* B2World();
 protected:

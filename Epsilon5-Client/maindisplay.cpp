@@ -45,7 +45,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
     //Started = false;
-    //startTimer(10);
+    startTimer(10);
 }
 
 void TMainDisplay::Init() {
@@ -140,7 +140,7 @@ void TMainDisplay::RedrawWorld() {
 }
 
 void TMainDisplay::timerEvent(QTimerEvent *) {
-
+    this->update();
 }
 
 void TMainDisplay::paintEvent(QPaintEvent *) {

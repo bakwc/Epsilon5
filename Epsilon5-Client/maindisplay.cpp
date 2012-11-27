@@ -31,9 +31,8 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Frame(new QImage(1680, 1050, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
+    , Objects(new TObjects(this))
 {
-    Images->LoadAll();
-
     setBaseSize(800, 600);
     setFixedSize(baseSize());
 
@@ -44,19 +43,21 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     Control.mutable_keystatus()->set_keyright(false);
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
-    //Started = false;
-    //startTimer(10);
 }
 
 void TMainDisplay::Init() {
+    Images->LoadAll();
+    Objects->LoadObjects("objects/objects.txt");
+
     connect(Application->GetNetwork(), SIGNAL(LoadMap(QString)),
             Map, SLOT(LoadMap(QString)));
 }
 
 TMainDisplay::~TMainDisplay()
 {
-    if( Frame )
+    if (Frame) {
         delete Frame;
+    }
 }
 
 void TMainDisplay::RedrawWorld() {
@@ -101,35 +102,40 @@ void TMainDisplay::RedrawWorld() {
         } else {
             img = &Images->GetImage("enemy");
         }
-        painter.drawImage(
-            widgetCenter.x() + cx - img->width() / 2,
-            widgetCenter.y() + cy - img->height() / 2,
-            *img);
+        painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                          widgetCenter.y() + cy - img->height() / 2, *img);
+
         painter.setPen(Qt::yellow);
         painter.setFont(nickFont);
-        QRect nickRect = QRect(
-            widgetCenter.x() + cx - nickMaxWidth/2,
-            widgetCenter.y() + cy - img->height()/2 - painter.fontInfo().pixelSize(),
-            nickMaxWidth,
-            painter.fontInfo().pixelSize());
-        painter.drawText(
-            nickRect,
-            Qt::AlignTop | Qt::AlignHCenter,
-            nickName);
+        QRect nickRect = QRect(widgetCenter.x() + cx - nickMaxWidth/2,
+                        widgetCenter.y() + cy - img->height()/2
+                               - painter.fontInfo().pixelSize(),
+                        nickMaxWidth, painter.fontInfo().pixelSize());
+
+        painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
         painter.setPen(oldPen);
         painter.setFont(oldFont);
     }
 
     img = &Images->GetImage("bullet");
-    //qDebug() << "bullets: " << world.bullets_size();
+
     for (int i = 0; i != world.bullets_size(); i++) {
         const Epsilon5::Bullet &bullet = world.bullets(i);
         int cx = GetCorrect(playerX, bullet.x());
-        int cy = GetCorrect(playerY, bullet.y());;
-        painter.drawImage(
-            widgetCenter.x() + cx - img->width() / 2,
-            widgetCenter.y() + cy - img->height() / 2,
-            *img);
+        int cy = GetCorrect(playerY, bullet.y());
+
+        painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                          widgetCenter.y() + cy - img->height() / 2, *img);
+    }
+
+    for (int i = 0; i != world.objects_size(); i++) {
+        const Epsilon5::Object& object = world.objects(i);
+        int cx = GetCorrect(playerX, object.x());
+        int cy = GetCorrect(playerY, object.y());
+        img = Objects->GetImageById(object.id());
+
+        painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                          widgetCenter.y() + cy - img->height() / 2, *img);
     }
 
     cursorPos = this->mapFromGlobal(QCursor::pos());

@@ -53,11 +53,21 @@ QByteArray TWorld::Serialize() {
         bullet->set_vy((*i)->GetVy() * 10);
     }
 
-    /*
     for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
         auto object = world.add_objects();
-        object->set_id((*i)->Get);
-    }*/
+        object->set_x((*i)->GetX() * 10);
+        object->set_y((*i)->GetY() * 10);
+        object->set_angle((*i)->GetAngle());
+        object->set_id((*i)->GetId());
+    }
+
+    for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
+        auto object = world.add_objects();
+        object->set_x((*i)->GetX() * 10);
+        object->set_y((*i)->GetY() * 10);
+        object->set_angle((*i)->GetAngle());
+        object->set_id((*i)->GetId());
+    }
 
     QByteArray result;
     result.resize(world.ByteSize());
@@ -86,7 +96,6 @@ void TWorld::PlayerExit(size_t id) {
 }
 
 void TWorld::timerEvent(QTimerEvent *) {
-    //TODO: Make physics
     for (auto i = Players.begin(); i != Players.end(); i++)
     {
         i.value()->ApplyCustomPhysics();
@@ -121,10 +130,12 @@ void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
     if (dynamic) {
         TDynamicObject* obj = new TDynamicObject(0.1 * x, 0.1 * y, 0, 0, angle, this);
         obj->SetRectSize(0.1 * size.x(), 0.1 * size.y());
+        obj->SetId(id);
         DynamicObjects.insert(DynamicObjects.end(), obj);
     } else {
         TStaticObject* obj = new TStaticObject(0.1 * x, 0.1 * y, angle, this);
         obj->SetRectSize(0.1 * size.x(), 0.1 * size.y());
+        obj->SetId(id);
         StaticObjects.insert(StaticObjects.end(), obj);
     }
 }

@@ -4,6 +4,7 @@
 TDynamicObject::TDynamicObject(double x, double y, double vx,
                                double vy, double angle, QObject *parent)
     : QObject(parent)
+    , Id(0)
 {
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
@@ -23,7 +24,7 @@ TDynamicObject::~TDynamicObject() {
 
 void TDynamicObject::SetRectSize(double width, double height) {
     b2PolygonShape polygon;
-    polygon.SetAsBox(width, height);
+    polygon.SetAsBox(width / 2, height / 2);
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &polygon;
     fixtureDef.density = 0.8f;

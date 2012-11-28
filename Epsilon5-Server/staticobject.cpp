@@ -1,4 +1,5 @@
 #include <QVector>
+#include "../utils/uexception.h"
 #include "staticobject.h"
 #include "world.h"
 
@@ -6,6 +7,9 @@ TStaticObject::TStaticObject(double x, double y, double angle, QObject *parent)
     : QObject(parent)
     , Id(0)
 {
+    if (std::isnan(x) || std::isnan(y) || std::isnan(angle)) {
+        throw UException("Value is NaN");
+    }
     b2BodyDef bodyDef;
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(x, y);

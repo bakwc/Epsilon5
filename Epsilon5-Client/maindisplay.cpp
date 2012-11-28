@@ -3,7 +3,9 @@
 #include <QDesktopWidget>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QDebug>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
+#include "../utils/uexception.h"
 #include "network.h"
 #include "maindisplay.h"
 #include "application.h"
@@ -61,88 +63,100 @@ TMainDisplay::~TMainDisplay()
 }
 
 void TMainDisplay::RedrawWorld() {
-    Epsilon5::World world = ((TNetwork*)(QObject::sender()))->GetWorld();
-    Frame->fill(Qt::black);
-    QPainter painter(Frame);
-    QPoint gamerPos, cursorPos;
+    try {
+        Epsilon5::World world = ((TNetwork*)(QObject::sender()))->GetWorld();
+        Frame->fill(Qt::black);
+        QPainter painter(Frame);
+        QPoint gamerPos, cursorPos;
 
-    const int nickMaxWidth = 200;
-    int playerX = 0;
-    int playerY = 0;
+        const int nickMaxWidth = 200;
+        int playerX = 0;
+        int playerY = 0;
+        bool playerFound = false;
 
-    for (int i = 0; i != world.players_size(); i++) {
-        const Epsilon5::Player &player = world.players(i);
-        if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
-            playerX = player.x();
-            playerY = player.y();
+        size_t playerId = Application->GetNetwork()->GetId();
+
+        for (int i = 0; i != world.players_size(); i++) {
+            const Epsilon5::Player &player = world.players(i);
+            if ((size_t)player.id() == playerId) {
+                playerX = player.x();
+                playerY = player.y();
+                playerFound = true;
+            }
         }
-    }
 
-    QPoint widgetCenter(width() / 2, height() / 2);
-    QImage background = Map->GetFrame(playerX, playerY, size());
-    painter.drawImage(0, 0, background);
-
-    const QFont oldFont = painter.font();
-    const QPen oldPen = painter.pen();
-    QFont nickFont(oldFont);
-    nickFont.setBold(true);
-    nickFont.setPointSize(12);
-
-    const QImage* img;
-    for (int i = 0; i != world.players_size(); i++) {
-        const Epsilon5::Player &player = world.players(i);
-
-        int cx = GetCorrect(playerX, player.x());
-        int cy = GetCorrect(playerY, player.y());
-        QString nickName = player.name().c_str();
-        if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
-            gamerPos.setX(widgetCenter.x() + cx);
-            gamerPos.setY(widgetCenter.y() + cy);
-            img = &Images->GetImage("player");
-        } else {
-            img = &Images->GetImage("enemy");
+        if (!playerFound) {
+            throw UException("No player found with id " + QString::number(playerId));
         }
-        painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                          widgetCenter.y() + cy - img->height() / 2, *img);
 
-        painter.setPen(Qt::yellow);
-        painter.setFont(nickFont);
-        QRect nickRect = QRect(widgetCenter.x() + cx - nickMaxWidth/2,
-                        widgetCenter.y() + cy - img->height()/2
-                               - painter.fontInfo().pixelSize(),
-                        nickMaxWidth, painter.fontInfo().pixelSize());
+        QPoint widgetCenter(width() / 2, height() / 2);
+        QImage background = Map->GetFrame(playerX, playerY, size());
+        painter.drawImage(0, 0, background);
 
-        painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
-        painter.setPen(oldPen);
-        painter.setFont(oldFont);
+        const QFont oldFont = painter.font();
+        const QPen oldPen = painter.pen();
+        QFont nickFont(oldFont);
+        nickFont.setBold(true);
+        nickFont.setPointSize(12);
+
+        const QImage* img;
+        for (int i = 0; i != world.players_size(); i++) {
+            const Epsilon5::Player &player = world.players(i);
+
+            int cx = GetCorrect(playerX, player.x());
+            int cy = GetCorrect(playerY, player.y());
+            QString nickName = player.name().c_str();
+            if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
+                gamerPos.setX(widgetCenter.x() + cx);
+                gamerPos.setY(widgetCenter.y() + cy);
+                img = &Images->GetImage("player");
+            } else {
+                img = &Images->GetImage("enemy");
+            }
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
+
+            painter.setPen(Qt::yellow);
+            painter.setFont(nickFont);
+            QRect nickRect = QRect(widgetCenter.x() + cx - nickMaxWidth/2,
+                            widgetCenter.y() + cy - img->height()/2
+                                   - painter.fontInfo().pixelSize(),
+                            nickMaxWidth, painter.fontInfo().pixelSize());
+
+            painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
+            painter.setPen(oldPen);
+            painter.setFont(oldFont);
+        }
+
+        img = &Images->GetImage("bullet");
+
+        for (int i = 0; i != world.bullets_size(); i++) {
+            const Epsilon5::Bullet &bullet = world.bullets(i);
+            int cx = GetCorrect(playerX, bullet.x());
+            int cy = GetCorrect(playerY, bullet.y());
+
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
+        }
+
+        for (int i = 0; i != world.objects_size(); i++) {
+            const Epsilon5::Object& object = world.objects(i);
+            int cx = GetCorrect(playerX, object.x());
+            int cy = GetCorrect(playerY, object.y());
+            img = Objects->GetImageById(object.id());
+
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
+        }
+
+        cursorPos = this->mapFromGlobal(QCursor::pos());
+        double angle = getAngle(cursorPos - gamerPos);
+        Control.set_angle(angle);
+
+        this->update();
+    } catch (const std::exception& e) {
+        qDebug() << Q_FUNC_INFO << ": " << e.what();
     }
-
-    img = &Images->GetImage("bullet");
-
-    for (int i = 0; i != world.bullets_size(); i++) {
-        const Epsilon5::Bullet &bullet = world.bullets(i);
-        int cx = GetCorrect(playerX, bullet.x());
-        int cy = GetCorrect(playerY, bullet.y());
-
-        painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                          widgetCenter.y() + cy - img->height() / 2, *img);
-    }
-
-    for (int i = 0; i != world.objects_size(); i++) {
-        const Epsilon5::Object& object = world.objects(i);
-        int cx = GetCorrect(playerX, object.x());
-        int cy = GetCorrect(playerY, object.y());
-        img = Objects->GetImageById(object.id());
-
-        painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                          widgetCenter.y() + cy - img->height() / 2, *img);
-    }
-
-    cursorPos = this->mapFromGlobal(QCursor::pos());
-    double angle = getAngle(cursorPos - gamerPos);
-    Control.set_angle(angle);
-
-    this->update();
 }
 
 void TMainDisplay::timerEvent(QTimerEvent *) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QDebug>
 #include <Box2D/Box2D.h>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 

@@ -8,6 +8,7 @@ TWorld::TWorld(QObject *parent)
     : QObject(parent)
     , B2World(new b2World(b2Vec2(0, 0)))
 {
+    B2World->ClearForces();
 }
 
 TWorld::~TWorld()
@@ -37,6 +38,7 @@ QByteArray TWorld::Serialize() {
         player->set_id(i.key());
         player->set_x(i.value()->GetX() * 10);
         player->set_y(i.value()->GetY() * 10);
+
         player->set_vx(i.value()->GetVx() * 10);
         player->set_vy(i.value()->GetVy() * 10);
         player->set_angle(i.value()->GetAngle());
@@ -117,7 +119,6 @@ void TWorld::timerEvent(QTimerEvent *) {
     qint32 velocityIterations = 10;
     qint32 positionIterations = 8;
     B2World->Step(step, velocityIterations, positionIterations);
-    B2World->ClearForces();
 }
 
 void TWorld::SpawnBullet(TBullet* bullet) {

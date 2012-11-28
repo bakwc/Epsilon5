@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "createmapdialog.h"
+#include "mappainter.h"
 
 class MainWindow : public QMainWindow
 {
@@ -13,10 +14,11 @@ public:
 signals:
     
 public slots:
+    void openDialogSlot();
 
 private:
-    CreateMapDialog _mapDialog;
-    
+    CreateMapDialog _dialog;
+    MapPainter      *_mapPainter;
 };
 
 #endif // MAINWINDOW_H

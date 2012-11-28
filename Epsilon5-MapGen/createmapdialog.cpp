@@ -21,3 +21,12 @@ void CreateMapDialog::on_selectTextureButton_clicked()
     QString f = QFileDialog::getOpenFileName(this, "Open map texture");
     emit selectTexture(f);
 }
+
+void CreateMapDialog::accept()
+{
+    _name = ui->name->text();
+    _size = QSize(ui->width->text().toInt(), ui->height->text().toInt());
+    _back = QImage(ui->texturePath->text());
+
+    QDialog::accept();
+}

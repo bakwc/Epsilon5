@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QPixmap>
+#include <QMatrix>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "../utils/uexception.h"
 #include "network.h"
@@ -143,10 +145,16 @@ void TMainDisplay::RedrawWorld() {
             const Epsilon5::Object& object = world.objects(i);
             int cx = GetCorrect(playerX, object.x());
             int cy = GetCorrect(playerY, object.y());
+
             img = Objects->GetImageById(object.id());
 
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
+            QTransform transform;
+            transform.rotate(object.angle() * 180 / M_PI);
+            QImage rimg = img->transformed(transform);
+
+            painter.drawImage(widgetCenter.x() + cx - rimg.width() / 2,
+                              widgetCenter.y() + cy - rimg.height() / 2, rimg);
+            painter.drawEllipse(widgetCenter.x() + cx, widgetCenter.y() + cy, 2, 2);
         }
 
         cursorPos = this->mapFromGlobal(QCursor::pos());

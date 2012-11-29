@@ -213,15 +213,19 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key_Up:
+    case Qt::Key_W:
         Control.mutable_keystatus()->set_keyup(true);
         break;
     case Qt::Key_Down:
+    case Qt::Key_S:
         Control.mutable_keystatus()->set_keydown(true);
         break;
     case Qt::Key_Right:
+    case Qt::Key_D:
         Control.mutable_keystatus()->set_keyright(true);
         break;
     case Qt::Key_Left:
+    case Qt::Key_A:
         Control.mutable_keystatus()->set_keyleft(true);
         break;
     default:
@@ -234,15 +238,19 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key_Up:
+    case Qt::Key_W:
         Control.mutable_keystatus()->set_keyup(false);
         break;
     case Qt::Key_Down:
+    case Qt::Key_S:
         Control.mutable_keystatus()->set_keydown(false);
         break;
     case Qt::Key_Right:
+    case Qt::Key_D:
         Control.mutable_keystatus()->set_keyright(false);
         break;
     case Qt::Key_Left:
+    case Qt::Key_A:
         Control.mutable_keystatus()->set_keyleft(false);
         break;
     case Qt::Key_F11:

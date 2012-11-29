@@ -1,8 +1,12 @@
 #include <QDebug>
+#include <QSize>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include "../utils/uexception.h"
 #include "application.h"
 #include "world.h"
+
+const quint16 WORLD_BORDER_SIZE = 4;
+const size_t WORLD_BORDER_ID = -1;
 
 TWorld::TWorld(QObject *parent)
     : QObject(parent)
@@ -64,6 +68,14 @@ QByteArray TWorld::Serialize() {
     }
 
     for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
+        auto object = world.add_objects();
+        object->set_x((*i)->GetX() * 10);
+        object->set_y((*i)->GetY() * 10);
+        object->set_angle((*i)->GetAngle());
+        object->set_id((*i)->GetId());
+    }
+
+    for (auto i = WorldBorders.begin(); i != WorldBorders.end(); i++) {
         auto object = world.add_objects();
         object->set_x((*i)->GetX() * 10);
         object->set_y((*i)->GetY() * 10);
@@ -153,6 +165,33 @@ void TWorld::ClearObjects() {
     DynamicObjects.clear();
 }
 
+void TWorld::ClearBorders() {
+    for (auto i = WorldBorders.begin(); i != WorldBorders.end(); i++) {
+        (*i)->deleteLater();
+    }
+    WorldBorders.clear();
+}
+
 TApplication* TWorld::Application() {
     return (TApplication*)(parent());
+}
+
+void TWorld::SpawnBorders(const QSize &mapSize) {
+    TStaticObject* obj = new TStaticObject(
+        0.0, -mapSize.height() / 2 * 0.1, 0, this);
+    obj->SetRectSize(0.1 * mapSize.width(), WORLD_BORDER_SIZE);
+    obj->SetId(WORLD_BORDER_ID);
+    WorldBorders.insert(WorldBorders.end(), obj);
+    obj = new TStaticObject(-mapSize.width() / 2 * 0.1, 0.0, 0, this);
+    obj->SetRectSize(WORLD_BORDER_SIZE, 0.1 * mapSize.height());
+    obj->SetId(WORLD_BORDER_ID);
+    WorldBorders.insert(WorldBorders.end(), obj);
+    obj = new TStaticObject(0.0, 0.1 * mapSize.height() / 2, 0, this);
+    obj->SetRectSize(0.1 * mapSize.width(), WORLD_BORDER_SIZE);
+    obj->SetId(WORLD_BORDER_ID);
+    WorldBorders.insert(WorldBorders.end(), obj);
+    obj = new TStaticObject(0.1 * mapSize.width() / 2,0.0, 0, this);
+    obj->SetRectSize(WORLD_BORDER_SIZE, 0.1 * mapSize.height());
+    obj->SetId(WORLD_BORDER_ID);
+    WorldBorders.insert(WorldBorders.end(), obj);
 }

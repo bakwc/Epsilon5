@@ -5,6 +5,8 @@
 #include <QStringList>
 #include <QPoint>
 
+class QSize;
+
 enum EMapStatus {
     MS_NoMap,
     MS_Loading,
@@ -25,7 +27,9 @@ public:
     QPoint GetMapSize();
 signals:
     void SpawnObject(size_t id, int x, int y, double angle);
+    void SpawnBorders(const QSize& MapSize);
     void ClearObjects();
+    void ClearBorders();
 private:
     void LoadConfig(const QString& fileName);
     void LoadObjects(const QString& fileName);

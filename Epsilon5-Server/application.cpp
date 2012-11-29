@@ -16,8 +16,14 @@ TApplication::TApplication(int& argc, char *argv[])
     connect(Maps, SIGNAL(SpawnObject(size_t,int,int,double)),
             World, SLOT(SpawnObject(size_t,int,int,double)));
 
+    connect(Maps, SIGNAL(SpawnBorders(QSize)),
+            World, SLOT(SpawnBorders(QSize)));
+
     connect(Maps, SIGNAL(ClearObjects()),
             World, SLOT(ClearObjects()));
+
+    connect(Maps, SIGNAL(ClearBorders()),
+            World, SLOT(ClearBorders()));
 }
 
 bool TApplication::Init() {

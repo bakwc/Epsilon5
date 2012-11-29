@@ -31,7 +31,9 @@ public slots:
     void PlayerExit(size_t id);
     void SpawnBullet(TBullet *bullet);
     void SpawnObject(size_t id, int x, int y, double angle);
+    void SpawnBorders(const QSize &mapSize);
     void ClearObjects();
+    void ClearBorders();
 private:
     void timerEvent(QTimerEvent *);
     TApplication* Application();
@@ -41,4 +43,5 @@ private:
     QList<TBullet*> Bullets;
     QList<TStaticObject*> StaticObjects;
     QList<TDynamicObject*> DynamicObjects;
+    QList<TStaticObject*> WorldBorders;
 };

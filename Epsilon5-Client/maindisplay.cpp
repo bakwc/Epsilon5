@@ -141,10 +141,14 @@ void TMainDisplay::RedrawWorld() {
 
         for (int i = 0; i != world.objects_size(); i++) {
             const Epsilon5::Object& object = world.objects(i);
+
+            // BUG: Type of ID mismatch (int32 vs size_t on server)
+            if( object.id() < 0 )
+                continue;
+
             int cx = GetCorrect(playerX, object.x());
             int cy = GetCorrect(playerY, object.y());
             img = Objects->GetImageById(object.id());
-
             painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
                               widgetCenter.y() + cy - img->height() / 2, *img);
         }

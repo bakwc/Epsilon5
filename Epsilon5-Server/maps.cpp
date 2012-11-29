@@ -1,3 +1,4 @@
+#include <QSize>
 #include <QFile>
 #include <QTextStream>
 #include "../utils/uexception.h"
@@ -38,8 +39,13 @@ void TMaps::LoadNextMap() {
         CurrentMap = 0;
     }
     emit ClearObjects();
+    emit ClearBorders();
     LoadConfig("maps/" + MapFiles[CurrentMap] + "/config.ini");
     LoadObjects("maps/" + MapFiles[CurrentMap] + "/objects.txt");
+
+    // TODO: Set return type from QPoint to QSize in GetMapSize()
+    QPoint pt = GetMapSize();
+    emit SpawnBorders(QSize(pt.x(),pt.y()));
     MapStatus = MS_Ready;
 }
 
@@ -92,7 +98,6 @@ void TMaps::LoadObjects(const QString& fileName) {
         }
         emit SpawnObject(id, x, y, angle);
     }
-
 }
 
 QString TMaps::GetCurrentMap() {

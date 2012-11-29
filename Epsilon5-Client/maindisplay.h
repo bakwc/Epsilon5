@@ -6,10 +6,11 @@
 #include "imagestorage.h"
 #include "map.h"
 #include "objects.h"
+#include "../utils/ufullscreenwrapper.h"
 
 class TApplication;
 
-class TMainDisplay : public QWidget
+class TMainDisplay : public QWidget, public UFullscreenWrapper
 {
     Q_OBJECT
 public:

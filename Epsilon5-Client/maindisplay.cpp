@@ -31,6 +31,7 @@ static double getAngle(const QPoint& point)
 
 TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     : QWidget(parent)
+    , UFullscreenWrapper(this)
     , Application(application)
     , Frame(new QImage(1680, 1050, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
@@ -231,6 +232,7 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 {
+    DisplayModes modes;
     switch (event->key())
     {
     case Qt::Key_Up:
@@ -244,6 +246,14 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
         break;
     case Qt::Key_Left:
         Control.mutable_keystatus()->set_keyleft(false);
+        break;
+    case Qt::Key_F1:
+        modes = enumModes();
+        for( int i = 0; i < modes.count(); ++i )
+        {
+            qDebug() << "Mode" << i << ":" << modes.at(i).width()
+                << "x" << modes.at(i).height();
+        }
         break;
     case Qt::Key_F11:
         toggleFullscreen();

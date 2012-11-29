@@ -15,6 +15,7 @@ SOURCES += \
     ../Epsilon5-Proto/Epsilon5.pb.cc \
     ../utils/usettings.cpp \
     ../utils/uexception.cpp \
+    ../utils/ufullscreenwrapper.cpp \
     main.cpp\
     maindisplay.cpp \
     application.cpp \
@@ -29,6 +30,7 @@ HEADERS  += \
     ../Epsilon5-Proto/defines.h \
     ../utils/usettings.h \
     ../utils/uexception.h \
+    ../utils/ufullscreenwrapper.h \
     maindisplay.h \
     application.h \
     network.h \
@@ -42,6 +44,9 @@ FORMS    +=
 QMAKE_CXXFLAGS += -std=c++0x
 
 LIBS += -lprotobuf
+unix {
+    LIBS += -lX11 -lXrandr
+}
 
 OTHER_FILES += \
     ../Epsilon5-Proto/Epsilon5.proto

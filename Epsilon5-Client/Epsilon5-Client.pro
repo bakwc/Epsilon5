@@ -47,6 +47,9 @@ LIBS += -lprotobuf
 unix {
     LIBS += -lX11 -lXrandr
 }
+win32 {
+    LIBS += -luser32
+}
 
 OTHER_FILES += \
     ../Epsilon5-Proto/Epsilon5.proto

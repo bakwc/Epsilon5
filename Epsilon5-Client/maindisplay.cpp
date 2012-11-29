@@ -12,6 +12,9 @@
 #include "maindisplay.h"
 #include "application.h"
 
+const quint16 BASE_WINDOW_WIDTH = 800;
+const quint16 BASE_WINDOW_HEIGHT = 600;
+
 int GetCorrect(int player, int enemy) {
     return enemy - player;
 }
@@ -38,7 +41,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Map(new TMap(this))
     , Objects(new TObjects(this))
 {
-    setBaseSize(800, 600);
+    setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
 
     Control.set_angle(0);
@@ -232,7 +235,9 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 {
+#ifdef Q_WS_X11
     DisplayModes modes;
+#endif
     switch (event->key())
     {
     case Qt::Key_Up:
@@ -247,6 +252,7 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     case Qt::Key_Left:
         Control.mutable_keystatus()->set_keyleft(false);
         break;
+#ifdef Q_WS_X11
     case Qt::Key_F1:
         modes = enumModes();
         for( int i = 0; i < modes.count(); ++i )
@@ -255,6 +261,7 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
                 << "x" << modes.at(i).height();
         }
         break;
+#endif
     case Qt::Key_F11:
         toggleFullscreen();
         break;
@@ -268,15 +275,29 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 
 void TMainDisplay::toggleFullscreen()
 {
-    setWindowState( windowState() ^ Qt::WindowFullScreen );
+//    setWindowState( windowState() ^ Qt::WindowFullScreen );
+//    if( isFullScreen() )
+//    {
+//        QDesktopWidget dw;
+//        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
+//        setFixedSize(screenRect.size());
+//        return;
+//    }
+//    setFixedSize(baseSize());
     if( isFullScreen() )
     {
-        QDesktopWidget dw;
-        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
-        setFixedSize(screenRect.size());
+        restoreMode();
         return;
     }
-    setFixedSize(baseSize());
+
+#ifdef Q_OS_WIN32
+    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+#endif
+#ifdef Q_WS_X11
+    QDesktopWidget dw;
+    const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
+    changeToMode(screenRect.width(), screenRect.height());
+#endif
 }
 
 void TMainDisplay::drawFps(QPainter& painter)

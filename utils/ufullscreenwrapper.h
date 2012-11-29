@@ -1,8 +1,9 @@
 #pragma once
+
 #include <QObject>
 #include <QSize>
 #include <QList>
-
+//------------------------------------------------------------------------------
 class DisplayMode
 {
 public:
@@ -33,7 +34,7 @@ private:
     QSize m_size;
     quint16 m_bpp;
 };
-
+//------------------------------------------------------------------------------
 class UFullscreenWrapper
 {
 public:
@@ -42,10 +43,13 @@ public:
     explicit UFullscreenWrapper(QWidget* parent);
 
     DisplayModes enumModes();
-    void changeToMode( const DisplayMode& mode );
-    void changeToMode( int width, int height, int bpp = 0 );
+    bool changeToMode( const DisplayMode& mode );
+    bool changeToMode( int width, int height, int bpp = 0 );
+    bool restoreMode();
+
 
 private:
     DisplayModes m_displayModes;
     QWidget* m_parent;
 };
+//------------------------------------------------------------------------------

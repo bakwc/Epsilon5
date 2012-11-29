@@ -67,35 +67,35 @@ void TPlayer::ApplyCustomPhysics()
     b2Vec2 totalForce = Force + FractionForce;
     Body->ApplyForceToCenter(totalForce);
     Body->ApplyForceToCenter(Force);
-    QPoint mapSize = Maps->GetMapSize();
+    QSize mapSize = Maps->GetMapSize();
 
     b2Vec2 pos = Body->GetPosition();
     b2Vec2 speed = Body->GetLinearVelocity();
 
-    if (pos(0) * 10 > mapSize.x()/2 - 400) {
+    if (pos(0) * 10 > mapSize.width()/2 - 400) {
         speed(0) = 0;
-        pos(0) = 0.1 * (mapSize.x()/2 - 401);
+        pos(0) = 0.1 * (mapSize.width()/2 - 401);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(1) * 10 > mapSize.y()/2 - 300) {
+    if (pos(1) * 10 > mapSize.height()/2 - 300) {
         speed(1) = 0;
-        pos(1) = 0.1 * (mapSize.y()/2 - 301);
+        pos(1) = 0.1 * (mapSize.height()/2 - 301);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(0) * 10 < - mapSize.x()/2 + 400) {
+    if (pos(0) * 10 < - mapSize.width()/2 + 400) {
         speed(0) = 0;
-        pos(0) = 0.1 * (- mapSize.x()/2 + 401);
+        pos(0) = 0.1 * (- mapSize.width()/2 + 401);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(1) * 10 < - mapSize.y()/2 + 300) {
+    if (pos(1) * 10 < - mapSize.height()/2 + 300) {
         speed(1) = 0;
-        pos(1) = 0.1 * (- mapSize.y()/2 + 301);
+        pos(1) = 0.1 * (- mapSize.height()/2 + 301);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }

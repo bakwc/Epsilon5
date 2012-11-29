@@ -83,7 +83,7 @@ void TWorld::Start() {
 
 void TWorld::PlayerEnter(size_t id) {
     qDebug() << Q_FUNC_INFO;
-    TPlayer* player = new TPlayer(id, this);
+    TPlayer* player = new TPlayer(id, Application()->GetMaps(), this);
     connect(player, SIGNAL(SpawnBullet(TBullet*)), SLOT(SpawnBullet(TBullet*)));
     Players.insert(id, player);
 }

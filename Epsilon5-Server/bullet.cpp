@@ -16,7 +16,7 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
     fixtureDef.filter.groupIndex = 1;
     Body->CreateFixture(&fixtureDef);
 
-    Ttl = 100;
+    Ttl = 300;
 }
 
 void TBullet::ApplyCustomPhysics() {

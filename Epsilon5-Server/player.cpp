@@ -3,9 +3,10 @@
 #include "bullet.h"
 #include <QDebug>
 
-TPlayer::TPlayer(size_t id, QObject *parent)
+TPlayer::TPlayer(size_t id, TMaps *maps, QObject *parent)
     : TDynamicObject(0, 0, 0, 0, 0, parent)
     , Id(id)
+    , Maps(maps)
 {
     b2CircleShape circle;
     circle.m_p.Set(0, 0);
@@ -67,6 +68,39 @@ void TPlayer::ApplyCustomPhysics()
     b2Vec2 totalForce = Force + FractionForce;
     Body->ApplyForceToCenter(totalForce);
     Body->ApplyForceToCenter(Force);
+    QPoint mapSize = Maps->GetMapSize();
+
+    b2Vec2 pos = Body->GetPosition();
+    b2Vec2 speed = Body->GetLinearVelocity();
+
+    if (pos(0) * 10 > mapSize.x()/2 - 400) {
+        speed(0) = 0;
+        pos(0) = 0.1 * (mapSize.x()/2 - 401);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
+    if (pos(1) * 10 > mapSize.y()/2 - 300) {
+        speed(1) = 0;
+        pos(1) = 0.1 * (mapSize.y()/2 - 301);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
+    if (pos(0) * 10 < - mapSize.x()/2 + 400) {
+        speed(0) = 0;
+        pos(0) = 0.1 * (- mapSize.x()/2 + 401);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
+    if (pos(1) * 10 < - mapSize.y()/2 + 300) {
+        speed(1) = 0;
+        pos(1) = 0.1 * (- mapSize.y()/2 + 301);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
 }
 
 void TPlayer::SetNickname(const QString& nickName) {

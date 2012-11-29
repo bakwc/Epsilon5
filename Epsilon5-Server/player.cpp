@@ -50,7 +50,6 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
                 y = GetY() + vy / 10;
                 bullet = new TBullet(x, y, vx, vy, 12.5, parent());
             } else {
-                qDebug() << "Control 2!";
                 bullet = new TBullet(GetX() + 2, GetY(), 0, 0, 0.8, parent());
             }
             emit SpawnBullet(bullet);

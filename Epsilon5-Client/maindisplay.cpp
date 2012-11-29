@@ -101,6 +101,10 @@ void TMainDisplay::RedrawWorld() {
         nickFont.setBold(true);
         nickFont.setPointSize(12);
 
+        QImage miniMapImg(100, 100, QImage::Format_ARGB32);
+        miniMapImg.fill(qRgba(255, 255, 255, 100));
+        QPainter miniMap(&miniMapImg);
+
         const QImage* img;
         for (int i = 0; i != world.players_size(); i++) {
             const Epsilon5::Player &player = world.players(i);
@@ -112,9 +116,14 @@ void TMainDisplay::RedrawWorld() {
                 gamerPos.setX(widgetCenter.x() + cx);
                 gamerPos.setY(widgetCenter.y() + cy);
                 img = &Images->GetImage("player");
+                miniMap.setPen(Qt::red);
             } else {
                 img = &Images->GetImage("enemy");
+                miniMap.setPen(Qt::black);
             }
+
+            miniMap.drawEllipse(50 + player.x() / 40, 50 + player.y() / 40, 2, 2);
+
             painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
                               widgetCenter.y() + cy - img->height() / 2, *img);
 
@@ -129,6 +138,8 @@ void TMainDisplay::RedrawWorld() {
             painter.setPen(oldPen);
             painter.setFont(oldFont);
         }
+
+        painter.drawImage(10, 10, miniMapImg);
 
         img = &Images->GetImage("bullet");
 

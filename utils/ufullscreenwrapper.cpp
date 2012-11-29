@@ -60,10 +60,10 @@ bool UFullscreenWrapper::changeToMode(const DisplayMode &mode)
 bool UFullscreenWrapper::restoreMode()
 {
 #ifdef Q_OS_WIN32
-    if(ChangeDisplaySettings(NULL, 0) == DISP_CHANGE_SUCCESSFUL)
+    if(ChangeDisplaySettings(NULL, 0) != DISP_CHANGE_SUCCESSFUL)
         return false;
 #endif
-    m_parent->setWindowState(m_parent->windowState() & Qt::WindowFullScreen);
+    m_parent->setWindowState(m_parent->windowState() & ~Qt::WindowFullScreen);
     m_parent->setFixedSize(m_parent->baseSize());
     return true;
 }

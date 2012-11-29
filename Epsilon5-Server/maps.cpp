@@ -1,4 +1,3 @@
-#include <QSize>
 #include <QFile>
 #include <QTextStream>
 #include "../utils/uexception.h"
@@ -42,10 +41,7 @@ void TMaps::LoadNextMap() {
     emit ClearBorders();
     LoadConfig("maps/" + MapFiles[CurrentMap] + "/config.ini");
     LoadObjects("maps/" + MapFiles[CurrentMap] + "/objects.txt");
-
-    // TODO: Set return type from QPoint to QSize in GetMapSize()
-    QPoint pt = GetMapSize();
-    emit SpawnBorders(QSize(pt.x(),pt.y()));
+    emit SpawnBorders(GetMapSize());
     MapStatus = MS_Ready;
 }
 
@@ -53,11 +49,11 @@ void TMaps::LoadConfig(const QString& fileName) {
     USettings conf;
     conf.Load(fileName);
     bool ok = true;
-    MapSize.setX(conf.GetParameter("width").toInt(&ok));
+    MapSize.setWidth(conf.GetParameter("width").toInt(&ok));
     if (!ok) {
         throw UException("Error parsing " + fileName);
     }
-    MapSize.setY(conf.GetParameter("height").toInt(&ok));
+    MapSize.setHeight(conf.GetParameter("height").toInt(&ok));
     if (!ok) {
         throw UException("Error parsing " + fileName);
     }
@@ -107,7 +103,7 @@ QString TMaps::GetCurrentMap() {
     return MapFiles[CurrentMap];
 }
 
-QPoint TMaps::GetMapSize() {
+QSize TMaps::GetMapSize() {
     if (CurrentMap == -1 || MapFiles.size() < CurrentMap) {
         throw UException("Map not initialised");
     }

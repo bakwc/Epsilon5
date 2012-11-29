@@ -4,8 +4,7 @@
 #include <QString>
 #include <QStringList>
 #include <QPoint>
-
-class QSize;
+#include <QSize>
 
 enum EMapStatus {
     MS_NoMap,
@@ -24,7 +23,7 @@ public:
         return MapStatus;
     }
     QString GetCurrentMap();
-    QPoint GetMapSize();
+    QSize GetMapSize();
 signals:
     void SpawnObject(size_t id, int x, int y, double angle);
     void SpawnBorders(const QSize& MapSize);
@@ -36,6 +35,6 @@ private:
 private:
     QStringList MapFiles;
     int CurrentMap;
-    QPoint MapSize;
+    QSize MapSize;
     EMapStatus MapStatus;
 };

@@ -1,10 +1,19 @@
+#include <QDebug>
+#include <cmath>
+#include "../utils/uexception.h"
 #include "dynamicobject.h"
 #include "world.h"
 
 TDynamicObject::TDynamicObject(double x, double y, double vx,
                                double vy, double angle, QObject *parent)
     : QObject(parent)
+    , Id(0)
 {
+    if (std::isnan(x) || std::isnan(y)
+            || std::isnan(vx) || std::isnan(vy) || std::isnan(angle))
+    {
+        throw UException(QString(Q_FUNC_INFO) + ": Value is NaN");
+    }
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(x, y);
@@ -23,7 +32,7 @@ TDynamicObject::~TDynamicObject() {
 
 void TDynamicObject::SetRectSize(double width, double height) {
     b2PolygonShape polygon;
-    polygon.SetAsBox(width, height);
+    polygon.SetAsBox(width / 2, height / 2);
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &polygon;
     fixtureDef.density = 0.8f;

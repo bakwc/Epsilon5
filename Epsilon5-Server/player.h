@@ -3,6 +3,7 @@
 #include <QTime>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "dynamicobject.h"
+#include "maps.h"
 
 class TBullet;
 
@@ -10,7 +11,7 @@ class TPlayer : public TDynamicObject
 {
     Q_OBJECT
 public:
-    TPlayer(size_t id, QObject *parent = 0);
+    TPlayer(size_t id, TMaps* maps, QObject *parent = 0);
     inline size_t GetId() { return Id; }
     void ApplyCustomPhysics();
     void SetNickname(const QString& nickName);
@@ -27,4 +28,5 @@ private:
     size_t Id;
     QTime lastShoot;
     QString NickName;
+    TMaps* Maps;
 };

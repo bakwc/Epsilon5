@@ -3,9 +3,10 @@
 #include "bullet.h"
 #include <QDebug>
 
-TPlayer::TPlayer(size_t id, QObject *parent)
+TPlayer::TPlayer(size_t id, TMaps *maps, QObject *parent)
     : TDynamicObject(0, 0, 0, 0, 0, parent)
     , Id(id)
+    , Maps(maps)
 {
     b2CircleShape circle;
     circle.m_p.Set(0, 0);
@@ -18,37 +19,43 @@ TPlayer::TPlayer(size_t id, QObject *parent)
     Body->CreateFixture(&fixtureDef);
 
     lastShoot.start();
+
+    Force(0) = 0;
+    Force(1) = 0;
 }
 
 void TPlayer::ApplyControl(const Epsilon5::Control &control) {
-    if (control.keystatus().keydown()) Force(1) = 150;
-    else if (control.keystatus().keyup()) Force(1) = -150;
-    else Force(1) = 0;
+    try {
+        if (control.keystatus().keydown()) Force(1) = 150;
+        else if (control.keystatus().keyup()) Force(1) = -150;
+        else Force(1) = 0;
 
-    if (control.keystatus().keyleft()) Force(0) = -150;
-    else if (control.keystatus().keyright()) Force(0) = 150;
-    else Force(0)=0;
+        if (control.keystatus().keyleft()) Force(0) = -150;
+        else if (control.keystatus().keyright()) Force(0) = 150;
+        else Force(0)=0;
 
-    double angle = control.angle();
+        double angle = control.angle();
 
-    if ((control.keystatus().keyattack1()
-            || control.keystatus().keyattack2())
-            && lastShoot.elapsed() > 500)   // FIRE!!
-    {
-        lastShoot.restart();
-        TBullet *bullet;
-        if (control.keystatus().keyattack1()) {
-            double x, y, vx, vy;
-            vx = 28 * sin(angle + M_PI / 2);
-            vy = 28 * cos(angle + M_PI / 2);
-            x = GetX() + vx / 10;
-            y = GetY() + vy / 10;
-            bullet = new TBullet(x, y, vx, vy, 12.5, parent());
-        } else {
-            qDebug() << "Control 2!";
-            bullet = new TBullet(GetX() + 2, GetY(), 0, 0, 0.8, parent());
+        if ((control.keystatus().keyattack1()
+                || control.keystatus().keyattack2())
+                && lastShoot.elapsed() > 500)   // FIRE!!
+        {
+            lastShoot.restart();
+            TBullet *bullet;
+            if (control.keystatus().keyattack1()) {
+                double x, y, vx, vy;
+                vx = 28 * sin(angle + M_PI / 2);
+                vy = 28 * cos(angle + M_PI / 2);
+                x = GetX() + vx / 10;
+                y = GetY() + vy / 10;
+                bullet = new TBullet(x, y, vx, vy, 12.5, parent());
+            } else {
+                bullet = new TBullet(GetX() + 2, GetY(), 0, 0, 0.8, parent());
+            }
+            emit SpawnBullet(bullet);
         }
-        emit SpawnBullet(bullet);
+    } catch (const std::exception& e) {
+        qDebug() << "TPlayer::ApplyControl(): " << e.what();
     }
 
     //setAngle(control.angle());
@@ -59,6 +66,40 @@ void TPlayer::ApplyCustomPhysics()
     b2Vec2 FractionForce = (-5) * Body->GetLinearVelocity();
     b2Vec2 totalForce = Force + FractionForce;
     Body->ApplyForceToCenter(totalForce);
+    Body->ApplyForceToCenter(Force);
+    QSize mapSize = Maps->GetMapSize();
+
+    b2Vec2 pos = Body->GetPosition();
+    b2Vec2 speed = Body->GetLinearVelocity();
+
+    if (pos(0) * 10 > mapSize.width()/2 - 400) {
+        speed(0) = 0;
+        pos(0) = 0.1 * (mapSize.width()/2 - 401);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
+    if (pos(1) * 10 > mapSize.height()/2 - 300) {
+        speed(1) = 0;
+        pos(1) = 0.1 * (mapSize.height()/2 - 301);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
+    if (pos(0) * 10 < - mapSize.width()/2 + 400) {
+        speed(0) = 0;
+        pos(0) = 0.1 * (- mapSize.width()/2 + 401);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
+    if (pos(1) * 10 < - mapSize.height()/2 + 300) {
+        speed(1) = 0;
+        pos(1) = 0.1 * (- mapSize.height()/2 + 301);
+        Body->SetTransform(pos, Body->GetAngle());
+        Body->SetLinearVelocity(speed);
+    }
+
 }
 
 void TPlayer::SetNickname(const QString& nickName) {

@@ -21,7 +21,8 @@ SOURCES += \
     network.cpp \
     imagestorage.cpp \
     map.cpp \
-    settings.cpp
+    settings.cpp \
+    objects.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -33,7 +34,8 @@ HEADERS  += \
     network.h \
     imagestorage.h \
     map.h \
-    settings.h
+    settings.h \
+    objects.h
 
 FORMS    +=
 

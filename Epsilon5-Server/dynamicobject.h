@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QDebug>
 #include <Box2D/Box2D.h>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
@@ -12,11 +13,21 @@ public:
                             double vy, double angle, QObject *parent = 0);
     virtual ~TDynamicObject();
     void SetRectSize(double width, double height);
-    inline double GetX() { return Body->GetPosition()(0); }
-    inline double GetY() { return Body->GetPosition()(1); }
-    inline double GetVx() { return Body->GetLinearVelocity()(0); }
-    inline double GetVy() { return Body->GetLinearVelocity()(1); }
-    inline double GetAngle() { return Body->GetAngle(); }
+    inline double GetX() {
+        return Body->GetPosition()(0);
+    }
+    inline double GetY() {
+        return Body->GetPosition()(1);
+    }
+    inline double GetVx() {
+        return Body->GetLinearVelocity()(0);
+    }
+    inline double GetVy() {
+        return Body->GetLinearVelocity()(1);
+    }
+    inline double GetAngle() {
+        return Body->GetAngle();
+    }
     inline void setX(double x) {
         b2Vec2 pos = Body->GetPosition();
         pos(0) = x;
@@ -41,8 +52,15 @@ public:
         Body->SetTransform(Body->GetPosition(), angle);
     }
     virtual void ApplyCustomPhysics() {}
+    inline void SetId(size_t id) {
+        Id = id;
+    }
+    inline size_t GetId() {
+        return Id;
+    }
 protected:
     b2World* B2World();
 protected:
     b2Body* Body;
+    size_t Id;
 };

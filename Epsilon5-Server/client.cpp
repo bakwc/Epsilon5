@@ -48,21 +48,25 @@ void TClient::OnDataReceived(const QByteArray &data)
         }
         Epsilon5::Auth auth;
         if (auth.ParseFromArray(content.data(), content.size())) {
-            SetSeen();
-            NickName = auth.name().c_str();
-            SendPlayerInfo();
+            try {
+                SetSeen();
+                NickName = auth.name().c_str();
+                SendPlayerInfo();
 
-            QTime dieTime= QTime::currentTime().addSecs(1);
-            while( QTime::currentTime() < dieTime ) {
-                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+                QTime dieTime= QTime::currentTime().addSecs(1);
+                while( QTime::currentTime() < dieTime ) {
+                    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+                }
+
+                emit SpawnPlayer(Id);
+                TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
+                player->SetNickname(NickName);
+                connect(this, SIGNAL(ControlReceived(Epsilon5::Control)),
+                        player, SLOT(ApplyControl(Epsilon5::Control)));
+                PlayerStatus = PS_Spawned;
+            } catch (const std::exception& e){
+                qDebug() << "Error spawning player " << e.what() << "\n";
             }
-
-            emit SpawnPlayer(Id);
-            TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
-            player->SetNickname(NickName);
-            connect(this, SIGNAL(ControlReceived(Epsilon5::Control)),
-                    player, SLOT(ApplyControl(Epsilon5::Control)));
-            PlayerStatus = PS_Spawned;
         } else {
             throw UException("Parse error: auth packet");
         }

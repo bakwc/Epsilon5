@@ -8,6 +8,7 @@ Controls:
 * **F11** -- toggle fullscreen
 * **F12** -- quit
 * **Up** / **Down** / **Left** / **Right** -- movement
+* **W** / **S** / **A** / **D** -- also movement
 * **LMB** / **RMB** -- fire
 
 Requires:

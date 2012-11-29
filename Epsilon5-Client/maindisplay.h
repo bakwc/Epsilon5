@@ -5,6 +5,7 @@
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "imagestorage.h"
 #include "map.h"
+#include "objects.h"
 
 class TApplication;
 
@@ -38,4 +39,5 @@ private:
     QQueue<Epsilon5::World> PacketsQueue;
     Epsilon5::Control Control;
     TMap* Map;
+    TObjects* Objects;
 };

@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include <QMenuBar>
+#include <QMessageBox>
+#include <stdexcept>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -17,6 +19,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::openDialogSlot()
 {
-    _mapPainter = new MapPainter(_dialog.mapName(), _dialog.mapSize(), _dialog.mapBackground());
+    try {
+        _mapPainter = new MapCreator(_dialog.mapName(), _dialog.mapSize(), _dialog.mapBackground(),
+                                     _dialog.mapPath(), _dialog.mapObjsPath());
+    } catch (std::runtime_error &e) {
+        delete _mapPainter;
+        qDebug("Error: &s", e.what());
+        QMessageBox::critical(this, "Error", e.what());
+        return;
+    }
+
     this->setCentralWidget(_mapPainter);
 }

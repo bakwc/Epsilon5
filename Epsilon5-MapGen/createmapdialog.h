@@ -18,22 +18,26 @@ public:
     explicit CreateMapDialog(QWidget *parent = 0);
     ~CreateMapDialog();
 
-    QString mapName() { return _name; }
-    QSize   mapSize() { return _size; }
-    QImage  mapBackground() { return _back; }
+    QString mapName();
+    QSize   mapSize();
+    QImage  mapBackground();
+    QString mapPath();
+    QString mapObjsPath();
 
 signals:
     void selectTexture(QString t);
+    void selectPath(QString t);
+    void selectObjPath(QString t);
     
 private slots:
     void on_selectTextureButton_clicked();
-    void accept();
+
+    void on_selectPathButton_clicked();
+
+    void on_objPathButton_clicked();
 
 private:
     Ui::CreateMapDialog *ui;
-    QString     _name;
-    QSize       _size;
-    QImage      _back;
 };
 
 #endif // CREATEMAPDIALOG_H

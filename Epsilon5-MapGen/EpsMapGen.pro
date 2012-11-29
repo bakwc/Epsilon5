@@ -6,12 +6,14 @@ TAMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     createmapdialog.cpp \
-    mappainter.cpp
+    mapcreator.cpp
 
 HEADERS += \
     mainwindow.h \
     createmapdialog.h \
-    mappainter.h
+    mapcreator.h
 
 FORMS += \
     createmapdialog.ui
+
+QMAKE_CXXFLAGS += -std=c++0x

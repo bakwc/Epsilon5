@@ -1,0 +1,27 @@
+{
+	"folders":
+	[
+		{
+			"path": "/home/ubuntu/Projects/Epsilon5/Epsilon5-MapGen"
+		}
+	],
+
+	"build_systems":
+	[
+		{
+			"make": "QMake",
+			"working_dir": "${project_path:${folder}}/../Epsilon5-MapGen-build",
+			"cmd": ["qmake", "${project_path:${folder}}"]
+		}
+	],
+
+	"settings":
+	{
+		"sublimeclang_options":
+		[
+			"-Wall",
+			"-Wsystem-headers"
+			// "-I/usr/include/**"
+		]
+	}
+}

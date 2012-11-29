@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>316</width>
-    <height>163</height>
+    <height>235</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>130</y>
+     <y>200</y>
      <width>291</width>
      <height>31</height>
     </rect>
@@ -35,16 +35,22 @@
      <x>10</x>
      <y>10</y>
      <width>301</width>
-     <height>111</height>
+     <height>181</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+    </property>
     <item row="0" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
        <string>Name</string>
       </property>
      </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="name"/>
     </item>
     <item row="1" column="0">
      <widget class="QLabel" name="label_2">
@@ -53,18 +59,15 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="width"/>
+    </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_3">
       <property name="text">
        <string>Height</string>
       </property>
      </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="name"/>
-    </item>
-    <item row="1" column="1">
-     <widget class="QLineEdit" name="width"/>
     </item>
     <item row="2" column="1">
      <widget class="QLineEdit" name="height"/>
@@ -76,18 +79,41 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <layout class="QFormLayout" name="formLayout_2">
-      <property name="rowWrapPolicy">
-       <enum>QFormLayout::DontWrapRows</enum>
+    <item row="4" column="0">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
-      <item row="0" column="0">
-       <widget class="QLineEdit" name="texturePath">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>5</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="1">
+     <spacer name="verticalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>5</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Save path</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="1">
        <widget class="QToolButton" name="selectTextureButton">
         <property name="minimumSize">
@@ -107,6 +133,80 @@
         </property>
         <property name="layoutDirection">
          <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="texturePath">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="5" column="1">
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="path">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QToolButton" name="selectPathButton">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>Objects </string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="objPath">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QToolButton" name="objPathButton">
+        <property name="minimumSize">
+         <size>
+          <width>20</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>20</width>
+          <height>16777215</height>
+         </size>
         </property>
         <property name="text">
          <string>...</string>

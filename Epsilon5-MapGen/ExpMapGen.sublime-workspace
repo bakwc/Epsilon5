@@ -1,0 +1,641 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"llv",
+				"llvm_include"
+			],
+			[
+				"ma",
+				"map	std::map"
+			],
+			[
+				"defi",
+				"define macro(args)	"
+			],
+			[
+				"def",
+				"define macro	"
+			],
+			[
+				"pwmval",
+				"pwm_values	uint8_t [11]"
+			],
+			[
+				"msp",
+				"msp430"
+			],
+			[
+				"LF",
+				"LFXT1S1"
+			],
+			[
+				"pwm",
+				"pwm_val"
+			],
+			[
+				"_",
+				"_clock"
+			],
+			[
+				"Bui",
+				"BUILD_DIR"
+			],
+			[
+				"Bu",
+				"BUILD_DIR"
+			],
+			[
+				"BUI",
+				"BUILD_DIR"
+			],
+			[
+				"ms",
+				"msp430"
+			],
+			[
+				"cla",
+				"clang"
+			],
+			[
+				"dia",
+				"diagClient"
+			],
+			[
+				"Dia",
+				"Diagnostic"
+			],
+			[
+				"clang",
+				"clangInc"
+			],
+			[
+				"inc",
+				"inc	#include \"…\""
+			],
+			[
+				"for",
+				"forin	for … in … done"
+			],
+			[
+				"fo",
+				"forin	for … in … done"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/ubuntu/Projects/Epsilon5/Epsilon5-Client/map.cpp",
+			"settings":
+			{
+				"buffer_size": 943,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ubuntu/Projects/Pastexen/client/pastexen.pro",
+			"settings":
+			{
+				"buffer_size": 902,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ubuntu/Projects/ViReCode/core/core.sublime-project",
+			"settings":
+			{
+				"buffer_size": 778,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "EpsMapGen.pro",
+			"settings":
+			{
+				"buffer_size": 208,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "#include \"QApplication\"\n#include \"QLabel\"\n\nint main(int argc, char const *argv[])\n{\n	QApplication app(argc, argv);\n\n	QLablel lbl;\n\n	app.exec();\n	return 0;\n}",
+			"file": "main.cpp",
+			"file_size": 123,
+			"file_write_time": 1354133614000000,
+			"settings":
+			{
+				"buffer_size": 156,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "ExpMapGen.sublime-project",
+			"settings":
+			{
+				"buffer_size": 380,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/SublimeClang.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 13428,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Debug build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"packins",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"clang",
+				"Preferences: SublimeClang Settings – Default"
+			],
+			[
+				"build",
+				"Build: Build"
+			],
+			[
+				"sublimec",
+				"Preferences: SublimeClang Settings – Default"
+			],
+			[
+				"pack ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/usr/include/c++/4.6/tr1/cstdint",
+		"/usr/include/c++/4.6/parallel/tags.h",
+		"/usr/include/qt4/QtGui/QApplication",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-Client/eps-Client.sublime-project",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-MapGen/EpsMapGen.qmake",
+		"/home/ubuntu/.config/sublime-text-2/Packages/User/qmake.sublime-build",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-Server/application.cpp",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-Server/Epsilon5-Server.pro",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-Client/Epsilon5-Client.pro",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-Client/main.cpp",
+		"/home/ubuntu/Projects/Epsilon5/Epsilon5-Proto/Epsilon5.pb.h",
+		"/home/ubuntu/Projects/Epsilon5/map.txt",
+		"/home/ubuntu/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/ubuntu/Projects/ViReCode/core/CMakeLists.txt",
+		"/home/ubuntu/Projects/ViReCode/core/Debug-build/CMakeCache.txt",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/SublimeClang.sublime-settings",
+		"/home/ubuntu/Projects/ViReCode/core/core.sublime-project",
+		"/etc/default/grub",
+		"/home/ubuntu/Projects/ViReCode/core/main.cpp",
+		"/home/ubuntu/.config/sublime-text-2/Packages/C++/C++.sublime-build",
+		"/home/ubuntu/Projects/ViReCode/llvm/include/llvm/Support/raw_os_ostream.h",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/clang/cindex.py",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/clang/__init__.pyc",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/clang/__init__.py",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/clang/cindex.pyc",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/src/main.cpp",
+		"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/src/CMakeLists.txt",
+		"/etc/laptop-mode/laptop-mode.conf",
+		"/home/ubuntu/Projects/Quadro/QuadroFirmWare/QuadroFirmWare.sublime-project",
+		"/usr/msp430/include/intrinsics.h",
+		"/home/ubuntu/skype/ImageViewer.java",
+		"/home/ubuntu/.pythonbrew/log/build.log",
+		"/home/ubuntu/Projects/Quadro/QuadroFirmWare/make.sublime-build",
+		"/home/ubuntu/Projects/Quadro/QuadroFirmWare/Makefile",
+		"/home/ubuntu/Projects/Quadro/QuadroFirmWare/Release/CMakeFiles/Makefile2",
+		"/home/ubuntu/Projects/Quadro/QuadroFirmWare/Release/Makefile",
+		"/usr/msp430/lib/ldscripts/msp430g2553/memory.x",
+		"/home/ubuntu/.local/Eclipse.desktop",
+		"/home/ubuntu/Projects/QuadroFirmWare/run",
+		"/home/ubuntu/Projects/Micro/blink.c",
+		"/home/ubuntu/Projects/ViReCode/ViReCORE-build-Debug/clang.cpp",
+		"/home/ubuntu/Projects/ViReCode/ViReCORE-build/ViReCORE.cbp",
+		"/home/ubuntu/clang.cpp",
+		"/home/ubuntu/Projects/ViReCode/.gitignore",
+		"/home/ubuntu/Projects/ClangTutorial/tutorial1.cpp",
+		"/home/ubuntu/.cache/.fr-8CHlsq/ClangTutorial/tutorial1.cpp",
+		"/home/ubuntu/Projects/llvm/tools/clang/CMakeLists.txt",
+		"/home/ubuntu/Projects/llvm/tools/clang/examples/clang-interpreter/main.cpp",
+		"/home/ubuntu/Projects/llvm/tools/clang/examples/PrintFunctionNames/PrintFunctionNames.cpp",
+		"/home/ubuntu/Projects/ClangTutorial/clangInc/clang/Frontend/DiagnosticRenderer.h",
+		"/home/ubuntu/Projects/ClangTutorial/clangInc/clang/Frontend/TextDiagnostic.h",
+		"/home/ubuntu/Projects/llvm/examples/Fibonacci/fibonacci.cpp",
+		"/home/ubuntu/Projects/ClangTutorial/clangInc/clang/Basic/TargetInfo.h",
+		"/home/ubuntu/Projects/llvmBuild/Makefile",
+		"/home/ubuntu/clang.ast",
+		"/etc/sysctl.conf",
+		"/etc/security/limits.conf",
+		"/home/ubuntu/vmware/WinXPPro/Windows XP Professional.vmx",
+		"/etc/laptop-mode/conf.d/ethernet.conf",
+		"/etc/laptop-mode/conf.d/cpufreq.conf",
+		"/etc/acpi/power.sh",
+		"/home/ubuntu/.kde/share/config/gtkrc",
+		"/home/ubuntu/.kde/share/config/systemsettingsrc"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"lib",
+			"incr",
+			"pwm_values",
+			"TACTL",
+			"TACCTL1",
+			"servo_lut",
+			"__delay_cycles",
+			"msp430g2553",
+			"CCR0 ",
+			"TACTL",
+			"BCSCTL1",
+			"6",
+			"bit6",
+			"BIT6",
+			"d",
+			"ADC10SC",
+			"BIT3",
+			"WDTCTL",
+			"CXX",
+			"CC",
+			"g++",
+			"gcc",
+			"agp",
+			"vram"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/ubuntu/Projects/Epsilon5/Epsilon5-Client/map.cpp",
+					"settings":
+					{
+						"buffer_size": 943,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								183,
+								183
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/ubuntu/Projects/Pastexen/client/pastexen.pro",
+					"settings":
+					{
+						"buffer_size": 902,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								459,
+								459
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/ubuntu/Projects/ViReCode/core/core.sublime-project",
+					"settings":
+					{
+						"buffer_size": 778,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								695,
+								695
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "EpsMapGen.pro",
+					"settings":
+					{
+						"buffer_size": 208,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								82,
+								82
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "main.cpp",
+					"settings":
+					{
+						"buffer_size": 156,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								156,
+								156
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "ExpMapGen.sublime-project",
+					"settings":
+					{
+						"buffer_size": 380,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								343,
+								343
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/SublimeClang.sublime-settings",
+					"settings":
+					{
+						"buffer_size": 13428,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5902,
+								5902
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2040.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.clang":
+	{
+		"height": 112.0
+	},
+	"output.clang_static_analyzer":
+	{
+		"height": 0.0
+	},
+	"output.exec":
+	{
+		"height": 112.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"ro",
+				"llvm/include/llvm/Support/raw_os_ostream.h"
+			],
+			[
+				"main",
+				"/home/ubuntu/.config/sublime-text-2/Packages/SublimeClang/src/main.cpp"
+			],
+			[
+				"2553",
+				"include/msp430g2553.h"
+			],
+			[
+				"iom",
+				"include/iomacros.h"
+			],
+			[
+				"cma",
+				"QuadroFirmWare/CMakeLists.txt"
+			],
+			[
+				"g255",
+				"include/msp430g2553.h"
+			],
+			[
+				"tarin",
+				"clang/Basic/TargetInfo.h"
+			],
+			[
+				"diagr",
+				"clang/Frontend/DiagnosticRenderer.h"
+			],
+			[
+				"textdia",
+				"clang/Frontend/TextDiagnostic.h"
+			],
+			[
+				"",
+				"/home/ubuntu/Projects/ClangTutorial/tutorial1.cpp"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 212.0,
+	"status_bar_visible": true
+}

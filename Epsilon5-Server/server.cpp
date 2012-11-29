@@ -104,11 +104,19 @@ TApplication* TServer::Application() {
     return (TApplication*)(parent());
 }
 
-void TServer::Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType) {
-    QByteArray newData;
-    quint16 dataSize = qToBigEndian<quint16>(data.size());
-    newData += QChar(packetType);
-    newData += QByteArray((const char*) &dataSize, sizeof(quint16));
-    newData += data;
-    Server->writeDatagram(newData, ip, port);
+// Send packet to the client in form:
+// [PACKET_TYPE] [ORIGIN_DATA_SIZE] [PACKED_DATA_SIZE] [PACKED_DATA]
+void TServer::Send(const QHostAddress &ip, quint16 port,
+    const QByteArray &originData, EPacketType packetType)
+{
+    QByteArray sendPacket;
+    QByteArray packedData = qCompress(originData);
+    QByteArray test = qUncompress(packedData);
+    quint16 originDataSize = qToBigEndian<quint16>(originData.size());
+    quint16 packedDataSize = qToBigEndian<quint16>(packedData.size());
+    sendPacket += QChar(packetType);
+    sendPacket += QByteArray((const char*) &originDataSize, sizeof(quint16));
+    sendPacket += QByteArray((const char*) &packedDataSize, sizeof(quint16));
+    sendPacket += packedData;
+    Server->writeDatagram(sendPacket, ip, port);
 }

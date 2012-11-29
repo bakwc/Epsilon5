@@ -22,19 +22,35 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
-    QByteArray data = Socket->readAll();
+    QByteArray receivedPacket = Socket->readAll();
     EPacketType packetType;
-    quint16 dataSize;
+    quint16 packedDataSize;
+    quint16 originDataSize;
     QByteArray content;
+    QByteArray packed;
+
+    const int midSize = sizeof(quint16);
+    const int posOrigin = sizeof(char);
+    const int posPacked = posOrigin + midSize;
+    const int posContent = posPacked + midSize;
 
     try {
-        while( data.size() > 0 )
+        while( receivedPacket.size() > 0 )
         {
-            packetType = (EPacketType)(char)(data[0]);
-            dataSize = qFromBigEndian<quint16>(
-                (const uchar*)data.mid(sizeof(char), sizeof(quint16)).constData());
-            content = data.mid(sizeof(char) + sizeof(quint16), dataSize);
-            data = data.mid(dataSize + sizeof(char) + sizeof(quint16));
+            packetType = (EPacketType)(char)(receivedPacket[0]);
+            originDataSize = qFromBigEndian<quint16>(
+                (const uchar*)receivedPacket.mid(posOrigin, midSize).constData());
+            packedDataSize = qFromBigEndian<quint16>(
+                (const uchar*)receivedPacket.mid(posPacked, midSize).constData());
+            packed = receivedPacket.mid(posContent, packedDataSize);
+            content = qUncompress(packed);
+            if( content.isEmpty() && (originDataSize || packedDataSize) )
+                throw UException("Wrong packet: cannot unpack data");
+
+            // Retrieve another packet from current.
+            // We can receive more than one packet at once
+            receivedPacket = receivedPacket.mid(
+                packedDataSize + sizeof(char) + 2*midSize);
 
             switch (packetType) {
             case PT_PlayerInfo: {

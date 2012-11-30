@@ -130,6 +130,10 @@ void TWorld::timerEvent(QTimerEvent *) {
         i = Bullets.erase(i++);
     }
 
+    for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
+        //(*i)->ApplyFractionForce();
+    }
+
     float step = 1.0f / 100.0f;
     qint32 velocityIterations = 10;
     qint32 positionIterations = 8;

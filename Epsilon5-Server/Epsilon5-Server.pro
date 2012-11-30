@@ -49,7 +49,7 @@ HEADERS += \
     objects.h \
     staticobject.h
 
-QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse -Ofast -flto -funroll-loops
+QMAKE_CXXFLAGS += -std=c++0x -march=i686 -mfpmath=sse -Ofast -flto -funroll-loops
 
 
 LIBS += -lprotobuf -lBox2D

@@ -14,7 +14,7 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
     fixtureDef.shape = &circle;
     fixtureDef.density = 1.0f;
     fixtureDef.friction = 0.1f;
-    fixtureDef.restitution= 0.5f;
+    fixtureDef.restitution = 0.5f;
     fixtureDef.filter.groupIndex = 1;
     Body->CreateFixture(&fixtureDef);
 

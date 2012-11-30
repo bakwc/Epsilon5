@@ -50,6 +50,9 @@ private:
 private:
     DisplayModes m_displayModes;
     QWidget* m_parent;
+#ifdef Q_WS_X11
+    bool m_extensionFound;
+#endif
 };
 //------------------------------------------------------------------------------
 }

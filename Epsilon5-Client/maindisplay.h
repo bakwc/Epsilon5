@@ -22,7 +22,7 @@ public:
 public slots:
     void RedrawWorld();
     void toggleFullscreen();
-    void toggleFullscreen(int width, int height);
+    void toggleFullscreenWindowed();
 
 private:
     void paintEvent(QPaintEvent *);
@@ -42,4 +42,5 @@ private:
     Epsilon5::Control Control;
     TMap* Map;
     TObjects* Objects;
+    bool IsFullScreenWindowed;
 };

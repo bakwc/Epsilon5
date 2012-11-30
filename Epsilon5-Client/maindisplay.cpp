@@ -40,6 +40,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
+    , IsFullScreenWindowed(false)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
@@ -67,6 +68,9 @@ TMainDisplay::~TMainDisplay()
     if (Frame) {
         delete Frame;
     }
+
+    if (isFullScreen() && !IsFullScreenWindowed)
+        restoreMode();
 }
 
 void TMainDisplay::RedrawWorld() {
@@ -262,10 +266,12 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
         Control.mutable_keystatus()->set_keyleft(false);
         break;
     case Qt::Key_F11:
-        if(event->modifiers().testFlag(Qt::ShiftModifier))
-            toggleFullscreen(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
-        else
+        if(event->modifiers().testFlag(Qt::ShiftModifier)) {
             toggleFullscreen();
+        }
+        else {
+            toggleFullscreenWindowed();
+        }
         break;
     case Qt::Key_F12:
         close();
@@ -275,8 +281,12 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void TMainDisplay::toggleFullscreen() {
+void TMainDisplay::toggleFullscreenWindowed() {
+    if( isFullScreen() && !IsFullScreenWindowed )
+        restoreMode();
+
     setWindowState( windowState() ^ Qt::WindowFullScreen );
+    IsFullScreenWindowed = isFullScreen();
     if( isFullScreen() )
     {
         QDesktopWidget dw;
@@ -287,13 +297,14 @@ void TMainDisplay::toggleFullscreen() {
     setFixedSize(baseSize());
 }
 
-void TMainDisplay::toggleFullscreen(int width, int height) {
-    if( isFullScreen() )
+void TMainDisplay::toggleFullscreen() {
+    if( isFullScreen() && !IsFullScreenWindowed )
     {
         restoreMode();
         return;
     }
-    changeToMode(width, height);
+    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+    IsFullScreenWindowed = false;
 }
 
 void TMainDisplay::drawFps(QPainter& painter)

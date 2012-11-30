@@ -19,6 +19,6 @@ public slots:
 private:
     CreateMapDialog _dialog;
     MapCreator      *_mapPainter;
-};
+    };
 
 #endif // MAINWINDOW_H

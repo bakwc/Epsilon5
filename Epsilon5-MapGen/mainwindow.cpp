@@ -24,7 +24,7 @@ void MainWindow::openDialogSlot()
                                      _dialog.mapPath(), _dialog.mapObjsPath());
     } catch (std::runtime_error &e) {
         delete _mapPainter;
-        qDebug("Error: &s", e.what());
+        qDebug("Error: %s", e.what());
         QMessageBox::critical(this, "Error", e.what());
         return;
     }

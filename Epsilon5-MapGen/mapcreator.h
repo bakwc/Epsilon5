@@ -6,6 +6,7 @@
 #include <QImage>
 #include <QDir>
 #include <QFile>
+#include <QGraphicsScene>
 
 class MapCreator : public QWidget
 {
@@ -28,6 +29,8 @@ private:
     QImage  _background;
     QDir    _path, _objPath;
     QFile   _mConfig, _mObject, _objs;
+
+    QGraphicsScene  *_scene;
 
     QByteArray createConfFile();
 };

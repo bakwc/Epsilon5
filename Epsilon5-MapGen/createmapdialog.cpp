@@ -28,9 +28,9 @@ QSize CreateMapDialog::mapSize()
     return QSize(ui->width->text().toInt(), ui->height->text().toInt());
 }
 
-QImage CreateMapDialog::mapBackground()
+QPixmap CreateMapDialog::mapBackground()
 {
-    return QImage(ui->texturePath->text());
+    return QPixmap(ui->texturePath->text());
 }
 
 QString CreateMapDialog::mapPath()

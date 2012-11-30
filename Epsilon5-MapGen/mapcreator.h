@@ -3,10 +3,15 @@
 
 #include <QWidget>
 #include <QSize>
-#include <QImage>
+#include <QPixmap>
 #include <QDir>
 #include <QFile>
-#include <QGraphicsScene>
+#include <QStringList>
+#include "graphicsview.h"
+#include "utils.h"
+#include <stdexcept>
+#include <QPixmap>
+
 
 class MapCreator : public QWidget
 {
@@ -17,22 +22,30 @@ class MapCreator : public QWidget
     constexpr static const char* MAP_CONF_FILE = "config.ini";
 
 public:
-    explicit MapCreator(QString name, QSize size, QImage background, QString path, QString objPath, QWidget *parent = 0);
+    explicit MapCreator(QString name, QSize size, QPixmap background, QString path,
+                        QString objPath, QWidget *parent = 0) throw(std::runtime_error);
     
 signals:
     
 public slots:
+    void selectedItem(int item);
     
 private:
     QString _name;
     QSize   _size;
-    QImage  _background;
+    QPixmap  _background;
     QDir    _path, _objPath;
     QFile   _mConfig, _mObject, _objs;
 
-    QGraphicsScene  *_scene;
+    GraphicsView    *_view;
+    QList<utils::Object> _objsLst;
+    QList<QPixmap>      _objPix;
 
-    QByteArray createConfFile();
+private:
+    void createConfFile();
+    void openObjectFile();
+    void createMapFiles();
+    void init();
 };
 
 #endif // MAPPAINTER_H

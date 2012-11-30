@@ -2,12 +2,13 @@
 #define MAPITEM_H
 
 #include <QGraphicsItem>
+#include <QPixmap>
 
 class MapItem : public QGraphicsItem
 {
 
 public:
-    explicit MapItem(const QSize &size);
+    explicit MapItem(const QSizeF &size, const QPixmap &pix);
 
     QRectF boundingRect() const;
 
@@ -23,8 +24,9 @@ signals:
 public slots:
 
 private:
-    QSize _size;
+    QSizeF _size;
     QPointF _point;
+    QPixmap _pix;
 
     QPointF _cPoint;
 };

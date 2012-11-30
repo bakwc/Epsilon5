@@ -8,16 +8,18 @@ SOURCES += main.cpp \
     createmapdialog.cpp \
     mapcreator.cpp \
     graphicsview.cpp \
-    mapitem.cpp
+    mapitem.cpp \
+    utils.cpp
 
 HEADERS += \
     mainwindow.h \
     createmapdialog.h \
     mapcreator.h \
     graphicsview.h \
-    mapitem.h
+    mapitem.h \
+    utils.h
 
 FORMS += \
     createmapdialog.ui
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse -Ofast -flto -funroll-loops

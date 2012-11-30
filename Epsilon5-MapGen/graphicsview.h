@@ -3,6 +3,9 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QSizeF>
+#include <QPixmap>
+
 
 class GraphicsView : public QGraphicsView
 {
@@ -10,10 +13,22 @@ class GraphicsView : public QGraphicsView
 public:
     explicit GraphicsView(QGraphicsScene* scene, QWidget *parent = 0);
     
+    void setItem(const QString &str, const QSizeF &s, const QPixmap &pix);
+
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *event);
+//    void mouseMoveEvent(QMouseEvent *event);
+//    void paintEvent(QPaintEvent *event);
+
 signals:
     
 public slots:
     
+private:
+    QPixmap     _itemPix;
+    QString     _itemName;
+    QSizeF      _itemSize;
+    QPoint      _itemPrevPoint;
 };
 
 #endif // GRAPHICSVIEW_H

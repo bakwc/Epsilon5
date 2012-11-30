@@ -4,7 +4,7 @@
 #include <QDialog>
 #include <QString>
 #include <QSize>
-#include <QImage>
+#include <QPixmap>
 
 namespace Ui {
 class CreateMapDialog;
@@ -20,7 +20,7 @@ public:
 
     QString mapName();
     QSize   mapSize();
-    QImage  mapBackground();
+    QPixmap  mapBackground();
     QString mapPath();
     QString mapObjsPath();
 

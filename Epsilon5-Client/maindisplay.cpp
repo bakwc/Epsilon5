@@ -12,6 +12,9 @@
 #include "maindisplay.h"
 #include "application.h"
 
+const quint16 BASE_WINDOW_WIDTH = 800;
+const quint16 BASE_WINDOW_HEIGHT = 600;
+
 int GetCorrect(int player, int enemy) {
     return enemy - player;
 }
@@ -31,13 +34,14 @@ static double getAngle(const QPoint& point)
 
 TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     : QWidget(parent)
+    , UFullscreenWrapper(this)
     , Application(application)
     , Frame(new QImage(1680, 1050, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
 {
-    setBaseSize(800, 600);
+    setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
 
     Control.set_angle(0);
@@ -236,6 +240,9 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 {
+#ifdef Q_WS_X11
+    DisplayModes modes;
+#endif
     switch (event->key())
     {
     case Qt::Key_Up:
@@ -255,7 +262,10 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
         Control.mutable_keystatus()->set_keyleft(false);
         break;
     case Qt::Key_F11:
-        toggleFullscreen();
+        if(event->modifiers().testFlag(Qt::ShiftModifier))
+            toggleFullscreen(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+        else
+            toggleFullscreen();
         break;
     case Qt::Key_F12:
         close();
@@ -265,8 +275,7 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void TMainDisplay::toggleFullscreen()
-{
+void TMainDisplay::toggleFullscreen() {
     setWindowState( windowState() ^ Qt::WindowFullScreen );
     if( isFullScreen() )
     {
@@ -276,6 +285,15 @@ void TMainDisplay::toggleFullscreen()
         return;
     }
     setFixedSize(baseSize());
+}
+
+void TMainDisplay::toggleFullscreen(int width, int height) {
+    if( isFullScreen() )
+    {
+        restoreMode();
+        return;
+    }
+    changeToMode(width, height);
 }
 
 void TMainDisplay::drawFps(QPainter& painter)

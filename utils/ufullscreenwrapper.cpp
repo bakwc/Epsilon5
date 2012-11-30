@@ -15,8 +15,8 @@ DEVMODE devMode;
 
 using namespace utils;
 //------------------------------------------------------------------------------
-Rotation originRotation;
-short originSizeId;
+Rotation originRotation = RR_Rotate_0;
+short originSizeId = 0;
 //------------------------------------------------------------------------------
 UFullscreenWrapper::UFullscreenWrapper(QWidget* parent)
     : m_parent(parent)
@@ -31,49 +31,22 @@ UFullscreenWrapper::DisplayModes UFullscreenWrapper::enumModes()
     Display *dpy = XOpenDisplay(NULL);
     XRRScreenSize* xrrs = XRRSizes(dpy, 0, &num_modes);
 
-    for( int i = 0; i < num_modes; ++i )
+    for(int i = 0; i < num_modes; ++i)
         displayModes.append(DisplayMode(xrrs[i].width, xrrs[i].height));
-#endif
-#ifdef Q_WS_X111
-    Display *dpy = XOpenDisplay(NULL);
-    Window root = RootWindow(dpy, 0);
-    XRRScreenResources* screenResources = XRRGetScreenResources(dpy, root);
-    XRROutputInfo* outputInfo;
-    XRRModeInfo* mode;
-    XRRCrtcInfo* crtc;
-    RROutput output;
-    for( int o = 0; o < screenResources->noutput; ++o )
-    {
-        output = screenResources->outputs[o];
-        outputInfo = XRRGetOutputInfo(dpy, screenResources, output);
-        if( outputInfo->connection != RR_Connected )
-            continue;
-
-        qDebug() << outputInfo->name;
-        crtc = XRRGetCrtcInfo(dpy, screenResources, outputInfo->crtc);
-
-        qDebug() << ">>" << crtc->width << "x" << crtc->height;
-
-        for( int m = 0; m < outputInfo->nmode; ++m )
-        {
-            mode = &screenResources->modes[m];
-            qDebug() << mode->name << "|" << mode->width << "x" << mode->height;
-        }
-    }
 #endif
     return displayModes;
 }
 //------------------------------------------------------------------------------
-bool UFullscreenWrapper::changeToMode(int width, int height, int bpp)
+bool UFullscreenWrapper::changeToMode(int width, int height)
 {
-    return changeToMode(DisplayMode(width, height, bpp));
+    return changeToMode(DisplayMode(width, height));
 }
 //------------------------------------------------------------------------------
 int UFullscreenWrapper::findModeId(int width, int height)
 {
     const DisplayModes& dms = enumModes();
-    for( int i = 0; i < dms.count(); ++i ) {
-        if( dms.at(i).width() == width && dms.at(i).height() == height )
+    for(int i = 0; i < dms.count(); ++i) {
+        if(dms.at(i).width() == width && dms.at(i).height() == height)
             return i;
     }
     return -1;
@@ -110,6 +83,7 @@ bool UFullscreenWrapper::changeToMode(const DisplayMode &mode)
 
     m_parent->setWindowState(m_parent->windowState() | Qt::WindowFullScreen);
     m_parent->setFixedSize(mode.width(), mode.height());
+    m_parent->activateWindow();
     return true;
 }
 //------------------------------------------------------------------------------
@@ -133,6 +107,7 @@ bool UFullscreenWrapper::restoreMode()
 
     m_parent->setWindowState(m_parent->windowState() & ~Qt::WindowFullScreen);
     m_parent->setFixedSize(m_parent->baseSize());
+    m_parent->activateWindow();
     return true;
 }
 //------------------------------------------------------------------------------

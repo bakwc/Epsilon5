@@ -9,12 +9,12 @@ namespace utils {
 //------------------------------------------------------------------------------
 class DisplayMode {
 public:
-    DisplayMode( int width, int height )
-        : m_size( QSize(width, height) )
+    DisplayMode(int width, int height)
+        : m_size(QSize(width, height))
     {}
 
-    DisplayMode( const DisplayMode& mode )
-        : m_size( mode.m_size )
+    DisplayMode(const DisplayMode& mode)
+        : m_size(mode.m_size)
     {}
 
     inline QSize size() const {
@@ -38,13 +38,13 @@ public:
     explicit UFullscreenWrapper(QWidget* parent);
 
     DisplayModes enumModes();
-    bool changeToMode( const DisplayMode& mode );
-    bool changeToMode( int width, int height, int bpp = 0 );
+    bool changeToMode(const DisplayMode& mode);
+    bool changeToMode(int width, int height);
     bool restoreMode();
 
 #ifdef Q_WS_X11
 private:
-    int findModeId( int width, int height );
+    int findModeId(int width, int height);
 #endif
 
 private:

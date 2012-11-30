@@ -252,18 +252,11 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     case Qt::Key_Left:
         Control.mutable_keystatus()->set_keyleft(false);
         break;
-#ifdef Q_WS_X11
-    case Qt::Key_F1:
-        modes = enumModes();
-        for( int i = 0; i < modes.count(); ++i )
-        {
-            qDebug() << "Mode" << i << ":" << modes.at(i).width()
-                << "x" << modes.at(i).height();
-        }
-        break;
-#endif
     case Qt::Key_F11:
-        toggleFullscreen();
+        if(event->modifiers().testFlag(Qt::ShiftModifier))
+            toggleFullscreen(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+        else
+            toggleFullscreen();
         break;
     case Qt::Key_F12:
         close();
@@ -273,32 +266,25 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void TMainDisplay::toggleFullscreen()
-{
-//    setWindowState( windowState() ^ Qt::WindowFullScreen );
-//    if( isFullScreen() )
-//    {
-//        QDesktopWidget dw;
-//        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
-//        setFixedSize(screenRect.size());
-//        return;
-//    }
-//    setFixedSize(baseSize());
+void TMainDisplay::toggleFullscreen() {
+    setWindowState( windowState() ^ Qt::WindowFullScreen );
+    if( isFullScreen() )
+    {
+        QDesktopWidget dw;
+        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
+        setFixedSize(screenRect.size());
+        return;
+    }
+    setFixedSize(baseSize());
+}
+
+void TMainDisplay::toggleFullscreen(int width, int height) {
     if( isFullScreen() )
     {
         restoreMode();
         return;
     }
-
-//#ifdef Q_OS_WIN32
-//    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
-//#endif
-//#ifdef Q_WS_X11
-//    QDesktopWidget dw;
-//    const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
-//    changeToMode(screenRect.width(), screenRect.height());
-//#endif
-    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+    changeToMode(width, height);
 }
 
 void TMainDisplay::drawFps(QPainter& painter)

@@ -15,8 +15,10 @@ DEVMODE devMode;
 
 using namespace utils;
 //------------------------------------------------------------------------------
+#ifdef Q_WS_X11
 Rotation originRotation = RR_Rotate_0;
 short originSizeId = 0;
+#endif
 //------------------------------------------------------------------------------
 UFullscreenWrapper::UFullscreenWrapper(QWidget* parent)
     : m_parent(parent)
@@ -54,6 +56,7 @@ bool UFullscreenWrapper::changeToMode(int width, int height)
     return changeToMode(DisplayMode(width, height));
 }
 //------------------------------------------------------------------------------
+#ifdef Q_WS_X11
 int UFullscreenWrapper::findModeId(int width, int height)
 {
     const DisplayModes& dms = enumModes();
@@ -63,6 +66,7 @@ int UFullscreenWrapper::findModeId(int width, int height)
     }
     return -1;
 }
+#endif
 //------------------------------------------------------------------------------
 bool UFullscreenWrapper::changeToMode(const DisplayMode &mode)
 {

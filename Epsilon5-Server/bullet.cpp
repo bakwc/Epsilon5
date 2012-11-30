@@ -16,6 +16,9 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
     fixtureDef.filter.groupIndex = 1;
     Body->CreateFixture(&fixtureDef);
 
+    Body->SetLinearDamping(0.0);
+    Body->SetAngularDamping(0.3);
+
     Ttl = 300;
 }
 

@@ -1,20 +1,20 @@
 #pragma once
 
-#include <QObject>
 #include <QSize>
 #include <QList>
 //------------------------------------------------------------------------------
-class DisplayMode
-{
+class QWidget;
+//------------------------------------------------------------------------------
+namespace utils {
+//------------------------------------------------------------------------------
+class DisplayMode {
 public:
-    DisplayMode( int width, int height, int bpp = 0 )
+    DisplayMode( int width, int height )
         : m_size( QSize(width, height) )
-        , m_bpp( bpp )
     {}
 
     DisplayMode( const DisplayMode& mode )
         : m_size( mode.m_size )
-        , m_bpp( mode.m_bpp )
     {}
 
     inline QSize size() const {
@@ -26,17 +26,12 @@ public:
     inline int height() const {
         return m_size.height();
     }
-    inline int bitsPerPixel() const {
-        return m_bpp;
-    }
 
 private:
     QSize m_size;
-    quint16 m_bpp;
 };
 //------------------------------------------------------------------------------
-class UFullscreenWrapper
-{
+class UFullscreenWrapper {
 public:
     typedef QList<DisplayMode> DisplayModes;
 public:
@@ -47,9 +42,17 @@ public:
     bool changeToMode( int width, int height, int bpp = 0 );
     bool restoreMode();
 
+#ifdef Q_WS_X11
+private:
+    int findModeId( int width, int height );
+#endif
 
 private:
     DisplayModes m_displayModes;
     QWidget* m_parent;
 };
+//------------------------------------------------------------------------------
+}
+//------------------------------------------------------------------------------
+typedef utils::UFullscreenWrapper UFullscreenWrapper;
 //------------------------------------------------------------------------------

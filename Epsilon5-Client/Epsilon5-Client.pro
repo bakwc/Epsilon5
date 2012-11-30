@@ -45,7 +45,7 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 LIBS += -lprotobuf
 unix {
-    LIBS += -lX11 -lXrandr
+    LIBS += -lXrandr
 }
 win32 {
     LIBS += -luser32

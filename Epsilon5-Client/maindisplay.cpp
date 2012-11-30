@@ -290,14 +290,15 @@ void TMainDisplay::toggleFullscreen()
         return;
     }
 
-#ifdef Q_OS_WIN32
+//#ifdef Q_OS_WIN32
+//    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+//#endif
+//#ifdef Q_WS_X11
+//    QDesktopWidget dw;
+//    const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
+//    changeToMode(screenRect.width(), screenRect.height());
+//#endif
     changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
-#endif
-#ifdef Q_WS_X11
-    QDesktopWidget dw;
-    const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
-    changeToMode(screenRect.width(), screenRect.height());
-#endif
 }
 
 void TMainDisplay::drawFps(QPainter& painter)

@@ -51,4 +51,6 @@ HEADERS += \
 
 QMAKE_CXXFLAGS += -std=c++0x
 
+QMAKE_CFLAGS_RELEASE += -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
+
 LIBS += -lprotobuf -lBox2D

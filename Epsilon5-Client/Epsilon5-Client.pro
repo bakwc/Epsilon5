@@ -39,9 +39,7 @@ HEADERS  += \
 
 FORMS    +=
 
-QMAKE_CXXFLAGS += -std=c++0x
-
-QMAKE_CFLAGS_RELEASE += -m32 -mfpmath=sse -Ofast -flto -march=native -funroll-loops
+QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse -Ofast -flto -funroll-loops
 
 LIBS += -lprotobuf
 

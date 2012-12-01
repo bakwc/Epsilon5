@@ -7,7 +7,8 @@ int main(int argc, char *argv[])
     TApplication app(argc, argv);
 
     if (!app.Init()) {
-        return 1;
+        qDebug() << "ERROR: Server already running or can't bind default server port";
+        app.exit(0);
     }
 
     return app.exec();

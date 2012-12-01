@@ -14,10 +14,9 @@ public:
 signals:
     
 public slots:
-    void openDialogSlot();
+    void newDialogSlot();
 
 private:
-    CreateMapDialog _dialog;
     MapCreator      *_mapPainter;
     };
 

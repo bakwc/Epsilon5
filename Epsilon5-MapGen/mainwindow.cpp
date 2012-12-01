@@ -8,20 +8,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     QMenuBar *mBar = new QMenuBar;
     QMenu *m = new QMenu("File");
-    m->addAction("New", &_dialog, SLOT(exec()));
+    m->addAction("New", this, SLOT(newDialogSlot()));
     m->addAction("Open");
     mBar->addMenu(m);
 
     this->setMenuBar(mBar);
-
-    connect(&_dialog, SIGNAL(accepted()), SLOT(openDialogSlot()));
 }
 
-void MainWindow::openDialogSlot()
+void MainWindow::newDialogSlot()
 {
+    CreateMapDialog d(this);
+    if (!d.exec())
+        return;
+
     try {
-        _mapPainter = new MapCreator(_dialog.mapName(), _dialog.mapSize(), _dialog.mapBackground(),
-                                     _dialog.mapPath(), _dialog.mapObjsPath());
+        _mapPainter = new MapCreator(d.mapName(), d.mapSize(), d.mapBackground(),
+                                     d.mapPath(), d.mapObjsPath());
     } catch (std::exception &e) {
         delete _mapPainter;
         qDebug("Error: %s", e.what());

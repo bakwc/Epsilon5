@@ -13,6 +13,8 @@ class TPlayer : public TDynamicObject
 public:
     TPlayer(size_t id, TMaps* maps, QObject *parent = 0);
     inline size_t GetId() { return Id; }
+    inline size_t GetHP() { return HP; }
+    void Hit();
     void ApplyCustomPhysics();
     void SetNickname(const QString& nickName);
     inline QString GetNickname() {
@@ -21,6 +23,7 @@ public:
 
 signals:
     void SpawnBullet(TBullet*);
+    void Death();
 public slots:
     void ApplyControl(const Epsilon5::Control &control);
 private:
@@ -29,4 +32,6 @@ private:
     QTime lastShoot;
     QString NickName;
     TMaps* Maps;
+    size_t HP;
+    TCollisionInfo CollisionInfo;
 };

@@ -22,9 +22,13 @@ public:
     inline QHostAddress GetAddr() {
         return Addr;
     }
-
+    void ReSpawn(bool newConnected = false);
 public slots:
     void OnDataReceived(const QByteArray &data);
+    void Kill() {
+        PlayerStatus = PS_Dead;
+    }
+
 signals:
     void ControlReceived(const Epsilon5::Control &control);
     void SpawnPlayer(size_t id);

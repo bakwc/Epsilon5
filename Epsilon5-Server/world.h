@@ -4,6 +4,7 @@
 #include <QHash>
 #include <QByteArray>
 #include <QList>
+#include <QSet>
 #include <Box2D/Box2D.h>
 #include <QDebug>
 
@@ -15,7 +16,7 @@
 class QRect;
 class TApplication;
 
-class TWorld : public QObject
+class TWorld : public QObject, public b2ContactListener
 {
     Q_OBJECT
 public:
@@ -33,8 +34,8 @@ public:
     TPlayer* GetPlayer(size_t id);
     QByteArray Serialize();
 public slots:
-    void PlayerEnter(size_t id);
-    void PlayerExit(size_t id);
+    void PlayerSpawn(size_t id);
+    void PlayerKill(size_t id);
     void SpawnBullet(TBullet *bullet);
     void SpawnObject(size_t id, int x, int y, double angle);
     void SpawnBorders(const QSize &mapSize);
@@ -48,6 +49,7 @@ private:
     void spawnDynamicObject(TDynamicObjectsList &container, size_t id,
             double x, double y, double vx, double vy,
             const QSizeF& size, double angle = 0.0);
+    void BeginContact(b2Contact* contact);
 private:
     b2World* B2World;
     TPlayersHash Players;

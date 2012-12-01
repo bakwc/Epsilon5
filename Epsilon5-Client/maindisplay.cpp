@@ -74,7 +74,6 @@ void TMainDisplay::timerEvent(QTimerEvent *) {
 
 void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-    painter.fillRect(this->rect(), Qt::black);
     drawWorld(painter);
     drawFps(painter);
 }
@@ -214,9 +213,11 @@ void TMainDisplay::drawWorld(QPainter &painter)
             }
         }
 
+        /*
         if (!playerFound) {
             throw UException("No player found with id " + QString::number(playerId));
         }
+        */
 
         QPoint widgetCenter(width() / 2, height() / 2);
         QImage background = Map->GetFrame(playerX, playerY, size());
@@ -240,6 +241,8 @@ void TMainDisplay::drawWorld(QPainter &painter)
             int cx = GetCorrect(playerX, player.x());
             int cy = GetCorrect(playerY, player.y());
             QString nickName = player.name().c_str();
+            size_t hp = player.hp();
+            nickName += " - " + QString::number(hp) + "%";
             if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
                 gamerPos.setX(widgetCenter.x() + cx);
                 gamerPos.setY(widgetCenter.y() + cy);

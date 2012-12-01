@@ -12,6 +12,8 @@ message Player {
     optional double angle = 6;
 
     required string name = 7;
+
+    required uint32 hp = 8;
 }
 
 message Bullet {

@@ -32,7 +32,7 @@ void TClient::OnDataReceived(const QByteArray &data)
 
         switch (packet) {
         case PT_Control: {
-            if (PlayerStatus != PS_Spawned) {
+            if (!(PlayerStatus == PS_Spawned || PlayerStatus == PS_Dead)) {
                 throw UException("Player not spawned!");
             }
             Epsilon5::Control control;
@@ -60,12 +60,8 @@ void TClient::OnDataReceived(const QByteArray &data)
                         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
                     }
 
-                    emit SpawnPlayer(Id);
-                    TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
-                    player->SetNickname(NickName);
-                    connect(this, SIGNAL(ControlReceived(Epsilon5::Control)),
-                            player, SLOT(ApplyControl(Epsilon5::Control)));
-                    PlayerStatus = PS_Spawned;
+                    ReSpawn(true);
+
                 } catch (const std::exception& e){
                     qDebug() << "Error spawning player " << e.what() << "\n";
                 }
@@ -118,4 +114,17 @@ void TClient::SendPlayerInfo() {
     data.resize(info.ByteSize());
     info.SerializeToArray(data.data(), data.size());
     Send(data, PT_PlayerInfo);
+}
+
+void TClient::ReSpawn(bool newConnected) {
+    if (PlayerStatus == PS_Dead || newConnected) {
+        emit SpawnPlayer(Id);
+        TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
+        player->SetNickname(NickName);
+        connect(this, SIGNAL(ControlReceived(Epsilon5::Control)),
+                player, SLOT(ApplyControl(Epsilon5::Control)));
+        connect(player, SIGNAL(Death()),
+                this, SLOT(Kill()));
+        PlayerStatus = PS_Spawned;
+    }
 }

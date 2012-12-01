@@ -12,4 +12,5 @@ public:
     }
 private:
     size_t Ttl;
+    TCollisionInfo CollisionInfo;
 };

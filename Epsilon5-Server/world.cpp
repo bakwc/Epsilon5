@@ -16,6 +16,7 @@ TWorld::TWorld(QObject *parent)
     , B2World(new b2World(b2Vec2(0, 0)))
 {
     B2World->ClearForces();
+    B2World->SetContactListener(this);
 }
 
 TWorld::~TWorld()
@@ -51,6 +52,7 @@ QByteArray TWorld::Serialize() {
         player->set_angle(i.value()->GetAngle());
         QByteArray playerName = i.value()->GetNickname().toLocal8Bit();
         player->set_name(playerName.data(), playerName.size());
+        player->set_hp(i.value()->GetHP());
     }
 
     for (auto i = Bullets.begin(); i != Bullets.end();i++)
@@ -96,14 +98,15 @@ void TWorld::Start() {
     startTimer(20);
 }
 
-void TWorld::PlayerEnter(size_t id) {
+void TWorld::PlayerSpawn(size_t id) {
     qDebug() << Q_FUNC_INFO;
     TPlayer* player = new TPlayer(id, Application()->GetMaps(), this);
     connect(player, SIGNAL(SpawnBullet(TBullet*)), SLOT(SpawnBullet(TBullet*)));
+    connect(player, SIGNAL(Death()), SLOT(PlayerKill(size_t)));
     Players.insert(id, player);
 }
 
-void TWorld::PlayerExit(size_t id) {
+void TWorld::PlayerKill(size_t id) {
     auto playerIt = Players.find(id);
     if (playerIt != Players.end())
     {
@@ -228,4 +231,29 @@ void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
         OBJECT_SCALE_DOWN * size.height());
     object->SetId(id);
     container.insert(container.end(), object);
+}
+
+void TWorld::BeginContact(b2Contact* contact) {
+    void* obj1Data = contact->GetFixtureA()->GetBody()->GetUserData();
+    void* obj2Data = contact->GetFixtureB()->GetBody()->GetUserData();
+
+    TPlayer* player = 0;
+    if (obj1Data && obj2Data) {
+        TCollisionInfo* obj1Info = (TCollisionInfo*)obj1Data;
+        TCollisionInfo* obj2Info = (TCollisionInfo*)obj2Data;
+
+        if (obj1Info->ObjType == TCollisionInfo::OT_Player &&
+                obj2Info->ObjType == TCollisionInfo::OT_Bullet) {
+            player = (TPlayer*)(obj1Info->Object);
+        } else if (obj1Info->ObjType == TCollisionInfo::OT_Bullet &&
+                obj2Info->ObjType == TCollisionInfo::OT_Player) {
+            player = (TPlayer*)(obj2Info->Object);
+        }
+    }
+
+    if (player) {
+        player->Hit();
+    }
+
+    qDebug() << "Collision detected!";
 }

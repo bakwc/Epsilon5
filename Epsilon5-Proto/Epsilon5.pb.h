@@ -150,6 +150,13 @@ class Player : public ::google::protobuf::Message {
   inline ::std::string* mutable_name();
   inline ::std::string* release_name();
   
+  // required uint32 hp = 8;
+  inline bool has_hp() const;
+  inline void clear_hp();
+  static const int kHpFieldNumber = 8;
+  inline ::google::protobuf::uint32 hp() const;
+  inline void set_hp(::google::protobuf::uint32 value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Player)
  private:
   inline void set_has_id();
@@ -166,19 +173,22 @@ class Player : public ::google::protobuf::Message {
   inline void clear_has_angle();
   inline void set_has_name();
   inline void clear_has_name();
+  inline void set_has_hp();
+  inline void clear_has_hp();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   double x_;
   double y_;
   double vx_;
+  ::google::protobuf::int32 id_;
+  ::google::protobuf::uint32 hp_;
   double vy_;
   double angle_;
   ::std::string* name_;
-  ::google::protobuf::int32 id_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1126,6 +1136,28 @@ inline ::std::string* Player::release_name() {
     name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// required uint32 hp = 8;
+inline bool Player::has_hp() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Player::set_has_hp() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Player::clear_has_hp() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Player::clear_hp() {
+  hp_ = 0u;
+  clear_has_hp();
+}
+inline ::google::protobuf::uint32 Player::hp() const {
+  return hp_;
+}
+inline void Player::set_hp(::google::protobuf::uint32 value) {
+  set_has_hp();
+  hp_ = value;
 }
 
 // -------------------------------------------------------------------

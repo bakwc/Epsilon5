@@ -69,6 +69,7 @@ void TServer::DataReceived() {
 
 void TServer::timerEvent(QTimerEvent*) {
     DisconnectInactive();
+    RespawnDeadClients();
     SendWorld();
 }
 
@@ -111,4 +112,10 @@ void TServer::Send(const QHostAddress &ip, quint16 port, const QByteArray &data,
     newData += QByteArray((const char*) &dataSize, sizeof(quint16));
     newData += data;
     Server->writeDatagram(newData, ip, port);
+}
+
+void TServer::RespawnDeadClients() {
+    for (auto i = Clients.begin(); i != Clients.end(); i++) {
+        i.value()->ReSpawn();
+    }
 }

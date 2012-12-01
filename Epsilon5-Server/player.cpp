@@ -3,10 +3,13 @@
 #include "bullet.h"
 #include <QDebug>
 
+const size_t HP_LOST = 45;
+
 TPlayer::TPlayer(size_t id, TMaps *maps, QObject *parent)
     : TDynamicObject(0, 0, 0, 0, 0, parent)
     , Id(id)
     , Maps(maps)
+    , HP(100)
 {
     b2CircleShape circle;
     circle.m_p.Set(0, 0);
@@ -18,6 +21,10 @@ TPlayer::TPlayer(size_t id, TMaps *maps, QObject *parent)
     fixtureDef.friction = 0.8f;
     fixtureDef.filter.groupIndex = 1;
     Body->CreateFixture(&fixtureDef);
+
+    Body->SetUserData(&CollisionInfo);
+    CollisionInfo.ObjType = TCollisionInfo::OT_Player;
+    CollisionInfo.Object = this;
 
     lastShoot.start();
 
@@ -45,8 +52,8 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
             TBullet *bullet;
             if (control.keystatus().keyattack1()) {
                 double x, y, vx, vy;
-                vx = 28 * sin(angle + M_PI / 2);
-                vy = 28 * cos(angle + M_PI / 2);
+                vx = 38 * sin(angle + M_PI / 2);
+                vy = 38 * cos(angle + M_PI / 2);
                 x = GetX() + vx / 10;
                 y = GetY() + vy / 10;
                 bullet = new TBullet(x, y, vx + GetVx(), vy + GetVy(), 12.5, parent());
@@ -105,4 +112,14 @@ void TPlayer::ApplyCustomPhysics()
 
 void TPlayer::SetNickname(const QString& nickName) {
     NickName = nickName;
+}
+
+void TPlayer::Hit() {
+    if (HP > HP_LOST) {
+        HP -= HP_LOST;
+        qDebug() << "HP: " << HP;
+    } else {
+        qDebug() << "Dead!";
+        emit Death();
+    }
 }

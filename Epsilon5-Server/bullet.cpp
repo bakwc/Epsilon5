@@ -21,6 +21,10 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
     Body->SetLinearDamping(0.0);
     Body->SetAngularDamping(0.3);
 
+    Body->SetUserData(&CollisionInfo);
+    CollisionInfo.ObjType = TCollisionInfo::OT_Bullet;
+    CollisionInfo.Object = this;
+
     Ttl = 300;
 }
 

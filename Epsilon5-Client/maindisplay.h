@@ -10,7 +10,7 @@
 
 class TApplication;
 
-class TMainDisplay : public QGLWidget, public UFullscreenWrapper
+class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper
 {
     Q_OBJECT
 public:

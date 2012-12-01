@@ -43,7 +43,7 @@ private:
     QList<QPixmap>      _objPix;
 
 private:
-    QByteArray serealizeObj(const MapItem *item);
+    QByteArray serealizeObj(MapItem *item);
     void createConfFile();
     void openObjectFile();
     void createMapFiles();

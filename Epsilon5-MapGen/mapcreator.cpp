@@ -12,6 +12,8 @@
 MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString path, QString objPath, QWidget *parent) :
     QWidget(parent), _name(name), _size(size), _background(background), _path(path), _objPath(objPath)
 {
+    QString::number(10);
+
     createMapFiles();
     openObjectFile();
     createConfFile();
@@ -22,23 +24,32 @@ MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString pat
 void MapCreator::save()
 {
     QList<QGraphicsItem*> itemLst = _view->scene()->items();
+    QByteArray arr;
+    qDebug() << Q_FUNC_INFO;
 
-    foreach(QGraphicsItem* item, itemLst) {
-        MapItem *mItem = dynamic_cast<MapItem*>(item);
-        QByteArray arr = serealizeObj(mItem);
-        _mObject.write( arr );
+    for (int i=0; i < itemLst.size(); ++i) {
+        qDebug() << "dyn_cast";
+        MapItem *mItem = dynamic_cast<MapItem*>(itemLst.at(i));
+        qDebug() << "serealize";
+        arr += serealizeObj(mItem);
+        qDebug() << "write";
     }
 
-    _mObject.flush();
+    qDebug() << Q_FUNC_INFO << "end";
+
+    _mObject.write(arr);
+    if (!_mObject.flush())
+        qDebug() << "Save error";
+    _mObject.close();
 }
 
-QByteArray MapCreator::serealizeObj(const MapItem *item)
+QByteArray MapCreator::serealizeObj(MapItem *item)
 {
     QByteArray arr;
-    arr += QByteArray::number(item->x()) + ':';
-    arr += QByteArray::number(item->y()) + ':';
-    arr += QByteArray::number(item->angle()) + ':';
-    arr += QByteArray::number(item->id()) + '\n';
+    arr.append(QByteArray::number(item->posX()) + ':');
+    arr.append(QByteArray::number(item->posY()) + ':');
+    arr.append(QByteArray::number(item->angle()) + ':');
+    arr.append(QByteArray::number(item->id()) + '\n');
     return arr;
 }
 
@@ -52,8 +63,11 @@ void MapCreator::createConfFile()
 
     _mConfig.write(str.toLocal8Bit());
     _mConfig.flush();
+    _mConfig.close();
 
-    qDebug() << str;
+//    _mObject.write("DATA");
+//    _mObject.flush();
+//    _mObject.close();
 }
 
 void MapCreator::openObjectFile()

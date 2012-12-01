@@ -12,10 +12,10 @@ public:
     explicit MapItem(const utils::Object &obj, const QPixmap &pix);
 
     QRectF boundingRect() const;
-    int id() const { return _obj.id; }
-    int x() const { return this->x(); }
-    int y() const { return this->y(); }
-    int angle() const { return 0; }
+    int id() { return _obj.id; }
+    int posX() { return this->x(); }
+    int posY() { return this->y(); }
+    int angle() { return 0; }
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);

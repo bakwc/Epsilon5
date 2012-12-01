@@ -24,4 +24,5 @@ HEADERS += \
 FORMS += \
     createmapdialog.ui
 
-QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse -Ofast -flto -funroll-loops
+QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse
+# -Ofast -flto -funroll-loops

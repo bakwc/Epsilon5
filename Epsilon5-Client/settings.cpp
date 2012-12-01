@@ -22,13 +22,15 @@ void TSettings::CheckIniFile(){
     } ;
 
     QFile IniFile("settings.ini");
-    if (IniFile.open(QIODevice::WriteOnly)) {
-        qint64 bytesWritten = IniFile.write(reinterpret_cast<const char*>(rawData), sizeof(rawData));
-                if (bytesWritten < sizeof(rawData)) {
-                    //error here
+    if (!IniFile.exists()){
+        if (IniFile.open(QIODevice::WriteOnly)) {
+            qint64 bytesWritten = IniFile.write(reinterpret_cast<const char*>(rawData), sizeof(rawData));
+                    if (bytesWritten < sizeof(rawData)) {
+                        //error here
+                    }
+                    IniFile.close();
                 }
-                IniFile.close();
-            }
+    }
 }
 
 QString TSettings::GetNickname() {

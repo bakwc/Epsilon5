@@ -16,6 +16,14 @@ struct Object {
     QString name;
 };
 
+struct MapLine {
+    int x;
+    int y;
+    int angle;
+    int id;
+};
+
 QList<Object> parseObjFile(QFile &f);
+QList<MapLine> parseMapFile(QFile &f);
 
 }

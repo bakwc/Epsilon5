@@ -15,6 +15,14 @@ GraphicsView::GraphicsView(QGraphicsScene *scene, QList<utils::Object> &objsList
     //    setMouseTracking(true);
 }
 
+void GraphicsView::addMapItem(const utils::MapLine &ml)
+{
+    QGraphicsItem *item = new MapItem(_objsLst.at(ml.id-1), _objPix.at(ml.id-1));
+    item->setPos(ml.x, ml.y);
+    item->setRotation(ml.angle);
+    scene()->addItem(item);
+}
+
 void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QGraphicsItem *item = new MapItem(_objsLst.at(_itemId), _objPix.at(_itemId));

@@ -16,10 +16,13 @@ signals:
     
 public slots:
     void newDialogSlot();
+    void openDialogSlot();
 
 private:
     MapCreator      *_mapPainter;
     QAction         *saveAtc;
+
+    void connectMapCreator();
 };
 
 #endif // MAINWINDOW_H

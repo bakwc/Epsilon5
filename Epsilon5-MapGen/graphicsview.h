@@ -14,6 +14,8 @@ public:
     explicit GraphicsView(QGraphicsScene* scene, QList<utils::Object> &objsList,
                           QList<QPixmap> &objPix, QWidget *parent = 0);
 
+    void addMapItem(const utils::MapLine &ml);
+
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
 //    void mouseMoveEvent(QMouseEvent *event);

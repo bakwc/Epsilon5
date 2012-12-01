@@ -25,6 +25,7 @@ class MapCreator : public QWidget
 public:
     explicit MapCreator(QString name, QSize size, QPixmap background, QString path,
                         QString objPath, QWidget *parent = 0);
+    explicit MapCreator(QString path, QString objPath, QWidget *parent = 0);
     
 signals:
     
@@ -46,7 +47,8 @@ private:
     QByteArray serealizeObj(MapItem *item);
     void createConfFile();
     void openObjectFile();
-    void createMapFiles();
+    void openMapFiles();
+    void configureMapCreator();
     void init();
 };
 

@@ -2,6 +2,7 @@
 
 namespace utils
 {
+
 QList<Object> parseObjFile(QFile &f)
 {
     QList<Object> objs;
@@ -23,4 +24,25 @@ QList<Object> parseObjFile(QFile &f)
 
     return objs;
 }
+
+QList<MapLine> parseMapFile(QFile &f)
+{
+    QList<MapLine> mapLst;
+
+    while(!f.atEnd()) {
+        MapLine obj;
+        QByteArray arr = f.readLine();
+        QList<QByteArray> arrList = arr.split(':');
+        obj.x = arrList.at(0).toInt();
+        obj.y = arrList.at(1).toInt();
+        obj.angle = arrList.at(2).toInt();
+        QString str = arrList.at(3);
+        obj.id = str.mid(0, str.indexOf('\n')).toInt();
+
+        mapLst.push_back(obj);
+    }
+
+    return mapLst;
+}
+
 }

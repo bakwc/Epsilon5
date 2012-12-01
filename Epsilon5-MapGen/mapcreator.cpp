@@ -12,12 +12,28 @@
 MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString path, QString objPath, QWidget *parent) :
     QWidget(parent), _name(name), _size(size), _background(background), _path(path), _objPath(objPath)
 {
-    QString::number(10);
+    // Create map dir
+    if ( !_path.mkdir(_name) || !_path.cd(_name) )
+        throw UException("Cannot create " + _name + "dir");
 
-    createMapFiles();
+    openMapFiles();
     openObjectFile();
     createConfFile();
     init();
+}
+
+MapCreator::MapCreator(QString path, QString objPath, QWidget *parent) :
+    QWidget(parent), _path(path), _objPath(objPath)
+{
+    openMapFiles();
+    openObjectFile();
+    configureMapCreator();
+    init();
+
+    // Create items on scene
+    QList<utils::MapLine> ml = utils::parseMapFile(_mObject);
+    foreach(auto m, ml)
+        _view->addMapItem(m);
 }
 
 
@@ -25,22 +41,15 @@ void MapCreator::save()
 {
     QList<QGraphicsItem*> itemLst = _view->scene()->items();
     QByteArray arr;
-    qDebug() << Q_FUNC_INFO;
 
     for (int i=0; i < itemLst.size(); ++i) {
-        qDebug() << "dyn_cast";
         MapItem *mItem = dynamic_cast<MapItem*>(itemLst.at(i));
-        qDebug() << "serealize";
         arr += serealizeObj(mItem);
-        qDebug() << "write";
     }
-
-    qDebug() << Q_FUNC_INFO << "end";
 
     _mObject.write(arr);
     if (!_mObject.flush())
         qDebug() << "Save error";
-    _mObject.close();
 }
 
 QByteArray MapCreator::serealizeObj(MapItem *item)
@@ -63,11 +72,6 @@ void MapCreator::createConfFile()
 
     _mConfig.write(str.toLocal8Bit());
     _mConfig.flush();
-    _mConfig.close();
-
-//    _mObject.write("DATA");
-//    _mObject.flush();
-//    _mObject.close();
 }
 
 void MapCreator::openObjectFile()
@@ -77,19 +81,37 @@ void MapCreator::openObjectFile()
         throw UException("Cannot open objects file");
 }
 
-void MapCreator::createMapFiles()
+void MapCreator::openMapFiles()
 {
-    // Create map dir
-    if ( !_path.mkdir(_name) || !_path.cd(_name) )
-        throw UException("Cannot create " + _name + "dir");
-
-    // Create map files
     _mConfig.setFileName(_path.absoluteFilePath(MAP_CONF_FILE));
     _mObject.setFileName(_path.absoluteFilePath(MAP_FILE));
 
     if ( !_mConfig.open(QIODevice::ReadWrite | QIODevice::Text) ||
          !_mObject.open(QIODevice::ReadWrite | QIODevice::Text) )
         throw UException("Cannot create map files");
+}
+
+void MapCreator::configureMapCreator()
+{
+    int q = 0; // validate
+    while(!_mConfig.atEnd()) {
+        QString line = _mConfig.readLine();
+        QStringList l = line.split('=');
+
+        if (l.at(0) == "name") {
+            _name = l.at(1);
+            q += 1;
+        } else if (l.at(0) == "width") {
+            _size.setWidth(l.at(1).toInt());
+            q += 10;
+        } else if (l.at(0) == "height") {
+            _size.setHeight(l.at(1).toInt());
+            q += 100;
+        }
+    }
+
+    if (q != 111)
+        throw UException("Invalid config file");
 }
 
 

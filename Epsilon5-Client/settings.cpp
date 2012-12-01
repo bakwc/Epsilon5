@@ -7,7 +7,8 @@
 TSettings::TSettings(QObject *parent)
     : USettings(parent)
 {
-    CheckIniFile();
+    // TODO: Rewrite this function
+    //CheckIniFile();
     Load("settings.ini");
 }
 

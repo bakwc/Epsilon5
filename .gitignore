@@ -12,6 +12,7 @@
 *.a
 
 *.user
+*.sublime-*
 
 */debug*
 */release*

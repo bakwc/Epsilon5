@@ -22,7 +22,7 @@ void MainWindow::openDialogSlot()
     try {
         _mapPainter = new MapCreator(_dialog.mapName(), _dialog.mapSize(), _dialog.mapBackground(),
                                      _dialog.mapPath(), _dialog.mapObjsPath());
-    } catch (std::runtime_error &e) {
+    } catch (std::exception &e) {
         delete _mapPainter;
         qDebug("Error: %s", e.what());
         QMessageBox::critical(this, "Error", e.what());

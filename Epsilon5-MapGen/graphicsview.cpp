@@ -4,6 +4,8 @@
 #include <QPaintEvent>
 #include <QPainter>
 #include <QBrush>
+#include <QDebug>
+#include <QScrollBar>
 
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent) :
@@ -22,7 +24,14 @@ void GraphicsView::setItem(const QString &str, const QSizeF &s, const QPixmap &p
 void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QGraphicsItem *item = new MapItem(_itemSize, _itemPix);
-    item->setPos(event->pos());
+
+    QScrollBar *hs = horizontalScrollBar();
+    QScrollBar *vs = verticalScrollBar();
+
+    QPoint vPoint = QPoint(event->x() + hs->value() - _itemSize.width()/2,
+                           event->y() + vs->value() - _itemSize.height()/2);
+
+    item->setPos(vPoint);
     scene()->addItem(item);
     update();
 }

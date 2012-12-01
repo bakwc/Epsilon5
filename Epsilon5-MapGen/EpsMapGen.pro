@@ -9,7 +9,8 @@ SOURCES += main.cpp \
     mapcreator.cpp \
     graphicsview.cpp \
     mapitem.cpp \
-    utils.cpp
+    utils.cpp \
+    ../utils/uexception.cpp \
 
 HEADERS += \
     mainwindow.h \
@@ -17,7 +18,8 @@ HEADERS += \
     mapcreator.h \
     graphicsview.h \
     mapitem.h \
-    utils.h
+    utils.h \
+    ../utils/uexception.h \
 
 FORMS += \
     createmapdialog.ui

@@ -6,9 +6,10 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
+#include "../utils/uexception.h"
 
 
-MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString path, QString objPath, QWidget *parent) throw(std::runtime_error) :
+MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString path, QString objPath, QWidget *parent) :
     QWidget(parent), _name(name), _size(size), _background(background), _path(path), _objPath(objPath)
 {
     createMapFiles();
@@ -40,14 +41,14 @@ void MapCreator::openObjectFile()
 {
     _objs.setFileName(_objPath.absoluteFilePath(OBJS_FILE));
     if ( !_objs.open(QIODevice::ReadOnly | QIODevice::Text) )
-        throw std::runtime_error("Cannot open objects file");
+        throw UException("Cannot open objects file");
 }
 
 void MapCreator::createMapFiles()
 {
     // Create map dir
     if ( !_path.mkdir(_name) || !_path.cd(_name) )
-        throw std::runtime_error("Create dir error");
+        throw UException("Cannot create " + _name + "dir");
 
     // Create map files
     _mConfig.setFileName(_path.absoluteFilePath(MAP_CONF_FILE));
@@ -55,7 +56,7 @@ void MapCreator::createMapFiles()
 
     if ( !_mConfig.open(QIODevice::ReadWrite | QIODevice::Text) ||
          !_mObject.open(QIODevice::ReadWrite | QIODevice::Text) )
-        throw std::runtime_error("Cannot create map files");
+        throw UException("Cannot create map files");
 }
 
 

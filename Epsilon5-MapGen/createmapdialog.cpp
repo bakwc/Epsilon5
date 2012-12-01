@@ -45,18 +45,21 @@ QString CreateMapDialog::mapObjsPath()
 
 void CreateMapDialog::on_selectTextureButton_clicked()
 {
-    QString f = QFileDialog::getOpenFileName(this, "Open map texture");
+    QFileDialog fd;
+    QString f = fd.getOpenFileName(this, "Open map texture");
     emit selectTexture(f);
 }
 
 void CreateMapDialog::on_selectPathButton_clicked()
 {
-    QString f = QFileDialog::getExistingDirectory(this, "Set directory where will be create map's' folder");
+    QFileDialog fd;
+    QString f = fd.getExistingDirectory(this, "Set directory where will be create map's' folder");
     emit selectPath(f);
 }
 
 void CreateMapDialog::on_objPathButton_clicked()
 {
-    QString f = QFileDialog::getExistingDirectory(this, "Set directory where will be create map's' folder");
+    QFileDialog fd;
+    QString f = fd.getExistingDirectory(this, "Set objects folder");
     emit selectObjPath(f);
 }

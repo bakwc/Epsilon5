@@ -23,7 +23,7 @@ class MapCreator : public QWidget
 
 public:
     explicit MapCreator(QString name, QSize size, QPixmap background, QString path,
-                        QString objPath, QWidget *parent = 0) throw(std::runtime_error);
+                        QString objPath, QWidget *parent = 0);
     
 signals:
     

@@ -3,6 +3,7 @@
 #include <QString>
 #include <QList>
 #include <QFile>
+#include <exception>
 
 namespace utils
 {

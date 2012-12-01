@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QKeyEvent>
 #include <QDebug>
+#include <QPixmap>
+#include <QMatrix>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "../utils/uexception.h"
 #include "network.h"
@@ -27,13 +29,13 @@ static double getAngle(const QPoint& point)
     return -angle;
 }
 
-TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
-    : QWidget(parent)
+TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
+    : QGLWidget(parent)
     , Application(application)
-    , Frame(new QImage(1680, 1050, QImage::Format_ARGB32))
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
+    , CurrentWorld(NULL)
 {
     setBaseSize(800, 600);
     setFixedSize(baseSize());
@@ -45,6 +47,8 @@ TMainDisplay::TMainDisplay(TApplication *application, QWidget *parent)
     Control.mutable_keystatus()->set_keyright(false);
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
+
+    startTimer(20);
 }
 
 void TMainDisplay::Init() {
@@ -57,115 +61,20 @@ void TMainDisplay::Init() {
 
 TMainDisplay::~TMainDisplay()
 {
-    if (Frame) {
-        delete Frame;
-    }
+    CurrentWorld = NULL;
 }
 
 void TMainDisplay::RedrawWorld() {
-    try {
-        Epsilon5::World world = ((TNetwork*)(QObject::sender()))->GetWorld();
-        Frame->fill(Qt::black);
-        QPainter painter(Frame);
-        QPoint gamerPos, cursorPos;
-
-        const int nickMaxWidth = 200;
-        int playerX = 0;
-        int playerY = 0;
-        bool playerFound = false;
-
-        size_t playerId = Application->GetNetwork()->GetId();
-
-        for (int i = 0; i != world.players_size(); i++) {
-            const Epsilon5::Player &player = world.players(i);
-            if ((size_t)player.id() == playerId) {
-                playerX = player.x();
-                playerY = player.y();
-                playerFound = true;
-            }
-        }
-
-        if (!playerFound) {
-            throw UException("No player found with id " + QString::number(playerId));
-        }
-
-        QPoint widgetCenter(width() / 2, height() / 2);
-        QImage background = Map->GetFrame(playerX, playerY, size());
-        painter.drawImage(0, 0, background);
-
-        const QFont oldFont = painter.font();
-        const QPen oldPen = painter.pen();
-        QFont nickFont(oldFont);
-        nickFont.setBold(true);
-        nickFont.setPointSize(12);
-
-        const QImage* img;
-        for (int i = 0; i != world.players_size(); i++) {
-            const Epsilon5::Player &player = world.players(i);
-
-            int cx = GetCorrect(playerX, player.x());
-            int cy = GetCorrect(playerY, player.y());
-            QString nickName = player.name().c_str();
-            if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
-                gamerPos.setX(widgetCenter.x() + cx);
-                gamerPos.setY(widgetCenter.y() + cy);
-                img = &Images->GetImage("player");
-            } else {
-                img = &Images->GetImage("enemy");
-            }
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
-
-            painter.setPen(Qt::yellow);
-            painter.setFont(nickFont);
-            QRect nickRect = QRect(widgetCenter.x() + cx - nickMaxWidth/2,
-                            widgetCenter.y() + cy - img->height()/2
-                                   - painter.fontInfo().pixelSize(),
-                            nickMaxWidth, painter.fontInfo().pixelSize());
-
-            painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
-            painter.setPen(oldPen);
-            painter.setFont(oldFont);
-        }
-
-        img = &Images->GetImage("bullet");
-
-        for (int i = 0; i != world.bullets_size(); i++) {
-            const Epsilon5::Bullet &bullet = world.bullets(i);
-            int cx = GetCorrect(playerX, bullet.x());
-            int cy = GetCorrect(playerY, bullet.y());
-
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
-        }
-
-        for (int i = 0; i != world.objects_size(); i++) {
-            const Epsilon5::Object& object = world.objects(i);
-            int cx = GetCorrect(playerX, object.x());
-            int cy = GetCorrect(playerY, object.y());
-            img = Objects->GetImageById(object.id());
-
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
-        }
-
-        cursorPos = this->mapFromGlobal(QCursor::pos());
-        double angle = getAngle(cursorPos - gamerPos);
-        Control.set_angle(angle);
-
-        this->update();
-    } catch (const std::exception& e) {
-        qDebug() << Q_FUNC_INFO << ": " << e.what();
-    }
+    CurrentWorld = &((TNetwork*)(QObject::sender()))->GetWorld();
 }
 
 void TMainDisplay::timerEvent(QTimerEvent *) {
-
+    this->update();
 }
 
 void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-    painter.drawImage(0, 0, *Frame);
+    drawWorld(painter);
     drawFps(painter);
 }
 
@@ -190,15 +99,19 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key_Up:
+    case Qt::Key_W:
         Control.mutable_keystatus()->set_keyup(true);
         break;
     case Qt::Key_Down:
+    case Qt::Key_S:
         Control.mutable_keystatus()->set_keydown(true);
         break;
     case Qt::Key_Right:
+    case Qt::Key_D:
         Control.mutable_keystatus()->set_keyright(true);
         break;
     case Qt::Key_Left:
+    case Qt::Key_A:
         Control.mutable_keystatus()->set_keyleft(true);
         break;
     default:
@@ -211,15 +124,19 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key_Up:
+    case Qt::Key_W:
         Control.mutable_keystatus()->set_keyup(false);
         break;
     case Qt::Key_Down:
+    case Qt::Key_S:
         Control.mutable_keystatus()->set_keydown(false);
         break;
     case Qt::Key_Right:
+    case Qt::Key_D:
         Control.mutable_keystatus()->set_keyright(false);
         break;
     case Qt::Key_Left:
+    case Qt::Key_A:
         Control.mutable_keystatus()->set_keyleft(false);
         break;
     case Qt::Key_F11:
@@ -270,4 +187,131 @@ void TMainDisplay::drawFps(QPainter& painter)
     painter.setPen(penOld);
 
     ++frames;
+}
+
+void TMainDisplay::drawWorld(QPainter &painter)
+{
+    if( !CurrentWorld )
+        return;
+
+    try {
+        QPoint gamerPos, cursorPos;
+
+        const int nickMaxWidth = 200;
+        int playerX = 0;
+        int playerY = 0;
+        bool playerFound = false;
+
+        size_t playerId = Application->GetNetwork()->GetId();
+
+        for (int i = 0; i != CurrentWorld->players_size(); i++) {
+            const Epsilon5::Player &player = CurrentWorld->players(i);
+            if ((size_t)player.id() == playerId) {
+                playerX = player.x();
+                playerY = player.y();
+                playerFound = true;
+            }
+        }
+
+        /*
+        if (!playerFound) {
+            throw UException("No player found with id " + QString::number(playerId));
+        }
+        */
+
+        QPoint widgetCenter(width() / 2, height() / 2);
+        QImage background = Map->GetFrame(playerX, playerY, size());
+        painter.drawImage(0, 0, background);
+
+        const QFont oldFont = painter.font();
+        const QPen oldPen = painter.pen();
+        QFont nickFont(oldFont);
+        nickFont.setBold(true);
+        nickFont.setPointSize(12);
+
+        QImage miniMapImg(100, 100, QImage::Format_ARGB32);
+        miniMapImg.fill(qRgba(255, 255, 255, 100));
+        QPainter miniMap(&miniMapImg);
+
+        // Players drawing
+        const QImage* img;
+        for (int i = 0; i != CurrentWorld->players_size(); i++) {
+            const Epsilon5::Player &player = CurrentWorld->players(i);
+
+            int cx = GetCorrect(playerX, player.x());
+            int cy = GetCorrect(playerY, player.y());
+            QString nickName = player.name().c_str();
+            size_t hp = player.hp();
+            nickName += " - " + QString::number(hp) + "%";
+            if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
+                gamerPos.setX(widgetCenter.x() + cx);
+                gamerPos.setY(widgetCenter.y() + cy);
+                img = &Images->GetImage("player");
+                miniMap.setPen(Qt::red);
+            } else {
+                img = &Images->GetImage("enemy");
+                miniMap.setPen(Qt::black);
+            }
+
+            miniMap.drawEllipse(50 + player.x() / 40, 50 + player.y() / 40, 2, 2);
+
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
+
+            painter.setPen(Qt::yellow);
+            painter.setFont(nickFont);
+            QRect nickRect = QRect(widgetCenter.x() + cx - nickMaxWidth/2,
+                            widgetCenter.y() + cy - img->height()/2
+                                   - painter.fontInfo().pixelSize(),
+                            nickMaxWidth, painter.fontInfo().pixelSize());
+
+            painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
+            painter.setPen(oldPen);
+            painter.setFont(oldFont);
+        }
+
+        // Bullets drawing
+        img = &Images->GetImage("bullet");
+
+        for (int i = 0; i != CurrentWorld->bullets_size(); i++) {
+            const Epsilon5::Bullet &bullet = CurrentWorld->bullets(i);
+            int cx = GetCorrect(playerX, bullet.x());
+            int cy = GetCorrect(playerY, bullet.y());
+
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
+        }
+
+        // Objects drawing
+        for (int i = 0; i != CurrentWorld->objects_size(); i++) {
+            const Epsilon5::Object& object = CurrentWorld->objects(i);
+
+            // BUG: Type of ID mismatch (int32 vs size_t on server)
+            if( object.id() < 0 )
+                continue;
+
+            int cx = GetCorrect(playerX, object.x());
+            int cy = GetCorrect(playerY, object.y());
+
+            img = Objects->GetImageById(object.id());
+            QTransform transform;
+            transform.rotate(object.angle() * 180 / M_PI);
+            QImage rimg = img->transformed(transform);
+
+            painter.drawImage(widgetCenter.x() + cx - rimg.width() / 2,
+                              widgetCenter.y() + cy - rimg.height() / 2, rimg);
+            painter.drawEllipse(widgetCenter.x() + cx, widgetCenter.y() + cy, 2, 2);
+        }
+
+        // Minimap drawing
+        painter.drawImage(10, 10, miniMapImg);
+
+        cursorPos = this->mapFromGlobal(QCursor::pos());
+        double angle = getAngle(cursorPos - gamerPos);
+        Control.set_angle(angle);
+
+        this->update();
+    } catch (const std::exception& e) {
+        qDebug() << Q_FUNC_INFO << ": " << e.what();
+    }
 }

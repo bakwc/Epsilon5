@@ -16,6 +16,7 @@ public:
     bool Start();
     void Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType);
     TApplication* Application();
+    void RespawnDeadClients();
 signals:
     void NewPlayer(size_t id);
     void PlayerDisconnected(size_t id);

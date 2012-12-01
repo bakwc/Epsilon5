@@ -12,11 +12,20 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &circle;
-    fixtureDef.density = 0.8f;
+    fixtureDef.density = 1.0f;
+    fixtureDef.friction = 0.1f;
+    fixtureDef.restitution = 0.5f;
     fixtureDef.filter.groupIndex = 1;
     Body->CreateFixture(&fixtureDef);
 
-    Ttl = 100;
+    Body->SetLinearDamping(0.0);
+    Body->SetAngularDamping(0.3);
+
+    Body->SetUserData(&CollisionInfo);
+    CollisionInfo.ObjType = TCollisionInfo::OT_Bullet;
+    CollisionInfo.Object = this;
+
+    Ttl = 300;
 }
 
 void TBullet::ApplyCustomPhysics() {

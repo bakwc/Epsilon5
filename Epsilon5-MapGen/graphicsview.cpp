@@ -10,7 +10,7 @@
 
 GraphicsView::GraphicsView(QGraphicsScene *scene, QList<utils::Object> &objsList,
                            QList<QPixmap> &objPix, QWidget *parent) :
-    QGraphicsView(scene, parent), _objsLst(objsList), _objPix(objPix)
+    QGraphicsView(scene, parent), _objsLst(objsList), _objPix(objPix), _itemId(0)
 {
     //    setMouseTracking(true);
 }

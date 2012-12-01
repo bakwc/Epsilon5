@@ -5,15 +5,14 @@
 #include <QGraphicsScene>
 #include <QSizeF>
 #include <QPixmap>
-
+#include <utils.h>
 
 class GraphicsView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit GraphicsView(QGraphicsScene* scene, QWidget *parent = 0);
-    
-    void setItem(const QString &str, const QSizeF &s, const QPixmap &pix);
+    explicit GraphicsView(QGraphicsScene* scene, QList<utils::Object> &objsList,
+                          QList<QPixmap> &objPix, QWidget *parent = 0);
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
@@ -23,11 +22,13 @@ protected:
 signals:
     
 public slots:
+    void selectedItem(int item);
     
 private:
-    QPixmap     _itemPix;
-    QString     _itemName;
-    QSizeF      _itemSize;
+    QList<utils::Object> &_objsLst;
+    QList<QPixmap>       &_objPix;
+    int         _itemId;
+
     QPoint      _itemPrevPoint;
 };
 

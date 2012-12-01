@@ -11,6 +11,7 @@
 #include "utils.h"
 #include <stdexcept>
 #include <QPixmap>
+#include "mapitem.h"
 
 
 class MapCreator : public QWidget
@@ -28,7 +29,7 @@ public:
 signals:
     
 public slots:
-    void selectedItem(int item);
+    void save();
     
 private:
     QString _name;
@@ -42,6 +43,7 @@ private:
     QList<QPixmap>      _objPix;
 
 private:
+    QByteArray serealizeObj(const MapItem *item);
     void createConfFile();
     void openObjectFile();
     void createMapFiles();

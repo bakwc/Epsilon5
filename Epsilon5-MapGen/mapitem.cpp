@@ -5,15 +5,15 @@
 #include <QDebug>
 
 
-MapItem::MapItem(const QSizeF &size, const QPixmap &pix) :
-    _size(size), _pix(pix)
+MapItem::MapItem(const utils::Object &obj, const QPixmap &pix) :
+    _obj(obj), _pix(pix)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 
 QRectF MapItem::boundingRect() const
 {
-    return QRectF(QPointF(0, 0), _size);
+    return QRectF(0, 0, _obj.width, _obj.height);
 }
 
 void MapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -28,7 +28,7 @@ void MapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     _point = event->scenePos();
     setPos(_point - _cPoint);
 
-    qDebug() << _point;
+//    qDebug() << _point;
 
     QGraphicsItem::mouseMoveEvent(event);
     update();

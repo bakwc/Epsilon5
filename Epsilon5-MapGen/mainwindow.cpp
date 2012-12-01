@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMenu *m = new QMenu("File");
     m->addAction("New", this, SLOT(newDialogSlot()));
     m->addAction("Open");
+    saveAtc = m->addAction("Save");
     mBar->addMenu(m);
 
     this->setMenuBar(mBar);
@@ -17,11 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::newDialogSlot()
 {
-    CreateMapDialog d(this);
-    if (!d.exec())
-        return;
-
     try {
+        CreateMapDialog d(this);
+        if (!d.exec())
+            return;
+
         _mapPainter = new MapCreator(d.mapName(), d.mapSize(), d.mapBackground(),
                                      d.mapPath(), d.mapObjsPath());
     } catch (std::exception &e) {
@@ -31,5 +32,6 @@ void MainWindow::newDialogSlot()
         return;
     }
 
+    connect(saveAtc, SIGNAL(triggered()), _mapPainter, SLOT(save()));
     this->setCentralWidget(_mapPainter);
 }

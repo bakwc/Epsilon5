@@ -20,7 +20,7 @@ public:
 
     QString mapName();
     QSize   mapSize();
-    QPixmap  mapBackground();
+    QPixmap mapBackground();
     QString mapPath();
     QString mapObjsPath();
 
@@ -31,9 +31,7 @@ signals:
     
 private slots:
     void on_selectTextureButton_clicked();
-
     void on_selectPathButton_clicked();
-
     void on_objPathButton_clicked();
 
 private:

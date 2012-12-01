@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "createmapdialog.h"
 #include "mapcreator.h"
+#include <QAction>
 
 class MainWindow : public QMainWindow
 {
@@ -18,6 +19,7 @@ public slots:
 
 private:
     MapCreator      *_mapPainter;
-    };
+    QAction         *saveAtc;
+};
 
 #endif // MAINWINDOW_H

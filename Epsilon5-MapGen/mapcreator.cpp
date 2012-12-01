@@ -19,11 +19,27 @@ MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString pat
 }
 
 
-void MapCreator::selectedItem(int item)
+void MapCreator::save()
 {
-    const utils::Object &obj = _objsLst.at(item);
-    qDebug() << obj.name;
-    _view->setItem(obj.name, QSizeF(obj.width, obj.height), _objPix.at(item));
+    QList<QGraphicsItem*> itemLst = _view->scene()->items();
+
+    foreach(QGraphicsItem* item, itemLst) {
+        MapItem *mItem = dynamic_cast<MapItem*>(item);
+        QByteArray arr = serealizeObj(mItem);
+        _mObject.write( arr );
+    }
+
+    _mObject.flush();
+}
+
+QByteArray MapCreator::serealizeObj(const MapItem *item)
+{
+    QByteArray arr;
+    arr += QByteArray::number(item->x()) + ':';
+    arr += QByteArray::number(item->y()) + ':';
+    arr += QByteArray::number(item->angle()) + ':';
+    arr += QByteArray::number(item->id()) + '\n';
+    return arr;
 }
 
 
@@ -35,6 +51,9 @@ void MapCreator::createConfFile()
     str += "height=" + QString::number(_size.height()) + '\n';
 
     _mConfig.write(str.toLocal8Bit());
+    _mConfig.flush();
+
+    qDebug() << str;
 }
 
 void MapCreator::openObjectFile()
@@ -70,9 +89,9 @@ void MapCreator::init()
         _objPix << QPixmap(_objPath.absoluteFilePath(obj.name));
     }
 
-    // Create scene and setup it's size
+    // Create scene and setup
     QGraphicsScene *_scene = new QGraphicsScene(0, 0, _size.width(), _size.height());
-    _view = new GraphicsView(_scene);
+    _view = new GraphicsView(_scene, _objsLst, _objPix);
 
     // Right panel for select created objects
     QListWidget *itemSelector = new QListWidget;
@@ -85,5 +104,5 @@ void MapCreator::init()
     layout->addWidget(itemSelector);
     setLayout(layout);
 
-    connect(itemSelector, SIGNAL(currentRowChanged(int)), this, SLOT(selectedItem(int)));
+    connect(itemSelector, SIGNAL(currentRowChanged(int)), _view, SLOT(selectedItem(int)));
 }

@@ -3,14 +3,19 @@
 
 #include <QGraphicsItem>
 #include <QPixmap>
+#include "utils.h"
 
 class MapItem : public QGraphicsItem
 {
 
 public:
-    explicit MapItem(const QSizeF &size, const QPixmap &pix);
+    explicit MapItem(const utils::Object &obj, const QPixmap &pix);
 
     QRectF boundingRect() const;
+    int id() const { return _obj.id; }
+    int x() const { return this->x(); }
+    int y() const { return this->y(); }
+    int angle() const { return 0; }
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -24,9 +29,10 @@ signals:
 public slots:
 
 private:
-    QSizeF _size;
+    const utils::Object &_obj;
+    const QPixmap &_pix;
+
     QPointF _point;
-    QPixmap _pix;
 
     QPointF _cPoint;
 };

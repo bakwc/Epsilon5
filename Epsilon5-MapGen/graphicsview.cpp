@@ -8,32 +8,32 @@
 #include <QScrollBar>
 
 
-GraphicsView::GraphicsView(QGraphicsScene *scene, QWidget *parent) :
-    QGraphicsView(scene, parent)
+GraphicsView::GraphicsView(QGraphicsScene *scene, QList<utils::Object> &objsList,
+                           QList<QPixmap> &objPix, QWidget *parent) :
+    QGraphicsView(scene, parent), _objsLst(objsList), _objPix(objPix)
 {
-//    setMouseTracking(true);
-}
-
-void GraphicsView::setItem(const QString &str, const QSizeF &s, const QPixmap &pix)
-{
-    _itemName = str;
-    _itemSize = s;
-    _itemPix  = pix;
+    //    setMouseTracking(true);
 }
 
 void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    QGraphicsItem *item = new MapItem(_itemSize, _itemPix);
+    QGraphicsItem *item = new MapItem(_objsLst.at(_itemId), _objPix.at(_itemId));
 
     QScrollBar *hs = horizontalScrollBar();
     QScrollBar *vs = verticalScrollBar();
 
-    QPoint vPoint = QPoint(event->x() + hs->value() - _itemSize.width()/2,
-                           event->y() + vs->value() - _itemSize.height()/2);
+    QPoint vPoint = QPoint(event->x() + hs->value() - _objsLst.at(_itemId).width/2,
+                           event->y() + vs->value() - _objsLst.at(_itemId).height/2);
 
     item->setPos(vPoint);
     scene()->addItem(item);
     update();
+}
+
+void GraphicsView::selectedItem(int item)
+{
+    _itemId = item;
+    qDebug() << _objsLst.at(_itemId).name;
 }
 
 //void GraphicsView::mouseMoveEvent(QMouseEvent *event)

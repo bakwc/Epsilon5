@@ -130,9 +130,6 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 {
-#ifdef Q_WS_X11
-    DisplayModes modes;
-#endif
     switch (event->key())
     {
     case Qt::Key_Up:

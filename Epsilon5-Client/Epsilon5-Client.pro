@@ -44,8 +44,14 @@ FORMS    +=
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 
 LIBS += -lprotobuf
+
 unix {
-    LIBS += -lXrandr
+    VAR=$$(USE_XRANDR)
+    !isEmpty(VAR) {
+        message( "Using XRANDR extension" )
+        DEFINES += USE_XRANDR
+        LIBS += -lXrandr
+    }
 }
 win32 {
     LIBS += -luser32

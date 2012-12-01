@@ -42,7 +42,7 @@ public:
     bool changeToMode(int width, int height);
     bool restoreMode();
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
 private:
     int findModeId(int width, int height);
 #endif
@@ -50,7 +50,7 @@ private:
 private:
     DisplayModes m_displayModes;
     QWidget* m_parent;
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
     bool m_extensionFound;
 #endif
 };

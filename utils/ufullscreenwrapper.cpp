@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
 #include <X11/extensions/Xrandr.h>
 #endif
 
@@ -15,7 +15,7 @@ DEVMODE devMode;
 
 using namespace utils;
 //------------------------------------------------------------------------------
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
 Rotation originRotation = RR_Rotate_0;
 short originSizeId = 0;
 #endif
@@ -23,7 +23,7 @@ short originSizeId = 0;
 UFullscreenWrapper::UFullscreenWrapper(QWidget* parent)
     : m_parent(parent)
 {
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
     Display *dpy = XOpenDisplay(NULL);
     int event_base;
     int error_base;
@@ -37,7 +37,7 @@ UFullscreenWrapper::UFullscreenWrapper(QWidget* parent)
 UFullscreenWrapper::DisplayModes UFullscreenWrapper::enumModes()
 {
     DisplayModes displayModes;
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
     if( m_extensionFound )
     {
         int num_modes;
@@ -56,7 +56,7 @@ bool UFullscreenWrapper::changeToMode(int width, int height)
     return changeToMode(DisplayMode(width, height));
 }
 //------------------------------------------------------------------------------
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
 int UFullscreenWrapper::findModeId(int width, int height)
 {
     const DisplayModes& dms = enumModes();
@@ -79,7 +79,7 @@ bool UFullscreenWrapper::changeToMode(const DisplayMode &mode)
     if(ChangeDisplaySettings(&devMode, CDS_FULLSCREEN) != DISP_CHANGE_SUCCESSFUL)
         return false;
 #endif
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
     if( m_extensionFound )
     {
         Display *dpy = XOpenDisplay(NULL);
@@ -112,7 +112,7 @@ bool UFullscreenWrapper::restoreMode()
     if(ChangeDisplaySettings(NULL, 0) != DISP_CHANGE_SUCCESSFUL)
         return false;
 #endif
-#ifdef Q_WS_X11
+#if defined(Q_WS_X11) && defined(USE_XRANDR)
     if( m_extensionFound )
     {
         Display *dpy = XOpenDisplay(NULL);

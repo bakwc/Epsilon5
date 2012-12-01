@@ -132,9 +132,13 @@ void TNetwork::SendPlayerAuth() {
     Status = PS_InfoWait;
 }
 
-void TNetwork::Send(const QByteArray& data, EPacketType packetType) {
-    QByteArray newData;
-    newData += QChar(packetType);
-    newData += data;
-    Socket->write(newData);
+// Send packet to the server in form:
+// [PACKET_TYPE] [ORIGIN_DATA_SIZE] [DATA]
+void TNetwork::Send(const QByteArray& originData, EPacketType packetType) {
+    QByteArray sendPacket;
+    quint16 originDataSize = qToBigEndian<quint16>(originData.size());
+    sendPacket += QChar(packetType);
+    sendPacket += QByteArray((const char*) &originDataSize, sizeof(quint16));
+    sendPacket += originData;
+    Socket->write(sendPacket);
 }

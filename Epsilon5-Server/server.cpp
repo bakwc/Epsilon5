@@ -22,16 +22,17 @@ bool TServer::Start() {
 }
 
 void TServer::DataReceived() {
+    const quint32 MAX_PACKET_DATA_SIZE = 16000;
     QHostAddress sender;
     quint16 senderPort;
     QByteArray data;
-    data.resize(16000);
+    data.resize(MAX_PACKET_DATA_SIZE);
 
     qint32 size = Server->readDatagram(data.data(), data.size(), &sender, &senderPort);
     if (size==-1) {
         return;
     }
-    data.remove(size,data.size());
+    data.remove(size, data.size());
 
     QString addr = sender.toString() + ":" + QString::number(senderPort);
     size_t id;

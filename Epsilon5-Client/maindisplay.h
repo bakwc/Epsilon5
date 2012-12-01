@@ -6,10 +6,11 @@
 #include "imagestorage.h"
 #include "map.h"
 #include "objects.h"
+#include "../utils/ufullscreenwrapper.h"
 
 class TApplication;
 
-class TMainDisplay : public QGLWidget
+class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper
 {
     Q_OBJECT
 public:
@@ -21,6 +22,7 @@ public:
 public slots:
     void RedrawWorld();
     void toggleFullscreen();
+    void toggleFullscreenWindowed();
 
 private:
     void paintEvent(QPaintEvent *);
@@ -40,5 +42,6 @@ private:
     Epsilon5::Control Control;
     TMap* Map;
     TObjects* Objects;
+    bool IsFullScreenWindowed;
     const Epsilon5::World* CurrentWorld;
 };

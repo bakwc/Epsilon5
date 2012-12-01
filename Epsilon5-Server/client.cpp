@@ -1,3 +1,4 @@
+#include <QtEndian>
 #include <QTime>
 #include <QDebug>
 #include "../utils/uexception.h"
@@ -23,56 +24,71 @@ size_t TClient::GetId() {
 
 void TClient::OnDataReceived(const QByteArray &data)
 {
+    EPacketType packetType;
+    quint16 originDataSize;
+    QByteArray content;
+    QByteArray receivedPacket = data;
+
+    const int midSize = sizeof(quint16);
+    const int posOrigin = sizeof(char);
+    const int posContent = posOrigin + midSize;
+
     try {
-        if (data.size() == 0) {
-            throw UException("Empty packet!");
-        }
-        EPacketType packet = (EPacketType)(data[0]);
-        QByteArray content = data.mid(1);
+        while (receivedPacket.size() > 0) {
+            packetType = (EPacketType)(char)(receivedPacket[0]);
+            originDataSize = qFromBigEndian<quint16>(
+                (const uchar*)receivedPacket.mid(posOrigin, midSize).constData());
+            content = receivedPacket.mid(posContent, originDataSize);
 
-        switch (packet) {
-        case PT_Control: {
+            // Retrieve another packet from current.
+            // We can receive more than one packet at once
+            receivedPacket = receivedPacket.mid(
+                originDataSize + sizeof(char) + midSize);
+
+            switch (packetType) {
+            case PT_Control: {
             if (!(PlayerStatus == PS_Spawned || PlayerStatus == PS_Dead)) {
-                throw UException("Player not spawned!");
-            }
-            Epsilon5::Control control;
-            if (control.ParseFromArray(content.data(), content.size())) {
-                SetSeen();
-                emit ControlReceived(control);
-            } else {
-                throw UException("Parse error: control packet");
-            }
-        }
-            break;
-        case PT_PlayerAuth: {
-            if (PlayerStatus != PS_AuthWait) {
-                throw UException("Player not waiting for auth!");
-            }
-            Epsilon5::Auth auth;
-            if (auth.ParseFromArray(content.data(), content.size())) {
-                try {
+                    throw UException("Player not spawned!");
+                }
+                Epsilon5::Control control;
+                if (control.ParseFromArray(content.data(), content.size())) {
                     SetSeen();
-                    NickName = auth.name().c_str();
-                    SendPlayerInfo();
+                    emit ControlReceived(control);
+                } else {
+                    throw UException("Parse error: control packet");
+                }
+            }
+                break;
+            case PT_PlayerAuth: {
+                if (PlayerStatus != PS_AuthWait) {
+                    throw UException("Player not waiting for auth!");
+                }
+                Epsilon5::Auth auth;
+                if (auth.ParseFromArray(content.data(), content.size())) {
+                    try {
+                        SetSeen();
+                        NickName = auth.name().c_str();
+                        SendPlayerInfo();
 
-                    QTime dieTime= QTime::currentTime().addSecs(1);
-                    while( QTime::currentTime() < dieTime ) {
-                        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-                    }
+                        QTime dieTime= QTime::currentTime().addSecs(1);
+                        while( QTime::currentTime() < dieTime ) {
+                            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+                        }
 
                     ReSpawn(true);
 
-                } catch (const std::exception& e){
-                    qDebug() << "Error spawning player " << e.what() << "\n";
+                    } catch (const std::exception& e){
+                        qDebug() << "Error spawning player " << e.what() << "\n";
+                    }
+                } else {
+                    throw UException("Parse error: auth packet");
                 }
-            } else {
-                throw UException("Parse error: auth packet");
             }
-        }
-            break;
-        default:
-            throw UException("Unknown packet type!");
-            break;
+                break;
+            default:
+                throw UException("Unknown packet type!");
+                break;
+            }
         }
     } catch (const UException& e) {
         qDebug() << e.what();

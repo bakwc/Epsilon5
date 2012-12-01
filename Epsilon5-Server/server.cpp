@@ -15,23 +15,24 @@ TServer::TServer(QObject *parent)
 bool TServer::Start() {
     if (Server->bind(QHostAddress("0.0.0.0"), 14567))
     {
-        this->startTimer(40); // TODO: Remove MN
+        this->startTimer(20); // TODO: Remove MN
         return true;
     }
     return false;
 }
 
 void TServer::DataReceived() {
+    const quint32 MAX_PACKET_DATA_SIZE = 16000;
     QHostAddress sender;
     quint16 senderPort;
     QByteArray data;
-    data.resize(16000);
+    data.resize(MAX_PACKET_DATA_SIZE);
 
     qint32 size = Server->readDatagram(data.data(), data.size(), &sender, &senderPort);
     if (size==-1) {
         return;
     }
-    data.remove(size,data.size());
+    data.remove(size, data.size());
 
     QString addr = sender.toString() + ":" + QString::number(senderPort);
     size_t id;
@@ -78,7 +79,7 @@ void TServer::DisconnectInactive() {
     for (; i != Clients.end();)
     {
         i.value()->EnlargeSeen();
-        if (i.value()->GetLastSeen() > 100)
+        if (i.value()->GetLastSeen() > 200)
         {
             qDebug() << "Client" << i.value()->GetAddr().toString() << "disconnected";
             auto ipIt = Ips.find(i.value()->GetAddr());
@@ -105,13 +106,21 @@ TApplication* TServer::Application() {
     return (TApplication*)(parent());
 }
 
-void TServer::Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType) {
-    QByteArray newData;
-    quint16 dataSize = qToBigEndian<quint16>(data.size());
-    newData += QChar(packetType);
-    newData += QByteArray((const char*) &dataSize, sizeof(quint16));
-    newData += data;
-    Server->writeDatagram(newData, ip, port);
+// Send packet to the client in form:
+// [PACKET_TYPE] [ORIGIN_DATA_SIZE] [PACKED_DATA_SIZE] [PACKED_DATA]
+void TServer::Send(const QHostAddress &ip, quint16 port,
+    const QByteArray &originData, EPacketType packetType)
+{
+    QByteArray sendPacket;
+    QByteArray packedData = qCompress(originData);
+    QByteArray test = qUncompress(packedData);
+    quint16 originDataSize = qToBigEndian<quint16>(originData.size());
+    quint16 packedDataSize = qToBigEndian<quint16>(packedData.size());
+    sendPacket += QChar(packetType);
+    sendPacket += QByteArray((const char*) &originDataSize, sizeof(quint16));
+    sendPacket += QByteArray((const char*) &packedDataSize, sizeof(quint16));
+    sendPacket += packedData;
+    Server->writeDatagram(sendPacket, ip, port);
 }
 
 void TServer::RespawnDeadClients() {

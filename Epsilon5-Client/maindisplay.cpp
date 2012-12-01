@@ -12,6 +12,9 @@
 #include "maindisplay.h"
 #include "application.h"
 
+const quint16 BASE_WINDOW_WIDTH = 800;
+const quint16 BASE_WINDOW_HEIGHT = 600;
+
 int GetCorrect(int player, int enemy) {
     return enemy - player;
 }
@@ -31,13 +34,15 @@ static double getAngle(const QPoint& point)
 
 TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
     : QGLWidget(parent)
+    , UFullscreenWrapper(this)
     , Application(application)
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
+    , IsFullScreenWindowed(false)
     , CurrentWorld(NULL)
 {
-    setBaseSize(800, 600);
+    setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
 
     Control.set_angle(0);
@@ -62,6 +67,9 @@ void TMainDisplay::Init() {
 TMainDisplay::~TMainDisplay()
 {
     CurrentWorld = NULL;
+
+    if (isFullScreen() && !IsFullScreenWindowed)
+        restoreMode();
 }
 
 void TMainDisplay::RedrawWorld() {
@@ -140,7 +148,12 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
         Control.mutable_keystatus()->set_keyleft(false);
         break;
     case Qt::Key_F11:
-        toggleFullscreen();
+        if(event->modifiers().testFlag(Qt::ShiftModifier)) {
+            toggleFullscreen();
+        }
+        else {
+            toggleFullscreenWindowed();
+        }
         break;
     case Qt::Key_F12:
         close();
@@ -150,9 +163,12 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void TMainDisplay::toggleFullscreen()
-{
+void TMainDisplay::toggleFullscreenWindowed() {
+    if( isFullScreen() && !IsFullScreenWindowed )
+        restoreMode();
+
     setWindowState( windowState() ^ Qt::WindowFullScreen );
+    IsFullScreenWindowed = isFullScreen();
     if( isFullScreen() )
     {
         QDesktopWidget dw;
@@ -161,6 +177,16 @@ void TMainDisplay::toggleFullscreen()
         return;
     }
     setFixedSize(baseSize());
+}
+
+void TMainDisplay::toggleFullscreen() {
+    if( isFullScreen() && !IsFullScreenWindowed )
+    {
+        restoreMode();
+        return;
+    }
+    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
+    IsFullScreenWindowed = false;
 }
 
 void TMainDisplay::drawFps(QPainter& painter)

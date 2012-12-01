@@ -1,5 +1,5 @@
 #pragma once
-#include <QWidget>
+#include <QGLWidget>
 #include <QImage>
 #include <QQueue>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
@@ -10,11 +10,11 @@
 
 class TApplication;
 
-class TMainDisplay : public QWidget, public UFullscreenWrapper
+class TMainDisplay : public QGLWidget, public UFullscreenWrapper
 {
     Q_OBJECT
 public:
-    explicit TMainDisplay(TApplication* application, QWidget *parent = 0);
+    explicit TMainDisplay(TApplication* application, QGLWidget *parent = 0);
     void Init();
     ~TMainDisplay();
     inline const Epsilon5::Control& GetControl() { return Control; }
@@ -33,14 +33,15 @@ private:
     void mouseReleaseEvent(QMouseEvent *event);
 
     void drawFps(QPainter& painter);
+    void drawWorld(QPainter& painter);
 
 private:
     TApplication* Application;
-    QImage* Frame;
     TImageStorage* Images;
     QQueue<Epsilon5::World> PacketsQueue;
     Epsilon5::Control Control;
     TMap* Map;
     TObjects* Objects;
     bool IsFullScreenWindowed;
+    const Epsilon5::World* CurrentWorld;
 };

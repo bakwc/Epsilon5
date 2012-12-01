@@ -15,7 +15,7 @@ TServer::TServer(QObject *parent)
 bool TServer::Start() {
     if (Server->bind(QHostAddress("0.0.0.0"), 14567))
     {
-        this->startTimer(40); // TODO: Remove MN
+        this->startTimer(20); // TODO: Remove MN
         return true;
     }
     return false;
@@ -78,7 +78,7 @@ void TServer::DisconnectInactive() {
     for (; i != Clients.end();)
     {
         i.value()->EnlargeSeen();
-        if (i.value()->GetLastSeen() > 100)
+        if (i.value()->GetLastSeen() > 200)
         {
             qDebug() << "Client" << i.value()->GetAddr().toString() << "disconnected";
             auto ipIt = Ips.find(i.value()->GetAddr());

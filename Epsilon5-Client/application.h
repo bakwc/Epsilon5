@@ -4,6 +4,7 @@
 #include "maindisplay.h"
 #include "network.h"
 #include "settings.h"
+#include "view.h"
 
 class TApplication : public QApplication
 {
@@ -23,6 +24,7 @@ public:
 
 private:
     TMainDisplay MainDisplay;
+    View*       View_;
     TNetwork* Network;
     TSettings* Settings;
 };

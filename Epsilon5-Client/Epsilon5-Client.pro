@@ -25,7 +25,10 @@ SOURCES += \
     settings.cpp \
     objects.cpp \
     ../utils/ucast.cpp \
-    view.cpp
+    view.cpp \
+    basicitem.cpp \
+    bullet.cpp \
+    scene.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -41,7 +44,10 @@ HEADERS  += \
     settings.h \
     objects.h \
     ../utils/ucast.h \
-    view.h
+    view.h \
+    basicitem.h \
+    bullet.h \
+    scene.h
 
 FORMS    +=
 

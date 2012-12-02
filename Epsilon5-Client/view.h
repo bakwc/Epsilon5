@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QQueue>
 #include <QHash>
+#include <QSet>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
 class TApplication;
@@ -11,21 +12,27 @@ class QGraphicsScene;
 class TMap;
 class TObjects;
 class TImageStorage;
+class TScene;
 
 class View : public QGraphicsView
 {
     Q_OBJECT
 
-    QGraphicsScene*     Scene;
+    TScene* Scene;
 
 public:
     explicit View(TApplication *app, QWidget *parent = 0);
     void Init();
     ~View();
+
+
+
+    void timerEvent(QTimerEvent *);
     
 signals:
     
 public slots:
+    void RedrawWorld();
 
 private:
     TApplication*       App;
@@ -36,6 +43,9 @@ private:
     QQueue<Epsilon5::World> PacketQueue;
     const Epsilon5::World*  CurrentWorld;
     QHash<size_t, QString>  PlayerNames;
+    ///
+    QSet<qint32>           PlayerContains;
+    QSet<qint32>           ObjectContains;
 };
 
 #endif // VIEW_H

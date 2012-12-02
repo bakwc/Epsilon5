@@ -46,7 +46,7 @@ void TMainWindow::newDialogSlot() {
 }
 //------------------------------------------------------------------------------
 void TMainWindow::openDialogSlot() {
-    OpenMapDialog d(this);
+    TOpenMapDialog d(this);
     if (!d.exec()) {
         return;
     }

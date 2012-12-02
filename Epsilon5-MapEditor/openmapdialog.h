@@ -7,11 +7,11 @@ namespace Ui {
 class OpenMapDialog;
 }
 //------------------------------------------------------------------------------
-class OpenMapDialog : public QDialog {
+class TOpenMapDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit OpenMapDialog(QWidget* parent = 0);
-    ~OpenMapDialog();
+    explicit TOpenMapDialog(QWidget* parent = 0);
+    ~TOpenMapDialog();
 
     QString mapDir();
     QString objDir();

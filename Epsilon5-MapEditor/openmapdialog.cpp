@@ -3,7 +3,7 @@
 #include "openmapdialog.h"
 #include "ui_openmapdialog.h"
 //------------------------------------------------------------------------------
-OpenMapDialog::OpenMapDialog(QWidget* parent)
+TOpenMapDialog::TOpenMapDialog(QWidget* parent)
     : QDialog(parent)
     , mUi(new Ui::OpenMapDialog) {
     mUi->setupUi(this);
@@ -13,24 +13,24 @@ OpenMapDialog::OpenMapDialog(QWidget* parent)
             mUi->objFolder, SLOT(setText(QString)));
 }
 //------------------------------------------------------------------------------
-OpenMapDialog::~OpenMapDialog() {
+TOpenMapDialog::~TOpenMapDialog() {
     delete mUi;
 }
 //------------------------------------------------------------------------------
-QString OpenMapDialog::mapDir() {
+QString TOpenMapDialog::mapDir() {
     return mUi->mapFolder->text();
 }
 //------------------------------------------------------------------------------
-QString OpenMapDialog::objDir() {
+QString TOpenMapDialog::objDir() {
     return mUi->objFolder->text();
 }
 //------------------------------------------------------------------------------
-void OpenMapDialog::on_toolButton_clicked() {
+void TOpenMapDialog::on_toolButton_clicked() {
     QString f = QFileDialog::getExistingDirectory(this, "Set map directory");
     emit mapFolderSignal(f);
 }
 //------------------------------------------------------------------------------
-void OpenMapDialog::on_toolButton_2_clicked() {
+void TOpenMapDialog::on_toolButton_2_clicked() {
     QString f = QFileDialog::getExistingDirectory(this, "Set objects directory");
     emit objFolderSignal(f);
 }

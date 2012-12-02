@@ -3,10 +3,14 @@
 #include <QColor>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+#include <QStaticText>
 
+
+//MapItem::MapItemSignal *_sign = 0;
+MapItemSignal *MapItem::_sign = 0;
 
 MapItem::MapItem(const utils::Object &obj, const QPixmap &pix) :
-    _obj(obj), _pix(pix)
+    _obj(obj), _pix(pix), _angle(0)
 {
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
@@ -20,18 +24,32 @@ void MapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     QGraphicsItem::mousePressEvent(event);
     _cPoint = event->pos();
+    _button = event->button();
     update();
+
+//    qDebug() << Q_FUNC_INFO << event->button();
+    _sign->emitStatus(_obj.name, this->pos(), this->rotation());
 }
 
 void MapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    _point = event->scenePos();
-    setPos(_point - _cPoint);
+//    qDebug() << Q_FUNC_INFO << event->button();
 
-//    qDebug() << _point;
+    if (_button == Qt::LeftButton) {
+        _point = event->scenePos() - _cPoint;
+        setPos(_point);
+        //    qDebug() << _point;
+        QGraphicsItem::mouseMoveEvent(event);
+    } else if (_button == Qt::RightButton) {
+        _angle = this->rotation() + event->pos().x() - _cPoint.x();
+        if (_angle >= 360)
+            _angle -= 360;
 
-    QGraphicsItem::mouseMoveEvent(event);
+        this->setRotation( _angle);
+    }
     update();
+
+    _sign->emitStatus(_obj.name, this->pos(), this->rotation());
 }
 
 void MapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

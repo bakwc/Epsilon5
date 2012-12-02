@@ -6,6 +6,7 @@
 #include <QSizeF>
 #include <QPixmap>
 #include <utils.h>
+#include "mapitemsignal.h"
 
 class GraphicsView : public QGraphicsView
 {
@@ -25,6 +26,7 @@ signals:
     
 public slots:
     void selectedItem(int item);
+    void itemSlot(QString name, QPointF itemPos, qreal itemRot);
     
 private:
     QList<utils::Object> &_objsLst;
@@ -32,6 +34,8 @@ private:
     int         _itemId;
 
     QPoint      _itemPrevPoint;
+
+    MapItemSignal _itemSignal;
 };
 
 #endif // GRAPHICSVIEW_H

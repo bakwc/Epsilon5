@@ -50,6 +50,7 @@ private:
     void openMapFiles();
     void configureMapCreator();
     void init();
+    void closeFiles();
 };
 
 #endif // MAPPAINTER_H

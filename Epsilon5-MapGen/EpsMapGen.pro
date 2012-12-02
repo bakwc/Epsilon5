@@ -11,7 +11,8 @@ SOURCES += main.cpp \
     mapitem.cpp \
     utils.cpp \
     ../utils/uexception.cpp \
-    openmapdialog.cpp
+    openmapdialog.cpp \
+    mapitemsignal.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -21,7 +22,8 @@ HEADERS += \
     mapitem.h \
     utils.h \
     ../utils/uexception.h \
-    openmapdialog.h
+    openmapdialog.h \
+    mapitemsignal.h
 
 FORMS += \
     createmapdialog.ui \

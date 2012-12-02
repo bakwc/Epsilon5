@@ -20,6 +20,7 @@ MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString pat
     openObjectFile();
     createConfFile();
     init();
+    closeFiles();
 }
 
 MapCreator::MapCreator(QString path, QString objPath, QWidget *parent) :
@@ -34,6 +35,8 @@ MapCreator::MapCreator(QString path, QString objPath, QWidget *parent) :
     QList<utils::MapLine> ml = utils::parseMapFile(_mObject);
     foreach(auto m, ml)
         _view->addMapItem(m);
+
+    closeFiles();
 }
 
 
@@ -41,6 +44,11 @@ void MapCreator::save()
 {
     QList<QGraphicsItem*> itemLst = _view->scene()->items();
     QByteArray arr;
+
+    if (!_mObject.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        qDebug() << "Error map file open";
+        return;
+    }
 
     for (int i=0; i < itemLst.size(); ++i) {
         MapItem *mItem = dynamic_cast<MapItem*>(itemLst.at(i));
@@ -141,4 +149,11 @@ void MapCreator::init()
     setLayout(layout);
 
     connect(itemSelector, SIGNAL(currentRowChanged(int)), _view, SLOT(selectedItem(int)));
+}
+
+void MapCreator::closeFiles()
+{
+    _mConfig.close();
+    _mObject.close();
+    _objs.close();
 }

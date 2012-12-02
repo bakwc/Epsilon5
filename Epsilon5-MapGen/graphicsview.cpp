@@ -13,19 +13,24 @@ GraphicsView::GraphicsView(QGraphicsScene *scene, QList<utils::Object> &objsList
     QGraphicsView(scene, parent), _objsLst(objsList), _objPix(objPix), _itemId(0)
 {
     //    setMouseTracking(true);
+    connect(&_itemSignal, SIGNAL(mapItemSignal(QString,QPointF,qreal)), SLOT(itemSlot(QString,QPointF,qreal)));
 }
 
 void GraphicsView::addMapItem(const utils::MapLine &ml)
 {
-    QGraphicsItem *item = new MapItem(_objsLst.at(ml.id-1), _objPix.at(ml.id-1));
+    MapItem *item = new MapItem(_objsLst.at(ml.id-1), _objPix.at(ml.id-1));
+    item->setSignalObject(&_itemSignal);
+
     item->setPos(ml.x, ml.y);
     item->setRotation(ml.angle);
     scene()->addItem(item);
+
 }
 
 void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    QGraphicsItem *item = new MapItem(_objsLst.at(_itemId), _objPix.at(_itemId));
+    MapItem *item = new MapItem(_objsLst.at(_itemId), _objPix.at(_itemId));
+    item->setSignalObject(&_itemSignal);
 
     QScrollBar *hs = horizontalScrollBar();
     QScrollBar *vs = verticalScrollBar();
@@ -35,6 +40,8 @@ void GraphicsView::mouseDoubleClickEvent(QMouseEvent *event)
 
     item->setPos(vPoint);
     scene()->addItem(item);
+
+
     update();
 }
 
@@ -42,6 +49,11 @@ void GraphicsView::selectedItem(int item)
 {
     _itemId = item;
     qDebug() << _objsLst.at(_itemId).name;
+}
+
+void GraphicsView::itemSlot(QString name, QPointF itemPos, qreal itemRot)
+{
+    qDebug() << name << " pos: " << itemPos << " roration: " << itemRot;
 }
 
 //void GraphicsView::mouseMoveEvent(QMouseEvent *event)

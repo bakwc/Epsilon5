@@ -241,8 +241,7 @@ void TMainDisplay::drawWorld(QPainter &painter)
 
 
         QPoint widgetCenter(width() / 2, height() / 2);
-        QImage background = Map->GetFrame(playerX, playerY, size());
-        painter.drawImage(0, 0, background);
+        Map->DrawFrame(playerX, playerY, size(), painter);
 
         const QFont oldFont = painter.font();
         const QPen oldPen = painter.pen();

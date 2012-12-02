@@ -28,7 +28,7 @@ TMap::~TMap()
         delete Background;
 }
 
-QImage TMap::GetFrame(int x, int y, const QSize& frameSize) {
+void TMap::DrawFrame(int x, int y, const QSize& frameSize, QPainter& painter) {
     if (!Loaded) {
         throw UException("Map not loaded!");
     }
@@ -38,5 +38,6 @@ QImage TMap::GetFrame(int x, int y, const QSize& frameSize) {
     int newPekaPosY = centerY + y;
     int cutX = newPekaPosX - frameSize.width() / 2;
     int cutY = newPekaPosY - frameSize.height() / 2;
-    return Background->copy(cutX, cutY, frameSize.width(), frameSize.height());
+
+    painter.drawImage(-cutX, -cutY, *Background);
 }

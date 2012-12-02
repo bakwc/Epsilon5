@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QImage>
+#include <QPainter>
 
 class TMap : public QObject
 {
@@ -9,7 +10,7 @@ class TMap : public QObject
 public:
     TMap(QObject *parent = 0);
     ~TMap();
-    QImage GetFrame(int x, int y, const QSize& frameSize);
+    void DrawFrame(int x, int y, const QSize& frameSize, QPainter &painter);
 public slots:
     void LoadMap(QString map);
 private:

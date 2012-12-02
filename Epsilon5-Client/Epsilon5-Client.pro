@@ -24,7 +24,8 @@ SOURCES += \
     map.cpp \
     settings.cpp \
     objects.cpp \
-    ../utils/ucast.cpp
+    ../utils/ucast.cpp \
+    view.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -39,7 +40,8 @@ HEADERS  += \
     map.h \
     settings.h \
     objects.h \
-    ../utils/ucast.h
+    ../utils/ucast.h \
+    view.h
 
 FORMS    +=
 

@@ -23,7 +23,7 @@ public:
 
 signals:
     void SpawnBullet(TBullet*);
-    void Death();
+    void Death(size_t id);
 public slots:
     void ApplyControl(const Epsilon5::Control &control);
 private:
@@ -33,5 +33,5 @@ private:
     QString NickName;
     TMaps* Maps;
     size_t HP;
-    TCollisionInfo CollisionInfo;
+    TObjectInfo CollisionInfo;
 };

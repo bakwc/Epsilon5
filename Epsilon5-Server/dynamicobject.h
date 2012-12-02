@@ -5,7 +5,7 @@
 #include <Box2D/Box2D.h>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
-struct TCollisionInfo {
+struct TObjectInfo {
     enum EObjType {
         OT_Player,
         OT_Bullet,

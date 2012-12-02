@@ -10,7 +10,10 @@ public:
     inline size_t GetTtl() {
         return Ttl;
     }
+    inline void Destroy() {
+        Ttl = 0;
+    }
 private:
     size_t Ttl;
-    TCollisionInfo CollisionInfo;
+    TObjectInfo CollisionInfo;
 };

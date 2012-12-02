@@ -80,7 +80,8 @@ void TServer::DisconnectInactive() {
         i.value()->EnlargeSeen();
         if (i.value()->GetLastSeen() > 100)
         {
-            qDebug() << "Client" << i.value()->GetAddr().toString() << "disconnected";
+            qDebug() << "Player " << i.value()->GetNick()
+                     << "(" << i.value()->GetAddr().toString() << ") disconnected";
             auto ipIt = Ips.find(i.value()->GetAddr());
             if (ipIt != Ips.end() && ipIt.value()>0)
                 ipIt.value()--;

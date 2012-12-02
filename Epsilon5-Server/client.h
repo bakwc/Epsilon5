@@ -23,6 +23,10 @@ public:
         return Addr;
     }
     void ReSpawn(bool newConnected = false);
+    inline QString GetNick() {
+        return NickName;
+    }
+
 public slots:
     void OnDataReceived(const QByteArray &data);
     void Kill() {

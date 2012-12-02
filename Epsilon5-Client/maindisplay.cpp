@@ -213,11 +213,6 @@ void TMainDisplay::drawWorld(QPainter &painter)
             }
         }
 
-        /*
-        if (!playerFound) {
-            throw UException("No player found with id " + QString::number(playerId));
-        }
-        */
 
         QPoint widgetCenter(width() / 2, height() / 2);
         QImage background = Map->GetFrame(playerX, playerY, size());
@@ -242,12 +237,13 @@ void TMainDisplay::drawWorld(QPainter &painter)
             int cy = GetCorrect(playerY, player.y());
             QString nickName = player.name().c_str();
             size_t hp = player.hp();
-            nickName += " - " + QString::number(hp) + "%";
+
             if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
                 gamerPos.setX(widgetCenter.x() + cx);
                 gamerPos.setY(widgetCenter.y() + cy);
                 img = &Images->GetImage("player");
                 miniMap.setPen(Qt::red);
+                nickName += " - " + QString::number(hp) + "%";
             } else {
                 img = &Images->GetImage("enemy");
                 miniMap.setPen(Qt::black);

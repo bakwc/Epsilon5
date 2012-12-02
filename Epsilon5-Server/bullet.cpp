@@ -22,7 +22,7 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
     Body->SetAngularDamping(0.3);
 
     Body->SetUserData(&CollisionInfo);
-    CollisionInfo.ObjType = TCollisionInfo::OT_Bullet;
+    CollisionInfo.ObjType = TObjectInfo::OT_Bullet;
     CollisionInfo.Object = this;
 
     Ttl = 300;
@@ -31,5 +31,7 @@ TBullet::TBullet(double x, double y, double vx, double vy, double d, QObject *pa
 void TBullet::ApplyCustomPhysics() {
     b2Vec2 force(0, 0.1);
     Body->ApplyForceToCenter(force);
-    Ttl--;
+    if (Ttl > 0) {
+        Ttl--;
+    }
 }

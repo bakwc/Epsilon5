@@ -50,7 +50,6 @@ HEADERS += \
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 
-
 LIBS += -lprotobuf -lBox2D
 
 OTHER_FILES += \

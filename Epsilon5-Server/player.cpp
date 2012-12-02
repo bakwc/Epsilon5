@@ -23,7 +23,7 @@ TPlayer::TPlayer(size_t id, TMaps *maps, QObject *parent)
     Body->CreateFixture(&fixtureDef);
 
     Body->SetUserData(&CollisionInfo);
-    CollisionInfo.ObjType = TCollisionInfo::OT_Player;
+    CollisionInfo.ObjType = TObjectInfo::OT_Player;
     CollisionInfo.Object = this;
 
     lastShoot.start();
@@ -117,9 +117,7 @@ void TPlayer::SetNickname(const QString& nickName) {
 void TPlayer::Hit() {
     if (HP > HP_LOST) {
         HP -= HP_LOST;
-        qDebug() << "HP: " << HP;
     } else {
-        qDebug() << "Dead!";
-        emit Death();
+        emit Death(Id);
     }
 }

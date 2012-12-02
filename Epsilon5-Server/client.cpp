@@ -75,10 +75,14 @@ void TClient::OnDataReceived(const QByteArray &data)
                             QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
                         }
 
+                    qDebug() << "Player " << NickName << "("
+                             << Addr.toString() << ") connected";
+
                     ReSpawn(true);
 
                     } catch (const std::exception& e){
-                        qDebug() << "Error spawning player " << e.what() << "\n";
+                    qDebug() << "Exceptiong: " << Q_FUNC_INFO
+                             << ": Error spawning player: " << e.what();
                     }
                 } else {
                     throw UException("Parse error: auth packet");
@@ -91,7 +95,7 @@ void TClient::OnDataReceived(const QByteArray &data)
             }
         }
     } catch (const UException& e) {
-        qDebug() << e.what();
+        qDebug() << "Exceptiong: " << Q_FUNC_INFO << ": " << e.what();
     }
 }
 
@@ -139,7 +143,7 @@ void TClient::ReSpawn(bool newConnected) {
         player->SetNickname(NickName);
         connect(this, SIGNAL(ControlReceived(Epsilon5::Control)),
                 player, SLOT(ApplyControl(Epsilon5::Control)));
-        connect(player, SIGNAL(Death()),
+        connect(player, SIGNAL(Death(size_t)),
                 this, SLOT(Kill()));
         PlayerStatus = PS_Spawned;
     }

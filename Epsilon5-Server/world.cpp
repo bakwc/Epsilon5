@@ -1,4 +1,3 @@
-#include <QDebug>
 #include <QRect>
 #include <QSize>
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
@@ -99,25 +98,22 @@ void TWorld::Start() {
 }
 
 void TWorld::PlayerSpawn(size_t id) {
-    qDebug() << Q_FUNC_INFO;
     TPlayer* player = new TPlayer(id, Application()->GetMaps(), this);
     connect(player, SIGNAL(SpawnBullet(TBullet*)), SLOT(SpawnBullet(TBullet*)));
-    connect(player, SIGNAL(Death()), SLOT(PlayerKill(size_t)));
+    connect(player, SIGNAL(Death(size_t)), SLOT(PlayerKill(size_t)));
     Players.insert(id, player);
 }
 
 void TWorld::PlayerKill(size_t id) {
     auto playerIt = Players.find(id);
-    if (playerIt != Players.end())
-    {
+    if (playerIt != Players.end()) {
         playerIt.value()->deleteLater();
         Players.erase(playerIt);
     }
 }
 
 void TWorld::timerEvent(QTimerEvent *) {
-    for (auto i = Players.begin(); i != Players.end(); i++)
-    {
+    for (auto i = Players.begin(); i != Players.end(); i++) {
         i.value()->ApplyCustomPhysics();
     }
 
@@ -131,10 +127,6 @@ void TWorld::timerEvent(QTimerEvent *) {
         }
         (*i)->deleteLater();
         i = Bullets.erase(i++);
-    }
-
-    for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
-        //(*i)->ApplyFractionForce();
     }
 
     float step = 1.0f / 100.0f;
@@ -188,33 +180,33 @@ void TWorld::SpawnBorders(const QSize &mapSize) {
     // Top border
     objectSize = QSizeF(mapSize.width(), WORLD_BORDER_SIZE);
     spawnStaticObject(WorldBorders, WORLD_BORDER_ID,
-        0, -mapSize.height() / 2, objectSize);
+                      0, -mapSize.height() / 2, objectSize);
 
     // Left border
     objectSize = QSizeF(WORLD_BORDER_SIZE, mapSize.height());
     spawnStaticObject(WorldBorders, WORLD_BORDER_ID,
-        -mapSize.width() / 2, 0, objectSize);
+                      -mapSize.width() / 2, 0, objectSize);
 
     // Bottom border
     objectSize = QSizeF(mapSize.width(), WORLD_BORDER_SIZE);
     spawnStaticObject(WorldBorders, WORLD_BORDER_ID,
-        0, mapSize.height() / 2, objectSize);
+                      0, mapSize.height() / 2, objectSize);
 
     // Right border
     objectSize = QSizeF(WORLD_BORDER_SIZE, mapSize.height());
     spawnStaticObject(WorldBorders, WORLD_BORDER_ID,
-        mapSize.width() / 2, 0, objectSize);
+                      mapSize.width() / 2, 0, objectSize);
 }
 
 // Spawn static object at (rect.x;rect.y).
 // Center of the object will be in the same position.
-void TWorld::spawnStaticObject(TStaticObjectsList &container,
-    size_t id, double x, double y, const QSizeF &size, double angle)
+void TWorld::spawnStaticObject(TStaticObjectsList &container, size_t id,
+                       double x, double y, const QSizeF &size, double angle)
 {
-    TStaticObject* object = new TStaticObject(
-        OBJECT_SCALE_DOWN * x, OBJECT_SCALE_DOWN * y, angle, this);
+    TStaticObject* object = new TStaticObject(OBJECT_SCALE_DOWN * x,
+                                     OBJECT_SCALE_DOWN * y, angle, this);
     object->SetRectSize(OBJECT_SCALE_DOWN * size.width(),
-        OBJECT_SCALE_DOWN * size.height());
+                        OBJECT_SCALE_DOWN * size.height());
     object->SetId(id);
     container.insert(container.end(), object);
 }
@@ -225,35 +217,44 @@ void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
     size_t id, double x, double y, double vx, double vy,
     const QSizeF& size, double angle)
 {
-    TDynamicObject* object = new TDynamicObject(
-        OBJECT_SCALE_DOWN * x, OBJECT_SCALE_DOWN * y, vx, vy, angle, this);
+    TDynamicObject* object = new TDynamicObject(OBJECT_SCALE_DOWN * x,
+                                           OBJECT_SCALE_DOWN * y, vx,
+                                           vy, angle, this);
     object->SetRectSize(OBJECT_SCALE_DOWN * size.width(),
-        OBJECT_SCALE_DOWN * size.height());
+                        OBJECT_SCALE_DOWN * size.height());
     object->SetId(id);
     container.insert(container.end(), object);
 }
 
+//   Collisions processing
+// All bodies should have user data of type TObjectInfo with object information (type, pointer to object)
 void TWorld::BeginContact(b2Contact* contact) {
     void* obj1Data = contact->GetFixtureA()->GetBody()->GetUserData();
     void* obj2Data = contact->GetFixtureB()->GetBody()->GetUserData();
 
     TPlayer* player = 0;
+    TBullet* bullet = 0;
     if (obj1Data && obj2Data) {
-        TCollisionInfo* obj1Info = (TCollisionInfo*)obj1Data;
-        TCollisionInfo* obj2Info = (TCollisionInfo*)obj2Data;
+        TObjectInfo* obj1Info = (TObjectInfo*)obj1Data;
+        TObjectInfo* obj2Info = (TObjectInfo*)obj2Data;
 
-        if (obj1Info->ObjType == TCollisionInfo::OT_Player &&
-                obj2Info->ObjType == TCollisionInfo::OT_Bullet) {
+        if (obj1Info->ObjType == TObjectInfo::OT_Player &&
+                obj2Info->ObjType == TObjectInfo::OT_Bullet)
+        {
             player = (TPlayer*)(obj1Info->Object);
-        } else if (obj1Info->ObjType == TCollisionInfo::OT_Bullet &&
-                obj2Info->ObjType == TCollisionInfo::OT_Player) {
+            bullet = (TBullet*)(obj2Info->Object);
+        } else if (obj1Info->ObjType == TObjectInfo::OT_Bullet &&
+                obj2Info->ObjType == TObjectInfo::OT_Player)
+        {
             player = (TPlayer*)(obj2Info->Object);
+            bullet = (TBullet*)(obj1Info->Object);
         }
     }
 
     if (player) {
         player->Hit();
     }
-
-    qDebug() << "Collision detected!";
+    if (bullet) {
+        bullet->Destroy();
+    }
 }

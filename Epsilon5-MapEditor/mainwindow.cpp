@@ -1,14 +1,13 @@
 // mainwindow.cpp
 #include <QMenuBar>
 #include <QMessageBox>
+#include "global.h"
 #include "mainwindow.h"
 #include "openmapdialog.h"
-#include "settings.h"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
-    : QMainWindow(parent)
-    , mSettings(new TSettings(this)) {
-    resize(mSettings->GetWindowSize());
+    : QMainWindow(parent) {
+    resize(Global::Settings()->GetWindowSize());
 
     QMenuBar* menuBar = new QMenuBar;
     QMenu* menu = new QMenu("File");
@@ -17,6 +16,11 @@ TMainWindow::TMainWindow(QWidget* parent)
     mSaveAtc = menu->addAction("Save");
     menuBar->addMenu(menu);
     this->setMenuBar(menuBar);
+}
+//------------------------------------------------------------------------------
+TMainWindow::~TMainWindow()
+{
+    Global::Settings()->SetWindowSize(size());
 }
 //------------------------------------------------------------------------------
 void TMainWindow::newDialogSlot() {

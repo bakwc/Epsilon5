@@ -14,7 +14,8 @@ SOURCES += \
     mapitem.cpp \
     utils.cpp \
     openmapdialog.cpp \
-    settings.cpp
+    settings.cpp \
+    application.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -26,7 +27,9 @@ HEADERS += \
     mapitem.h \
     utils.h \
     openmapdialog.h \
-    settings.h
+    settings.h \
+    application.h \
+    global.h
 
 FORMS += \
     createmapdialog.ui \

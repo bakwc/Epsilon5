@@ -1,15 +1,15 @@
+// application.cpp
 #include "global.h"
 #include "application.h"
-#include "mainwindow.h"
+
 //------------------------------------------------------------------------------
-// Global variables inittialization
-TSettings* settings = Global::Settings();
+TApplication::TApplication(int& argc, char* argv[])
+    : QApplication(argc, argv){
+    Global::Settings()->Load();
+}
 //------------------------------------------------------------------------------
-int main(int argc, char* argv[]) {
-    TApplication app(argc, argv);
-    TMainWindow window;
-    window.show();
-    app.exec();
-    return 0;
+TApplication::~TApplication()
+{
+    Global::Settings()->Save();
 }
 //------------------------------------------------------------------------------

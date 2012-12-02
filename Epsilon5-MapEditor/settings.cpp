@@ -1,8 +1,12 @@
 // settings.cpp
+#include <QDebug>
+#include <QFile>
+#include "../utils/uexception.h"
 #include "settings.h"
 //------------------------------------------------------------------------------
 const quint32 DEFAULT_WINDOW_WIDTH = 800;
 const quint32 DEFAULT_WINDOW_HEIGHT = 600;
+const QString& SETTINGS_FILENAME = "settings.ini";
 //------------------------------------------------------------------------------
 TSettings::TSettings(QObject* parent)
     : QObject(parent)
@@ -19,5 +23,29 @@ QSize TSettings::GetWindowSize() const
 {
     return QSize(mSettings->GetParameter("window.width").toUInt(),
             mSettings->GetParameter("window.height").toUInt());
+}
+//------------------------------------------------------------------------------
+void TSettings::SetWindowSize(const QSize &size)
+{
+    mSettings->SetParameter("window.width", QString().number(size.width()));
+    mSettings->SetParameter("window.height", QString().number(size.height()));
+}
+//------------------------------------------------------------------------------
+void TSettings::Load()
+{
+    try {
+        mSettings->Load(SETTINGS_FILENAME);
+    } catch( const UException &ex) {
+        qWarning() << ex.what();
+    }
+}
+//------------------------------------------------------------------------------
+void TSettings::Save()
+{
+    try {
+        mSettings->Save(SETTINGS_FILENAME, true);
+    } catch ( const UException &ex ) {
+        qWarning() << ex.what();
+    }
 }
 //------------------------------------------------------------------------------

@@ -11,6 +11,7 @@ class TMainWindow : public QMainWindow {
     Q_OBJECT
 public:
     explicit TMainWindow(QWidget* parent = 0);
+    ~TMainWindow();
 
 public slots:
     void newDialogSlot();
@@ -22,6 +23,5 @@ private:
 private:
     TMapCreator* mMapPainter;
     QAction* mSaveAtc;
-    TSettings* mSettings;
 };
 //------------------------------------------------------------------------------

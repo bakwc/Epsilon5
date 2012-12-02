@@ -9,6 +9,9 @@ class TSettings : public QObject {
 public:
     explicit TSettings(QObject* parent = 0);
     QSize GetWindowSize() const;
+    void SetWindowSize( const QSize& size );
+    void Save();
+    void Load();
 
 private:
     USettings* mSettings;

@@ -40,3 +40,7 @@ QString USettings::GetParameter(const QString& parameter) {
     }
     return Parameters[parameter];
 }
+
+void USettings::LoadDefaults(const TParametersHash &paramsList) {
+    Parameters = paramsList;
+}

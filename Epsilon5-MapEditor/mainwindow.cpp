@@ -11,11 +11,13 @@ TMainWindow::TMainWindow(QWidget* parent)
     resize(Global::Settings()->GetWindowSize());
     move(Global::Settings()->GetWindowPos());
 
-    QMenuBar* menuBar = new QMenuBar;
-    QMenu* menu = new QMenu("File");
-    menu->addAction("New", this, SLOT(newDialogSlot()));
-    menu->addAction("Open", this, SLOT(openDialogSlot()));
-    mSaveAtc = menu->addAction("Save");
+    QMenuBar* menuBar = new QMenuBar(this);
+    QMenu* menu = new QMenu(tr("File"), this);
+    menu->addAction(tr("New"), this, SLOT(newDialogSlot()));
+    menu->addAction(tr("Open"), this, SLOT(openDialogSlot()));
+    mSaveAtc = menu->addAction(tr("Save"));
+    menu->addSeparator();
+    menu->addAction(tr("Quit"), this, SLOT(close()), QKeySequence("F12"));
     menuBar->addMenu(menu);
     this->setMenuBar(menuBar);
 }
@@ -32,7 +34,8 @@ void TMainWindow::newDialogSlot() {
     }
     try {
         mMapPainter = new TMapCreator(dialog.mapName(), dialog.mapSize(),
-                dialog.mapBackground(), dialog.mapPath(), dialog.mapObjsPath());
+                dialog.mapBackground(), dialog.mapPath(),
+                dialog.mapObjsPath(), this);
     } catch (std::exception& e) {
         delete mMapPainter;
         qDebug("Error: %s", e.what());
@@ -48,7 +51,7 @@ void TMainWindow::openDialogSlot() {
         return;
     }
     try {
-        mMapPainter = new TMapCreator(d.mapDir(), d.objDir());
+        mMapPainter = new TMapCreator(d.mapDir(), d.objDir(), this);
     } catch (std::exception& e) {
         delete mMapPainter;
         qDebug("Error: %s", e.what());

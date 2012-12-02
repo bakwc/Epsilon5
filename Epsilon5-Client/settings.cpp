@@ -30,9 +30,9 @@ QString TSettings::GetNickname() {
 }
 
 QString TSettings::GetServerAddr() {
-    return GetParameter("server.address").trimmed();
+    return GetParameter("server.address");
 }
 
 quint16 TSettings::GetServerPort() {
-    return GetParameter("server.port").toUInt();
+    return GetParameter("server.port");
 }

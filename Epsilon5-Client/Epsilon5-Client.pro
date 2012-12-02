@@ -23,7 +23,8 @@ SOURCES += \
     imagestorage.cpp \
     map.cpp \
     settings.cpp \
-    objects.cpp
+    objects.cpp \
+    ../utils/ucast.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -37,7 +38,8 @@ HEADERS  += \
     imagestorage.h \
     map.h \
     settings.h \
-    objects.h
+    objects.h \
+    ../utils/ucast.h
 
 FORMS    +=
 

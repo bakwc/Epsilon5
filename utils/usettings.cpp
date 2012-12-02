@@ -3,7 +3,8 @@
 
 #include "usettings.h"
 #include "uexception.h"
-#include "ucast.h"
+
+#include <QDebug>
 
 USettings::USettings(QObject *parent)
     : QObject(parent)
@@ -18,7 +19,7 @@ void USettings::Load(const QString& fname, const QStringList& required) {
     QTextStream in(&file);
     QString line = "";
     while (!line.isNull()) {
-        line = in.readLine();
+        line = in.readLine().trimmed();
         if (line.isEmpty() || line[0] == '#') {
             continue;
         }
@@ -40,6 +41,7 @@ UFromStringFormat USettings::GetParameter(const QString& parameter) {
     if (Parameters.find(parameter) == Parameters.end()) {
         throw UException("Parameter not found in config");
     }
+    qDebug() << Parameters[parameter];
     return FromString(Parameters[parameter]);
 }
 

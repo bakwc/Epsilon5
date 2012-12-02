@@ -78,6 +78,7 @@ void TClient::OnDataReceived(const QByteArray &data)
                     qDebug() << "Player " << NickName << "("
                              << Addr.toString() << ") connected";
 
+                    emit PlayerConnected();
                     ReSpawn(true);
 
                     } catch (const std::exception& e){

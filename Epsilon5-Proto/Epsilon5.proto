@@ -3,8 +3,8 @@ package Epsilon5;
 message Player {
     required int32 id = 1;
 
-    required double x = 2;
-    required double y = 3;
+    required int32 x = 2;
+    required int32 y = 3;
 
     optional double vx = 4;
     optional double vy = 5;
@@ -17,8 +17,8 @@ message Player {
 }
 
 message Bullet {
-    required double x = 1;
-    required double y = 2;
+    required int32 x = 1;
+    required int32 y = 2;
 
     optional double vx = 3;
     optional double vy = 4;
@@ -27,14 +27,14 @@ message Bullet {
 message Object {
     required int32 id = 1;
 
-    required double x = 2;
-    required double y = 3;
+    required int32 x = 2;
+    required int32 y = 3;
     required double angle = 4;
 }
 
 message RespPoint {
-    required double x = 1;
-    required double y = 2;
+    required int32 x = 1;
+    required int32 y = 2;
     required int32 team = 3;
     required bool is_main = 4;
 }

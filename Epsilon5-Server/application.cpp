@@ -13,8 +13,11 @@ TApplication::TApplication(int& argc, char *argv[])
     connect(Server, SIGNAL(PlayerDisconnected(size_t)),
             World, SLOT(PlayerKill(size_t)));
 
-    connect(Maps, SIGNAL(SpawnObject(size_t,int,int,double)),
-            World, SLOT(SpawnObject(size_t,int,int,double)));
+    connect(Server, SIGNAL(PlayerDisconnected(size_t)),
+            World, SLOT(NeedFullPacket()));
+
+    connect(Maps, SIGNAL(SpawnObject(size_t, int, int, double)),
+            World, SLOT(SpawnObject(size_t, int, int, double)));
 
     connect(Maps, SIGNAL(SpawnBorders(QSize)),
             World, SLOT(SpawnBorders(QSize)));
@@ -24,6 +27,9 @@ TApplication::TApplication(int& argc, char *argv[])
 
     connect(Maps, SIGNAL(ClearBorders()),
             World, SLOT(ClearBorders()));
+
+    connect(Maps, SIGNAL(MapLoaded()),
+            World, SLOT(NeedFullPacket()));
 }
 
 bool TApplication::Init() {

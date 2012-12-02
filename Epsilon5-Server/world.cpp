@@ -102,7 +102,9 @@ QByteArray TWorld::Serialize() {
         object->set_id((*i)->GetId());
     }
 
-    //Application()->GetMaps()->
+    if (needFullPacket) {
+        Application()->GetMaps()->SerialiseRespPoints(world);
+    }
 
     QByteArray result;
     result.resize(world.ByteSize());

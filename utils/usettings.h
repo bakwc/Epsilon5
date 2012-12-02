@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QHash>
 
-class UFromStringFormat;
+#include "ucast.h"
 
 class USettings: public QObject
 {

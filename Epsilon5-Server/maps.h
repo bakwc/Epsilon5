@@ -26,7 +26,7 @@ struct TRespPoint {
     int SpawnRadius, CaptureRadius;
     bool IsMain;
     bool IsCapturable;
-    size_t CpatureTime;
+    size_t CaptureTime;
     ETeam Team;
 };
 
@@ -42,7 +42,7 @@ public:
     }
     QString GetCurrentMap();
     QSize GetMapSize();
-    void SerialiseRespPoints(Epsilon5::World& world, qreal scaleDown);
+    void SerialiseRespPoints(Epsilon5::World& world);
 
     inline QVector<TRespPoint>& GetRespPoints() {
         return RespPoints;
@@ -52,6 +52,7 @@ signals:
     void SpawnBorders(const QSize& MapSize);
     void ClearObjects();
     void ClearBorders();
+    void MapLoaded();
 private:
     void LoadConfig(const QString& fileName);
     void LoadObjects(const QString& fileName);

@@ -32,10 +32,10 @@ public slots:
     void Kill() {
         PlayerStatus = PS_Dead;
     }
-
 signals:
     void ControlReceived(const Epsilon5::Control &control);
     void SpawnPlayer(size_t id);
+    void PlayerConnected();
 private:
     TServer* Server();
     void SendPlayerInfo();

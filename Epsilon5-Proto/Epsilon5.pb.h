@@ -105,19 +105,19 @@ class Player : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
   
-  // required double x = 2;
+  // required int32 x = 2;
   inline bool has_x() const;
   inline void clear_x();
   static const int kXFieldNumber = 2;
-  inline double x() const;
-  inline void set_x(double value);
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
   
-  // required double y = 3;
+  // required int32 y = 3;
   inline bool has_y() const;
   inline void clear_y();
   static const int kYFieldNumber = 3;
-  inline double y() const;
-  inline void set_y(double value);
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
   
   // optional double vx = 4;
   inline bool has_vx() const;
@@ -179,12 +179,12 @@ class Player : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  double x_;
-  double y_;
-  double vx_;
   ::google::protobuf::int32 id_;
-  ::google::protobuf::uint32 hp_;
+  ::google::protobuf::int32 x_;
+  double vx_;
   double vy_;
+  ::google::protobuf::int32 y_;
+  ::google::protobuf::uint32 hp_;
   double angle_;
   ::std::string* name_;
   
@@ -254,19 +254,19 @@ class Bullet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required double x = 1;
+  // required int32 x = 1;
   inline bool has_x() const;
   inline void clear_x();
   static const int kXFieldNumber = 1;
-  inline double x() const;
-  inline void set_x(double value);
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
   
-  // required double y = 2;
+  // required int32 y = 2;
   inline bool has_y() const;
   inline void clear_y();
   static const int kYFieldNumber = 2;
-  inline double y() const;
-  inline void set_y(double value);
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
   
   // optional double vx = 3;
   inline bool has_vx() const;
@@ -295,8 +295,8 @@ class Bullet : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  double x_;
-  double y_;
+  ::google::protobuf::int32 x_;
+  ::google::protobuf::int32 y_;
   double vx_;
   double vy_;
   
@@ -373,19 +373,19 @@ class Object : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 id() const;
   inline void set_id(::google::protobuf::int32 value);
   
-  // required double x = 2;
+  // required int32 x = 2;
   inline bool has_x() const;
   inline void clear_x();
   static const int kXFieldNumber = 2;
-  inline double x() const;
-  inline void set_x(double value);
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
   
-  // required double y = 3;
+  // required int32 y = 3;
   inline bool has_y() const;
   inline void clear_y();
   static const int kYFieldNumber = 3;
-  inline double y() const;
-  inline void set_y(double value);
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
   
   // required double angle = 4;
   inline bool has_angle() const;
@@ -407,10 +407,10 @@ class Object : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  double x_;
-  double y_;
-  double angle_;
   ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 x_;
+  double angle_;
+  ::google::protobuf::int32 y_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
@@ -478,19 +478,19 @@ class RespPoint : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required double x = 1;
+  // required int32 x = 1;
   inline bool has_x() const;
   inline void clear_x();
   static const int kXFieldNumber = 1;
-  inline double x() const;
-  inline void set_x(double value);
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
   
-  // required double y = 2;
+  // required int32 y = 2;
   inline bool has_y() const;
   inline void clear_y();
   static const int kYFieldNumber = 2;
-  inline double y() const;
-  inline void set_y(double value);
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
   
   // required int32 team = 3;
   inline bool has_team() const;
@@ -519,8 +519,8 @@ class RespPoint : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  double x_;
-  double y_;
+  ::google::protobuf::int32 x_;
+  ::google::protobuf::int32 y_;
   ::google::protobuf::int32 team_;
   bool is_main_;
   
@@ -626,17 +626,17 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
       mutable_objects();
   
-  // repeated .Epsilon5.RespPoint resp_poits = 4;
-  inline int resp_poits_size() const;
-  inline void clear_resp_poits();
-  static const int kRespPoitsFieldNumber = 4;
-  inline const ::Epsilon5::RespPoint& resp_poits(int index) const;
-  inline ::Epsilon5::RespPoint* mutable_resp_poits(int index);
-  inline ::Epsilon5::RespPoint* add_resp_poits();
+  // repeated .Epsilon5.RespPoint resp_points = 4;
+  inline int resp_points_size() const;
+  inline void clear_resp_points();
+  static const int kRespPointsFieldNumber = 4;
+  inline const ::Epsilon5::RespPoint& resp_points(int index) const;
+  inline ::Epsilon5::RespPoint* mutable_resp_points(int index);
+  inline ::Epsilon5::RespPoint* add_resp_points();
   inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >&
-      resp_poits() const;
+      resp_points() const;
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >*
-      mutable_resp_poits();
+      mutable_resp_points();
   
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
@@ -646,7 +646,7 @@ class World : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player > players_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
-  ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_poits_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_points_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
@@ -1096,7 +1096,7 @@ inline void Player::set_id(::google::protobuf::int32 value) {
   id_ = value;
 }
 
-// required double x = 2;
+// required int32 x = 2;
 inline bool Player::has_x() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1110,15 +1110,15 @@ inline void Player::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline double Player::x() const {
+inline ::google::protobuf::int32 Player::x() const {
   return x_;
 }
-inline void Player::set_x(double value) {
+inline void Player::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
 }
 
-// required double y = 3;
+// required int32 y = 3;
 inline bool Player::has_y() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1132,10 +1132,10 @@ inline void Player::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline double Player::y() const {
+inline ::google::protobuf::int32 Player::y() const {
   return y_;
 }
-inline void Player::set_y(double value) {
+inline void Player::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
 }
@@ -1290,7 +1290,7 @@ inline void Player::set_hp(::google::protobuf::uint32 value) {
 
 // Bullet
 
-// required double x = 1;
+// required int32 x = 1;
 inline bool Bullet::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1304,15 +1304,15 @@ inline void Bullet::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline double Bullet::x() const {
+inline ::google::protobuf::int32 Bullet::x() const {
   return x_;
 }
-inline void Bullet::set_x(double value) {
+inline void Bullet::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
 }
 
-// required double y = 2;
+// required int32 y = 2;
 inline bool Bullet::has_y() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1326,10 +1326,10 @@ inline void Bullet::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline double Bullet::y() const {
+inline ::google::protobuf::int32 Bullet::y() const {
   return y_;
 }
-inline void Bullet::set_y(double value) {
+inline void Bullet::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
 }
@@ -1404,7 +1404,7 @@ inline void Object::set_id(::google::protobuf::int32 value) {
   id_ = value;
 }
 
-// required double x = 2;
+// required int32 x = 2;
 inline bool Object::has_x() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1418,15 +1418,15 @@ inline void Object::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline double Object::x() const {
+inline ::google::protobuf::int32 Object::x() const {
   return x_;
 }
-inline void Object::set_x(double value) {
+inline void Object::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
 }
 
-// required double y = 3;
+// required int32 y = 3;
 inline bool Object::has_y() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1440,10 +1440,10 @@ inline void Object::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline double Object::y() const {
+inline ::google::protobuf::int32 Object::y() const {
   return y_;
 }
-inline void Object::set_y(double value) {
+inline void Object::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
 }
@@ -1474,7 +1474,7 @@ inline void Object::set_angle(double value) {
 
 // RespPoint
 
-// required double x = 1;
+// required int32 x = 1;
 inline bool RespPoint::has_x() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1488,15 +1488,15 @@ inline void RespPoint::clear_x() {
   x_ = 0;
   clear_has_x();
 }
-inline double RespPoint::x() const {
+inline ::google::protobuf::int32 RespPoint::x() const {
   return x_;
 }
-inline void RespPoint::set_x(double value) {
+inline void RespPoint::set_x(::google::protobuf::int32 value) {
   set_has_x();
   x_ = value;
 }
 
-// required double y = 2;
+// required int32 y = 2;
 inline bool RespPoint::has_y() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1510,10 +1510,10 @@ inline void RespPoint::clear_y() {
   y_ = 0;
   clear_has_y();
 }
-inline double RespPoint::y() const {
+inline ::google::protobuf::int32 RespPoint::y() const {
   return y_;
 }
-inline void RespPoint::set_y(double value) {
+inline void RespPoint::set_y(::google::protobuf::int32 value) {
   set_has_y();
   y_ = value;
 }
@@ -1641,29 +1641,29 @@ World::mutable_objects() {
   return &objects_;
 }
 
-// repeated .Epsilon5.RespPoint resp_poits = 4;
-inline int World::resp_poits_size() const {
-  return resp_poits_.size();
+// repeated .Epsilon5.RespPoint resp_points = 4;
+inline int World::resp_points_size() const {
+  return resp_points_.size();
 }
-inline void World::clear_resp_poits() {
-  resp_poits_.Clear();
+inline void World::clear_resp_points() {
+  resp_points_.Clear();
 }
-inline const ::Epsilon5::RespPoint& World::resp_poits(int index) const {
-  return resp_poits_.Get(index);
+inline const ::Epsilon5::RespPoint& World::resp_points(int index) const {
+  return resp_points_.Get(index);
 }
-inline ::Epsilon5::RespPoint* World::mutable_resp_poits(int index) {
-  return resp_poits_.Mutable(index);
+inline ::Epsilon5::RespPoint* World::mutable_resp_points(int index) {
+  return resp_points_.Mutable(index);
 }
-inline ::Epsilon5::RespPoint* World::add_resp_poits() {
-  return resp_poits_.Add();
+inline ::Epsilon5::RespPoint* World::add_resp_points() {
+  return resp_points_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >&
-World::resp_poits() const {
-  return resp_poits_;
+World::resp_points() const {
+  return resp_points_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >*
-World::mutable_resp_poits() {
-  return &resp_poits_;
+World::mutable_resp_points() {
+  return &resp_points_;
 }
 
 // -------------------------------------------------------------------

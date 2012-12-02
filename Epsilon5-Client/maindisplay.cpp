@@ -267,7 +267,7 @@ void TMainDisplay::drawWorld(QPainter &painter)
                 nickName = player.name().c_str();
                 PlayerNames[player.id()] = nickName;
             } else {
-                if (PlayerNames.find(player.id()) != PlayerNames.find()) {
+                if (PlayerNames.find(player.id()) != PlayerNames.end()) {
                     nickName = PlayerNames[player.id()];
                 }
             }

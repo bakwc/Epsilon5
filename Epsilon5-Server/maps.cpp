@@ -47,6 +47,7 @@ void TMaps::LoadNextMap() {
     LoadRespPoints("maps/" + MapFiles[CurrentMap] + "/points.txt");
     emit SpawnBorders(GetMapSize());
     MapStatus = MS_Ready;
+    emit MapLoaded();
 }
 
 void TMaps::LoadConfig(const QString& fileName) {
@@ -116,7 +117,7 @@ void TMaps::LoadRespPoints(const QString& fileName) {
         point.SpawnRadius = FromString(params[3]);
         point.IsCapturable = FromString(params[4]);
         point.IsMain = FromString(params[5]);
-        point.CpatureTime = FromString(params[6]);
+        point.CaptureTime = FromString(params[6]);
         point.Team = FromString(params[7]) ? T_One : T_Second;
         RespPoints.push_back(point);
     }
@@ -136,11 +137,11 @@ QSize TMaps::GetMapSize() {
     return MapSize;
 }
 
-void TMaps::SerialiseRespPoints(Epsilon5::World& world, qreal scaleDown) {
+void TMaps::SerialiseRespPoints(Epsilon5::World& world) {
     for (auto i = RespPoints.begin(); i != RespPoints.end(); i++) {
-        auto point = world.add_resp_poits();
-        point->set_x(scaleDown * i->X);
-        point->set_y(scaleDown * i->Y);
+        auto point = world.add_resp_points();
+        point->set_x(i->X);
+        point->set_y(i->Y);
         point->set_is_main(i->IsMain);
         point->set_team(i->Team);
     }

@@ -6,7 +6,7 @@
 //------------------------------------------------------------------------------
 const quint32 DEFAULT_WINDOW_WIDTH = 800;
 const quint32 DEFAULT_WINDOW_HEIGHT = 600;
-const QString& SETTINGS_FILENAME = "settings.ini";
+const char* SETTINGS_FILENAME = "settings.ini";
 //------------------------------------------------------------------------------
 TSettings::TSettings(QObject* parent)
     : QObject(parent)
@@ -16,6 +16,11 @@ TSettings::TSettings(QObject* parent)
     parameters["window.width"] = QString().number(DEFAULT_WINDOW_WIDTH);
     parameters["window.height"] = QString().number(DEFAULT_WINDOW_HEIGHT);
     mSettings->LoadDefaults(parameters);
+    Load();
+}
+//------------------------------------------------------------------------------
+TSettings::~TSettings() {
+    Save();
 }
 //------------------------------------------------------------------------------
 QSize TSettings::GetWindowSize() const {
@@ -38,7 +43,7 @@ void TSettings::Load() {
 //------------------------------------------------------------------------------
 void TSettings::Save() {
     try {
-        mSettings->Save(SETTINGS_FILENAME, true);
+        mSettings->Save(SETTINGS_FILENAME, false);
     } catch (const UException& ex) {
         qWarning() << ex.what();
     }

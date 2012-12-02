@@ -86,7 +86,7 @@ void TMapCreator::openMapFiles() {
     mFileConfig.setFileName(mPath.absoluteFilePath(MAP_CONF_FILE));
     mFileObject.setFileName(mPath.absoluteFilePath(MAP_FILE));
     if (!mFileConfig.open(QIODevice::ReadWrite | QIODevice::Text) ||
-        !mFileObject.open(QIODevice::ReadWrite | QIODevice::Text)) {
+            !mFileObject.open(QIODevice::ReadWrite | QIODevice::Text)) {
         throw UException("Cannot create map files");
     }
 }
@@ -137,8 +137,7 @@ void TMapCreator::init() {
             mView, SLOT(selectedItem(int)));
 }
 //------------------------------------------------------------------------------
-void TMapCreator::closeFiles()
-{
+void TMapCreator::closeFiles() {
     mFileConfig.close();
     mFileObject.close();
     mFileObjects.close();

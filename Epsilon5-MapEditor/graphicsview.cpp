@@ -15,8 +15,8 @@ TGraphicsView::TGraphicsView(QGraphicsScene* scene, TObjectsList& objectsList,
     , mPixmapsList(pixmapList)
     , mItemId(0) {
 //    setMouseTracking(true);
-    connect(&mItemSignal, SIGNAL(mapItemSignal(QString,QPointF,qreal)),
-        SLOT(itemSlot(QString,QPointF,qreal)));
+    connect(&mItemSignal, SIGNAL(mapItemSignal(QString, QPointF, qreal)),
+            SLOT(itemSlot(QString, QPointF, qreal)));
 }
 //------------------------------------------------------------------------------
 void TGraphicsView::addMapItem(const utils::TMapLine& ml) {
@@ -45,8 +45,7 @@ void TGraphicsView::selectedItem(int item) {
     qDebug() << mObjectsList.at(mItemId).name;
 }
 //------------------------------------------------------------------------------
-void TGraphicsView::itemSlot(QString name, QPointF itemPos, qreal itemRot)
-{
+void TGraphicsView::itemSlot(QString name, QPointF itemPos, qreal itemRot) {
     qDebug() << name << " pos: " << itemPos << " roration: " << itemRot;
 }
 //------------------------------------------------------------------------------

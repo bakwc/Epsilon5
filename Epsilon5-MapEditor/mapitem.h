@@ -23,7 +23,7 @@ public:
     int angle() {
         return 0;
     }
-    void setSignalObject(MapItemSignal *s) {
+    void setSignalObject(MapItemSignal* s) {
         if (!mSign) {
             mSign = s;
         }

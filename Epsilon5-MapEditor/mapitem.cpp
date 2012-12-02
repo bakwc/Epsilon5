@@ -33,13 +33,12 @@ void TMapItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
         QGraphicsItem::mouseMoveEvent(event);
     } else if (mButton == Qt::RightButton) {
         mAngle = this->rotation() + event->pos().x() - mCursorPosition.x();
-        if (mAngle >= 360)
+        if (mAngle >= 360) {
             mAngle -= 360;
-
-        this->setRotation( mAngle);
+        }
+        this->setRotation(mAngle);
     }
     update();
-
     mSign->emitStatus(mObject.name, this->pos(), this->rotation());
 }
 //------------------------------------------------------------------------------

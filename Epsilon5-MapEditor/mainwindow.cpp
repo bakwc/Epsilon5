@@ -8,7 +8,6 @@
 TMainWindow::TMainWindow(QWidget* parent)
     : QMainWindow(parent) {
     resize(Global::Settings()->GetWindowSize());
-
     QMenuBar* menuBar = new QMenuBar;
     QMenu* menu = new QMenu("File");
     menu->addAction("New", this, SLOT(newDialogSlot()));
@@ -18,8 +17,7 @@ TMainWindow::TMainWindow(QWidget* parent)
     this->setMenuBar(menuBar);
 }
 //------------------------------------------------------------------------------
-TMainWindow::~TMainWindow()
-{
+TMainWindow::~TMainWindow() {
     Global::Settings()->SetWindowSize(size());
 }
 //------------------------------------------------------------------------------

@@ -15,36 +15,31 @@ TSettings::TSettings(QObject* parent)
     USettings::TParametersHash parameters;
     parameters["window.width"] = QString().number(DEFAULT_WINDOW_WIDTH);
     parameters["window.height"] = QString().number(DEFAULT_WINDOW_HEIGHT);
-
     mSettings->LoadDefaults(parameters);
 }
 //------------------------------------------------------------------------------
-QSize TSettings::GetWindowSize() const
-{
+QSize TSettings::GetWindowSize() const {
     return QSize(mSettings->GetParameter("window.width").toUInt(),
-            mSettings->GetParameter("window.height").toUInt());
+                 mSettings->GetParameter("window.height").toUInt());
 }
 //------------------------------------------------------------------------------
-void TSettings::SetWindowSize(const QSize &size)
-{
+void TSettings::SetWindowSize(const QSize& size) {
     mSettings->SetParameter("window.width", QString().number(size.width()));
     mSettings->SetParameter("window.height", QString().number(size.height()));
 }
 //------------------------------------------------------------------------------
-void TSettings::Load()
-{
+void TSettings::Load() {
     try {
         mSettings->Load(SETTINGS_FILENAME);
-    } catch( const UException &ex) {
+    } catch (const UException& ex) {
         qWarning() << ex.what();
     }
 }
 //------------------------------------------------------------------------------
-void TSettings::Save()
-{
+void TSettings::Save() {
     try {
         mSettings->Save(SETTINGS_FILENAME, true);
-    } catch ( const UException &ex ) {
+    } catch (const UException& ex) {
         qWarning() << ex.what();
     }
 }

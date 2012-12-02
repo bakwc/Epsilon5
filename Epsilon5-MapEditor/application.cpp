@@ -4,12 +4,11 @@
 
 //------------------------------------------------------------------------------
 TApplication::TApplication(int& argc, char* argv[])
-    : QApplication(argc, argv){
+    : QApplication(argc, argv) {
     Global::Settings()->Load();
 }
 //------------------------------------------------------------------------------
-TApplication::~TApplication()
-{
+TApplication::~TApplication() {
     Global::Settings()->Save();
 }
 //------------------------------------------------------------------------------

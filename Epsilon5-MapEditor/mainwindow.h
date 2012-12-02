@@ -1,28 +1,24 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+// mainwindow.h
+#pragma once
 #include <QMainWindow>
+#include <QAction>
 #include "createmapdialog.h"
 #include "mapcreator.h"
-#include <QAction>
-
-class MainWindow : public QMainWindow
-{
+//------------------------------------------------------------------------------
+class TMainWindow : public QMainWindow {
     Q_OBJECT
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    
-signals:
-    
+    explicit TMainWindow(QWidget* parent = 0);
+
 public slots:
     void newDialogSlot();
     void openDialogSlot();
 
 private:
-    MapCreator      *_mapPainter;
-    QAction         *saveAtc;
-
     void connectMapCreator();
-};
 
-#endif // MAINWINDOW_H
+private:
+    TMapCreator* mMapPainter;
+    QAction* mSaveAtc;
+};
+//------------------------------------------------------------------------------

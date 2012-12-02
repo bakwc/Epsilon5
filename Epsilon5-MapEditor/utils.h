@@ -1,29 +1,29 @@
+// utils.h
 #pragma once
-
 #include <QString>
 #include <QList>
 #include <QFile>
 #include <exception>
-
-namespace utils
-{
-
-struct Object {
+//------------------------------------------------------------------------------
+namespace utils {
+//------------------------------------------------------------------------------
+struct TObject {
     int id;
     int width;
     int height;
     bool dynamic;
     QString name;
 };
-
-struct MapLine {
+//------------------------------------------------------------------------------
+struct TMapLine {
     int x;
     int y;
     int angle;
     int id;
 };
-
-QList<Object> parseObjFile(QFile &f);
-QList<MapLine> parseMapFile(QFile &f);
-
+//------------------------------------------------------------------------------
+QList<TObject> parseObjFile(QFile& f);
+QList<TMapLine> parseMapFile(QFile& f);
+//------------------------------------------------------------------------------
 }
+//------------------------------------------------------------------------------

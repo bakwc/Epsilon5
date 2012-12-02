@@ -1,48 +1,44 @@
-#include "mapitem.h"
+// mapitem.cpp
 #include <QPainter>
 #include <QColor>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
-
-
-MapItem::MapItem(const utils::Object &obj, const QPixmap &pix) :
-    _obj(obj), _pix(pix)
-{
+#include "mapitem.h"
+//------------------------------------------------------------------------------
+TMapItem::TMapItem(const utils::TObject& obj, const QPixmap& pix)
+    : mObject(obj)
+    , mPixmap(pix) {
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
-
-QRectF MapItem::boundingRect() const
-{
-    return QRectF(0, 0, _obj.width, _obj.height);
+//------------------------------------------------------------------------------
+QRectF TMapItem::boundingRect() const {
+    return QRectF(0, 0, mObject.width, mObject.height);
 }
-
-void MapItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
+//------------------------------------------------------------------------------
+void TMapItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
     QGraphicsItem::mousePressEvent(event);
-    _cPoint = event->pos();
+    mCursorPosition = event->pos();
     update();
 }
-
-void MapItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-    _point = event->scenePos();
-    setPos(_point - _cPoint);
-
-//    qDebug() << _point;
-
+//------------------------------------------------------------------------------
+void TMapItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+    mScenePosition = event->scenePos();
+    setPos(mScenePosition - mCursorPosition);
+//    qDebug() << mScenePosition;
     QGraphicsItem::mouseMoveEvent(event);
     update();
 }
-
-void MapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
+//------------------------------------------------------------------------------
+void TMapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
     QGraphicsItem::mouseReleaseEvent(event);
     update();
 }
-
-void MapItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
+//------------------------------------------------------------------------------
+void TMapItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
+        QWidget* widget) {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     painter->setBrush(QBrush(Qt::black));
-//    painter->drawRect(QRectF(QPointF(0, 0), _size));
-    painter->drawPixmap(0, 0, _pix);
+    painter->drawPixmap(0, 0, mPixmap);
 }
+//------------------------------------------------------------------------------

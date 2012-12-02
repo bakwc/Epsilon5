@@ -1,37 +1,34 @@
-#ifndef GRAPHICSVIEW_H
-#define GRAPHICSVIEW_H
-
+// graphicsview.h
+#pragma once
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QSizeF>
 #include <QPixmap>
 #include <utils.h>
-
-class GraphicsView : public QGraphicsView
-{
+//------------------------------------------------------------------------------
+class TGraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
-    explicit GraphicsView(QGraphicsScene* scene, QList<utils::Object> &objsList,
-                          QList<QPixmap> &objPix, QWidget *parent = 0);
+    typedef QList<QPixmap> TPixmapsList;
+    typedef QList<utils::TObject> TObjectsList;
 
-    void addMapItem(const utils::MapLine &ml);
+public:
+    explicit TGraphicsView(QGraphicsScene* scene, TObjectsList& objectsList,
+            TPixmapsList& pixmapsList, QWidget* parent = 0);
+    void addMapItem(const utils::TMapLine& ml);
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent *event);
-//    void mouseMoveEvent(QMouseEvent *event);
-//    void paintEvent(QPaintEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent* event);
+//    void mouseMoveEvent(QMouseEvent* event);
+//    void paintEvent(QPaintEvent* event);
 
-signals:
-    
 public slots:
     void selectedItem(int item);
-    
+
 private:
-    QList<utils::Object> &_objsLst;
-    QList<QPixmap>       &_objPix;
-    int         _itemId;
-
-    QPoint      _itemPrevPoint;
+    TObjectsList& mObjectsList;
+    TPixmapsList& mPixmapsList;
+    int mItemId;
+    QPoint mItemPrevPoint;
 };
-
-#endif // GRAPHICSVIEW_H
+//------------------------------------------------------------------------------

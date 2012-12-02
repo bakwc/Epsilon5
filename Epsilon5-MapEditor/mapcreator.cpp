@@ -1,59 +1,60 @@
-#include "mapcreator.h"
+// mapcreator.cpp
 #include <QDebug>
-#include "graphicsview.h"
-#include "mapitem.h"
 #include <QStringList>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QListWidget>
 #include "../utils/uexception.h"
-
-
-MapCreator::MapCreator(QString name, QSize size, QPixmap background, QString path, QString objPath, QWidget *parent) :
-    QWidget(parent), _name(name), _size(size), _background(background), _path(path), _objPath(objPath)
-{
+#include "graphicsview.h"
+#include "mapitem.h"
+#include "mapcreator.h"
+//------------------------------------------------------------------------------
+TMapCreator::TMapCreator(QString name, QSize size, QPixmap background,
+        QString path, QString objPath, QWidget* parent)
+    : QWidget(parent)
+    , mName(name)
+    , mSize(size)
+    , mBackground(background)
+    , mPath(path)
+    , mObjectPath(objPath) {
     // Create map dir
-    if ( !_path.mkdir(_name) || !_path.cd(_name) )
-        throw UException("Cannot create " + _name + "dir");
-
+    if (!mPath.mkdir(mName) || !mPath.cd(mName)) {
+        throw UException("Cannot create " + mName + "dir");
+    }
     openMapFiles();
     openObjectFile();
     createConfFile();
     init();
 }
-
-MapCreator::MapCreator(QString path, QString objPath, QWidget *parent) :
-    QWidget(parent), _path(path), _objPath(objPath)
-{
+//------------------------------------------------------------------------------
+TMapCreator::TMapCreator(QString path, QString objPath, QWidget* parent)
+    : QWidget(parent)
+    , mPath(path)
+    , mObjectPath(objPath) {
     openMapFiles();
     openObjectFile();
     configureMapCreator();
     init();
-
     // Create items on scene
-    QList<utils::MapLine> ml = utils::parseMapFile(_mObject);
+    QList<utils::TMapLine> ml = utils::parseMapFile(mFileObject);
     foreach(auto m, ml)
-        _view->addMapItem(m);
+    mView->addMapItem(m);
 }
-
-
-void MapCreator::save()
-{
-    QList<QGraphicsItem*> itemLst = _view->scene()->items();
+//------------------------------------------------------------------------------
+void TMapCreator::save() {
+    QList<QGraphicsItem*> itemLst = mView->scene()->items();
     QByteArray arr;
-
-    for (int i=0; i < itemLst.size(); ++i) {
-        MapItem *mItem = dynamic_cast<MapItem*>(itemLst.at(i));
+    for (int i = 0; i < itemLst.size(); ++i) {
+        TMapItem* mItem = dynamic_cast<TMapItem*>(itemLst.at(i));
         arr += serealizeObj(mItem);
     }
-
-    _mObject.write(arr);
-    if (!_mObject.flush())
+    mFileObject.write(arr);
+    if (!mFileObject.flush()) {
         qDebug() << "Save error";
+    }
 }
-
-QByteArray MapCreator::serealizeObj(MapItem *item)
-{
+//------------------------------------------------------------------------------
+QByteArray TMapCreator::serealizeObj(TMapItem* item) {
     QByteArray arr;
     arr.append(QByteArray::number(item->posX()) + ':');
     arr.append(QByteArray::number(item->posY()) + ':');
@@ -61,84 +62,75 @@ QByteArray MapCreator::serealizeObj(MapItem *item)
     arr.append(QByteArray::number(item->id()) + '\n');
     return arr;
 }
-
-
-void MapCreator::createConfFile()
-{
+//------------------------------------------------------------------------------
+void TMapCreator::createConfFile() {
     QString str;
-    str += "name=" + _name + '\n';
-    str += "width=" + QString::number(_size.width()) + '\n';
-    str += "height=" + QString::number(_size.height()) + '\n';
-
-    _mConfig.write(str.toLocal8Bit());
-    _mConfig.flush();
+    str += "name=" + mName + '\n';
+    str += "width=" + QString::number(mSize.width()) + '\n';
+    str += "height=" + QString::number(mSize.height()) + '\n';
+    mFileConfig.write(str.toLocal8Bit());
+    mFileConfig.flush();
 }
-
-void MapCreator::openObjectFile()
-{
-    _objs.setFileName(_objPath.absoluteFilePath(OBJS_FILE));
-    if ( !_objs.open(QIODevice::ReadOnly | QIODevice::Text) )
+//------------------------------------------------------------------------------
+void TMapCreator::openObjectFile() {
+    mFileObjects.setFileName(mObjectPath.absoluteFilePath(OBJS_FILE));
+    if (!mFileObjects.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw UException("Cannot open objects file");
+    }
 }
-
-void MapCreator::openMapFiles()
-{
-    _mConfig.setFileName(_path.absoluteFilePath(MAP_CONF_FILE));
-    _mObject.setFileName(_path.absoluteFilePath(MAP_FILE));
-
-    if ( !_mConfig.open(QIODevice::ReadWrite | QIODevice::Text) ||
-         !_mObject.open(QIODevice::ReadWrite | QIODevice::Text) )
+//------------------------------------------------------------------------------
+void TMapCreator::openMapFiles() {
+    mFileConfig.setFileName(mPath.absoluteFilePath(MAP_CONF_FILE));
+    mFileObject.setFileName(mPath.absoluteFilePath(MAP_FILE));
+    if (!mFileConfig.open(QIODevice::ReadWrite | QIODevice::Text) ||
+        !mFileObject.open(QIODevice::ReadWrite | QIODevice::Text)) {
         throw UException("Cannot create map files");
+    }
 }
-
-void MapCreator::configureMapCreator()
-{
+//------------------------------------------------------------------------------
+void TMapCreator::configureMapCreator() {
     int q = 0; // validate
-    while(!_mConfig.atEnd()) {
-        QString line = _mConfig.readLine();
+    while (!mFileConfig.atEnd()) {
+        QString line = mFileConfig.readLine();
         QStringList l = line.split('=');
-
         if (l.at(0) == "name") {
-            _name = l.at(1);
+            mName = l.at(1);
             q += 1;
         } else if (l.at(0) == "width") {
-            _size.setWidth(l.at(1).toInt());
+            mSize.setWidth(l.at(1).toInt());
             q += 10;
         } else if (l.at(0) == "height") {
-            _size.setHeight(l.at(1).toInt());
+            mSize.setHeight(l.at(1).toInt());
             q += 100;
         }
     }
-
-    if (q != 111)
+    if (q != 111) {
         throw UException("Invalid config file");
-}
-
-
-void MapCreator::init()
-{
-    // Parse objects file and fill name and pixmap list
-    _objsLst = utils::parseObjFile(_objs);
-    QStringList objNames;
-    foreach(const utils::Object &obj, _objsLst) {
-        objNames << obj.name;
-        _objPix << QPixmap(_objPath.absoluteFilePath(obj.name));
     }
-
+}
+//------------------------------------------------------------------------------
+void TMapCreator::init() {
+    // Parse objects file and fill name and pixmap list
+    mObjectsList = utils::parseObjFile(mFileObjects);
+    QStringList objNames;
+    foreach(const utils::TObject & obj, mObjectsList) {
+        objNames << obj.name;
+        mPixmapsList << QPixmap(mObjectPath.absoluteFilePath(obj.name));
+    }
     // Create scene and setup
-    QGraphicsScene *_scene = new QGraphicsScene(0, 0, _size.width(), _size.height());
-    _view = new GraphicsView(_scene, _objsLst, _objPix);
-
+    QGraphicsScene* _scene = new QGraphicsScene(0, 0,
+            mSize.width(), mSize.height());
+    mView = new TGraphicsView(_scene, mObjectsList, mPixmapsList);
     // Right panel for select created objects
-    QListWidget *itemSelector = new QListWidget;
+    QListWidget* itemSelector = new QListWidget;
     itemSelector->insertItems(0, objNames);
     itemSelector->setMaximumWidth(100);
     itemSelector->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(_view);
+    QHBoxLayout* layout = new QHBoxLayout;
+    layout->addWidget(mView);
     layout->addWidget(itemSelector);
     setLayout(layout);
-
-    connect(itemSelector, SIGNAL(currentRowChanged(int)), _view, SLOT(selectedItem(int)));
+    connect(itemSelector, SIGNAL(currentRowChanged(int)),
+            mView, SLOT(selectedItem(int)));
 }
+//------------------------------------------------------------------------------

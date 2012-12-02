@@ -1,20 +1,17 @@
-#ifndef OPENMAPDIALOG_H
-#define OPENMAPDIALOG_H
-
+// openmapdialog.h
+#pragma once
 #include <QDialog>
 #include <QString>
-
+//------------------------------------------------------------------------------
 namespace Ui {
 class OpenMapDialog;
 }
-
-class OpenMapDialog : public QDialog
-{
+//------------------------------------------------------------------------------
+class TOpenMapDialog : public QDialog {
     Q_OBJECT
-    
 public:
-    explicit OpenMapDialog(QWidget *parent = 0);
-    ~OpenMapDialog();
+    explicit TOpenMapDialog(QWidget* parent = 0);
+    ~TOpenMapDialog();
 
     QString mapDir();
     QString objDir();
@@ -22,14 +19,12 @@ public:
 signals:
     void mapFolderSignal(QString str);
     void objFolderSignal(QString str);
-    
+
 private slots:
     void on_toolButton_clicked();
-
     void on_toolButton_2_clicked();
 
 private:
-    Ui::OpenMapDialog *ui;
+    Ui::OpenMapDialog* mUi;
 };
-
-#endif // OPENMAPDIALOG_H
+//------------------------------------------------------------------------------

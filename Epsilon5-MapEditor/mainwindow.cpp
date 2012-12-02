@@ -7,7 +7,10 @@
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
     : QMainWindow(parent) {
+    // Relocate window
     resize(Global::Settings()->GetWindowSize());
+    move(Global::Settings()->GetWindowPos());
+
     QMenuBar* menuBar = new QMenuBar;
     QMenu* menu = new QMenu("File");
     menu->addAction("New", this, SLOT(newDialogSlot()));
@@ -19,6 +22,7 @@ TMainWindow::TMainWindow(QWidget* parent)
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow() {
     Global::Settings()->SetWindowSize(size());
+    Global::Settings()->SetWindowPos(pos());
 }
 //------------------------------------------------------------------------------
 void TMainWindow::newDialogSlot() {

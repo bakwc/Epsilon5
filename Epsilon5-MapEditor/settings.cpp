@@ -6,6 +6,8 @@
 //------------------------------------------------------------------------------
 const quint32 DEFAULT_WINDOW_WIDTH = 800;
 const quint32 DEFAULT_WINDOW_HEIGHT = 600;
+const qint32 DEFAULT_WINDOW_POSX = 100;
+const qint32 DEFAULT_WINDOW_POSY = 50;
 const char* SETTINGS_FILENAME = "settings.ini";
 //------------------------------------------------------------------------------
 TSettings::TSettings(QObject* parent)
@@ -15,6 +17,8 @@ TSettings::TSettings(QObject* parent)
     USettings::TParametersHash parameters;
     parameters["window.width"] = QString().number(DEFAULT_WINDOW_WIDTH);
     parameters["window.height"] = QString().number(DEFAULT_WINDOW_HEIGHT);
+    parameters["window.posx"] = QString().number(DEFAULT_WINDOW_POSX);
+    parameters["window.posy"] = QString().number(DEFAULT_WINDOW_POSY);
     mSettings->LoadDefaults(parameters);
     Load();
 }
@@ -31,6 +35,16 @@ QSize TSettings::GetWindowSize() const {
 void TSettings::SetWindowSize(const QSize& size) {
     mSettings->SetParameter("window.width", QString().number(size.width()));
     mSettings->SetParameter("window.height", QString().number(size.height()));
+}
+//------------------------------------------------------------------------------
+QPoint TSettings::GetWindowPos() const {
+    return QPoint(mSettings->GetParameter("window.posx"),
+                  mSettings->GetParameter("window.posy"));
+}
+//------------------------------------------------------------------------------
+void TSettings::SetWindowPos(const QPoint& position) {
+    mSettings->SetParameter("window.posx", QString().number(position.x()));
+    mSettings->SetParameter("window.posy", QString().number(position.y()));
 }
 //------------------------------------------------------------------------------
 void TSettings::Load() {

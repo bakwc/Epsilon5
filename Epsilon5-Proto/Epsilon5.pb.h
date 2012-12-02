@@ -35,6 +35,7 @@ void protobuf_ShutdownFile_Epsilon5_2eproto();
 class Player;
 class Bullet;
 class Object;
+class RespPoint;
 class World;
 class Control;
 class Control_KeyStatus;
@@ -139,7 +140,7 @@ class Player : public ::google::protobuf::Message {
   inline double angle() const;
   inline void set_angle(double value);
   
-  // required string name = 7;
+  // optional string name = 7;
   inline bool has_name() const;
   inline void clear_name();
   static const int kNameFieldNumber = 7;
@@ -423,6 +424,118 @@ class Object : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class RespPoint : public ::google::protobuf::Message {
+ public:
+  RespPoint();
+  virtual ~RespPoint();
+  
+  RespPoint(const RespPoint& from);
+  
+  inline RespPoint& operator=(const RespPoint& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RespPoint& default_instance();
+  
+  void Swap(RespPoint* other);
+  
+  // implements Message ----------------------------------------------
+  
+  RespPoint* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RespPoint& from);
+  void MergeFrom(const RespPoint& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required double x = 1;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 1;
+  inline double x() const;
+  inline void set_x(double value);
+  
+  // required double y = 2;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 2;
+  inline double y() const;
+  inline void set_y(double value);
+  
+  // required int32 team = 3;
+  inline bool has_team() const;
+  inline void clear_team();
+  static const int kTeamFieldNumber = 3;
+  inline ::google::protobuf::int32 team() const;
+  inline void set_team(::google::protobuf::int32 value);
+  
+  // required bool is_main = 4;
+  inline bool has_is_main() const;
+  inline void clear_is_main();
+  static const int kIsMainFieldNumber = 4;
+  inline bool is_main() const;
+  inline void set_is_main(bool value);
+  
+  // @@protoc_insertion_point(class_scope:Epsilon5.RespPoint)
+ private:
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_team();
+  inline void clear_has_team();
+  inline void set_has_is_main();
+  inline void clear_has_is_main();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  double x_;
+  double y_;
+  ::google::protobuf::int32 team_;
+  bool is_main_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_Epsilon5_2eproto();
+  friend void protobuf_AssignDesc_Epsilon5_2eproto();
+  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
+  
+  void InitAsDefaultInstance();
+  static RespPoint* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class World : public ::google::protobuf::Message {
  public:
   World();
@@ -513,6 +626,18 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
       mutable_objects();
   
+  // repeated .Epsilon5.RespPoint resp_poits = 4;
+  inline int resp_poits_size() const;
+  inline void clear_resp_poits();
+  static const int kRespPoitsFieldNumber = 4;
+  inline const ::Epsilon5::RespPoint& resp_poits(int index) const;
+  inline ::Epsilon5::RespPoint* mutable_resp_poits(int index);
+  inline ::Epsilon5::RespPoint* add_resp_poits();
+  inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >&
+      resp_poits() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >*
+      mutable_resp_poits();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
   
@@ -521,9 +646,10 @@ class World : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player > players_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_poits_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1080,7 +1206,7 @@ inline void Player::set_angle(double value) {
   angle_ = value;
 }
 
-// required string name = 7;
+// optional string name = 7;
 inline bool Player::has_name() const {
   return (_has_bits_[0] & 0x00000040u) != 0;
 }
@@ -1346,6 +1472,98 @@ inline void Object::set_angle(double value) {
 
 // -------------------------------------------------------------------
 
+// RespPoint
+
+// required double x = 1;
+inline bool RespPoint::has_x() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RespPoint::set_has_x() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RespPoint::clear_has_x() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RespPoint::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline double RespPoint::x() const {
+  return x_;
+}
+inline void RespPoint::set_x(double value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required double y = 2;
+inline bool RespPoint::has_y() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void RespPoint::set_has_y() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void RespPoint::clear_has_y() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void RespPoint::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline double RespPoint::y() const {
+  return y_;
+}
+inline void RespPoint::set_y(double value) {
+  set_has_y();
+  y_ = value;
+}
+
+// required int32 team = 3;
+inline bool RespPoint::has_team() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void RespPoint::set_has_team() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void RespPoint::clear_has_team() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void RespPoint::clear_team() {
+  team_ = 0;
+  clear_has_team();
+}
+inline ::google::protobuf::int32 RespPoint::team() const {
+  return team_;
+}
+inline void RespPoint::set_team(::google::protobuf::int32 value) {
+  set_has_team();
+  team_ = value;
+}
+
+// required bool is_main = 4;
+inline bool RespPoint::has_is_main() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void RespPoint::set_has_is_main() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void RespPoint::clear_has_is_main() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void RespPoint::clear_is_main() {
+  is_main_ = false;
+  clear_has_is_main();
+}
+inline bool RespPoint::is_main() const {
+  return is_main_;
+}
+inline void RespPoint::set_is_main(bool value) {
+  set_has_is_main();
+  is_main_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // World
 
 // repeated .Epsilon5.Player players = 1;
@@ -1421,6 +1639,31 @@ World::objects() const {
 inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
 World::mutable_objects() {
   return &objects_;
+}
+
+// repeated .Epsilon5.RespPoint resp_poits = 4;
+inline int World::resp_poits_size() const {
+  return resp_poits_.size();
+}
+inline void World::clear_resp_poits() {
+  resp_poits_.Clear();
+}
+inline const ::Epsilon5::RespPoint& World::resp_poits(int index) const {
+  return resp_poits_.Get(index);
+}
+inline ::Epsilon5::RespPoint* World::mutable_resp_poits(int index) {
+  return resp_poits_.Mutable(index);
+}
+inline ::Epsilon5::RespPoint* World::add_resp_poits() {
+  return resp_poits_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >&
+World::resp_poits() const {
+  return resp_poits_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >*
+World::mutable_resp_poits() {
+  return &resp_poits_;
 }
 
 // -------------------------------------------------------------------

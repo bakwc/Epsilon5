@@ -28,10 +28,8 @@ SOURCES += main.cpp \
     bullet.cpp \
     maps.cpp \
     objects.cpp \
-    staticobject.cpp
-
-OTHER_FILES += \
-    ../Epslion5-Proto/Epsilon5.proto
+    staticobject.cpp \
+    ../utils/ucast.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -47,9 +45,13 @@ HEADERS += \
     bullet.h \
     maps.h \
     objects.h \
-    staticobject.h
+    staticobject.h \
+    ../utils/ucast.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 
 
 LIBS += -lprotobuf -lBox2D
+
+OTHER_FILES += \
+    ../Epsilon5-Proto/Epsilon5.proto

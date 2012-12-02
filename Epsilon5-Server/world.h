@@ -41,6 +41,10 @@ public slots:
     void SpawnBorders(const QSize &mapSize);
     void ClearObjects();
     void ClearBorders();
+    inline void NeedFullPacket() {
+        FullPacketResendTtl = 0;
+    }
+
 private:
     void timerEvent(QTimerEvent *);
     TApplication* Application();
@@ -57,4 +61,5 @@ private:
     TStaticObjectsList StaticObjects;
     TDynamicObjectsList DynamicObjects;
     TStaticObjectsList WorldBorders;
+    size_t FullPacketResendTtl;
 };

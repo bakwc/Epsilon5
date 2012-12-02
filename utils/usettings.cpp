@@ -3,6 +3,7 @@
 
 #include "usettings.h"
 #include "uexception.h"
+#include "ucast.h"
 
 USettings::USettings(QObject *parent)
     : QObject(parent)
@@ -34,9 +35,11 @@ void USettings::Load(const QString& fname, const QStringList& required) {
     }
 }
 
-QString USettings::GetParameter(const QString& parameter) {
+
+UFromStringFormat USettings::GetParameter(const QString& parameter) {
     if (Parameters.find(parameter) == Parameters.end()) {
         throw UException("Parameter not found in config");
     }
-    return Parameters[parameter];
+    return FromString(Parameters[parameter]);
 }
+

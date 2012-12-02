@@ -261,7 +261,17 @@ void TMainDisplay::drawWorld(QPainter &painter)
 
             int cx = GetCorrect(playerX, player.x());
             int cy = GetCorrect(playerY, player.y());
-            QString nickName = player.name().c_str();
+
+            QString nickName;
+            if (player.has_name()) {
+                nickName = player.name().c_str();
+                PlayerNames[player.id()] = nickName;
+            } else {
+                if (PlayerNames.find(player.id()) != PlayerNames.find()) {
+                    nickName = PlayerNames[player.id()];
+                }
+            }
+
             size_t hp = player.hp();
 
             if ((size_t)player.id() == Application->GetNetwork()->GetId()) {

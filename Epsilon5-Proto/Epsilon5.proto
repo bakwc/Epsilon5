@@ -11,7 +11,7 @@ message Player {
 
     optional double angle = 6;
 
-    required string name = 7;
+    optional string name = 7;
 
     required uint32 hp = 8;
 }
@@ -32,10 +32,18 @@ message Object {
     required double angle = 4;
 }
 
+message RespPoint {
+    required double x = 1;
+    required double y = 2;
+    required int32 team = 3;
+    required bool is_main = 4;
+}
+
 message World {
     repeated Player players = 1;
     repeated Bullet bullets = 2;
     repeated Object objects = 3;
+    repeated RespPoint resp_points = 4;
 }
 
 message Control {

@@ -2,6 +2,7 @@
 #include <QGLWidget>
 #include <QImage>
 #include <QQueue>
+#include <QHash>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "imagestorage.h"
 #include "map.h"
@@ -44,4 +45,5 @@ private:
     TObjects* Objects;
     bool IsFullScreenWindowed;
     const Epsilon5::World* CurrentWorld;
+    QHash<size_t, QString> PlayerNames;
 };

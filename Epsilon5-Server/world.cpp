@@ -9,10 +9,12 @@ const qreal OBJECT_SCALE_UP = 10;
 const qreal OBJECT_SCALE_DOWN = 1 / OBJECT_SCALE_UP;
 const quint16 WORLD_BORDER_SIZE = 4 * OBJECT_SCALE_UP;
 const size_t WORLD_BORDER_ID = -1;
+const size_t WORLD_FULL_PACKET_RESEND_COUNT = 80; // Resend full packet after 50 regular packets
 
 TWorld::TWorld(QObject *parent)
     : QObject(parent)
     , B2World(new b2World(b2Vec2(0, 0)))
+    , FullPacketResendTtl(0)
 {
     B2World->ClearForces();
     B2World->SetContactListener(this);
@@ -35,6 +37,15 @@ TPlayer* TWorld::GetPlayer(size_t id) {
 }
 
 QByteArray TWorld::Serialize() {
+    bool needFullPacket = false;
+
+    if (FullPacketResendTtl == 0) {
+        needFullPacket = true;
+        FullPacketResendTtl = WORLD_FULL_PACKET_RESEND_COUNT;
+    } else {
+        FullPacketResendTtl--;
+    }
+
     Epsilon5::World world;
     world.clear_bullets();
     world.clear_players();
@@ -46,11 +57,13 @@ QByteArray TWorld::Serialize() {
         player->set_x(i.value()->GetX() * OBJECT_SCALE_UP);
         player->set_y(i.value()->GetY() * OBJECT_SCALE_UP);
 
-        player->set_vx(i.value()->GetVx() * OBJECT_SCALE_UP);
-        player->set_vy(i.value()->GetVy() * OBJECT_SCALE_UP);
-        player->set_angle(i.value()->GetAngle());
-        QByteArray playerName = i.value()->GetNickname().toLocal8Bit();
-        player->set_name(playerName.data(), playerName.size());
+        if (needFullPacket) {
+            player->set_vx(i.value()->GetVx() * OBJECT_SCALE_UP);
+            player->set_vy(i.value()->GetVy() * OBJECT_SCALE_UP);
+            player->set_angle(i.value()->GetAngle());
+            QByteArray playerName = i.value()->GetNickname().toLocal8Bit();
+            player->set_name(playerName.data(), playerName.size());
+        }
         player->set_hp(i.value()->GetHP());
     }
 
@@ -59,8 +72,10 @@ QByteArray TWorld::Serialize() {
         auto bullet=world.add_bullets();
         bullet->set_x((*i)->GetX() * OBJECT_SCALE_UP);
         bullet->set_y((*i)->GetY() * OBJECT_SCALE_UP);
-        bullet->set_vx((*i)->GetVx() * OBJECT_SCALE_UP);
-        bullet->set_vy((*i)->GetVy() * OBJECT_SCALE_UP);
+        if (needFullPacket) {
+            bullet->set_vx((*i)->GetVx() * OBJECT_SCALE_UP);
+            bullet->set_vy((*i)->GetVy() * OBJECT_SCALE_UP);
+        }
     }
 
     for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
@@ -86,6 +101,8 @@ QByteArray TWorld::Serialize() {
         object->set_angle((*i)->GetAngle());
         object->set_id((*i)->GetId());
     }
+
+    //Application()->GetMaps()->
 
     QByteArray result;
     result.resize(world.ByteSize());
@@ -140,6 +157,7 @@ void TWorld::SpawnBullet(TBullet* bullet) {
 }
 
 void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
+    qDebug() << Q_FUNC_INFO;
     bool dynamic = Application()->GetObjects()->IsDynamicObject(id);
     QPoint size = Application()->GetObjects()->GetObjectSize(id);
     if (dynamic) {

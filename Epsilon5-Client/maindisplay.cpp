@@ -84,6 +84,8 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     drawWorld(painter);
     drawFps(painter);
+    drawPing(painter);
+
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -205,7 +207,8 @@ void TMainDisplay::drawFps(QPainter& painter)
     }
 
     const QPen penOld = painter.pen();
-    const QString& fpsString = QString("FPS: %1").arg(fps);
+    const QString& fpsString = QString("Fps: %1").arg(fps);
+    painter.setFont(QFont("Helvetica", 10)); // Helvetica font present on all Systems
     painter.setPen(Qt::black);
     painter.drawText(1, 11, fpsString);
     painter.setPen(Qt::darkGray);
@@ -214,6 +217,21 @@ void TMainDisplay::drawFps(QPainter& painter)
 
     ++frames;
 }
+
+void TMainDisplay::drawPing(QPainter& painter)
+{
+
+    qint64 Ping = Application->GetNetwork()->GetPing();
+    const QString& pingString = QString("Ping: %1").arg(Ping);
+    painter.setFont(QFont("Helvetica", 10)); // Helvetica font present on all Systems
+    painter.setPen(Qt::black);
+    painter.drawText(1, 25, pingString);
+    painter.setPen(Qt::darkGray);
+    painter.drawText(0, 24, pingString);
+
+}
+
+
 
 void TMainDisplay::drawWorld(QPainter &painter)
 {

@@ -34,6 +34,7 @@ private:
     void mouseReleaseEvent(QMouseEvent *event);
 
     void drawFps(QPainter& painter);
+    void drawPing(QPainter& painter);
     void drawWorld(QPainter& painter);
 
 private:

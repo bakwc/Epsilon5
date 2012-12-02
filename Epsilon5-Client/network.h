@@ -15,6 +15,7 @@ public:
     const Epsilon5::World& GetWorld() const;
     void Start();
     inline size_t GetId() { return Id; }
+    inline qint64 GetPing() { return Ping; }
 signals:
     void WorldReceived();
     void LoadMap(QString map);
@@ -31,5 +32,7 @@ private:
     QUdpSocket* Socket;
     Epsilon5::World World;
     size_t Id;
+    qint64 Ping;
+    qint64 LastTime;
     EPlayerStatus Status;
 };

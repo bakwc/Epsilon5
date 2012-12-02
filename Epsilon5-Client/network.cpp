@@ -22,6 +22,9 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
+    qint64 time = QDateTime::currentMSecsSinceEpoch();
+    Ping = time - LastTime;
+    LastTime = time;
     QByteArray receivedPacket = Socket->readAll();
     EPacketType packetType;
     quint16 packedDataSize;

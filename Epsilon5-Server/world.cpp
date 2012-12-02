@@ -157,7 +157,6 @@ void TWorld::SpawnBullet(TBullet* bullet) {
 }
 
 void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
-    qDebug() << Q_FUNC_INFO;
     bool dynamic = Application()->GetObjects()->IsDynamicObject(id);
     QPoint size = Application()->GetObjects()->GetObjectSize(id);
     if (dynamic) {

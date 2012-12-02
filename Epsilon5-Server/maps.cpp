@@ -113,10 +113,11 @@ void TMaps::LoadRespPoints(const QString& fileName) {
         point.X = FromString(params[0]);
         point.Y = FromString(params[1]);
         point.CaptureRadius = FromString(params[2]);
-        point.IsCapturable = FromString(params[2]);
-        point.IsMain = FromString(params[3]);
-        point.CpatureTime = FromString(params[4]);
-        point.Team = FromString(params[5]) ? T_One : T_Second;
+        point.SpawnRadius = FromString(params[3]);
+        point.IsCapturable = FromString(params[4]);
+        point.IsMain = FromString(params[5]);
+        point.CpatureTime = FromString(params[6]);
+        point.Team = FromString(params[7]) ? T_One : T_Second;
         RespPoints.push_back(point);
     }
 }

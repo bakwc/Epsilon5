@@ -5,6 +5,8 @@
 #include "createmapdialog.h"
 #include "mapcreator.h"
 //------------------------------------------------------------------------------
+class TSettings;
+//------------------------------------------------------------------------------
 class TMainWindow : public QMainWindow {
     Q_OBJECT
 public:
@@ -20,5 +22,6 @@ private:
 private:
     TMapCreator* mMapPainter;
     QAction* mSaveAtc;
+    TSettings* mSettings;
 };
 //------------------------------------------------------------------------------

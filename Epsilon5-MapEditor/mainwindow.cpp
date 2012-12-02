@@ -3,9 +3,13 @@
 #include <QMessageBox>
 #include "mainwindow.h"
 #include "openmapdialog.h"
+#include "settings.h"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
-    : QMainWindow(parent) {
+    : QMainWindow(parent)
+    , mSettings(new TSettings(this)) {
+    resize(mSettings->GetWindowSize());
+
     QMenuBar* menuBar = new QMenuBar;
     QMenu* menu = new QMenu("File");
     menu->addAction("New", this, SLOT(newDialogSlot()));

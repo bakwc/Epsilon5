@@ -1,27 +1,32 @@
 QT += core gui
 
-TARGET = EpsMapGen
-TAMPLATE = app
+TARGET = Epsilon5-MapEditor
+TEMPLATE = app
 
-SOURCES += main.cpp \
+SOURCES += \
+    ../utils/uexception.cpp \
+    ../utils/usettings.cpp \
+    main.cpp \
     mainwindow.cpp \
     createmapdialog.cpp \
     mapcreator.cpp \
     graphicsview.cpp \
     mapitem.cpp \
     utils.cpp \
-    ../utils/uexception.cpp \
-    openmapdialog.cpp
+    openmapdialog.cpp \
+    settings.cpp
 
 HEADERS += \
+    ../utils/uexception.h \
+    ../utils/usettings.h \
     mainwindow.h \
     createmapdialog.h \
     mapcreator.h \
     graphicsview.h \
     mapitem.h \
     utils.h \
-    ../utils/uexception.h \
-    openmapdialog.h
+    openmapdialog.h \
+    settings.h
 
 FORMS += \
     createmapdialog.ui \

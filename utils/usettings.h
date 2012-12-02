@@ -17,7 +17,9 @@ public:
     virtual ~USettings() {}
     void Load(const QString& fname, const QStringList& required = QStringList());
     void LoadDefaults(const TParametersHash& paramsList);
+    void Save(const QString& fname, bool keepOrigin = false);
     QString GetParameter(const QString& parameter);
+    void SetParameter(const QString& parameter, const QString& value);
 private:
     TParametersHash Parameters;
 };

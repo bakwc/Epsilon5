@@ -41,6 +41,34 @@ QString USettings::GetParameter(const QString& parameter) {
     return Parameters[parameter];
 }
 
+void USettings::SetParameter(const QString &parameter, const QString &value)
+{
+    if( parameter.isEmpty() )
+        return;
+
+    Parameters[parameter] = value;
+}
+
 void USettings::LoadDefaults(const TParametersHash &paramsList) {
     Parameters = paramsList;
+}
+
+void USettings::Save(const QString &fname, bool keepOrigin)
+{
+    QFile file(fname);
+    if( keepOrigin && file.exists() )
+        return;
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate
+            | QIODevice::Text)) {
+        throw UException("Error opening file for writing " + fname);
+    }
+    QTextStream stream(&file);
+    QStringList vars(Parameters.keys());
+    vars.sort();
+    auto it = vars.constBegin();
+    for(; it != vars.constEnd(); ++it){
+        stream << *it << " = " << Parameters[*it] << "\n";
+    }
+    file.flush();
 }

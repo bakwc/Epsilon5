@@ -32,6 +32,6 @@ private:
     TPixmapsList& mPixmapsList;
     int mItemId;
     QPoint mItemPrevPoint;
-    MapItemSignal mItemSignal;
+    TMapItemSignal mItemSignal;
 };
 //------------------------------------------------------------------------------

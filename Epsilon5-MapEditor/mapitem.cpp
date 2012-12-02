@@ -6,7 +6,7 @@
 #include <QStaticText>
 #include "mapitem.h"
 
-MapItemSignal* TMapItem::mSign = 0;
+TMapItemSignal* TMapItem::mSign = 0;
 //------------------------------------------------------------------------------
 TMapItem::TMapItem(const utils::TObject& obj, const QPixmap& pix)
     : mObject(obj)

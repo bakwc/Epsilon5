@@ -1,3 +1,4 @@
+// main.cpp
 #include "global.h"
 #include "application.h"
 #include "mainwindow.h"

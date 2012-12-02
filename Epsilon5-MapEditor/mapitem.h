@@ -6,7 +6,7 @@
 #include "mapitemsignal.h"
 //------------------------------------------------------------------------------
 class TMapItem : public QGraphicsItem {
-    static MapItemSignal* mSign;
+    static TMapItemSignal* mSign;
 public:
     explicit TMapItem(const utils::TObject& obj, const QPixmap& pix);
 
@@ -23,7 +23,7 @@ public:
     int angle() {
         return 0;
     }
-    void setSignalObject(MapItemSignal* s) {
+    void setSignalObject(TMapItemSignal* s) {
         if (!mSign) {
             mSign = s;
         }

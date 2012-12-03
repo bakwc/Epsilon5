@@ -54,7 +54,7 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
 
         if ((control.keystatus().keyattack1()
                 || control.keystatus().keyattack2())
-                && lastShoot.elapsed() > 500)   // FIRE!!
+                && lastShoot.elapsed() > 1)   // FIRE!!
         {
             lastShoot.restart();
             TBullet *bullet;

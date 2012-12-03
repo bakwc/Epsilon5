@@ -49,7 +49,7 @@ void TMapCreator::save() {
     QByteArray arr;
     for (int i = 0; i < itemLst.size(); ++i) {
         TMapItem* mItem = dynamic_cast<TMapItem*>(itemLst.at(i));
-        arr += serealizeObj(mItem);
+        arr += serializeObj(mItem);
     }
     mFileObject.write(arr);
     if (!mFileObject.flush()) {
@@ -57,7 +57,7 @@ void TMapCreator::save() {
     }
 }
 //------------------------------------------------------------------------------
-QByteArray TMapCreator::serealizeObj(TMapItem* item) {
+QByteArray TMapCreator::serializeObj(TMapItem* item) {
     QByteArray arr;
     arr.append(QByteArray::number(item->posX()) + ':');
     arr.append(QByteArray::number(item->posY()) + ':');
@@ -121,11 +121,10 @@ void TMapCreator::init() {
         mPixmapsList << QPixmap(mObjectPath.absoluteFilePath(obj.name));
     }
     // Create scene and setup
-    QGraphicsScene* _scene = new QGraphicsScene(0, 0,
-            mSize.width(), mSize.height());
-    mView = new TGraphicsView(_scene, mObjectsList, mPixmapsList);
+    mScene = new QGraphicsScene(0, 0, mSize.width(), mSize.height(), this);
+    mView = new TGraphicsView(mScene, mObjectsList, mPixmapsList,parentWidget());
     // Right panel for select created objects
-    QListWidget* itemSelector = new QListWidget;
+    QListWidget* itemSelector = new QListWidget(this);
     itemSelector->insertItems(0, objNames);
     itemSelector->setMaximumWidth(100);
     itemSelector->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);

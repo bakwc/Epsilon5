@@ -1,4 +1,5 @@
 // utils.cpp
+#include <QDebug>
 #include "utils.h"
 //------------------------------------------------------------------------------
 namespace utils {

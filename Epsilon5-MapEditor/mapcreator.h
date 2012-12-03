@@ -32,7 +32,7 @@ public slots:
     void save();
 
 private:
-    QByteArray serealizeObj(TMapItem* item);
+    QByteArray serializeObj(TMapItem* item);
     void createConfFile();
     void openObjectFile();
     void openMapFiles();
@@ -50,6 +50,7 @@ private:
     QFile mFileObject;
     QFile mFileObjects;
     TGraphicsView* mView;
+    QGraphicsScene* mScene;
     TObjectsList mObjectsList;
     TPixmapsList mPixmapsList;
 };

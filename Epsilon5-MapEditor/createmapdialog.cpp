@@ -1,5 +1,7 @@
 // createmapdialog.cpp
+#include <QDebug>
 #include <QFileDialog>
+#include "global.h"
 #include "createmapdialog.h"
 #include "ui_createmapdialog.h"
 //------------------------------------------------------------------------------
@@ -13,6 +15,10 @@ TCreateMapDialog::TCreateMapDialog(QWidget* parent)
             ui->path, SLOT(setText(QString)));
     connect(this, SIGNAL(selectObjPath(QString)),
             ui->objPath, SLOT(setText(QString)));
+
+    // Get from configuration
+    ui->path->text() = Global::Settings()->GetMapsPath();
+    ui->objPath->text() = Global::Settings()->GetObjectsPath();
 }
 //------------------------------------------------------------------------------
 TCreateMapDialog::~TCreateMapDialog() {
@@ -41,20 +47,25 @@ QString TCreateMapDialog::mapObjsPath() {
 //------------------------------------------------------------------------------
 void TCreateMapDialog::on_selectTextureButton_clicked() {
     QFileDialog fd;
-    QString f = fd.getOpenFileName(this, "Open map texture");
+    QString f = fd.getOpenFileName(this, tr("Open map texture"),
+                Global::Settings()->GetTexturesPath());
+    Global::Settings()->SetTexturesPath(fd.directory().absolutePath());
     emit selectTexture(f);
 }
 //------------------------------------------------------------------------------
 void TCreateMapDialog::on_selectPathButton_clicked() {
-    QFileDialog fd;
-    QString f = fd.getExistingDirectory(this,
-                "Set directory where will be create map's' folder");
+    QString f = QFileDialog::getExistingDirectory(this,
+                tr("Set directory where will be create maps folder"),
+                Global::Settings()->GetMapsPath());
+    Global::Settings()->SetMapsPath(f);
     emit selectPath(f);
 }
 //------------------------------------------------------------------------------
 void TCreateMapDialog::on_objPathButton_clicked() {
     QFileDialog fd;
-    QString f = fd.getExistingDirectory(this, "Set objects folder");
+    QString f = fd.getExistingDirectory(this,
+                tr("Set objects folder"), Global::Settings()->GetObjectsPath());
+    Global::Settings()->SetObjectsPath(fd.directory().absolutePath());
     emit selectObjPath(f);
 }
 //------------------------------------------------------------------------------

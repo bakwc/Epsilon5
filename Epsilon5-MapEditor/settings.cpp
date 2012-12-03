@@ -19,6 +19,9 @@ TSettings::TSettings(QObject* parent)
     parameters["window.height"] = QString().number(DEFAULT_WINDOW_HEIGHT);
     parameters["window.posx"] = QString().number(DEFAULT_WINDOW_POSX);
     parameters["window.posy"] = QString().number(DEFAULT_WINDOW_POSY);
+    parameters["textures.path"] = "";
+    parameters["maps.path"] = "";
+    parameters["objects.path"] = "";
     mSettings->LoadDefaults(parameters);
     Load();
 }
@@ -45,6 +48,30 @@ QPoint TSettings::GetWindowPos() const {
 void TSettings::SetWindowPos(const QPoint& position) {
     mSettings->SetParameter("window.posx", QString().number(position.x()));
     mSettings->SetParameter("window.posy", QString().number(position.y()));
+}
+//------------------------------------------------------------------------------
+QString TSettings::GetTexturesPath() const {
+    return mSettings->GetParameter("textures.path");
+}
+//------------------------------------------------------------------------------
+void TSettings::SetTexturesPath(const QString& path) {
+    mSettings->SetParameter("textures.path", path);
+}
+//------------------------------------------------------------------------------
+QString TSettings::GetMapsPath() const {
+    return mSettings->GetParameter("maps.path");
+}
+//------------------------------------------------------------------------------
+void TSettings::SetMapsPath(const QString& path) {
+    mSettings->SetParameter("maps.path", path);
+}
+//------------------------------------------------------------------------------
+QString TSettings::GetObjectsPath() const {
+    return mSettings->GetParameter("objects.path");
+}
+//------------------------------------------------------------------------------
+void TSettings::SetObjectsPath(const QString& path) {
+    mSettings->SetParameter("objects.path", path);
 }
 //------------------------------------------------------------------------------
 void TSettings::Load() {

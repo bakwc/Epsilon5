@@ -36,13 +36,13 @@ void TMainWindow::newDialogSlot() {
         mMapPainter = new TMapCreator(dialog.mapName(), dialog.mapSize(),
                 dialog.mapBackground(), dialog.mapPath(),
                 dialog.mapObjsPath(), this);
+        connectMapCreator();
     } catch (std::exception& e) {
-        delete mMapPainter;
+        //delete mMapPainter;
         qDebug("Error: %s", e.what());
         QMessageBox::critical(this, "Error", e.what());
         return;
     }
-    connectMapCreator();
 }
 //------------------------------------------------------------------------------
 void TMainWindow::openDialogSlot() {
@@ -52,13 +52,13 @@ void TMainWindow::openDialogSlot() {
     }
     try {
         mMapPainter = new TMapCreator(d.mapDir(), d.objDir(), this);
+        connectMapCreator();
     } catch (std::exception& e) {
-        delete mMapPainter;
+        //delete mMapPainter;
         qDebug("Error: %s", e.what());
         QMessageBox::critical(this, "Error", e.what());
         return;
     }
-    connectMapCreator();
 }
 //------------------------------------------------------------------------------
 void TMainWindow::connectMapCreator() {

@@ -17,6 +17,8 @@ public slots:
     void newAction();
     void openAction();
     void optionsAction();
+    void objectsEditorAction();
+    void mapsEditorAction();
 
 private:
     void connectMapCreator();

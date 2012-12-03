@@ -23,6 +23,9 @@ TMainWindow::TMainWindow(QWidget* parent)
     // Tools menu
     QMenu* toolsMenu = new QMenu(tr("Tools"), menuBar);
     toolsMenu->addAction(tr("Options..."), this, SLOT(optionsAction()));
+    toolsMenu->addSeparator();
+    toolsMenu->addAction(tr("Objects Editor"), this, SLOT(objectsEditorAction()));
+    toolsMenu->addAction(tr("Maps Editor"), this, SLOT(mapsEditorAction()));
 
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(toolsMenu);
@@ -72,14 +75,24 @@ void TMainWindow::openAction() {
     }
 }
 //------------------------------------------------------------------------------
+void TMainWindow::connectMapCreator() {
+    connect(mSaveAtc, SIGNAL(triggered()), mMapPainter, SLOT(save()));
+    this->setCentralWidget(mMapPainter);
+}
+//------------------------------------------------------------------------------
 void TMainWindow::optionsAction()
 {
     TConfigurationDialog configDialog(this);
     configDialog.exec();
 }
 //------------------------------------------------------------------------------
-void TMainWindow::connectMapCreator() {
-    connect(mSaveAtc, SIGNAL(triggered()), mMapPainter, SLOT(save()));
-    this->setCentralWidget(mMapPainter);
+void TMainWindow::objectsEditorAction()
+{
+
+}
+//------------------------------------------------------------------------------
+void TMainWindow::mapsEditorAction()
+{
+
 }
 //------------------------------------------------------------------------------

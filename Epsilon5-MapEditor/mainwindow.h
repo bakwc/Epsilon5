@@ -14,8 +14,9 @@ public:
     ~TMainWindow();
 
 public slots:
-    void newDialogSlot();
-    void openDialogSlot();
+    void newAction();
+    void openAction();
+    void optionsAction();
 
 private:
     void connectMapCreator();

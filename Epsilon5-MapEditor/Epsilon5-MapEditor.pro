@@ -17,7 +17,8 @@ SOURCES += \
     openmapdialog.cpp \
     mapitemsignal.cpp \
     settings.cpp \
-    application.cpp
+    application.cpp \
+    ui/configurationdialog.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -33,11 +34,13 @@ HEADERS += \
     mapitemsignal.h \
     application.h \
     settings.h \
-    global.h
+    global.h \
+    ui/configurationdialog.hpp
 
 FORMS += \
     createmapdialog.ui \
-    openmapdialog.ui
+    openmapdialog.ui \
+    ui/configurationdialog.ui
 
 QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse
 # -Ofast -flto -funroll-loops

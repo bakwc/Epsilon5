@@ -21,8 +21,8 @@ signals:
     void objFolderSignal(QString str);
 
 private slots:
-    void on_toolButton_clicked();
-    void on_toolButton_2_clicked();
+    void on_mapFolderButton_clicked();
+    void on_objectsFolderButton_clicked();
 
 private:
     Ui::OpenMapDialog* mUi;

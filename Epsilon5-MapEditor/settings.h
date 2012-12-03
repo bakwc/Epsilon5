@@ -14,8 +14,8 @@ public:
     void SetWindowSize(const QSize& size);
     QPoint GetWindowPos() const;
     void SetWindowPos(const QPoint& position);
-    QString GetTexturesPath() const;
-    void SetTexturesPath(const QString& path);
+    QString GetDataPath() const;
+    void SetDataPath(const QString& path);
     QString GetMapsPath() const;
     void SetMapsPath(const QString& path);
     QString GetObjectsPath() const;

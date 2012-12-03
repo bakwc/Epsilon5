@@ -25,12 +25,12 @@ QString TOpenMapDialog::objDir() {
     return mUi->objFolder->text();
 }
 //------------------------------------------------------------------------------
-void TOpenMapDialog::on_toolButton_clicked() {
+void TOpenMapDialog::on_mapFolderButton_clicked() {
     QString f = QFileDialog::getExistingDirectory(this, "Set map directory");
     emit mapFolderSignal(f);
 }
 //------------------------------------------------------------------------------
-void TOpenMapDialog::on_toolButton_2_clicked() {
+void TOpenMapDialog::on_objectsFolderButton_clicked() {
     QString f = QFileDialog::getExistingDirectory(this, "Set objects directory");
     emit objFolderSignal(f);
 }

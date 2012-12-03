@@ -19,7 +19,7 @@ TSettings::TSettings(QObject* parent)
     parameters["window.height"] = QString().number(DEFAULT_WINDOW_HEIGHT);
     parameters["window.posx"] = QString().number(DEFAULT_WINDOW_POSX);
     parameters["window.posy"] = QString().number(DEFAULT_WINDOW_POSY);
-    parameters["textures.path"] = "";
+    parameters["data.path"] = "";
     parameters["maps.path"] = "";
     parameters["objects.path"] = "";
     mSettings->LoadDefaults(parameters);
@@ -50,12 +50,12 @@ void TSettings::SetWindowPos(const QPoint& position) {
     mSettings->SetParameter("window.posy", QString().number(position.y()));
 }
 //------------------------------------------------------------------------------
-QString TSettings::GetTexturesPath() const {
-    return mSettings->GetParameter("textures.path");
+QString TSettings::GetDataPath() const {
+    return mSettings->GetParameter("data.path");
 }
 //------------------------------------------------------------------------------
-void TSettings::SetTexturesPath(const QString& path) {
-    mSettings->SetParameter("textures.path", path);
+void TSettings::SetDataPath(const QString& path) {
+    mSettings->SetParameter("data.path", path);
 }
 //------------------------------------------------------------------------------
 QString TSettings::GetMapsPath() const {

@@ -48,8 +48,8 @@ QString TCreateMapDialog::mapObjsPath() {
 void TCreateMapDialog::on_selectTextureButton_clicked() {
     QFileDialog fd;
     QString f = fd.getOpenFileName(this, tr("Open map texture"),
-                Global::Settings()->GetTexturesPath());
-    Global::Settings()->SetTexturesPath(fd.directory().absolutePath());
+                Global::Settings()->GetDataPath());
+    Global::Settings()->SetDataPath(fd.directory().absolutePath());
     emit selectTexture(f);
 }
 //------------------------------------------------------------------------------

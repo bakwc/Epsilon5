@@ -45,6 +45,7 @@ TMainWindow::TMainWindow(QWidget* parent)
     this->setMenuBar(menuBar);
 
     setMinimumSize(600, 400);
+    connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
 }
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow() {
@@ -53,41 +54,41 @@ TMainWindow::~TMainWindow() {
 }
 //------------------------------------------------------------------------------
 void TMainWindow::newAction() {
-    TCreateMapDialog dialog(this);
-    if (!dialog.exec()) {
-        return;
-    }
-    // TODO: temporary disabled
-    return;
-    try {
-        mMapPainter = new TMapCreator(dialog.mapName(), dialog.mapSize(),
-                dialog.mapBackground(), dialog.mapPath(),
-                dialog.mapObjsPath(), this);
-        connectMapCreator();
-    } catch (std::exception& e) {
-        //delete mMapPainter;
-        qDebug("Error: %s", e.what());
-        QMessageBox::critical(this, "Error", e.what());
-        return;
-    }
+//    TCreateMapDialog dialog(this);
+//    if (!dialog.exec()) {
+//        return;
+//    }
+//    // TODO: temporary disabled
+//    return;
+//    try {
+//        mMapPainter = new TMapCreator(dialog.mapName(), dialog.mapSize(),
+//                dialog.mapBackground(), dialog.mapPath(),
+//                dialog.mapObjsPath(), this);
+//        connectMapCreator();
+//    } catch (std::exception& e) {
+//        //delete mMapPainter;
+//        qDebug("Error: %s", e.what());
+//        QMessageBox::critical(this, "Error", e.what());
+//        return;
+//    }
 }
 //------------------------------------------------------------------------------
 void TMainWindow::openAction() {
-    TOpenMapDialog d(this);
-    if (!d.exec()) {
-        return;
-    }
-    // TODO: temporary disabled
-    return;
-    try {
-        mMapPainter = new TMapCreator(d.mapDir(), d.objDir(), this);
-        connectMapCreator();
-    } catch (std::exception& e) {
-        //delete mMapPainter;
-        qDebug("Error: %s", e.what());
-        QMessageBox::critical(this, "Error", e.what());
-        return;
-    }
+//    TOpenMapDialog d(this);
+//    if (!d.exec()) {
+//        return;
+//    }
+//    // TODO: temporary disabled
+//    return;
+//    try {
+//        mMapPainter = new TMapCreator(d.mapDir(), d.objDir(), this);
+//        connectMapCreator();
+//    } catch (std::exception& e) {
+//        //delete mMapPainter;
+//        qDebug("Error: %s", e.what());
+//        QMessageBox::critical(this, "Error", e.what());
+//        return;
+//    }
 }
 //------------------------------------------------------------------------------
 void TMainWindow::connectMapCreator() {
@@ -112,5 +113,10 @@ void TMainWindow::mapsEditorAction()
 {
     mObjectsEditorAction->setChecked(false);
     mMapsEditorAction->setChecked(true);
+}
+//------------------------------------------------------------------------------
+void TMainWindow::resizeEvent(QResizeEvent *)
+{
+    emit resized();
 }
 //------------------------------------------------------------------------------

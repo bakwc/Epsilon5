@@ -8,7 +8,7 @@
 #include "global.h"
 #include "objectseditorform.hpp"
 #include "ui_objectseditorform.h"
-
+//------------------------------------------------------------------------------
 TObjectsEditorForm::TObjectsEditorForm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::TObjectsEditorForm)
@@ -35,59 +35,58 @@ TObjectsEditorForm::TObjectsEditorForm(QWidget *parent) :
     ui->dataListWidget->setGridSize(QSize(200,100));
     ui->dataListWidget->setIconSize(ui->dataListWidget->gridSize());
 
-    updateDataList();
+    createDataList();
 }
 
 TObjectsEditorForm::~TObjectsEditorForm()
 {
     delete ui;
 }
-
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::createDataList()
+{
+    mCache.clear();
+    QDir dir(Global::Settings()->GetDataPath());
+    QFileInfoList fInfo = dir.entryInfoList();
+    for( auto it = fInfo.begin(); it != fInfo.end(); ++it )
+    {
+        if( !(*it).isFile() )
+            continue;
+        mCache.append((*it).absoluteFilePath(), ui->dataListWidget->iconSize());
+    }
+}
+//------------------------------------------------------------------------------
 void TObjectsEditorForm::updateDataList()
 {
     ui->dataListWidget->clear();
 
-    QListWidgetItem* iw;
-    // TODO: this should be moved to another place
-    QDir dir(Global::Settings()->GetDataPath());
-    QFileInfoList fInfo = dir.entryInfoList();
-    auto it = fInfo.begin();
-    for( ; it != fInfo.end(); ++it )
+    TImageCacheItem item;
+    QString strId;
+    QListWidgetItem *it;
+    for( int i = 0; i < mCache.count(); ++i )
     {
-        if( (*it).isFile() ) {
-            const QString& absFile = (*it).absoluteFilePath();
-            const QIcon& ico = genIconFromFile(absFile);
-            iw = new QListWidgetItem(ico, QString());
-            //ui->dataListWidget->setIconSize);
-            ui->dataListWidget->addItem(iw);
-        }
+        item = mCache[i];
+        strId = QString().number(item.id);
+        it = new QListWidgetItem(item.icon, strId);
+        ui->dataListWidget->addItem(it);
     }
 }
-
-QIcon TObjectsEditorForm::genIconFromFile(const QString &fileName)
-{
-    QPainter pt;
-    //pt.drawImage(0,0,px.convertFromImage(QImage(fileName)));
-    QImage img(fileName);
-    qDebug() << img.size();
-    return QIcon(QPixmap::fromImage(img.scaled(ui->dataListWidget->iconSize())));//, Qt::KeepAspectRatio)));
-}
-
+//------------------------------------------------------------------------------
 void TObjectsEditorForm::loadAction()
 {
     qDebug() << Q_FUNC_INFO;
 }
-
+//------------------------------------------------------------------------------
 void TObjectsEditorForm::saveAction()
 {
     qDebug() << Q_FUNC_INFO;
 }
-
+//------------------------------------------------------------------------------
 void TObjectsEditorForm::clearAction()
 {
     ui->objectsListWidget->clear();
 }
-
+//------------------------------------------------------------------------------
 void TObjectsEditorForm::showObjectsListMenu(QPoint pos)
 {
     QMenu menu;
@@ -98,12 +97,16 @@ void TObjectsEditorForm::showObjectsListMenu(QPoint pos)
 
     menu.exec(ui->objectsListWidget->mapToGlobal(pos));
 }
-
+//------------------------------------------------------------------------------
 void TObjectsEditorForm::showDataListMenu(QPoint pos)
 {
     QMenu menu;
     menu.addAction(tr("Refresh"));
 
     if( menu.exec(ui->dataListWidget->mapToGlobal(pos)) )
+    {
+        createDataList();
         updateDataList();
+    }
 }
+//------------------------------------------------------------------------------

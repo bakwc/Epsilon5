@@ -9,39 +9,41 @@ SOURCES += \
     ../utils/ucast.cpp \
     main.cpp \
     mainwindow.cpp \
-    createmapdialog.cpp \
-    mapcreator.cpp \
-    graphicsview.cpp \
-    mapitem.cpp \
-    utils.cpp \
-    openmapdialog.cpp \
-    mapitemsignal.cpp \
+#    createmapdialog.cpp \
+#    mapcreator.cpp \
+#    graphicsview.cpp \
+#    mapitem.cpp \
+#    utils.cpp \
+#    openmapdialog.cpp \
+#    mapitemsignal.cpp \
     settings.cpp \
     application.cpp \
     ui/configurationdialog.cpp \
-    ui/objectseditorform.cpp
+    ui/objectseditorform.cpp \
+    imagecache.cpp
 
 HEADERS += \
     ../utils/uexception.h \
     ../utils/usettings.h \
     ../utils/ucast.h \
     mainwindow.h \
-    createmapdialog.h \
-    mapcreator.h \
-    graphicsview.h \
-    mapitem.h \
-    utils.h \
-    openmapdialog.h \
-    mapitemsignal.h \
+#    createmapdialog.h \
+#    mapcreator.h \
+#    graphicsview.h \
+#    mapitem.h \
+#    utils.h \
+#    openmapdialog.h \
+#    mapitemsignal.h \
     application.h \
     settings.h \
     global.h \
     ui/configurationdialog.hpp \
-    ui/objectseditorform.hpp
+    ui/objectseditorform.hpp \
+    imagecache.hpp
 
 FORMS += \
-    createmapdialog.ui \
-    openmapdialog.ui \
+#    createmapdialog.ui \
+#    openmapdialog.ui \
     ui/configurationdialog.ui \
     ui/objectseditorform.ui
 

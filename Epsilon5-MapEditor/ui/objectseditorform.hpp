@@ -2,6 +2,7 @@
 #define OBJECTSEDITORFORM_HPP
 
 #include <QWidget>
+#include "imagecache.hpp"
 
 class QMenu;
 
@@ -19,6 +20,7 @@ public:
 
 public slots:
     void updateDataList();
+    void createDataList();
 
 private slots:
     void loadAction();
@@ -28,12 +30,9 @@ private slots:
     void showDataListMenu(QPoint pos);
 
 private:
-
-    QIcon genIconFromFile( const QString& fileName );
-
-private:
     Ui::TObjectsEditorForm *ui;
     QMenu* mObjectsMenu;
+    TImageCache mCache;
 };
 
 #endif // OBJECTSEDITORFORM_HPP

@@ -20,8 +20,15 @@ public slots:
     void objectsEditorAction();
     void mapsEditorAction();
 
+signals:
+    void resized();
+
+
 private:
     void connectMapCreator();
+    void resizeEvent(QResizeEvent *);
+
+
 
 private:
     TMapCreator* mMapPainter;

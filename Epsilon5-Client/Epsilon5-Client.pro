@@ -26,9 +26,11 @@ SOURCES += \
     objects.cpp \
     ../utils/ucast.cpp \
     view.cpp \
-    basicitem.cpp \
-    bullet.cpp \
-    scene.cpp
+    items/basicitem.cpp \
+    scene.cpp \
+    items/tplayeritem.cpp \
+    items/tobjectitem.cpp \
+    items/tbulletitem.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -45,9 +47,11 @@ HEADERS  += \
     objects.h \
     ../utils/ucast.h \
     view.h \
-    basicitem.h \
-    bullet.h \
-    scene.h
+    items/basicitem.h \
+    scene.h \
+    items/tplayeritem.h \
+    items/tobjectitem.h \
+    items/tbulletitem.h
 
 FORMS    +=
 

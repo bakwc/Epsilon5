@@ -6,8 +6,10 @@
 #include "imagestorage.h"
 #include "map.h"
 #include "objects.h"
-#include "basicitem.h"
-#include "bullet.h"
+#include "items/basicitem.h"
+#include "items/tbulletitem.h"
+#include "items/tplayeritem.h"
+#include "items/tobjectitem.h"
 #include "scene.h"
 
 const quint16 BASE_WINDOW_WIDTH = 800;
@@ -60,31 +62,48 @@ void View::timerEvent(QTimerEvent *)
             const Epsilon5::Player &player = CurrentWorld->players(i);
 
             // Create item, if it is not exist in scene
-            if (!PlayerContains.contains(player.id())) {
-                PlayerContains.insert(player.id());
-                basic::BasicItem *item = new basic::BasicItem;
-                scene()->addItem(item);
+            TPlayerItem *pItem = (TPlayerItem*)Scene->GetItem(TPlayerItem::PLAYER, player.id());
+            if (!pItem) {
+                pItem = dynamic_cast<TPlayerItem*>(Scene->AddItem(new TPlayerItem, player.id()));
             }
 
             // Set item's position
-            Scene->items().at(i)->setPos(player.x(), player.y());
+            pItem->setPos(player.x(), player.y());
 
             qDebug() << player.name().c_str() << player.x() << player.y();
         }
 
         // Arrangment bullets
+//        Scene->ClearItems(TBulletItem::BULLET);
+        for (int i=0; i != CurrentWorld->bullets_size(); ++i) {
+            const Epsilon5::Bullet& bullet = CurrentWorld->bullets(i);
+
+//            if (!ObjectContains.contains(object.id())) {
+//                ObjectContains.insert(object.id());
+//            }
+
+            // Create item, if it is not exist in scene
+            TBulletItem *bItem = (TBulletItem*)Scene->GetItem(TBulletItem::BULLET, i);
+            if (!bItem) {
+                bItem = (TBulletItem*)Scene->AddItem(new TBulletItem, i);
+            }
+
+            // Set item's position
+            bItem->setPos(bullet.x(), bullet.y());
+        }
+
+        // Arrangment objects
+//        Scene->ClearItems(TObjectItem::OBJECT);
         for (int i=0; i != CurrentWorld->bullets_size(); ++i) {
             const Epsilon5::Object& object = CurrentWorld->objects(i);
 
             // Create item, if it is not exist in scene
-            if (!ObjectContains.contains(object.id())) {
-                ObjectContains.insert(object.id());
-                basic::BasicItem *item = new basic::Bullet;
-//                Scene->addItem(item);
+            TObjectItem* oItem = (TObjectItem*)Scene->GetItem(TObjectItem::OBJECT, i);
+            if (!oItem) {
+                oItem = (TObjectItem*)Scene->AddItem(new TObjectItem, i);
             }
 
-            // Set item's position
-
+            oItem->setPos(object.x(), object.y());
         }
     }
 }

@@ -6,12 +6,12 @@ namespace basic {
 
 QRectF BasicItem::boundingRect() const
 {
-    return QRectF(-25, -25, 25, 25);
+    return QRectF(QPointF(0, 0), Size);
 }
 
-BasicItem::BasicItem()
+BasicItem::BasicItem() :
+    Size(0, 0)
 {
-    Size = QSize(50, 50);
 }
 
 void BasicItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

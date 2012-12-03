@@ -5,12 +5,10 @@
 
 namespace basic {
 
-class Bullet : public BasicItem
+class TBulletItem : public BasicItem
 {
 public:
-    Bullet();
-
-    QRectF boundingRect() const;
+    TBulletItem();
 };
 
 }

@@ -4,6 +4,7 @@
 #include <QtNetwork/QUdpSocket>
 #include <QHash>
 #include "../Epsilon5-Proto/defines.h"
+#include "maps.h"
 
 class TApplication;
 class TClient;
@@ -18,7 +19,7 @@ public:
     TApplication* Application();
     void RespawnDeadClients();
 signals:
-    void NewPlayer(size_t id);
+    void NewPlayer(size_t id, ETeam);
     void PlayerDisconnected(size_t id);
 private slots:
     void DataReceived();

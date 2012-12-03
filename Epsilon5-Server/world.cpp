@@ -4,12 +4,7 @@
 #include "../utils/uexception.h"
 #include "application.h"
 #include "world.h"
-
-const qreal OBJECT_SCALE_UP = 10;
-const qreal OBJECT_SCALE_DOWN = 1 / OBJECT_SCALE_UP;
-const quint16 WORLD_BORDER_SIZE = 4 * OBJECT_SCALE_UP;
-const size_t WORLD_BORDER_ID = -1;
-const size_t WORLD_FULL_PACKET_RESEND_COUNT = 80; // Resend full packet after 50 regular packets
+#include "defines.h"
 
 TWorld::TWorld(QObject *parent)
     : QObject(parent)
@@ -116,8 +111,8 @@ void TWorld::Start() {
     startTimer(20);
 }
 
-void TWorld::PlayerSpawn(size_t id) {
-    TPlayer* player = new TPlayer(id, Application()->GetMaps(), this);
+void TWorld::PlayerSpawn(size_t id, ETeam team) {
+    TPlayer* player = new TPlayer(id, team, Application()->GetMaps(), this);
     connect(player, SIGNAL(SpawnBullet(TBullet*)), SLOT(SpawnBullet(TBullet*)));
     connect(player, SIGNAL(Death(size_t)), SLOT(PlayerKill(size_t)));
     Players.insert(id, player);

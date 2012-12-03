@@ -4,6 +4,7 @@
 #include <QHostAddress>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "../Epsilon5-Proto/defines.h"
+#include "maps.h"
 
 class TServer;
 
@@ -34,7 +35,7 @@ public slots:
     }
 signals:
     void ControlReceived(const Epsilon5::Control &control);
-    void SpawnPlayer(size_t id);
+    void SpawnPlayer(size_t id, ETeam team);
     void PlayerConnected();
 private:
     TServer* Server();
@@ -47,4 +48,5 @@ private:
     quint64 LastSeen;
     EPlayerStatus PlayerStatus;
     QString NickName;
+    ETeam Team;
 };

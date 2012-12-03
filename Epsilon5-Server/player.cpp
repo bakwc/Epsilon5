@@ -1,16 +1,24 @@
 #include <qmath.h>
+#include <QDebug>
 #include "player.h"
 #include "bullet.h"
-#include <QDebug>
+#include "defines.h"
 
 const size_t HP_LOST = 45;
 
-TPlayer::TPlayer(size_t id, TMaps *maps, QObject *parent)
+TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
     : TDynamicObject(0, 0, 0, 0, 0, parent)
     , Id(id)
     , Maps(maps)
     , HP(100)
+    , Team(team)
 {
+    b2Vec2 pos;
+    QPoint respPos = Maps->GetSpawnPosition(team);
+    pos.x = OBJECT_SCALE_DOWN * respPos.x();
+    pos.y = OBJECT_SCALE_DOWN * respPos.y();
+    Body->SetTransform(pos, Body->GetAngle());
+
     b2CircleShape circle;
     circle.m_p.Set(0, 0);
     circle.m_radius = 1.5f;

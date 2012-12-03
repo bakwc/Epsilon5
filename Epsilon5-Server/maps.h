@@ -43,10 +43,10 @@ public:
     QString GetCurrentMap();
     QSize GetMapSize();
     void SerialiseRespPoints(Epsilon5::World& world);
-
     inline QVector<TRespPoint>& GetRespPoints() {
         return RespPoints;
     }
+    QPoint GetSpawnPosition(ETeam team);
 signals:
     void SpawnObject(size_t id, int x, int y, double angle);
     void SpawnBorders(const QSize& MapSize);

@@ -62,7 +62,7 @@ void TServer::DataReceived() {
         ipIt.value()++;
 
         TClient* client = new TClient(sender, senderPort, id, this);
-        connect(client, SIGNAL(SpawnPlayer(size_t)), this, SIGNAL(NewPlayer(size_t)));
+        connect(client, SIGNAL(SpawnPlayer(size_t, ETeam)), this, SIGNAL(NewPlayer(size_t, ETeam)));
         connect(client, SIGNAL(PlayerConnected()), Application()->GetWorld(), SLOT(NeedFullPacket()));
         clientIt = Clients.insert(id, client);
     }

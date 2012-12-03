@@ -46,7 +46,8 @@ HEADERS += \
     maps.h \
     objects.h \
     staticobject.h \
-    ../utils/ucast.h
+    ../utils/ucast.h \
+    defines.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 

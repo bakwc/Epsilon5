@@ -78,6 +78,8 @@ void TClient::OnDataReceived(const QByteArray &data)
                     qDebug() << "Player " << NickName << "("
                              << Addr.toString() << ") connected";
 
+                    Team = rand()%2 == 1 ? T_One : T_Second; // throw to random team
+
                     emit PlayerConnected();
                     ReSpawn(true);
 
@@ -139,7 +141,7 @@ void TClient::SendPlayerInfo() {
 
 void TClient::ReSpawn(bool newConnected) {
     if (PlayerStatus == PS_Dead || newConnected) {
-        emit SpawnPlayer(Id);
+        emit SpawnPlayer(Id, Team);
         TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
         player->SetNickname(NickName);
         connect(this, SIGNAL(ControlReceived(Epsilon5::Control)),

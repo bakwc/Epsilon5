@@ -345,7 +345,32 @@ void TMainDisplay::drawWorld(QPainter &painter)
 
             painter.drawImage(widgetCenter.x() + cx - rimg.width() / 2,
                               widgetCenter.y() + cy - rimg.height() / 2, rimg);
-            painter.drawEllipse(widgetCenter.x() + cx, widgetCenter.y() + cy, 2, 2);
+        }
+
+        if (CurrentWorld->resp_points_size() > 0) {
+            RespPoints.clear();
+            for (int i = 0; i < CurrentWorld->resp_points_size(); i++) {
+                RespPoint pos;
+                pos.X = CurrentWorld->resp_points(i).x();
+                pos.Y = CurrentWorld->resp_points(i).y();
+                pos.Team = (ETeam)(CurrentWorld->resp_points(i).team());
+                RespPoints.push_back(pos);
+            }
+        }
+
+
+        for (int i = 0; i < RespPoints.size(); i++) {
+            if (RespPoints[i].Team == T_One) {
+                img = &Images->GetImage("flag_t1");
+            } else if (RespPoints[i].Team == T_Second) {
+                img = &Images->GetImage("flag_t2");
+            } else {
+                img = &Images->GetImage("flag_tn");
+            }
+            int cx = GetCorrect(playerX, RespPoints[i].X);
+            int cy = GetCorrect(playerY, RespPoints[i].Y);
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
         }
 
         // Minimap drawing

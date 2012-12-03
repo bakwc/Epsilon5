@@ -14,6 +14,8 @@ message Player {
     optional string name = 7;
 
     required uint32 hp = 8;
+
+    optional bool team = 9;
 }
 
 message Bullet {

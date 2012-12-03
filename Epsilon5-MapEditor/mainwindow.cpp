@@ -5,9 +5,13 @@
 #include "mainwindow.h"
 #include "openmapdialog.h"
 #include "ui/configurationdialog.hpp"
+#include "ui/objectseditorform.hpp"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
-    : QMainWindow(parent) {
+    : QMainWindow(parent)
+    , mObjectsEditorAction(new QAction(this))
+    , mMapsEditorAction(new QAction(this))
+    , mObjectsEditorWidget(new TObjectsEditorForm(this)) {
     // Relocate window
     resize(Global::Settings()->GetWindowSize());
     move(Global::Settings()->GetWindowPos());
@@ -24,12 +28,23 @@ TMainWindow::TMainWindow(QWidget* parent)
     QMenu* toolsMenu = new QMenu(tr("Tools"), menuBar);
     toolsMenu->addAction(tr("Options..."), this, SLOT(optionsAction()));
     toolsMenu->addSeparator();
-    toolsMenu->addAction(tr("Objects Editor"), this, SLOT(objectsEditorAction()));
-    toolsMenu->addAction(tr("Maps Editor"), this, SLOT(mapsEditorAction()));
+    mObjectsEditorAction = toolsMenu->addAction(tr("Objects Editor"),
+                this, SLOT(objectsEditorAction()));
+    mMapsEditorAction = toolsMenu->addAction(tr("Maps Editor"),
+                this, SLOT(mapsEditorAction()));
+
+    mMapsEditorAction->setCheckable(true);
+    mObjectsEditorAction->setCheckable(true);
+
+    // Activate default widget
+    setCentralWidget(mObjectsEditorWidget);
+    mObjectsEditorAction->setChecked(true);
 
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(toolsMenu);
     this->setMenuBar(menuBar);
+
+    setMinimumSize(600, 400);
 }
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow() {
@@ -88,11 +103,14 @@ void TMainWindow::optionsAction()
 //------------------------------------------------------------------------------
 void TMainWindow::objectsEditorAction()
 {
-
+    setCentralWidget(mObjectsEditorWidget);
+    mObjectsEditorAction->setChecked(true);
+    mMapsEditorAction->setChecked(false);
 }
 //------------------------------------------------------------------------------
 void TMainWindow::mapsEditorAction()
 {
-
+    mObjectsEditorAction->setChecked(false);
+    mMapsEditorAction->setChecked(true);
 }
 //------------------------------------------------------------------------------

@@ -26,5 +26,9 @@ private:
 private:
     TMapCreator* mMapPainter;
     QAction* mSaveAtc;
+    QAction* mObjectsEditorAction;
+    QAction* mMapsEditorAction;
+    QWidget* mObjectsEditorWidget;
+    QWidget* mMapsEditorWidget;
 };
 //------------------------------------------------------------------------------

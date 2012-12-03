@@ -245,8 +245,9 @@ void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
     container.insert(container.end(), object);
 }
 
-//   Collisions processing
-// All bodies should have user data of type TObjectInfo with object information (type, pointer to object)
+// Collisions processing
+// All bodies should have user data of type TObjectInfo
+// with object information (type, pointer to object)
 void TWorld::BeginContact(b2Contact* contact) {
     void* obj1Data = contact->GetFixtureA()->GetBody()->GetUserData();
     void* obj2Data = contact->GetFixtureB()->GetBody()->GetUserData();

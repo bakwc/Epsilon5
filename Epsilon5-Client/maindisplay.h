@@ -3,6 +3,7 @@
 #include <QImage>
 #include <QQueue>
 #include <QHash>
+#include <QVector>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "imagestorage.h"
 #include "map.h"
@@ -10,6 +11,18 @@
 #include "../utils/ufullscreenwrapper.h"
 
 class TApplication;
+
+enum ETeam {
+    T_One,
+    T_Second,
+    T_Neutral
+};
+
+struct RespPoint {
+    int X;
+    int Y;
+    ETeam Team;
+};
 
 class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper
 {
@@ -33,7 +46,9 @@ private:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 
+    void drawText(QPainter& painter, const QPoint& pos, const QString& text);
     void drawFps(QPainter& painter);
+    void drawPing(QPainter& painter);
     void drawWorld(QPainter& painter);
 
 private:
@@ -46,4 +61,5 @@ private:
     bool IsFullScreenWindowed;
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
+    QVector<RespPoint> RespPoints;
 };

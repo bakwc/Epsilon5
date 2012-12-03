@@ -1,4 +1,5 @@
 #include <QtEndian>
+#include "../utils/uexception.h"
 #include "application.h"
 #include "client.h"
 #include "server.h"
@@ -12,13 +13,13 @@ TServer::TServer(QObject *parent)
     connect(Server, SIGNAL(readyRead()), SLOT(DataReceived()));
 }
 
-bool TServer::Start() {
+void TServer::Start() {
     if (Server->bind(QHostAddress("0.0.0.0"), 14567))
     {
         this->startTimer(20); // TODO: Remove MN
-        return true;
+    } else {
+        throw UException("Can't listen to port 14567");
     }
-    return false;
 }
 
 void TServer::DataReceived() {
@@ -61,7 +62,7 @@ void TServer::DataReceived() {
         ipIt.value()++;
 
         TClient* client = new TClient(sender, senderPort, id, this);
-        connect(client, SIGNAL(SpawnPlayer(size_t)), this, SIGNAL(NewPlayer(size_t)));
+        connect(client, SIGNAL(SpawnPlayer(size_t, ETeam)), this, SIGNAL(NewPlayer(size_t, ETeam)));
         connect(client, SIGNAL(PlayerConnected()), Application()->GetWorld(), SLOT(NeedFullPacket()));
         clientIt = Clients.insert(id, client);
     }
@@ -115,7 +116,6 @@ void TServer::Send(const QHostAddress &ip, quint16 port,
 {
     QByteArray sendPacket;
     QByteArray packedData = qCompress(originData);
-    QByteArray test = qUncompress(packedData);
     quint16 originDataSize = qToBigEndian<quint16>(originData.size());
     quint16 packedDataSize = qToBigEndian<quint16>(packedData.size());
     sendPacket += QChar(packetType);

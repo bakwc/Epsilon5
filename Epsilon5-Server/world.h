@@ -34,7 +34,7 @@ public:
     TPlayer* GetPlayer(size_t id);
     QByteArray Serialize();
 public slots:
-    void PlayerSpawn(size_t id);
+    void PlayerSpawn(size_t id, ETeam team);
     void PlayerKill(size_t id);
     void SpawnBullet(TBullet *bullet);
     void SpawnObject(size_t id, int x, int y, double angle);

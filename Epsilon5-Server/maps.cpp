@@ -146,3 +146,26 @@ void TMaps::SerialiseRespPoints(Epsilon5::World& world) {
         point->set_team(i->Team);
     }
 }
+
+QPoint TMaps::GetSpawnPosition(ETeam team) {
+    QVector<TRespPoint*> matchPoints;
+    for (auto i = RespPoints.begin(); i != RespPoints.end(); i++) {
+        if (i->Team == team) {
+            matchPoints.push_back(&(*i));
+        }
+    }
+    if (matchPoints.size() == 0) {
+        throw UException("No resp points available!");
+    }
+    int n = rand()%(matchPoints.size());
+
+    int x, y, sr;
+    x = matchPoints[n]->X;
+    y = matchPoints[n]->Y;
+    sr = matchPoints[n]->SpawnRadius;
+
+    QPoint res;
+    res.setX(x - sr / 2 + rand() % sr);
+    res.setY(y - sr / 2 + rand() % sr);
+    return res;
+}

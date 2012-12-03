@@ -41,7 +41,6 @@ UFromStringFormat USettings::GetParameter(const QString& parameter) {
     if (Parameters.find(parameter) == Parameters.end()) {
         throw UException("Parameter not found in config");
     }
-    qDebug() << Parameters[parameter];
     return FromString(Parameters[parameter]);
 }
 

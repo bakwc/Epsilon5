@@ -84,6 +84,8 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     drawWorld(painter);
     drawFps(painter);
+    drawPing(painter);
+
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -205,14 +207,26 @@ void TMainDisplay::drawFps(QPainter& painter)
     }
 
     const QPen penOld = painter.pen();
-    const QString& fpsString = QString("FPS: %1").arg(fps);
-    painter.setPen(Qt::black);
-    painter.drawText(1, 11, fpsString);
-    painter.setPen(Qt::darkGray);
-    painter.drawText(0, 10, fpsString);
-    painter.setPen(penOld);
+    drawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps));
 
     ++frames;
+}
+
+void TMainDisplay::drawPing(QPainter& painter)
+{
+    qint64 Ping = Application->GetNetwork()->GetPing();
+    drawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping));
+}
+
+void TMainDisplay::drawText(QPainter &painter, const QPoint& pos, const QString& text)
+{
+    const int FONT_SIZE_PT = 10;
+    // Helvetica font present on all Systems
+    painter.setFont(QFont("Helvetica", FONT_SIZE_PT));
+    painter.setPen(Qt::black);
+    painter.drawText(pos.x() + 1, pos.y() + 1, text);
+    painter.setPen(Qt::darkGray);
+    painter.drawText(pos.x(), pos.y(), text);
 }
 
 void TMainDisplay::drawWorld(QPainter &painter)
@@ -226,7 +240,6 @@ void TMainDisplay::drawWorld(QPainter &painter)
         const int nickMaxWidth = 200;
         int playerX = 0;
         int playerY = 0;
-        bool playerFound = false;
 
         size_t playerId = Application->GetNetwork()->GetId();
 
@@ -235,10 +248,8 @@ void TMainDisplay::drawWorld(QPainter &painter)
             if ((size_t)player.id() == playerId) {
                 playerX = player.x();
                 playerY = player.y();
-                playerFound = true;
             }
         }
-
 
         QPoint widgetCenter(width() / 2, height() / 2);
         Map->DrawFrame(playerX, playerY, size(), painter);
@@ -331,11 +342,36 @@ void TMainDisplay::drawWorld(QPainter &painter)
 
             painter.drawImage(widgetCenter.x() + cx - rimg.width() / 2,
                               widgetCenter.y() + cy - rimg.height() / 2, rimg);
-            painter.drawEllipse(widgetCenter.x() + cx, widgetCenter.y() + cy, 2, 2);
+        }
+
+        if (CurrentWorld->resp_points_size() > 0) {
+            RespPoints.clear();
+            for (int i = 0; i < CurrentWorld->resp_points_size(); i++) {
+                RespPoint pos;
+                pos.X = CurrentWorld->resp_points(i).x();
+                pos.Y = CurrentWorld->resp_points(i).y();
+                pos.Team = (ETeam)(CurrentWorld->resp_points(i).team());
+                RespPoints.push_back(pos);
+            }
+        }
+
+
+        for (int i = 0; i < RespPoints.size(); i++) {
+            if (RespPoints[i].Team == T_One) {
+                img = &Images->GetImage("flag_t1");
+            } else if (RespPoints[i].Team == T_Second) {
+                img = &Images->GetImage("flag_t2");
+            } else {
+                img = &Images->GetImage("flag_tn");
+            }
+            int cx = GetCorrect(playerX, RespPoints[i].X);
+            int cy = GetCorrect(playerY, RespPoints[i].Y);
+            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
+                              widgetCenter.y() + cy - img->height() / 2, *img);
         }
 
         // Minimap drawing
-        painter.drawImage(10, 10, miniMapImg);
+        painter.drawImage(10, 30, miniMapImg);
 
         cursorPos = this->mapFromGlobal(QCursor::pos());
         double angle = getAngle(cursorPos - gamerPos);

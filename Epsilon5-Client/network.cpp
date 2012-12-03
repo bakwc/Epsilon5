@@ -9,6 +9,8 @@ TNetwork::TNetwork(QObject *parent)
     : QObject(parent)
     , Socket(new QUdpSocket(this))
     , Id(0)
+    , Ping(0)
+    , LastTime(QDateTime::currentMSecsSinceEpoch())
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
     connect(Socket, SIGNAL(error(QAbstractSocket::SocketError)),
@@ -22,6 +24,9 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
+    qint64 time = QDateTime::currentMSecsSinceEpoch();
+    Ping = time - LastTime;
+    LastTime = time;
     QByteArray receivedPacket = Socket->readAll();
     EPacketType packetType;
     quint16 packedDataSize;
@@ -133,12 +138,15 @@ void TNetwork::SendPlayerAuth() {
 }
 
 // Send packet to the server in form:
-// [PACKET_TYPE] [ORIGIN_DATA_SIZE] [DATA]
+// [PACKET_TYPE] [ORIGIN_DATA_SIZE] [PACKED_DATA_SIZE] [DATA]
 void TNetwork::Send(const QByteArray& originData, EPacketType packetType) {
     QByteArray sendPacket;
+    QByteArray packedData = qCompress(originData);
     quint16 originDataSize = qToBigEndian<quint16>(originData.size());
+    quint16 packedDataSize = qToBigEndian<quint16>(packedData.size());
     sendPacket += QChar(packetType);
     sendPacket += QByteArray((const char*) &originDataSize, sizeof(quint16));
-    sendPacket += originData;
+    sendPacket += QByteArray((const char*) &packedDataSize, sizeof(quint16));
+    sendPacket += packedData;
     Socket->write(sendPacket);
 }

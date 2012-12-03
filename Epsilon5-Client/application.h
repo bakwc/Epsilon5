@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QApplication>
+#include <QDateTime>
 #include "maindisplay.h"
 #include "network.h"
 #include "settings.h"

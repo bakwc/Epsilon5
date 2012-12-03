@@ -11,7 +11,7 @@ class TPlayer : public TDynamicObject
 {
     Q_OBJECT
 public:
-    TPlayer(size_t id, TMaps* maps, QObject *parent = 0);
+    TPlayer(size_t id, ETeam team, TMaps* maps, QObject *parent = 0);
     inline size_t GetId() { return Id; }
     inline size_t GetHP() { return HP; }
     void Hit();
@@ -20,7 +20,9 @@ public:
     inline QString GetNickname() {
         return NickName;
     }
-
+    inline ETeam GetTeam() {
+        return Team;
+    }
 signals:
     void SpawnBullet(TBullet*);
     void Death(size_t id);
@@ -34,4 +36,5 @@ private:
     TMaps* Maps;
     size_t HP;
     TObjectInfo CollisionInfo;
+    ETeam Team;
 };

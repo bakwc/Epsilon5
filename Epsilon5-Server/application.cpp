@@ -1,3 +1,5 @@
+#include <ctime>
+#include "../utils/uexception.h"
 #include "application.h"
 
 TApplication::TApplication(int& argc, char *argv[])
@@ -7,8 +9,8 @@ TApplication::TApplication(int& argc, char *argv[])
     , Objects(new TObjects(this))
     , Maps(new TMaps(this))
 {
-    connect(Server, SIGNAL(NewPlayer(size_t)),
-            World, SLOT(PlayerSpawn(size_t)));
+    connect(Server, SIGNAL(NewPlayer(size_t, ETeam)),
+            World, SLOT(PlayerSpawn(size_t, ETeam)));
 
     connect(Server, SIGNAL(PlayerDisconnected(size_t)),
             World, SLOT(PlayerKill(size_t)));
@@ -32,13 +34,11 @@ TApplication::TApplication(int& argc, char *argv[])
             World, SLOT(NeedFullPacket()));
 }
 
-bool TApplication::Init() {
+void TApplication::Init() {
+    srand(time(0));
     Objects->LoadObjects("objects/objects.txt");
     Maps->LoadMaplist("maplist.txt");
     Maps->LoadNextMap();
-    if (Server->Start()) {
-        World->Start();
-        return true;
-    }
-    return false;
+    Server->Start();
+    World->Start();
 }

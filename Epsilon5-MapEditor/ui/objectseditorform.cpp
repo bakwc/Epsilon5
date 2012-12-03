@@ -1,4 +1,4 @@
-
+// objectseditorform.cpp
 #include <QPixmap>
 #include <QPainter>
 #include <QImage>
@@ -34,6 +34,14 @@ TObjectsEditorForm::TObjectsEditorForm(QWidget *parent) :
 
     ui->dataListWidget->setGridSize(QSize(200,100));
     ui->dataListWidget->setIconSize(ui->dataListWidget->gridSize());
+    ui->infoLabel->clear();
+
+    connect( ui->dataListWidget, SIGNAL(clicked(QModelIndex)),
+                this, SLOT(showImageInfo(QModelIndex)));
+    connect( ui->dataListWidget, SIGNAL(doubleClicked(QModelIndex)),
+                this, SLOT(addButtonAction(QModelIndex)));
+
+    ui->infoBox->setLayout(ui->verticalLayout_2);
 
     createDataList();
 }
@@ -45,14 +53,14 @@ TObjectsEditorForm::~TObjectsEditorForm()
 //------------------------------------------------------------------------------
 void TObjectsEditorForm::createDataList()
 {
-    mCache.clear();
+    mDataCache.clear();
     QDir dir(Global::Settings()->GetDataPath());
     QFileInfoList fInfo = dir.entryInfoList();
     for( auto it = fInfo.begin(); it != fInfo.end(); ++it )
     {
         if( !(*it).isFile() )
             continue;
-        mCache.append((*it).absoluteFilePath(), ui->dataListWidget->iconSize());
+        mDataCache.append((*it).absoluteFilePath(), ui->dataListWidget->iconSize());
     }
 }
 //------------------------------------------------------------------------------
@@ -63,9 +71,9 @@ void TObjectsEditorForm::updateDataList()
     TImageCacheItem item;
     QString strId;
     QListWidgetItem *it;
-    for( int i = 0; i < mCache.count(); ++i )
+    for( int i = 0; i < mDataCache.count(); ++i )
     {
-        item = mCache[i];
+        item = mDataCache[i];
         strId = QString().number(item.id);
         it = new QListWidgetItem(item.icon, strId);
         ui->dataListWidget->addItem(it);
@@ -108,5 +116,30 @@ void TObjectsEditorForm::showDataListMenu(QPoint pos)
         createDataList();
         updateDataList();
     }
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::showImageInfo(QModelIndex index)
+{
+    if( !index.isValid() )
+        return;
+
+    const TImageCacheItem& item = mDataCache[index.data().toUInt()];
+    QImage img(item.fileName);
+    ui->infoLabel->setText("<b>" + tr("Filename:") + "</b>&nbsp;"
+                + item.fileName + "<br/><b>" + tr("Image size:") + "</b>&nbsp;"
+                + QString().number(img.width()) + "x"
+                + QString().number(img.height()));
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::on_addButton_clicked()
+{
+    addButtonAction(ui->dataListWidget->currentIndex());
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::addButtonAction(QModelIndex index)
+{
+    const TImageCacheItem& item = mDataCache[index.data().toUInt()];
+    QListWidgetItem *it = new QListWidgetItem(item.icon, item.name);
+    ui->objectsListWidget->addItem(it);
 }
 //------------------------------------------------------------------------------

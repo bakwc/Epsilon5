@@ -10,6 +10,8 @@ struct TImageCacheItem
     QString name;
     QIcon icon;
     quint32 id;
+    quint32 sourceWidth;
+    quint32 sourceHeight;
 };
 //------------------------------------------------------------------------------
 class TImageCache : public QObject

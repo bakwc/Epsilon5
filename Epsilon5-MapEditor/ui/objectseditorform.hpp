@@ -1,19 +1,19 @@
-#ifndef OBJECTSEDITORFORM_HPP
-#define OBJECTSEDITORFORM_HPP
+#pragma once
 
 #include <QWidget>
+#include <QModelIndex>
 #include "imagecache.hpp"
-
+#include "containers/object.hpp"
+//------------------------------------------------------------------------------
 class QMenu;
-
+//------------------------------------------------------------------------------
 namespace Ui {
 class TObjectsEditorForm;
 }
-
+//------------------------------------------------------------------------------
 class TObjectsEditorForm : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit TObjectsEditorForm(QWidget *parent = 0);
     ~TObjectsEditorForm();
@@ -28,11 +28,14 @@ private slots:
     void clearAction();
     void showObjectsListMenu(QPoint pos);
     void showDataListMenu(QPoint pos);
+    void showImageInfo(QModelIndex index);
+    void on_addButton_clicked();
+    void addButtonAction(QModelIndex index);
 
 private:
     Ui::TObjectsEditorForm *ui;
     QMenu* mObjectsMenu;
-    TImageCache mCache;
+    TImageCache mDataCache;
+    TObjectContainer mObjects;
 };
-
-#endif // OBJECTSEDITORFORM_HPP
+//------------------------------------------------------------------------------

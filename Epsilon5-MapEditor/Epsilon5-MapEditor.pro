@@ -20,7 +20,8 @@ SOURCES += \
     application.cpp \
     ui/configurationdialog.cpp \
     ui/objectseditorform.cpp \
-    imagecache.cpp
+    imagecache.cpp \
+    containers/object.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -39,7 +40,8 @@ HEADERS += \
     global.h \
     ui/configurationdialog.hpp \
     ui/objectseditorform.hpp \
-    imagecache.hpp
+    imagecache.hpp \
+    containers/object.hpp
 
 FORMS += \
 #    createmapdialog.ui \

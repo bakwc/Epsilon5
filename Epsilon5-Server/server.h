@@ -13,7 +13,7 @@ class TServer : public QObject
     Q_OBJECT
 public:
     TServer(QObject *parent = 0);
-    bool Start();
+    void Start();
     void Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType);
     TApplication* Application();
     void RespawnDeadClients();

@@ -37,7 +37,7 @@ TObjectsEditorForm::TObjectsEditorForm(QWidget *parent) :
 
     createDataList();
 }
-
+//------------------------------------------------------------------------------
 TObjectsEditorForm::~TObjectsEditorForm()
 {
     delete ui;

@@ -10,11 +10,10 @@
 #include "map.h"
 
 
-TMap::TMap(QObject *parent)
+TMap::TMap(QObject* parent)
     : QObject(parent)
     , Background(new QImage)
-    , Loaded(false)
-{
+    , Loaded(false) {
 }
 
 void TMap::LoadMap(QString map) {
@@ -22,10 +21,10 @@ void TMap::LoadMap(QString map) {
     Loaded = true;
 }
 
-TMap::~TMap()
-{
-    if(Background)
+TMap::~TMap() {
+    if (Background) {
         delete Background;
+    }
 }
 
 void TMap::DrawFrame(int x, int y, const QSize& frameSize, QPainter& painter) {
@@ -38,6 +37,5 @@ void TMap::DrawFrame(int x, int y, const QSize& frameSize, QPainter& painter) {
     int newPekaPosY = centerY + y;
     int cutX = newPekaPosX - frameSize.width() / 2;
     int cutY = newPekaPosY - frameSize.height() / 2;
-
     painter.drawImage(-cutX, -cutY, *Background);
 }

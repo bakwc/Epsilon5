@@ -1,9 +1,8 @@
 #include "../utils/uexception.h"
 #include "imagestorage.h"
 
-TImageStorage::TImageStorage(QObject *parent) :
-    QObject(parent)
-{
+TImageStorage::TImageStorage(QObject* parent) :
+    QObject(parent) {
 }
 
 void TImageStorage::LoadAll() {
@@ -20,9 +19,8 @@ const QImage& TImageStorage::GetImage(const QString& imageName) {
     return *it.value();
 }
 
-void TImageStorage::LoadImage(const QString& imageName, const QString& filename)
-{
-    QImage *image = new QImage(filename);
+void TImageStorage::LoadImage(const QString& imageName, const QString& filename) {
+    QImage* image = new QImage(filename);
     Images.insert(imageName, image);
 }
 

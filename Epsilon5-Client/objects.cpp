@@ -4,12 +4,11 @@
 #include "../utils/uexception.h"
 #include "objects.h"
 
-TObjects::TObjects(QObject *parent)
-    : QObject(parent)
-{
+TObjects::TObjects(QObject* parent)
+    : QObject(parent) {
 }
 
-void TObjects::LoadObjects(const QString &fileName) {
+void TObjects::LoadObjects(const QString& fileName) {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         throw UException("Error opening file " + fileName);
@@ -26,14 +25,12 @@ void TObjects::LoadObjects(const QString &fileName) {
             throw UException("Error loading objects from " + fileName);
         }
         QString objName = objParams[4];
-
         bool ok = true;
         size_t id = objParams[0].toInt(&ok);
         if (!ok) {
             throw UException("Error loading objects from " + fileName);
         }
-
-        QImage *image = new QImage("objects/" + objName + ".png");
+        QImage* image = new QImage("objects/" + objName + ".png");
         Images.insert(objName, image);
         ImagesById.insert(id, image);
     }

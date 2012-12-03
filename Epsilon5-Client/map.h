@@ -4,13 +4,12 @@
 #include <QImage>
 #include <QPainter>
 
-class TMap : public QObject
-{
+class TMap : public QObject {
     Q_OBJECT
 public:
-    TMap(QObject *parent = 0);
+    TMap(QObject* parent = 0);
     ~TMap();
-    void DrawFrame(int x, int y, const QSize& frameSize, QPainter &painter);
+    void DrawFrame(int x, int y, const QSize& frameSize, QPainter& painter);
 public slots:
     void LoadMap(QString map);
 private:

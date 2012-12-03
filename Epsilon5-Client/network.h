@@ -7,14 +7,15 @@
 
 class TApplication;
 
-class TNetwork : public QObject
-{
+class TNetwork : public QObject {
     Q_OBJECT
 public:
-    explicit TNetwork(QObject *parent = 0);
+    explicit TNetwork(QObject* parent = 0);
     const Epsilon5::World& GetWorld() const;
     void Start();
-    inline size_t GetId() { return Id; }
+    inline size_t GetId() {
+        return Id;
+    }
 signals:
     void WorldReceived();
     void LoadMap(QString map);

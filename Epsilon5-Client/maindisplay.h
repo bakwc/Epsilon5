@@ -11,14 +11,15 @@
 
 class TApplication;
 
-class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper
-{
+class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper {
     Q_OBJECT
 public:
-    explicit TMainDisplay(TApplication* application, QGLWidget *parent = 0);
+    explicit TMainDisplay(TApplication* application, QGLWidget* parent = 0);
     void Init();
     ~TMainDisplay();
-    inline const Epsilon5::Control& GetControl() { return Control; }
+    inline const Epsilon5::Control& GetControl() {
+        return Control;
+    }
 
 public slots:
     void RedrawWorld();
@@ -26,12 +27,12 @@ public slots:
     void toggleFullscreenWindowed();
 
 private:
-    void paintEvent(QPaintEvent *);
-    void timerEvent(QTimerEvent *);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent*);
+    void timerEvent(QTimerEvent*);
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
 
     void drawFps(QPainter& painter);
     void drawWorld(QPainter& painter);

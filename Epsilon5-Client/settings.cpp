@@ -4,17 +4,16 @@
 
 #include "settings.h"
 
-TSettings::TSettings(QObject *parent)
-    : USettings(parent)
-{
+TSettings::TSettings(QObject* parent)
+    : USettings(parent) {
     // TODO: Rewrite this function
     CheckIniFile(); //If file doesn't exist, create it with default settings
     Load("settings.ini");
 }
 
-void TSettings::CheckIniFile(){
+void TSettings::CheckIniFile() {
     QFile IniFile("settings.ini");
-    if (!IniFile.exists()){
+    if (!IniFile.exists()) {
         if (IniFile.open(QIODevice::WriteOnly)) {
             QTextStream stream(&IniFile);
             stream << "nickname=bak\r" << endl;

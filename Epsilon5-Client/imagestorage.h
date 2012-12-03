@@ -4,11 +4,10 @@
 #include <QImage>
 #include <QHash>
 
-class TImageStorage : public QObject
-{
+class TImageStorage : public QObject {
     Q_OBJECT
 public:
-    TImageStorage(QObject *parent = 0);
+    TImageStorage(QObject* parent = 0);
     ~TImageStorage();
     void LoadAll();
     const QImage& GetImage(const QString& imageName);

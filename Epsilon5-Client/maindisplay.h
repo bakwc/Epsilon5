@@ -33,6 +33,7 @@ private:
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 
+    void drawText(QPainter& painter, const QPoint& pos, const QString& text);
     void drawFps(QPainter& painter);
     void drawPing(QPainter& painter);
     void drawWorld(QPainter& painter);

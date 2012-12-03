@@ -207,31 +207,27 @@ void TMainDisplay::drawFps(QPainter& painter)
     }
 
     const QPen penOld = painter.pen();
-    const QString& fpsString = QString("Fps: %1").arg(fps);
-    painter.setFont(QFont("Helvetica", 10)); // Helvetica font present on all Systems
-    painter.setPen(Qt::black);
-    painter.drawText(1, 11, fpsString);
-    painter.setPen(Qt::darkGray);
-    painter.drawText(0, 10, fpsString);
-    painter.setPen(penOld);
+    drawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps));
 
     ++frames;
 }
 
 void TMainDisplay::drawPing(QPainter& painter)
 {
-
     qint64 Ping = Application->GetNetwork()->GetPing();
-    const QString& pingString = QString("Ping: %1").arg(Ping);
-    painter.setFont(QFont("Helvetica", 10)); // Helvetica font present on all Systems
-    painter.setPen(Qt::black);
-    painter.drawText(1, 25, pingString);
-    painter.setPen(Qt::darkGray);
-    painter.drawText(0, 24, pingString);
-
+    drawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping));
 }
 
-
+void TMainDisplay::drawText(QPainter &painter, const QPoint& pos, const QString& text)
+{
+    const int FONT_SIZE_PT = 10;
+    // Helvetica font present on all Systems
+    painter.setFont(QFont("Helvetica", FONT_SIZE_PT));
+    painter.setPen(Qt::black);
+    painter.drawText(pos.x() + 1, pos.y() + 1, text);
+    painter.setPen(Qt::darkGray);
+    painter.drawText(pos.x(), pos.y(), text);
+}
 
 void TMainDisplay::drawWorld(QPainter &painter)
 {
@@ -353,7 +349,7 @@ void TMainDisplay::drawWorld(QPainter &painter)
         }
 
         // Minimap drawing
-        painter.drawImage(10, 10, miniMapImg);
+        painter.drawImage(10, 30, miniMapImg);
 
         cursorPos = this->mapFromGlobal(QCursor::pos());
         double angle = getAngle(cursorPos - gamerPos);

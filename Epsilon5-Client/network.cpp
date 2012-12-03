@@ -9,6 +9,8 @@ TNetwork::TNetwork(QObject *parent)
     : QObject(parent)
     , Socket(new QUdpSocket(this))
     , Id(0)
+    , Ping(0)
+    , LastTime(QDateTime::currentMSecsSinceEpoch())
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
     connect(Socket, SIGNAL(error(QAbstractSocket::SocketError)),

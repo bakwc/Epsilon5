@@ -25,20 +25,27 @@ size_t TClient::GetId() {
 void TClient::OnDataReceived(const QByteArray &data)
 {
     EPacketType packetType;
+    quint16 packedDataSize;
     quint16 originDataSize;
     QByteArray content;
     QByteArray receivedPacket = data;
 
     const int midSize = sizeof(quint16);
     const int posOrigin = sizeof(char);
-    const int posContent = posOrigin + midSize;
+    const int posPacked = posOrigin + midSize;
+    const int posContent = posPacked + midSize;
 
     try {
         while (receivedPacket.size() > 0) {
             packetType = (EPacketType)(char)(receivedPacket[0]);
             originDataSize = qFromBigEndian<quint16>(
                 (const uchar*)receivedPacket.mid(posOrigin, midSize).constData());
-            content = receivedPacket.mid(posContent, originDataSize);
+            packedDataSize = qFromBigEndian<quint16>(
+                (const uchar*)receivedPacket.mid(posPacked, midSize).constData());
+            content = qUncompress(receivedPacket.mid(posContent, packedDataSize));
+
+            if( content.isEmpty() && (originDataSize || packedDataSize) )
+                throw UException("Wrong packet: cannot unpack data");
 
             // Retrieve another packet from current.
             // We can receive more than one packet at once

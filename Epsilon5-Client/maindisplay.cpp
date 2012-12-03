@@ -240,7 +240,6 @@ void TMainDisplay::drawWorld(QPainter &painter)
         const int nickMaxWidth = 200;
         int playerX = 0;
         int playerY = 0;
-        bool playerFound = false;
 
         size_t playerId = Application->GetNetwork()->GetId();
 
@@ -249,10 +248,8 @@ void TMainDisplay::drawWorld(QPainter &painter)
             if ((size_t)player.id() == playerId) {
                 playerX = player.x();
                 playerY = player.y();
-                playerFound = true;
             }
         }
-
 
         QPoint widgetCenter(width() / 2, height() / 2);
         Map->DrawFrame(playerX, playerY, size(), painter);

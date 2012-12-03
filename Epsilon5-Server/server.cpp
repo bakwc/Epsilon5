@@ -1,4 +1,5 @@
 #include <QtEndian>
+#include "../utils/uexception.h"
 #include "application.h"
 #include "client.h"
 #include "server.h"
@@ -12,13 +13,13 @@ TServer::TServer(QObject *parent)
     connect(Server, SIGNAL(readyRead()), SLOT(DataReceived()));
 }
 
-bool TServer::Start() {
+void TServer::Start() {
     if (Server->bind(QHostAddress("0.0.0.0"), 14567))
     {
         this->startTimer(20); // TODO: Remove MN
-        return true;
+    } else {
+        throw UException("Can't listen to port 14567");
     }
-    return false;
 }
 
 void TServer::DataReceived() {

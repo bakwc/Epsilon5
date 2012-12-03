@@ -1,3 +1,4 @@
+#include "../utils/uexception.h"
 #include "application.h"
 
 TApplication::TApplication(int& argc, char *argv[])
@@ -32,13 +33,10 @@ TApplication::TApplication(int& argc, char *argv[])
             World, SLOT(NeedFullPacket()));
 }
 
-bool TApplication::Init() {
+void TApplication::Init() {
     Objects->LoadObjects("objects/objects.txt");
     Maps->LoadMaplist("maplist.txt");
     Maps->LoadNextMap();
-    if (Server->Start()) {
-        World->Start();
-        return true;
-    }
-    return false;
+    Server->Start();
+    World->Start();
 }

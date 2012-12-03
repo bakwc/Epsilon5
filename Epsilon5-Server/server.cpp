@@ -115,7 +115,7 @@ void TServer::Send(const QHostAddress &ip, quint16 port,
     const QByteArray &originData, EPacketType packetType)
 {
     QByteArray sendPacket;
-    QByteArray packedData = qCompress(originData);
+    QByteArray packedData = qCompress(originData,3);
     quint16 originDataSize = qToBigEndian<quint16>(originData.size());
     quint16 packedDataSize = qToBigEndian<quint16>(packedData.size());
     sendPacket += QChar(packetType);

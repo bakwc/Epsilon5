@@ -51,6 +51,8 @@ private:
     void drawPing(QPainter& painter);
     void drawWorld(QPainter& painter);
 
+    void setMovementKeysState(bool state, const QKeyEvent* event);
+
 private:
     TApplication* Application;
     TImageStorage* Images;

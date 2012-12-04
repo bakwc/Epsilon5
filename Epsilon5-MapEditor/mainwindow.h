@@ -25,7 +25,7 @@ signals:
 
 private:
     void connectMapCreator();
-    void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent*);
 
 private:
     TMapCreator* mMapPainter;

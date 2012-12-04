@@ -122,7 +122,7 @@ void TMapCreator::init() {
     }
     // Create scene and setup
     mScene = new QGraphicsScene(0, 0, mSize.width(), mSize.height(), this);
-    mView = new TGraphicsView(mScene, mObjectsList, mPixmapsList,parentWidget());
+    mView = new TGraphicsView(mScene, mObjectsList, mPixmapsList, parentWidget());
     // Right panel for select created objects
     QListWidget* itemSelector = new QListWidget(this);
     itemSelector->insertItems(0, objNames);

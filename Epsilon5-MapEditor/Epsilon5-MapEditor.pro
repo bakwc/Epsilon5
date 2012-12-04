@@ -38,10 +38,10 @@ HEADERS += \
     application.h \
     settings.h \
     global.h \
-    ui/configurationdialog.hpp \
-    ui/objectseditorform.hpp \
-    imagecache.hpp \
-    containers/object.hpp \
+    ui/configurationdialog.h \
+    ui/objectseditorform.h \
+    imagecache.h \
+    containers/object.h \
     containers/object.h
 
 FORMS += \

@@ -2,7 +2,7 @@
 
 #include <QWidget>
 #include <QModelIndex>
-#include "imagecache.hpp"
+#include "imagecache.h"
 #include "containers/object.h"
 //------------------------------------------------------------------------------
 class QMenu;

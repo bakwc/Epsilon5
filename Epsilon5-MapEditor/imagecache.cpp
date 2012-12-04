@@ -1,29 +1,24 @@
 // imagecache.hpp
 #include <QFileInfo>
 #include <QPainter>
-#include "imagecache.hpp"
+#include "imagecache.h"
 //------------------------------------------------------------------------------
-TImageCache::TImageCache(QObject *parent)
-    : QObject(parent)
-{
+TImageCache::TImageCache(QObject* parent)
+    : QObject(parent) {
 }
 //------------------------------------------------------------------------------
-void TImageCache::append(const QString &fileName, const QSize& size)
-{
+void TImageCache::append(const QString& fileName, const QSize& size) {
     generateIcons(QStringList(fileName), size);
 }
 //------------------------------------------------------------------------------
-void TImageCache::clear()
-{
+void TImageCache::clear() {
     mImages.clear();
 }
 //------------------------------------------------------------------------------
-void TImageCache::generateIcons(const QStringList &fileNames, const QSize& size)
-{
+void TImageCache::generateIcons(const QStringList& fileNames, const QSize& size) {
     TImageCacheItem item;
     auto it = fileNames.constBegin();
-    for( ; it != fileNames.constEnd(); ++it )
-    {
+    for (; it != fileNames.constEnd(); ++it) {
         const QString& file = (*it);
         item.fileName = file.trimmed();
         item.icon = generatePreviewIcon(item.fileName, size);
@@ -33,27 +28,23 @@ void TImageCache::generateIcons(const QStringList &fileNames, const QSize& size)
     }
 }
 //------------------------------------------------------------------------------
-QIcon TImageCache::generatePreviewIcon(const QString& fileName, const QSize& size)
-{
+QIcon TImageCache::generatePreviewIcon(const QString& fileName, const QSize& size) {
     QImage img(fileName);
-    if( img.isNull() )
+    if (img.isNull()) {
         return nullIcon(size);
-
+    }
     return QIcon(QPixmap::fromImage(img.scaled(size)));
 }
 //------------------------------------------------------------------------------
-int TImageCache::count()
-{
+int TImageCache::count() {
     return mImages.count();
 }
 //------------------------------------------------------------------------------
-TImageCacheItem TImageCache::operator [](int id)
-{
+TImageCacheItem TImageCache::operator [](int id) {
     return mImages.value(id);
 }
 //------------------------------------------------------------------------------
-QIcon TImageCache::nullIcon(const QSize &size)
-{
+QIcon TImageCache::nullIcon(const QSize& size) {
     QPixmap px(size);
     QPainter p(&px);
     QRect rect(QPoint(0, 0), size);

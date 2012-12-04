@@ -4,8 +4,8 @@
 #include "global.h"
 #include "mainwindow.h"
 #include "openmapdialog.h"
-#include "ui/configurationdialog.hpp"
-#include "ui/objectseditorform.hpp"
+#include "ui/configurationdialog.h"
+#include "ui/objectseditorform.h"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -15,7 +15,6 @@ TMainWindow::TMainWindow(QWidget* parent)
     // Relocate window
     resize(Global::Settings()->GetWindowSize());
     move(Global::Settings()->GetWindowPos());
-
     QMenuBar* menuBar = new QMenuBar(this);
     // File menu
     QMenu* fileMenu = new QMenu(tr("File"), menuBar);
@@ -29,21 +28,17 @@ TMainWindow::TMainWindow(QWidget* parent)
     toolsMenu->addAction(tr("Options..."), this, SLOT(optionsAction()));
     toolsMenu->addSeparator();
     mObjectsEditorAction = toolsMenu->addAction(tr("Objects Editor"),
-                this, SLOT(objectsEditorAction()));
+            this, SLOT(objectsEditorAction()));
     mMapsEditorAction = toolsMenu->addAction(tr("Maps Editor"),
-                this, SLOT(mapsEditorAction()));
-
+            this, SLOT(mapsEditorAction()));
     mMapsEditorAction->setCheckable(true);
     mObjectsEditorAction->setCheckable(true);
-
     // Activate default widget
     setCentralWidget(mObjectsEditorWidget);
     mObjectsEditorAction->setChecked(true);
-
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(toolsMenu);
     this->setMenuBar(menuBar);
-
     setMinimumSize(600, 400);
     connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
 }
@@ -96,27 +91,23 @@ void TMainWindow::connectMapCreator() {
     this->setCentralWidget(mMapPainter);
 }
 //------------------------------------------------------------------------------
-void TMainWindow::optionsAction()
-{
+void TMainWindow::optionsAction() {
     TConfigurationDialog configDialog(this);
     configDialog.exec();
 }
 //------------------------------------------------------------------------------
-void TMainWindow::objectsEditorAction()
-{
+void TMainWindow::objectsEditorAction() {
     setCentralWidget(mObjectsEditorWidget);
     mObjectsEditorAction->setChecked(true);
     mMapsEditorAction->setChecked(false);
 }
 //------------------------------------------------------------------------------
-void TMainWindow::mapsEditorAction()
-{
+void TMainWindow::mapsEditorAction() {
     mObjectsEditorAction->setChecked(false);
     mMapsEditorAction->setChecked(true);
 }
 //------------------------------------------------------------------------------
-void TMainWindow::resizeEvent(QResizeEvent *)
-{
+void TMainWindow::resizeEvent(QResizeEvent*) {
     emit resized();
 }
 //------------------------------------------------------------------------------

@@ -15,7 +15,6 @@ TCreateMapDialog::TCreateMapDialog(QWidget* parent)
             ui->path, SLOT(setText(QString)));
     connect(this, SIGNAL(selectObjPath(QString)),
             ui->objPath, SLOT(setText(QString)));
-
     // Get from configuration
     ui->path->text() = Global::Settings()->GetMapsPath();
     ui->objPath->text() = Global::Settings()->GetObjectsPath();

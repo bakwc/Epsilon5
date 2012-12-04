@@ -5,6 +5,9 @@
 #include "server.h"
 #include "player.h"
 
+const QHostAddress& DEFAULT_SERVER_ADDRESS = QHostAddress::Any;
+const quint16 DEFAULT_SERVER_PORT = 14567;
+
 TServer::TServer(QObject *parent)
     : QObject(parent)
     , Server(new QUdpSocket(this))
@@ -14,11 +17,11 @@ TServer::TServer(QObject *parent)
 }
 
 void TServer::Start() {
-    if (Server->bind(QHostAddress("0.0.0.0"), 14567))
+    if (Server->bind(DEFAULT_SERVER_ADDRESS, DEFAULT_SERVER_PORT))
     {
         this->startTimer(20); // TODO: Remove MN
     } else {
-        throw UException("Can't listen to port 14567");
+        throw UException(QString("Can't listen to port %1").arg(DEFAULT_SERVER_PORT));
     }
 }
 
@@ -115,7 +118,7 @@ void TServer::Send(const QHostAddress &ip, quint16 port,
     const QByteArray &originData, EPacketType packetType)
 {
     QByteArray sendPacket;
-    QByteArray packedData = qCompress(originData);
+    QByteArray packedData = qCompress(originData, 5);
     quint16 originDataSize = qToBigEndian<quint16>(originData.size());
     quint16 packedDataSize = qToBigEndian<quint16>(packedData.size());
     sendPacket += QChar(packetType);

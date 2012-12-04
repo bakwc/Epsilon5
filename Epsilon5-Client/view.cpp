@@ -74,7 +74,7 @@ void View::timerEvent(QTimerEvent *)
         }
 
         // Arrangment bullets
-//        Scene->ClearItems(TBulletItem::BULLET);
+        Scene->ClearItems(TBulletItem::BULLET);
         for (int i=0; i != CurrentWorld->bullets_size(); ++i) {
             const Epsilon5::Bullet& bullet = CurrentWorld->bullets(i);
 
@@ -93,7 +93,7 @@ void View::timerEvent(QTimerEvent *)
         }
 
         // Arrangment objects
-//        Scene->ClearItems(TObjectItem::OBJECT);
+        Scene->ClearItems(TObjectItem::OBJECT);
         for (int i=0; i != CurrentWorld->bullets_size(); ++i) {
             const Epsilon5::Object& object = CurrentWorld->objects(i);
 

@@ -25,20 +25,8 @@ inline UFromStringFormat FromString(const QString& str) {
     return UFromStringFormat(str);
 }
 
-//inline QString ToString(int number) {
-//    return QString::number(number);
-//}
-
-//inline QString ToString(uint number) {
-//    return QString::number(number);
-//}
-
-//inline QString ToString(float number) {
-//    return QString::number(number);
-//}
-
-template<typename T>
-QString ToString(const T& t) {
+template <typename T>
+inline QString ToString(const T& t) {
     return QString::number(t);
 }
 

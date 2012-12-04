@@ -6,6 +6,7 @@
 #include "server.h"
 #include "objects.h"
 #include "maps.h"
+#include "weaponpacks.h"
 
 class TApplication : public QCoreApplication
 {
@@ -22,9 +23,14 @@ public:
     inline TMaps* GetMaps() {
         return Maps;
     }
+    inline TWeaponPacks* GetWeaponPacks() {
+        return WeaponPacks;
+    }
+
 private:
     TWorld* World;
     TServer* Server;
     TObjects* Objects;
     TMaps* Maps;
+    TWeaponPacks* WeaponPacks;
 };

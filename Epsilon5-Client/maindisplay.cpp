@@ -12,6 +12,10 @@
 #include "maindisplay.h"
 #include "application.h"
 
+#ifdef Q_OS_UNIX
+#include <linux/input.h>
+#endif
+
 const quint16 BASE_WINDOW_WIDTH = 800;
 const quint16 BASE_WINDOW_HEIGHT = 600;
 
@@ -86,6 +90,8 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     drawFps(painter);
     drawPing(painter);
 
+    if( !Application->GetNetwork()->IsServerAlive() )
+        drawText(painter, QPoint(0, height() - 5), tr("Not connected"));
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -104,51 +110,52 @@ void TMainDisplay::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
+void TMainDisplay::setMovementKeysState(bool state, const QKeyEvent *event)
+{
+#ifdef Q_OS_UNIX
+    // TEST: Codes in input.h differ from event->scancodes by MAGIC_NUMBER.
+    // Need some checks
+    const int MAGIC_NUMBER = 8;
+    if( event->nativeScanCode() == (KEY_W + MAGIC_NUMBER))
+        Control.mutable_keystatus()->set_keyup(state);
+    if( event->nativeScanCode() == (KEY_S + MAGIC_NUMBER))
+        Control.mutable_keystatus()->set_keydown(state);
+    if( event->nativeScanCode() == (KEY_A + MAGIC_NUMBER))
+        Control.mutable_keystatus()->set_keyleft(state);
+    if( event->nativeScanCode() == (KEY_D + MAGIC_NUMBER))
+        Control.mutable_keystatus()->set_keyright(state);
+#endif
+#ifdef Q_OS_WIN
+    if( event->key() == Qt::Key_W || event->nativeVirtualKey() == Qt::Key_W )
+        Control.mutable_keystatus()->set_keyup(state);
+    if( event->key() == Qt::Key_S || event->nativeVirtualKey() == Qt::Key_S )
+        Control.mutable_keystatus()->set_keydown(state);
+    if( event->key() == Qt::Key_A || event->nativeVirtualKey() == Qt::Key_A )
+        Control.mutable_keystatus()->set_keyleft(state);
+    if( event->key() == Qt::Key_D || event->nativeVirtualKey() == Qt::Key_D )
+        Control.mutable_keystatus()->set_keyright(state);
+#endif
+    if( event->key() == Qt::Key_Up )
+        Control.mutable_keystatus()->set_keyup(state);
+    if( event->key() == Qt::Key_Down )
+        Control.mutable_keystatus()->set_keydown(state);
+    if( event->key() == Qt::Key_Left )
+        Control.mutable_keystatus()->set_keyleft(state);
+    if( event->key() == Qt::Key_Right )
+        Control.mutable_keystatus()->set_keyright(state);
+}
+
 void TMainDisplay::keyPressEvent(QKeyEvent *event)
 {
-    switch (event->key())
-    {
-    case Qt::Key_Up:
-    case Qt::Key_W:
-        Control.mutable_keystatus()->set_keyup(true);
-        break;
-    case Qt::Key_Down:
-    case Qt::Key_S:
-        Control.mutable_keystatus()->set_keydown(true);
-        break;
-    case Qt::Key_Right:
-    case Qt::Key_D:
-        Control.mutable_keystatus()->set_keyright(true);
-        break;
-    case Qt::Key_Left:
-    case Qt::Key_A:
-        Control.mutable_keystatus()->set_keyleft(true);
-        break;
-    default:
-        break;
-    }
+    setMovementKeysState(true, event);
 }
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 {
+    setMovementKeysState(false, event);
+
     switch (event->key())
     {
-    case Qt::Key_Up:
-    case Qt::Key_W:
-        Control.mutable_keystatus()->set_keyup(false);
-        break;
-    case Qt::Key_Down:
-    case Qt::Key_S:
-        Control.mutable_keystatus()->set_keydown(false);
-        break;
-    case Qt::Key_Right:
-    case Qt::Key_D:
-        Control.mutable_keystatus()->set_keyright(false);
-        break;
-    case Qt::Key_Left:
-    case Qt::Key_A:
-        Control.mutable_keystatus()->set_keyleft(false);
-        break;
     case Qt::Key_F11:
         if(event->modifiers().testFlag(Qt::ShiftModifier)) {
             toggleFullscreen();

@@ -7,6 +7,13 @@
 
 class TBullet;
 
+struct TFireInfo {
+    double X, Y, Vx, Vy, Angle;
+    size_t WeaponNumber;
+    bool PrimaryAttack;
+    size_t PlayerId;
+};
+
 class TPlayer : public TDynamicObject
 {
     Q_OBJECT
@@ -24,14 +31,13 @@ public:
         return Team;
     }
 signals:
-    void SpawnBullet(TBullet*);
     void Death(size_t id);
+    void Fire(TFireInfo& fireInfo);
 public slots:
     void ApplyControl(const Epsilon5::Control &control);
 private:
     b2Vec2 Force;
     size_t Id;
-    QTime lastShoot;
     QString NickName;
     TMaps* Maps;
     size_t HP;

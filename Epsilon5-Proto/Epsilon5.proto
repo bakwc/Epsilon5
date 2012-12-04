@@ -62,6 +62,7 @@ message Control {
 
     required KeyStatus keyStatus = 1;
     required double angle = 2;
+    required int32 weapon = 3;
 }
 
 message Auth {

@@ -60,7 +60,6 @@ ushort FromString<unsigned short>(const QString& str){
     return res;
 }
 
-
 template< >
 bool FromString<bool>(const QString& str){
     bool res = false;

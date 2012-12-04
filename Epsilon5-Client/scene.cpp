@@ -42,6 +42,9 @@ void TScene::ClearItems(basic::BasicItem::EItemType type)
     DItemsTable& table = *ItemsTypeTable.find(type);
     DItemsTable::Iterator it = table.begin();
     while(it != table.end()) {
-        this->removeItem(*it++);
+        basic::BasicItem *item = it.value();
+        this->removeItem(item);
+        delete item;
+        table.erase(it++);
     }
 }

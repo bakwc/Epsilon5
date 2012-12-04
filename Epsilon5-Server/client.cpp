@@ -50,7 +50,7 @@ void TClient::OnDataReceived(const QByteArray &data)
             // Retrieve another packet from current.
             // We can receive more than one packet at once
             receivedPacket = receivedPacket.mid(
-                originDataSize + sizeof(char) + midSize);
+                packedDataSize + sizeof(char) + 2*midSize);
 
             switch (packetType) {
             case PT_Control: {

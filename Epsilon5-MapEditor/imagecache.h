@@ -36,5 +36,6 @@ private:
 
 private:
     TImageCacheVector mImages;
+    QSize mOriginSize;
 };
 //------------------------------------------------------------------------------

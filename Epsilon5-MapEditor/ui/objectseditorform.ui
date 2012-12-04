@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>950</width>
+    <width>689</width>
     <height>562</height>
    </rect>
   </property>
@@ -318,7 +318,7 @@
              </widget>
             </item>
             <item row="5" column="1">
-             <widget class="QPushButton" name="settingApplyButton">
+             <widget class="QPushButton" name="settingsApplyButton">
               <property name="text">
                <string>Apply</string>
               </property>
@@ -366,19 +366,7 @@
              <enum>QLayout::SetDefaultConstraint</enum>
             </property>
             <item>
-             <widget class="QListWidget" name="objectsListWidget">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="dragDropMode">
-               <enum>QAbstractItemView::NoDragDrop</enum>
-              </property>
-              <property name="defaultDropAction">
-               <enum>Qt::ActionMask</enum>
-              </property>
+             <widget class="QListView" name="objectsListView">
               <property name="alternatingRowColors">
                <bool>true</bool>
               </property>
@@ -388,38 +376,12 @@
                 <height>32</height>
                </size>
               </property>
-              <property name="spacing">
-               <number>0</number>
-              </property>
               <property name="gridSize">
                <size>
                 <width>64</width>
                 <height>32</height>
                </size>
               </property>
-              <property name="sortingEnabled">
-               <bool>true</bool>
-              </property>
-              <item>
-               <property name="text">
-                <string>qwdqwdqqwdqd</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>qwqwdqwd</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>sdfsffsdf</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>sdfsfsd</string>
-               </property>
-              </item>
              </widget>
             </item>
             <item>
@@ -458,6 +420,19 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>dataListWidget</tabstop>
+  <tabstop>objectsListView</tabstop>
+  <tabstop>addButton</tabstop>
+  <tabstop>deleteButton</tabstop>
+  <tabstop>clearButton</tabstop>
+  <tabstop>idEdit</tabstop>
+  <tabstop>widthBox</tabstop>
+  <tabstop>heightBox</tabstop>
+  <tabstop>nameBox</tabstop>
+  <tabstop>dynamicBox</tabstop>
+  <tabstop>settingsApplyButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

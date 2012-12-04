@@ -2,24 +2,28 @@
 #pragma once
 #include <QObject>
 #include <QVector>
+#include <QMetaType>
 //------------------------------------------------------------------------------
-struct TObject {
+struct TObjectItem {
     quint32 id;
     quint32 width;
     quint32 height;
     bool isDynamic;
+    bool isValid;
     QString name;
 };
+//------------------------------------------------------------------------------
+Q_DECLARE_METATYPE(TObjectItem)
 //------------------------------------------------------------------------------
 class TObjectContainer : public QObject {
     Q_OBJECT
 public:
-    typedef QVector<TObject> TObjectsVector;
+    typedef QVector<TObjectItem> TObjectsVector;
 
 public:
     explicit TObjectContainer(QObject* parent = 0);
     int count();
-    TObject operator[](int value);
+    TObjectItem operator[](int value);
 
 private:
     TObjectsVector mItems;

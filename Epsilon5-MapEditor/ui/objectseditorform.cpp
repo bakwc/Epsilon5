@@ -5,24 +5,29 @@
 #include <QDebug>
 #include <QDir>
 #include <QMenu>
+#include <QVariant>
+#include <QStandardItemModel>
 #include "global.h"
 #include "objectseditorform.h"
 #include "ui_objectseditorform.h"
 //------------------------------------------------------------------------------
-TObjectsEditorForm::TObjectsEditorForm(QWidget* parent) :
-    QWidget(parent),
-    ui(new Ui::TObjectsEditorForm) {
+TObjectsEditorForm::TObjectsEditorForm(QWidget* parent)
+    : QWidget(parent)
+    , ui(new Ui::TObjectsEditorForm)
+    , mObjects(new QStandardItemModel(this))
+    , mLastUsedId(0) {
     ui->setupUi(this);
     ui->settingsGroupBox->setLayout(ui->formLayout);
     ui->objectsGroupBox->setLayout(ui->ogVerticalLayout);
     setLayout(ui->objectsWidgetLayout);
     ui->widget->setLayout(ui->verticalLayout);
     ui->dataListWidget->clear();
-    ui->objectsListWidget->clear();
+
     connect(ui->clearButton, SIGNAL(clicked()), this, SLOT(clearAction()));
+
     // Set content menu
-    ui->objectsListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->objectsListWidget, SIGNAL(customContextMenuRequested(QPoint)),
+    ui->objectsListView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->objectsListView, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showObjectsListMenu(QPoint)));
     ui->dataListWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->dataListWidget, SIGNAL(customContextMenuRequested(QPoint)),
@@ -36,6 +41,19 @@ TObjectsEditorForm::TObjectsEditorForm(QWidget* parent) :
             this, SLOT(addButtonAction(QModelIndex)));
     ui->infoBox->setLayout(ui->verticalLayout_2);
     createDataList();
+
+    // Connect some widgets to apply settings button
+    connect(ui->heightBox, SIGNAL(editingFinished()),
+            this, SLOT(on_settingsApplyButton_clicked()));
+    connect(ui->widthBox, SIGNAL(editingFinished()),
+            this, SLOT(on_settingsApplyButton_clicked()));
+    connect(ui->nameBox->lineEdit(), SIGNAL(returnPressed()),
+            this, SLOT(on_settingsApplyButton_clicked()));
+
+    connect(ui->objectsListView, SIGNAL(activated(QModelIndex)),
+            this, SLOT(on_objectsListView_clicked(QModelIndex)));
+
+    ui->objectsListView->setModel(mObjects);
 }
 //------------------------------------------------------------------------------
 TObjectsEditorForm::~TObjectsEditorForm() {
@@ -67,16 +85,13 @@ void TObjectsEditorForm::updateDataList() {
     }
 }
 //------------------------------------------------------------------------------
-void TObjectsEditorForm::loadAction() {
-    qDebug() << Q_FUNC_INFO;
-}
-//------------------------------------------------------------------------------
-void TObjectsEditorForm::saveAction() {
-    qDebug() << Q_FUNC_INFO;
-}
-//------------------------------------------------------------------------------
 void TObjectsEditorForm::clearAction() {
-    ui->objectsListWidget->clear();
+    mObjects->clear();
+    ui->nameBox->lineEdit()->clear();
+    ui->idEdit->clear();
+    ui->widthBox->clear();
+    ui->heightBox->clear();
+    ui->dynamicBox->setChecked(false);
 }
 //------------------------------------------------------------------------------
 void TObjectsEditorForm::showObjectsListMenu(QPoint pos) {
@@ -85,7 +100,7 @@ void TObjectsEditorForm::showObjectsListMenu(QPoint pos) {
     menu.addAction(tr("Save list..."), this, SLOT(saveAction()));
     menu.addSeparator();
     menu.addAction(tr("Clear list"), this, SLOT(clearAction()));
-    menu.exec(ui->objectsListWidget->mapToGlobal(pos));
+    menu.exec(ui->objectsListView->mapToGlobal(pos));
 }
 //------------------------------------------------------------------------------
 void TObjectsEditorForm::showDataListMenu(QPoint pos) {
@@ -115,7 +130,78 @@ void TObjectsEditorForm::on_addButton_clicked() {
 //------------------------------------------------------------------------------
 void TObjectsEditorForm::addButtonAction(QModelIndex index) {
     const TImageCacheItem& item = mDataCache[index.data().toUInt()];
-    QListWidgetItem* it = new QListWidgetItem(item.icon, item.name);
-    ui->objectsListWidget->addItem(it);
+
+    TObjectItem obj;
+    obj.id = mLastUsedId++ + 100;
+    obj.name = item.name.trimmed();
+    obj.isDynamic = false;
+    obj.width = item.sourceWidth;
+    obj.height = item.sourceHeight;
+    obj.isValid = false;
+
+    QVariant itemData;
+    itemData.setValue(obj);
+
+    QStandardItem* ito = new QStandardItem(item.icon, item.name);
+    ito->setBackground(QBrush(Qt::darkRed));
+    ito->setEditable(false);
+    ito->setData(itemData);
+
+    mObjects->appendRow(ito);
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::on_deleteButton_clicked() {
+    QModelIndex index = ui->objectsListView->currentIndex();
+    if( !index.isValid() )
+        return;
+
+    mObjects->removeRow(index.row());
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::on_objectsListView_clicked(QModelIndex index)
+{
+    QStandardItem* item = mObjects->item(index.row());
+    const TObjectItem& itemData = item->data().value<TObjectItem>();
+    ui->idEdit->setText(QString().number(itemData.id));
+    ui->nameBox->lineEdit()->setText(itemData.name);
+    ui->widthBox->setValue(itemData.width);
+    ui->heightBox->setValue(itemData.height);
+    ui->dynamicBox->setChecked(itemData.isDynamic);
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::on_settingsApplyButton_clicked()
+{
+    QModelIndex index = ui->objectsListView->currentIndex();
+    if( !index.isValid() )
+        return;
+
+    if( ui->nameBox->lineEdit()->text().isEmpty() ) {
+        ui->nameBox->lineEdit()->setFocus();
+        return;
+    }
+
+    TObjectItem obj;
+    obj.id = ui->idEdit->text().toUInt();
+    obj.name = ui->nameBox->lineEdit()->text().trimmed();
+    obj.isDynamic = ui->dynamicBox->isChecked();
+    obj.width = ui->widthBox->text().toUInt();
+    obj.height = ui->heightBox->text().toUInt();
+    obj.isValid = true;
+
+    QVariant itemData;
+    itemData.setValue(obj);
+
+    QStandardItem* item = mObjects->item(index.row());
+    item->setText(obj.name);
+    item->setData(itemData);
+    item->setBackground(QBrush(Qt::darkGreen));
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::loadAction() {
+    qDebug() << Q_FUNC_INFO;
+}
+//------------------------------------------------------------------------------
+void TObjectsEditorForm::saveAction() {
+    qDebug() << Q_FUNC_INFO;
 }
 //------------------------------------------------------------------------------

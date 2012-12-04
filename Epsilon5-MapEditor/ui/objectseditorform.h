@@ -6,6 +6,7 @@
 #include "containers/object.h"
 //------------------------------------------------------------------------------
 class QMenu;
+class QStandardItemModel;
 //------------------------------------------------------------------------------
 namespace Ui {
 class TObjectsEditorForm;
@@ -29,13 +30,18 @@ private slots:
     void showObjectsListMenu(QPoint pos);
     void showDataListMenu(QPoint pos);
     void showImageInfo(QModelIndex index);
-    void on_addButton_clicked();
     void addButtonAction(QModelIndex index);
+
+    void on_addButton_clicked();
+    void on_deleteButton_clicked();
+    void on_objectsListView_clicked(QModelIndex index);
+    void on_settingsApplyButton_clicked();
 
 private:
     Ui::TObjectsEditorForm *ui;
     QMenu* mObjectsMenu;
     TImageCache mDataCache;
-    TObjectContainer mObjects;
+    QStandardItemModel* mObjects;
+    quint32 mLastUsedId;
 };
 //------------------------------------------------------------------------------

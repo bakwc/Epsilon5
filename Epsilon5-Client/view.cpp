@@ -11,6 +11,9 @@
 #include "items/tplayeritem.h"
 #include "items/tobjectitem.h"
 #include "scene.h"
+#include "QPaintEvent"
+#include <QTime>
+#include <QStaticText>
 
 const quint16 BASE_WINDOW_WIDTH = 800;
 const quint16 BASE_WINDOW_HEIGHT = 600;
@@ -36,8 +39,9 @@ View::View(TApplication *app, QWidget *parent) :
     Control.mutable_keystatus()->set_keydown(false);
 
     setScene(Scene);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
 
-    startTimer(10);
+    startTimer(20);
 }
 
 void View::Init()
@@ -55,7 +59,7 @@ View::~View()
 void View::timerEvent(QTimerEvent *)
 {
     if (CurrentWorld) {
-        qDebug() << Q_FUNC_INFO;
+//        qDebug() << Q_FUNC_INFO;
 
         // Arrangment players
         for (int i=0; i != CurrentWorld->players_size(); ++i) {
@@ -70,7 +74,7 @@ void View::timerEvent(QTimerEvent *)
             // Set item's position
             pItem->setPos(player.x(), player.y());
 
-            qDebug() << player.name().c_str() << player.x() << player.y();
+//            qDebug() << player.name().c_str() << player.x() << player.y();
         }
 
         // Arrangment bullets
@@ -106,6 +110,22 @@ void View::timerEvent(QTimerEvent *)
             oItem->setPos(object.x(), object.y());
         }
     }
+}
+
+void View::paintEvent(QPaintEvent *event)
+{
+    static QTime time;
+    static int fps = 0;
+    if (fps == 0)
+        time.restart();
+    fps += 1;
+
+    if (time.elapsed() >= 1000) {
+        qDebug() << "FPS: " << fps;
+        fps = 0;
+    }
+
+    QGraphicsView::paintEvent(event);
 }
 
 void View::RedrawWorld()

@@ -25,9 +25,9 @@ public:
     void Init();
     ~View();
 
-
-
+protected:
     void timerEvent(QTimerEvent *);
+    void paintEvent(QPaintEvent *event);
     
 signals:
     

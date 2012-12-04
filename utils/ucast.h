@@ -37,6 +37,10 @@ inline QString ToString(float number) {
     return QString::number(number);
 }
 
+inline QString ToString(size_t number) {
+    return QString::number(number);
+}
+
 inline QString ToString(double number) {
     return QString::number(number);
 }

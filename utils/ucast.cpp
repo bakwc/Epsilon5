@@ -51,6 +51,16 @@ ushort FromString<unsigned short>(const QString& str){
 }
 
 template< >
+ulong FromString<unsigned long>(const QString& str){
+    bool ok = false;
+    ulong res = str.toULong(&ok);
+    if (!ok) {
+       throw UException("Cast error");
+    }
+    return res;
+}
+
+template< >
 bool FromString<bool>(const QString& str){
     bool res = false;
     if (str == "1" || str == "true") {

@@ -113,7 +113,6 @@ void TWorld::Start() {
 
 void TWorld::PlayerSpawn(size_t id, ETeam team) {
     TPlayer* player = new TPlayer(id, team, Application()->GetMaps(), this);
-    connect(player, SIGNAL(SpawnBullet(TBullet*)), SLOT(SpawnBullet(TBullet*)));
     connect(player, SIGNAL(Death(size_t)), SLOT(PlayerKill(size_t)));
     connect(player, SIGNAL(Fire(TFireInfo&)),
             Application()->GetWeaponPacks(), SLOT(ActivateWeapon(TFireInfo&)));

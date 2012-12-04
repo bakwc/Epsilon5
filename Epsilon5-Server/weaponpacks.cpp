@@ -10,7 +10,7 @@ TWeaponPacks::TWeaponPacks(QObject *parent)
 
 void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
     //EWeaponType weaponType = fireInfo.PrimaryAttack ? WT_Machinegun : WT_Shotgun;
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
     EWeaponType weaponType = WT_Pistol;
 
     TTimeKey key;

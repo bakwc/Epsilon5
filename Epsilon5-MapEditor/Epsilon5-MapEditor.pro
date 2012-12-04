@@ -41,7 +41,8 @@ HEADERS += \
     ui/configurationdialog.hpp \
     ui/objectseditorform.hpp \
     imagecache.hpp \
-    containers/object.hpp
+    containers/object.hpp \
+    containers/object.h
 
 FORMS += \
 #    createmapdialog.ui \

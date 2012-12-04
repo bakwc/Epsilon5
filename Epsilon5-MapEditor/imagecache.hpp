@@ -32,6 +32,7 @@ public:
 private:
     QIcon generatePreviewIcon(const QString& fileName,
                 const QSize& size);
+    QIcon nullIcon(const QSize& size);
 
 private:
     TImageCacheVector mImages;

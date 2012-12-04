@@ -1,5 +1,6 @@
 // imagecache.hpp
 #include <QFileInfo>
+#include <QPainter>
 #include "imagecache.hpp"
 //------------------------------------------------------------------------------
 TImageCache::TImageCache(QObject *parent)
@@ -34,7 +35,11 @@ void TImageCache::generateIcons(const QStringList &fileNames, const QSize& size)
 //------------------------------------------------------------------------------
 QIcon TImageCache::generatePreviewIcon(const QString& fileName, const QSize& size)
 {
-    return QIcon(QPixmap::fromImage(QImage(fileName).scaled(size)));
+    QImage img(fileName);
+    if( img.isNull() )
+        return nullIcon(size);
+
+    return QIcon(QPixmap::fromImage(img.scaled(size)));
 }
 //------------------------------------------------------------------------------
 int TImageCache::count()
@@ -44,5 +49,16 @@ int TImageCache::count()
 //------------------------------------------------------------------------------
 TImageCacheItem TImageCache::operator [](int id)
 {
-    return mImages[id];
+    return mImages.value(id);
 }
+//------------------------------------------------------------------------------
+QIcon TImageCache::nullIcon(const QSize &size)
+{
+    QPixmap px(size);
+    QPainter p(&px);
+    QRect rect(QPoint(0, 0), size);
+    p.fillRect(rect, Qt::gray);
+    p.drawRoundRect(rect);
+    return QIcon(px);
+}
+//------------------------------------------------------------------------------

@@ -145,8 +145,14 @@
             <property name="text">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;TextLabel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -200,7 +206,7 @@
              <x>0</x>
              <y>20</y>
              <width>271</width>
-             <height>183</height>
+             <height>225</height>
             </rect>
            </property>
            <layout class="QFormLayout" name="formLayout">
@@ -351,7 +357,7 @@
             <rect>
              <x>0</x>
              <y>193</y>
-             <width>261</width>
+             <width>271</width>
              <height>251</height>
             </rect>
            </property>

@@ -5,18 +5,22 @@
 #include "application.h"
 #include "network.h"
 
+const quint16 DEFAULT_SERVER_TIMEOUT = 5*1000; // 5 sec for timeout
+
 TNetwork::TNetwork(QObject *parent)
     : QObject(parent)
     , Socket(new QUdpSocket(this))
     , Id(0)
     , Ping(0)
     , LastTime(QDateTime::currentMSecsSinceEpoch())
+    , IsAlive(false)
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
     connect(Socket, SIGNAL(error(QAbstractSocket::SocketError)),
         SLOT(OnError(QAbstractSocket::SocketError)));
     connect(Socket, SIGNAL(connected()), SLOT(OnConnected()));
     Status = PS_NotConnected;
+    startTimer(DEFAULT_SERVER_TIMEOUT);
 }
 
 const Epsilon5::World& TNetwork::GetWorld() const {
@@ -24,6 +28,7 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
+    IsAlive = true;
     qint64 time = QDateTime::currentMSecsSinceEpoch();
     Ping = time - LastTime;
     LastTime = time;
@@ -149,4 +154,22 @@ void TNetwork::Send(const QByteArray& originData, EPacketType packetType) {
     sendPacket += QByteArray((const char*) &packedDataSize, sizeof(quint16));
     sendPacket += packedData;
     Socket->write(sendPacket);
+}
+
+void TNetwork::timerEvent(QTimerEvent *event){
+    Q_UNUSED(event);
+
+    if( IsAlive ) {
+        IsAlive = false;
+        return;
+    }
+    emit Disconnected();
+
+    if( Socket->state() == QUdpSocket::UnconnectedState ) {
+        Start();
+        return;
+    }
+    if( Socket->state() == QUdpSocket::ConnectedState ) {
+        SendPlayerAuth();
+    }
 }

@@ -8,6 +8,7 @@ TApplication::TApplication(int& argc, char *argv[])
     , Server(new TServer(this))
     , Objects(new TObjects(this))
     , Maps(new TMaps(this))
+    , WeaponPacks(new TWeaponPacks(this))
 {
     connect(Server, SIGNAL(NewPlayer(size_t, ETeam)),
             World, SLOT(PlayerSpawn(size_t, ETeam)));
@@ -32,6 +33,9 @@ TApplication::TApplication(int& argc, char *argv[])
 
     connect(Maps, SIGNAL(MapLoaded()),
             World, SLOT(NeedFullPacket()));
+
+    connect(WeaponPacks, SIGNAL(SpawnBullet(TBullet*)),
+            World, SLOT(SpawnBullet(TBullet*)));
 }
 
 void TApplication::Init() {

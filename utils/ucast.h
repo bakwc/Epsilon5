@@ -29,10 +29,6 @@ inline QString ToString(int number) {
     return QString::number(number);
 }
 
-inline QString ToString(uint number) {
-    return QString::number(number);
-}
-
 inline QString ToString(float number) {
     return QString::number(number);
 }

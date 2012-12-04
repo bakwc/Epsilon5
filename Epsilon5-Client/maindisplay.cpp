@@ -90,6 +90,8 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     drawFps(painter);
     drawPing(painter);
 
+    if( !Application->GetNetwork()->IsServerAlive() )
+        drawText(painter, QPoint(0, height() - 5), tr("Not connected"));
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -107,7 +109,6 @@ void TMainDisplay::mouseReleaseEvent(QMouseEvent *event) {
         Control.mutable_keystatus()->set_keyattack2(false);
     }
 }
-
 
 void TMainDisplay::setMovementKeysState(bool state, const QKeyEvent *event)
 {

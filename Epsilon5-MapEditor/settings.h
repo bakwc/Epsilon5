@@ -5,7 +5,8 @@
 #include <QPoint>
 #include "../utils/usettings.h"
 //------------------------------------------------------------------------------
-class TSettings : public QObject {
+class TSettings : public QObject
+{
     Q_OBJECT
 public:
     explicit TSettings(QObject* parent = 0);

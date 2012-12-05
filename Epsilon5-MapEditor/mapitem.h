@@ -5,7 +5,8 @@
 #include "utils.h"
 #include "mapitemsignal.h"
 //------------------------------------------------------------------------------
-class TMapItem : public QGraphicsItem {
+class TMapItem : public QGraphicsItem
+{
     static TMapItemSignal* mSign;
 public:
     explicit TMapItem(const utils::TObject& obj, const QPixmap& pix);

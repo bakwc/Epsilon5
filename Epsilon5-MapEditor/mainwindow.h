@@ -7,7 +7,8 @@
 //------------------------------------------------------------------------------
 class TSettings;
 //------------------------------------------------------------------------------
-class TMainWindow : public QMainWindow {
+class TMainWindow : public QMainWindow
+{
     Q_OBJECT
 public:
     explicit TMainWindow(QWidget* parent = 0);

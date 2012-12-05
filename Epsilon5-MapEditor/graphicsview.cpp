@@ -13,13 +13,15 @@ TGraphicsView::TGraphicsView(QGraphicsScene* scene, TObjectsList& objectsList,
     : QGraphicsView(scene, parent)
     , mObjectsList(objectsList)
     , mPixmapsList(pixmapList)
-    , mItemId(0) {
+    , mItemId(0)
+{
 //    setMouseTracking(true);
     connect(&mItemSignal, SIGNAL(mapItemSignal(QString, QPointF, qreal)),
             SLOT(itemSlot(QString, QPointF, qreal)));
 }
 //------------------------------------------------------------------------------
-void TGraphicsView::addMapItem(const utils::TMapLine& ml) {
+void TGraphicsView::addMapItem(const utils::TMapLine& ml)
+{
     TMapItem* item = new TMapItem(mObjectsList.at(ml.id - 1),
             mPixmapsList.at(ml.id - 1));
     item->setPos(ml.x, ml.y);
@@ -27,7 +29,8 @@ void TGraphicsView::addMapItem(const utils::TMapLine& ml) {
     scene()->addItem(item);
 }
 //------------------------------------------------------------------------------
-void TGraphicsView::mouseDoubleClickEvent(QMouseEvent* event) {
+void TGraphicsView::mouseDoubleClickEvent(QMouseEvent* event)
+{
     QGraphicsItem* item = new TMapItem(mObjectsList.at(mItemId),
             mPixmapsList.at(mItemId));
     QScrollBar* hs = horizontalScrollBar();
@@ -40,12 +43,14 @@ void TGraphicsView::mouseDoubleClickEvent(QMouseEvent* event) {
     update();
 }
 //------------------------------------------------------------------------------
-void TGraphicsView::selectedItem(int item) {
+void TGraphicsView::selectedItem(int item)
+{
     mItemId = item;
     qDebug() << mObjectsList.at(mItemId).name;
 }
 //------------------------------------------------------------------------------
-void TGraphicsView::itemSlot(QString name, QPointF itemPos, qreal itemRot) {
+void TGraphicsView::itemSlot(QString name, QPointF itemPos, qreal itemRot)
+{
     qDebug() << name << " pos: " << itemPos << " roration: " << itemRot;
 }
 //------------------------------------------------------------------------------

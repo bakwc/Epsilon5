@@ -2,7 +2,8 @@
 #pragma once
 #include <QDialog>
 //------------------------------------------------------------------------------
-namespace Ui {
+namespace Ui
+{
 class TConfigurationDialog;
 }
 //------------------------------------------------------------------------------
@@ -10,7 +11,7 @@ class TConfigurationDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit TConfigurationDialog(QWidget *parent = 0);
+    explicit TConfigurationDialog(QWidget* parent = 0);
     ~TConfigurationDialog();
 
 private slots:
@@ -20,6 +21,6 @@ private slots:
     void accept();
 
 private:
-    Ui::TConfigurationDialog *ui;
+    Ui::TConfigurationDialog* ui;
 };
 //------------------------------------------------------------------------------

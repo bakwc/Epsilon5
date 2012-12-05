@@ -6,7 +6,8 @@
 // Global variables inittialization
 TSettings* settings = Global::Settings();
 //------------------------------------------------------------------------------
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     TApplication app(argc, argv);
     TMainWindow window;
     window.show();

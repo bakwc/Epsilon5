@@ -4,9 +4,11 @@
 
 //------------------------------------------------------------------------------
 TApplication::TApplication(int& argc, char* argv[])
-    : QApplication(argc, argv) {
+    : QApplication(argc, argv)
+{
 }
 //------------------------------------------------------------------------------
-TApplication::~TApplication() {
+TApplication::~TApplication()
+{
 }
 //------------------------------------------------------------------------------

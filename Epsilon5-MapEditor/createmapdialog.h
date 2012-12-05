@@ -5,11 +5,13 @@
 #include <QSize>
 #include <QPixmap>
 //------------------------------------------------------------------------------
-namespace Ui {
+namespace Ui
+{
 class CreateMapDialog;
 }
 //------------------------------------------------------------------------------
-class TCreateMapDialog : public QDialog {
+class TCreateMapDialog : public QDialog
+{
     Q_OBJECT
 public:
     explicit TCreateMapDialog(QWidget* parent = 0);

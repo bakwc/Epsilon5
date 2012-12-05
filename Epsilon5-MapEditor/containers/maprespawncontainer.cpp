@@ -2,19 +2,20 @@
 #include "maprespawncontainer.h"
 //------------------------------------------------------------------------------
 TMapRespawnItem::TMapRespawnItem()
-    : mInfo( new TMapRespawnInfo )
+    : mInfo(new TMapRespawnInfo)
 {
 }
 //------------------------------------------------------------------------------
 TMapRespawnItem::TMapRespawnItem(TMapRespawnInfo* respawnInfo)
-    : mInfo( respawnInfo )
+    : mInfo(respawnInfo)
 {
 }
 //------------------------------------------------------------------------------
 TMapRespawnItem::~TMapRespawnItem()
 {
-    if( mInfo )
+    if (mInfo) {
         delete mInfo;
+    }
 }
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

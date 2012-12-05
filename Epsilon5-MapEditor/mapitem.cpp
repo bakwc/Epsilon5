@@ -10,22 +10,26 @@ TMapItemSignal* TMapItem::mSign = 0;
 //------------------------------------------------------------------------------
 TMapItem::TMapItem(const utils::TObject& obj, const QPixmap& pix)
     : mObject(obj)
-    , mPixmap(pix) {
+    , mPixmap(pix)
+{
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-QRectF TMapItem::boundingRect() const {
+QRectF TMapItem::boundingRect() const
+{
     return QRectF(0, 0, mObject.width, mObject.height);
 }
 //------------------------------------------------------------------------------
-void TMapItem::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+void TMapItem::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
     QGraphicsItem::mousePressEvent(event);
     mCursorPosition = event->pos();
     update();
     mSign->emitStatus(mObject.name, this->pos(), this->rotation());
 }
 //------------------------------------------------------------------------------
-void TMapItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+void TMapItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
     if (mButton == Qt::LeftButton) {
         mScenePosition = event->scenePos() - mCursorPosition;
         setPos(mScenePosition);
@@ -42,13 +46,15 @@ void TMapItem::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
     mSign->emitStatus(mObject.name, this->pos(), this->rotation());
 }
 //------------------------------------------------------------------------------
-void TMapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+void TMapItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
     QGraphicsItem::mouseReleaseEvent(event);
     update();
 }
 //------------------------------------------------------------------------------
 void TMapItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
-        QWidget* widget) {
+        QWidget* widget)
+{
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->setBrush(QBrush(Qt::black));

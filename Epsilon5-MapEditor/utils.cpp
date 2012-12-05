@@ -2,9 +2,11 @@
 #include <QDebug>
 #include "utils.h"
 //------------------------------------------------------------------------------
-namespace utils {
+namespace utils
+{
 //------------------------------------------------------------------------------
-QList<TObject> parseObjFile(QFile& f) {
+QList<TObject> parseObjFile(QFile& f)
+{
     QList<TObject> objs;
     while (!f.atEnd()) {
         TObject obj;
@@ -21,7 +23,8 @@ QList<TObject> parseObjFile(QFile& f) {
     return objs;
 }
 //------------------------------------------------------------------------------
-QList<TMapLine> parseMapFile(QFile& f) {
+QList<TMapLine> parseMapFile(QFile& f)
+{
     QList<TMapLine> mapLst;
     while (!f.atEnd()) {
         TMapLine obj;

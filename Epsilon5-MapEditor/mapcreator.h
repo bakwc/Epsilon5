@@ -12,7 +12,8 @@
 #include "utils.h"
 #include "graphicsview.h"
 //------------------------------------------------------------------------------
-class TMapCreator : public QWidget {
+class TMapCreator : public QWidget
+{
     Q_OBJECT
 private:
     constexpr static const char* OBJS_FILE     = "objects.txt";

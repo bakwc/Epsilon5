@@ -7,7 +7,8 @@
 //------------------------------------------------------------------------------
 TCreateMapDialog::TCreateMapDialog(QWidget* parent)
     : QDialog(parent)
-    , ui(new Ui::CreateMapDialog) {
+    , ui(new Ui::CreateMapDialog)
+{
     ui->setupUi(this);
     connect(this, SIGNAL(selectTexture(QString)),
             ui->texturePath, SLOT(setText(QString)));
@@ -20,31 +21,38 @@ TCreateMapDialog::TCreateMapDialog(QWidget* parent)
     ui->objPath->text() = Global::Settings()->GetObjectsPath();
 }
 //------------------------------------------------------------------------------
-TCreateMapDialog::~TCreateMapDialog() {
+TCreateMapDialog::~TCreateMapDialog()
+{
     delete ui;
 }
 //------------------------------------------------------------------------------
-QString TCreateMapDialog::mapName() {
+QString TCreateMapDialog::mapName()
+{
     return ui->name->text();
 }
 //------------------------------------------------------------------------------
-QSize TCreateMapDialog::mapSize() {
+QSize TCreateMapDialog::mapSize()
+{
     return QSize(ui->width->text().toInt(), ui->height->text().toInt());
 }
 //------------------------------------------------------------------------------
-QPixmap TCreateMapDialog::mapBackground() {
+QPixmap TCreateMapDialog::mapBackground()
+{
     return QPixmap(ui->texturePath->text());
 }
 //------------------------------------------------------------------------------
-QString TCreateMapDialog::mapPath() {
+QString TCreateMapDialog::mapPath()
+{
     return ui->path->text();
 }
 //------------------------------------------------------------------------------
-QString TCreateMapDialog::mapObjsPath() {
+QString TCreateMapDialog::mapObjsPath()
+{
     return ui->objPath->text();
 }
 //------------------------------------------------------------------------------
-void TCreateMapDialog::on_selectTextureButton_clicked() {
+void TCreateMapDialog::on_selectTextureButton_clicked()
+{
     QFileDialog fd;
     QString f = fd.getOpenFileName(this, tr("Open map texture"),
                 Global::Settings()->GetDataPath());
@@ -52,7 +60,8 @@ void TCreateMapDialog::on_selectTextureButton_clicked() {
     emit selectTexture(f);
 }
 //------------------------------------------------------------------------------
-void TCreateMapDialog::on_selectPathButton_clicked() {
+void TCreateMapDialog::on_selectPathButton_clicked()
+{
     QString f = QFileDialog::getExistingDirectory(this,
                 tr("Set directory where will be create maps folder"),
                 Global::Settings()->GetMapsPath());
@@ -60,7 +69,8 @@ void TCreateMapDialog::on_selectPathButton_clicked() {
     emit selectPath(f);
 }
 //------------------------------------------------------------------------------
-void TCreateMapDialog::on_objPathButton_clicked() {
+void TCreateMapDialog::on_objPathButton_clicked()
+{
     QFileDialog fd;
     QString f = fd.getExistingDirectory(this,
                 tr("Set objects folder"), Global::Settings()->GetObjectsPath());

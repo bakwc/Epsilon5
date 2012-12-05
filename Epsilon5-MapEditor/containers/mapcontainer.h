@@ -34,8 +34,8 @@ public:
 public:
     TMapContainer(QObject* parent = 0);
     void clear();
-    TMapId addMap( const TMapInfo& info, const QIcon& preview );
-    void removeMap( TMapId mapId );
+    TMapId addMap(const TMapInfo& info, const QIcon& preview);
+    void removeMap(TMapId mapId);
 
     const TMapObjectContainer* objects(TMapId mapId) const;
     TMapObjectContainer* objects(TMapId mapId);

@@ -2,19 +2,20 @@
 #include "mapobjectcontainer.h"
 //------------------------------------------------------------------------------
 TMapObjectItem::TMapObjectItem()
-    : mInfo( new TMapObjectInfo )
+    : mInfo(new TMapObjectInfo)
 {
 }
 //------------------------------------------------------------------------------
 TMapObjectItem::TMapObjectItem(TMapObjectInfo* objectInfo)
-    : mInfo( objectInfo )
+    : mInfo(objectInfo)
 {
 }
 //------------------------------------------------------------------------------
 TMapObjectItem::~TMapObjectItem()
 {
-    if( mInfo )
+    if (mInfo) {
         delete mInfo;
+    }
 }
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------

@@ -7,7 +7,8 @@
 class QMenu;
 class QStandardItemModel;
 //------------------------------------------------------------------------------
-namespace Ui {
+namespace Ui
+{
 class TObjectsEditorForm;
 }
 //------------------------------------------------------------------------------
@@ -15,7 +16,7 @@ class TObjectsEditorForm : public QWidget
 {
     Q_OBJECT
 public:
-    explicit TObjectsEditorForm(QWidget *parent = 0);
+    explicit TObjectsEditorForm(QWidget* parent = 0);
     ~TObjectsEditorForm();
 
 public slots:
@@ -37,7 +38,7 @@ private slots:
     void on_settingsApplyButton_clicked();
 
 private:
-    Ui::TObjectsEditorForm *ui;
+    Ui::TObjectsEditorForm* ui;
     TImageCache mDataCache;
     QStandardItemModel* mObjects;
     quint32 mLastUsedId;

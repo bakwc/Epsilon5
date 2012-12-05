@@ -7,7 +7,8 @@
 #include <utils.h>
 #include "mapitemsignal.h"
 //------------------------------------------------------------------------------
-class TGraphicsView : public QGraphicsView {
+class TGraphicsView : public QGraphicsView
+{
     Q_OBJECT
 public:
     typedef QList<QPixmap> TPixmapsList;

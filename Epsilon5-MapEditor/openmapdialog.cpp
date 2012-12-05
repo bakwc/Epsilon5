@@ -5,7 +5,8 @@
 //------------------------------------------------------------------------------
 TOpenMapDialog::TOpenMapDialog(QWidget* parent)
     : QDialog(parent)
-    , mUi(new Ui::OpenMapDialog) {
+    , mUi(new Ui::OpenMapDialog)
+{
     mUi->setupUi(this);
     connect(this, SIGNAL(mapFolderSignal(QString)),
             mUi->mapFolder, SLOT(setText(QString)));
@@ -13,24 +14,29 @@ TOpenMapDialog::TOpenMapDialog(QWidget* parent)
             mUi->objFolder, SLOT(setText(QString)));
 }
 //------------------------------------------------------------------------------
-TOpenMapDialog::~TOpenMapDialog() {
+TOpenMapDialog::~TOpenMapDialog()
+{
     delete mUi;
 }
 //------------------------------------------------------------------------------
-QString TOpenMapDialog::mapDir() {
+QString TOpenMapDialog::mapDir()
+{
     return mUi->mapFolder->text();
 }
 //------------------------------------------------------------------------------
-QString TOpenMapDialog::objDir() {
+QString TOpenMapDialog::objDir()
+{
     return mUi->objFolder->text();
 }
 //------------------------------------------------------------------------------
-void TOpenMapDialog::on_mapFolderButton_clicked() {
+void TOpenMapDialog::on_mapFolderButton_clicked()
+{
     QString f = QFileDialog::getExistingDirectory(this, "Set map directory");
     emit mapFolderSignal(f);
 }
 //------------------------------------------------------------------------------
-void TOpenMapDialog::on_objectsFolderButton_clicked() {
+void TOpenMapDialog::on_objectsFolderButton_clicked()
+{
     QString f = QFileDialog::getExistingDirectory(this, "Set objects directory");
     emit objFolderSignal(f);
 }

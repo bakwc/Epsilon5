@@ -4,8 +4,7 @@
 #include <QVector>
 #include <QStringList>
 //------------------------------------------------------------------------------
-struct TImageCacheItem
-{
+struct TImageCacheItem {
     QString fileName;
     QString name;
     QIcon icon;
@@ -21,8 +20,8 @@ public:
     typedef QVector<TImageCacheItem> TImageCacheVector;
 
 public:
-    explicit TImageCache(QObject *parent = 0);
-    void append(const QString& fileName, const QSize& size = QSize(64,64));
+    explicit TImageCache(QObject* parent = 0);
+    void append(const QString& fileName, const QSize& size = QSize(64, 64));
     void clear();
     void generateIcons(const QStringList& fileNames, const QSize& size);
     int count();
@@ -31,7 +30,7 @@ public:
 
 private:
     QIcon generatePreviewIcon(const QString& fileName,
-                const QSize& size);
+            const QSize& size);
     QIcon nullIcon(const QSize& size);
 
 private:

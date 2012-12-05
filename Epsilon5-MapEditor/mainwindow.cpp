@@ -12,7 +12,8 @@ TMainWindow::TMainWindow(QWidget* parent)
     , mObjectsEditorAction(new QAction(this))
     , mMapsEditorAction(new QAction(this))
     , mObjectsEditorWidget(new TObjectsEditorForm(this))
-    , mMapsEditorWidget(new QWidget(this)) {
+    , mMapsEditorWidget(new QWidget(this))
+{
     // Relocate window
     resize(Global::Settings()->GetWindowSize());
     move(Global::Settings()->GetWindowPos());
@@ -45,12 +46,14 @@ TMainWindow::TMainWindow(QWidget* parent)
     connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
 }
 //------------------------------------------------------------------------------
-TMainWindow::~TMainWindow() {
+TMainWindow::~TMainWindow()
+{
     Global::Settings()->SetWindowSize(size());
     Global::Settings()->SetWindowPos(pos());
 }
 //------------------------------------------------------------------------------
-void TMainWindow::newAction() {
+void TMainWindow::newAction()
+{
 //    TCreateMapDialog dialog(this);
 //    if (!dialog.exec()) {
 //        return;
@@ -70,7 +73,8 @@ void TMainWindow::newAction() {
 //    }
 }
 //------------------------------------------------------------------------------
-void TMainWindow::openAction() {
+void TMainWindow::openAction()
+{
 //    TOpenMapDialog d(this);
 //    if (!d.exec()) {
 //        return;
@@ -88,29 +92,34 @@ void TMainWindow::openAction() {
 //    }
 }
 //------------------------------------------------------------------------------
-void TMainWindow::connectMapCreator() {
+void TMainWindow::connectMapCreator()
+{
 //    connect(mSaveAtc, SIGNAL(triggered()), mMapPainter, SLOT(save()));
 //    this->setCentralWidget(mMapPainter);
 }
 //------------------------------------------------------------------------------
-void TMainWindow::optionsAction() {
+void TMainWindow::optionsAction()
+{
     TConfigurationDialog configDialog(this);
     configDialog.exec();
 }
 //------------------------------------------------------------------------------
-void TMainWindow::objectsEditorAction() {
+void TMainWindow::objectsEditorAction()
+{
 //    setCentralWidget(mObjectsEditorWidget);
     mObjectsEditorAction->setChecked(true);
     mMapsEditorAction->setChecked(false);
 }
 //------------------------------------------------------------------------------
-void TMainWindow::mapsEditorAction() {
+void TMainWindow::mapsEditorAction()
+{
 //    setCentralWidget(mMapsEditorWidget);
     mObjectsEditorAction->setChecked(false);
     mMapsEditorAction->setChecked(true);
 }
 //------------------------------------------------------------------------------
-void TMainWindow::resizeEvent(QResizeEvent*) {
+void TMainWindow::resizeEvent(QResizeEvent*)
+{
     emit resized();
 }
 //------------------------------------------------------------------------------

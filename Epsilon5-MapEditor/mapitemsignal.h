@@ -3,7 +3,8 @@
 #include <QObject>
 #include <QPointF>
 //------------------------------------------------------------------------------
-class TMapItemSignal : public QObject {
+class TMapItemSignal : public QObject
+{
     Q_OBJECT
 public:
     explicit TMapItemSignal(QObject* parent = 0);

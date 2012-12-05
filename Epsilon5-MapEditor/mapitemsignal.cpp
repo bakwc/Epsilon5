@@ -2,11 +2,13 @@
 #include "mapitemsignal.h"
 //------------------------------------------------------------------------------
 TMapItemSignal::TMapItemSignal(QObject* parent)
-    : QObject(parent) {
+    : QObject(parent)
+{
 }
 //------------------------------------------------------------------------------
 void TMapItemSignal::emitStatus(QString name, QPointF itemPos,
-        qreal itemRotation) {
+        qreal itemRotation)
+{
     emit mapItemSignal(name, itemPos, itemRotation);
 }
 //------------------------------------------------------------------------------

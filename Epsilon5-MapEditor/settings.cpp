@@ -12,7 +12,8 @@ const char* SETTINGS_FILENAME = "settings.ini";
 //------------------------------------------------------------------------------
 TSettings::TSettings(QObject* parent)
     : QObject(parent)
-    , mSettings(new USettings(this)) {
+    , mSettings(new USettings(this))
+{
     // Defining default parameters
     USettings::TParametersHash parameters;
     parameters["window.width"] = QString().number(DEFAULT_WINDOW_WIDTH);
@@ -26,55 +27,67 @@ TSettings::TSettings(QObject* parent)
     Load();
 }
 //------------------------------------------------------------------------------
-TSettings::~TSettings() {
+TSettings::~TSettings()
+{
     Save();
 }
 //------------------------------------------------------------------------------
-QSize TSettings::GetWindowSize() const {
+QSize TSettings::GetWindowSize() const
+{
     return QSize(mSettings->GetParameter("window.width"),
                  mSettings->GetParameter("window.height"));
 }
 //------------------------------------------------------------------------------
-void TSettings::SetWindowSize(const QSize& size) {
+void TSettings::SetWindowSize(const QSize& size)
+{
     mSettings->SetParameter("window.width", QString().number(size.width()));
     mSettings->SetParameter("window.height", QString().number(size.height()));
 }
 //------------------------------------------------------------------------------
-QPoint TSettings::GetWindowPos() const {
+QPoint TSettings::GetWindowPos() const
+{
     return QPoint(mSettings->GetParameter("window.posx"),
                   mSettings->GetParameter("window.posy"));
 }
 //------------------------------------------------------------------------------
-void TSettings::SetWindowPos(const QPoint& position) {
+void TSettings::SetWindowPos(const QPoint& position)
+{
     mSettings->SetParameter("window.posx", QString().number(position.x()));
     mSettings->SetParameter("window.posy", QString().number(position.y()));
 }
 //------------------------------------------------------------------------------
-QString TSettings::GetDataPath() const {
+QString TSettings::GetDataPath() const
+{
     return mSettings->GetParameter("data.path");
 }
 //------------------------------------------------------------------------------
-void TSettings::SetDataPath(const QString& path) {
+void TSettings::SetDataPath(const QString& path)
+{
     mSettings->SetParameter("data.path", path);
 }
 //------------------------------------------------------------------------------
-QString TSettings::GetMapsPath() const {
+QString TSettings::GetMapsPath() const
+{
     return mSettings->GetParameter("maps.path");
 }
 //------------------------------------------------------------------------------
-void TSettings::SetMapsPath(const QString& path) {
+void TSettings::SetMapsPath(const QString& path)
+{
     mSettings->SetParameter("maps.path", path);
 }
 //------------------------------------------------------------------------------
-QString TSettings::GetObjectsPath() const {
+QString TSettings::GetObjectsPath() const
+{
     return mSettings->GetParameter("objects.path");
 }
 //------------------------------------------------------------------------------
-void TSettings::SetObjectsPath(const QString& path) {
+void TSettings::SetObjectsPath(const QString& path)
+{
     mSettings->SetParameter("objects.path", path);
 }
 //------------------------------------------------------------------------------
-void TSettings::Load() {
+void TSettings::Load()
+{
     try {
         mSettings->Load(SETTINGS_FILENAME);
     } catch (const UException& ex) {
@@ -82,7 +95,8 @@ void TSettings::Load() {
     }
 }
 //------------------------------------------------------------------------------
-void TSettings::Save() {
+void TSettings::Save()
+{
     try {
         mSettings->Save(SETTINGS_FILENAME, false);
     } catch (const UException& ex) {

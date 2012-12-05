@@ -3,11 +3,13 @@
 #include <QDialog>
 #include <QString>
 //------------------------------------------------------------------------------
-namespace Ui {
+namespace Ui
+{
 class OpenMapDialog;
 }
 //------------------------------------------------------------------------------
-class TOpenMapDialog : public QDialog {
+class TOpenMapDialog : public QDialog
+{
     Q_OBJECT
 public:
     explicit TOpenMapDialog(QWidget* parent = 0);

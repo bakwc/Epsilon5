@@ -1,4 +1,5 @@
-#include "respawnscontainer.h"
+// maprespawncontainer.cpp
+#include "maprespawncontainer.h"
 //------------------------------------------------------------------------------
 TMapRespawnItem::TMapRespawnItem()
     : mInfo( new TMapRespawnInfo )

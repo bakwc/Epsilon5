@@ -2,8 +2,8 @@
 #pragma once
 #include <QStandardItem>
 #include "object.h"
-#include "objectscontainer.h"
-#include "respawnscontainer.h"
+#include "objectcontainer.h"
+#include "respawncontainer.h"
 #include "container.h"
 //------------------------------------------------------------------------------
 //class USettings;

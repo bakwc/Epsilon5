@@ -1,5 +1,6 @@
+// mapobjectcontainer.h
 #pragma once
-#include "object.h"
+#include "stuctures.h"
 #include "container.h"
 //------------------------------------------------------------------------------
 class TMapObjectItem : public QObject

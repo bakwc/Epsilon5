@@ -1,9 +1,8 @@
 #pragma once
-
 #include <QWidget>
 #include <QModelIndex>
 #include "imagecache.h"
-#include "containers/object.h"
+#include "containers/stuctures.h"
 //------------------------------------------------------------------------------
 class QMenu;
 class QStandardItemModel;
@@ -39,7 +38,6 @@ private slots:
 
 private:
     Ui::TObjectsEditorForm *ui;
-//    QMenu* mObjectsMenu;
     TImageCache mDataCache;
     QStandardItemModel* mObjects;
     quint32 mLastUsedId;

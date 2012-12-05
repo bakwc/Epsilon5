@@ -1,6 +1,6 @@
-// respawnscontainer.h
+// maprespawnscontainer.h
 #pragma once
-#include "object.h"
+#include "stuctures.h"
 #include "container.h"
 //------------------------------------------------------------------------------
 class TMapRespawnItem : public QObject

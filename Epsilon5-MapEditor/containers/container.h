@@ -2,8 +2,6 @@
 #include <QObject>
 #include <QStandardItemModel>
 //------------------------------------------------------------------------------
-//class QStandardItemModel;
-//------------------------------------------------------------------------------
 class TContainer : public QObject
 {
     Q_OBJECT

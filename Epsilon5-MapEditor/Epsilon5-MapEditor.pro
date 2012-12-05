@@ -21,11 +21,11 @@ SOURCES += \
     ui/configurationdialog.cpp \
     ui/objectseditorform.cpp \
     imagecache.cpp \
-    containers/object.cpp \
-    containers/mapscontainer.cpp \
     containers/container.cpp \
-    containers/objectscontainer.cpp \
-    containers/respawnscontainer.cpp
+    containers/mapcontainer.cpp \
+    containers/structures.cpp \
+    containers/mapobjectcontainer.cpp \
+    containers/maprespawncontainer.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -45,12 +45,11 @@ HEADERS += \
     ui/configurationdialog.h \
     ui/objectseditorform.h \
     imagecache.h \
-    containers/object.h \
-    containers/object.h \
-    containers/mapscontainer.h \
     containers/container.h \
-    containers/objectscontainer.h \
-    containers/respawnscontainer.h
+    containers/mapcontainer.h \
+    containers/mapobjectcontainer.h \
+    containers/maprespawncontainer.h \
+    containers/stuctures.h
 
 FORMS += \
 #    createmapdialog.ui \

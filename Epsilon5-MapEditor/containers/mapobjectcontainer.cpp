@@ -1,4 +1,5 @@
-#include "objectscontainer.h"
+// mapobjectcontainer.cpp
+#include "mapobjectcontainer.h"
 //------------------------------------------------------------------------------
 TMapObjectItem::TMapObjectItem()
     : mInfo( new TMapObjectInfo )
@@ -22,7 +23,8 @@ TMapObjectContainer::TMapObjectContainer(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
-TMapObjectContainer::TMapObjectContainer(TMapObjectContainer* container, QObject* parent)
+TMapObjectContainer::TMapObjectContainer(TMapObjectContainer* container,
+        QObject* parent)
     : TContainer(parent)
 {
 }

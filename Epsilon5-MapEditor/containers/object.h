@@ -11,6 +11,7 @@ struct TObjectItem {
     bool isDynamic;
     bool isValid;
     QString name;
+    QString fileName;
 };
 //------------------------------------------------------------------------------
 Q_DECLARE_METATYPE(TObjectItem)

@@ -1,4 +1,5 @@
 // objectseditorform.cpp
+#include <QFileDialog>
 #include <QPixmap>
 #include <QPainter>
 #include <QImage>
@@ -138,6 +139,7 @@ void TObjectsEditorForm::addButtonAction(QModelIndex index) {
     obj.width = item.sourceWidth;
     obj.height = item.sourceHeight;
     obj.isValid = false;
+    obj.fileName = item.fileName;
 
     QVariant itemData;
     itemData.setValue(obj);
@@ -180,6 +182,8 @@ void TObjectsEditorForm::on_settingsApplyButton_clicked()
         return;
     }
 
+    QStandardItem* item = mObjects->item(index.row());
+
     TObjectItem obj;
     obj.id = ui->idEdit->text().toUInt();
     obj.name = ui->nameBox->lineEdit()->text().trimmed();
@@ -187,11 +191,11 @@ void TObjectsEditorForm::on_settingsApplyButton_clicked()
     obj.width = ui->widthBox->text().toUInt();
     obj.height = ui->heightBox->text().toUInt();
     obj.isValid = true;
+    obj.fileName = item->data().value<TObjectItem>().fileName;
 
     QVariant itemData;
     itemData.setValue(obj);
 
-    QStandardItem* item = mObjects->item(index.row());
     item->setText(obj.name);
     item->setData(itemData);
     item->setBackground(QBrush(Qt::darkGreen));
@@ -199,9 +203,42 @@ void TObjectsEditorForm::on_settingsApplyButton_clicked()
 //------------------------------------------------------------------------------
 void TObjectsEditorForm::loadAction() {
     qDebug() << Q_FUNC_INFO;
+//    QString objectsFile = QFileDialog::getSaveFileName(this,
+//            tr("Save objects list to..."),
+//            Global::Settings()->GetObjectsPath(), tr("Text files (*.txt)"));
+//    if( objectsFile.isEmpty() )
+//        return;
 }
 //------------------------------------------------------------------------------
 void TObjectsEditorForm::saveAction() {
-    qDebug() << Q_FUNC_INFO;
+    QString objectsFile(Global::Settings()->GetObjectsPath() + "/objects.txt");
+
+    QFile file(objectsFile, this);
+    file.open(QFile::WriteOnly | QFile::Truncate);
+    QTextStream stream(&file);
+    QString fToName;
+    for( int i = 0; i < mObjects->rowCount(); ++i )
+    {
+        const QStandardItem* item = mObjects->item(i);
+        const TObjectItem& itemData = item->data().value<TObjectItem>();
+
+        if( !itemData.isValid )
+            continue;
+
+        fToName = Global::Settings()->GetObjectsPath();
+        fToName.append("/").append(itemData.name).append(".png");
+        if(!QFile::copy(itemData.fileName, fToName)) {
+            continue;
+        }
+
+        stream << QString().number(itemData.id)
+            << ":" << QString().number(itemData.width)
+            << ":" << QString().number(itemData.height)
+            << ":" << QString().number(itemData.isDynamic)
+            << ":" << itemData.name.trimmed()
+            << "\n";
+    }
+    file.flush();
+    file.close();
 }
 //------------------------------------------------------------------------------

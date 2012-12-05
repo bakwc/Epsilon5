@@ -37,7 +37,7 @@
       <x>10</x>
       <y>20</y>
       <width>541</width>
-      <height>111</height>
+      <height>129</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -138,10 +138,10 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="sizeConstraint">
-     <enum>QLayout::SetMinimumSize</enum>
+     <enum>QLayout::SetDefaultConstraint</enum>
     </property>
     <property name="margin">
-     <number>8</number>
+     <number>10</number>
     </property>
    </layout>
   </widget>

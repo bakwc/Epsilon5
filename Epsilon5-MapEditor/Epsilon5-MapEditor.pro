@@ -21,7 +21,11 @@ SOURCES += \
     ui/configurationdialog.cpp \
     ui/objectseditorform.cpp \
     imagecache.cpp \
-    containers/object.cpp
+    containers/object.cpp \
+    containers/mapscontainer.cpp \
+    containers/container.cpp \
+    containers/objectscontainer.cpp \
+    containers/respawnscontainer.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -42,7 +46,11 @@ HEADERS += \
     ui/objectseditorform.h \
     imagecache.h \
     containers/object.h \
-    containers/object.h
+    containers/object.h \
+    containers/mapscontainer.h \
+    containers/container.h \
+    containers/objectscontainer.h \
+    containers/respawnscontainer.h
 
 FORMS += \
 #    createmapdialog.ui \
@@ -50,5 +58,6 @@ FORMS += \
     ui/configurationdialog.ui \
     ui/objectseditorform.ui
 
-QMAKE_CXXFLAGS += -std=c++0x -mfpmath=sse
+QMAKE_CXXFLAGS += -std=c++0x
+# -mfpmath=sse
 # -Ofast -flto -funroll-loops

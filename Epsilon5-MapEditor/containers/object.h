@@ -18,22 +18,20 @@ struct TObjectItem {
     QString fileName;
 };
 //------------------------------------------------------------------------------
-struct TMapItem {
+struct TMapInfo {
     quint32 width;
     quint32 height;
     QString name;
-    bool isValid;
 };
 //------------------------------------------------------------------------------
-struct TMapObjectItem {
+struct TMapObjectInfo {
     quint32 id;
     qint32 x;
     qint32 y;
     qreal angle;
-    bool isValid;
 };
 //------------------------------------------------------------------------------
-struct TMapRespItem {
+struct TMapRespawnInfo {
     qint32 x;
     qint32 y;
     quint32 captureRadius;
@@ -42,11 +40,10 @@ struct TMapRespItem {
     bool isMain;
     quint32 captireTime;
     ETeam team;
-    bool isValid;
 };
 //------------------------------------------------------------------------------
 Q_DECLARE_METATYPE(TObjectItem)
-Q_DECLARE_METATYPE(TMapItem)
-Q_DECLARE_METATYPE(TMapObjectItem)
-Q_DECLARE_METATYPE(TMapRespItem)
+Q_DECLARE_METATYPE(TMapInfo)
+Q_DECLARE_METATYPE(TMapObjectInfo)
+Q_DECLARE_METATYPE(TMapRespawnInfo)
 //------------------------------------------------------------------------------

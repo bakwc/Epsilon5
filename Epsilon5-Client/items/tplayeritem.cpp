@@ -7,10 +7,10 @@ TPlayerItem::TPlayerItem(const QSizeF &size) :
 {
 }
 
-void TPlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    const int r = GetSize().width()/2;
+//void TPlayerItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+//{
+//    const int r = GetSize().width()/2;
 
-    painter->setBrush(Qt::red);
-    painter->drawEllipse(r, r, r, r);
-}
+//    painter->setBrush(Qt::red);
+//    painter->drawEllipse(r, r, r, r);
+//}

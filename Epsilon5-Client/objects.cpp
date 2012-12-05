@@ -41,7 +41,7 @@ void TObjects::LoadObjects(const QString &fileName) {
 
 QImage* TObjects::GetImageById(size_t id) {
     if (ImagesById.find(id) == ImagesById.end()) {
-        throw UException("Image not found");
+        throw UException("Image not found. Image id:" + QString::number(id));
     }
     return ImagesById[id];
 }

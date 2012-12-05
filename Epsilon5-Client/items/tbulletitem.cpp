@@ -8,12 +8,12 @@ TBulletItem::TBulletItem(const QSizeF &size) :
 {
 }
 
-void TBulletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    const int r = GetSize().width()/2;
+//void TBulletItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+//{
+//    const int r = GetSize().width()/2;
 
-    painter->setBrush(Qt::green);
-    painter->drawEllipse(r, r, r, r);
-}
+////    painter->setBrush(Qt::green);
+////    painter->drawEllipse(r, r, r, r);
 
-
+////    painter->drawPixmap(0, 0, Pix);
+//}

@@ -11,6 +11,7 @@ public:
     TMap(QObject *parent = 0);
     ~TMap();
     void DrawFrame(int x, int y, const QSize& frameSize, QPainter &painter);
+    QPixmap GetBackground() { return QPixmap::fromImage(*Background); }
 public slots:
     void LoadMap(QString map);
 private:

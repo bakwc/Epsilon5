@@ -8,8 +8,8 @@ TObjectItem::TObjectItem(const QSizeF &size) :
 
 }
 
-void TObjectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    painter->setBrush(Qt::gray);
-    painter->drawRect(0, 0, GetSize().width(), GetSize().height());
-}
+//void TObjectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+//{
+//    painter->setBrush(Qt::gray);
+//    painter->drawRect(0, 0, GetSize().width(), GetSize().height());
+//}

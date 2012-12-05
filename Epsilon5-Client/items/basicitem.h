@@ -2,6 +2,8 @@
 #define BASICITEM_H
 
 #include <QGraphicsItem>
+#include <QPixmap>
+#include <QImage>
 
 namespace basic {
 
@@ -20,12 +22,18 @@ public:
 
     QRectF boundingRect() const;
 
+    void SetPix(const QImage& pix);
+
     EItemType ItemType() const { return Type; }
     const QSizeF& GetSize() const { return Size; }
+
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 private:
     EItemType   Type;
     QSizeF      Size;
+    QImage     Pix;
 };
 
 }

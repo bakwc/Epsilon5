@@ -9,7 +9,7 @@ public:
     TObjectItem(const QSizeF& size = QSizeF(100, 100));
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+//    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 };
 
 #endif // TOBJECTITEM_H

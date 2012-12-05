@@ -14,4 +14,15 @@ BasicItem::BasicItem(EItemType type, const QSizeF &size) :
 {
 }
 
+void BasicItem::SetPix(const QImage &pix)
+{
+    Pix = pix;
+}
+
+void BasicItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    painter->drawImage(0, 0, Pix);
+}
+
+
 }

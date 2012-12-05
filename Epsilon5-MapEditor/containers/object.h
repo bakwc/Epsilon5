@@ -1,8 +1,12 @@
 // object.h
 #pragma once
-#include <QObject>
-#include <QVector>
 #include <QMetaType>
+//------------------------------------------------------------------------------
+enum ETeam {
+    T_Neutral = 0,
+    T_One,
+    T_Second
+};
 //------------------------------------------------------------------------------
 struct TObjectItem {
     quint32 id;
@@ -14,19 +18,35 @@ struct TObjectItem {
     QString fileName;
 };
 //------------------------------------------------------------------------------
-Q_DECLARE_METATYPE(TObjectItem)
-//------------------------------------------------------------------------------
-class TObjectContainer : public QObject {
-    Q_OBJECT
-public:
-    typedef QVector<TObjectItem> TObjectsVector;
-
-public:
-    explicit TObjectContainer(QObject* parent = 0);
-    int count();
-    TObjectItem operator[](int value);
-
-private:
-    TObjectsVector mItems;
+struct TMapItem {
+    quint32 width;
+    quint32 height;
+    QString name;
+    bool isValid;
 };
+//------------------------------------------------------------------------------
+struct TMapObjectItem {
+    quint32 id;
+    qint32 x;
+    qint32 y;
+    qreal angle;
+    bool isValid;
+};
+//------------------------------------------------------------------------------
+struct TMapRespItem {
+    qint32 x;
+    qint32 y;
+    quint32 captureRadius;
+    quint32 spawnRadius;
+    bool isCapturable;
+    bool isMain;
+    quint32 captireTime;
+    ETeam team;
+    bool isValid;
+};
+//------------------------------------------------------------------------------
+Q_DECLARE_METATYPE(TObjectItem)
+Q_DECLARE_METATYPE(TMapItem)
+Q_DECLARE_METATYPE(TMapObjectItem)
+Q_DECLARE_METATYPE(TMapRespItem)
 //------------------------------------------------------------------------------

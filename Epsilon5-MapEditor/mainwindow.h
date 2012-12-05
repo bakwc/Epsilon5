@@ -2,8 +2,8 @@
 #pragma once
 #include <QMainWindow>
 #include <QAction>
-#include "createmapdialog.h"
-#include "mapcreator.h"
+//#include "createmapdialog.h"
+//#include "mapcreator.h"
 //------------------------------------------------------------------------------
 class TSettings;
 //------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ private:
     void resizeEvent(QResizeEvent*);
 
 private:
-    TMapCreator* mMapPainter;
+//    TMapCreator* mMapPainter;
     QAction* mSaveAtc;
     QAction* mObjectsEditorAction;
     QAction* mMapsEditorAction;

@@ -39,7 +39,7 @@ private slots:
 
 private:
     Ui::TObjectsEditorForm *ui;
-    QMenu* mObjectsMenu;
+//    QMenu* mObjectsMenu;
     TImageCache mDataCache;
     QStandardItemModel* mObjects;
     quint32 mLastUsedId;

@@ -228,6 +228,7 @@ void TObjectsEditorForm::saveAction() {
         fToName = Global::Settings()->GetObjectsPath();
         fToName.append("/").append(itemData.name).append(".png");
         if(!QFile::copy(itemData.fileName, fToName)) {
+            qDebug() << "Failed to save" << fToName;
             continue;
         }
 

@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include "global.h"
 #include "mainwindow.h"
-#include "openmapdialog.h"
+//#include "openmapdialog.h"
 #include "ui/configurationdialog.h"
 #include "ui/objectseditorform.h"
 //------------------------------------------------------------------------------
@@ -11,7 +11,8 @@ TMainWindow::TMainWindow(QWidget* parent)
     : QMainWindow(parent)
     , mObjectsEditorAction(new QAction(this))
     , mMapsEditorAction(new QAction(this))
-    , mObjectsEditorWidget(new TObjectsEditorForm(this)) {
+    , mObjectsEditorWidget(new TObjectsEditorForm(this))
+    , mMapsEditorWidget(new QWidget(this)) {
     // Relocate window
     resize(Global::Settings()->GetWindowSize());
     move(Global::Settings()->GetWindowPos());
@@ -35,6 +36,7 @@ TMainWindow::TMainWindow(QWidget* parent)
     mObjectsEditorAction->setCheckable(true);
     // Activate default widget
     setCentralWidget(mObjectsEditorWidget);
+//    setCentralWidget(mMapsEditorWidget);
     mObjectsEditorAction->setChecked(true);
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(toolsMenu);
@@ -87,8 +89,8 @@ void TMainWindow::openAction() {
 }
 //------------------------------------------------------------------------------
 void TMainWindow::connectMapCreator() {
-    connect(mSaveAtc, SIGNAL(triggered()), mMapPainter, SLOT(save()));
-    this->setCentralWidget(mMapPainter);
+//    connect(mSaveAtc, SIGNAL(triggered()), mMapPainter, SLOT(save()));
+//    this->setCentralWidget(mMapPainter);
 }
 //------------------------------------------------------------------------------
 void TMainWindow::optionsAction() {
@@ -97,12 +99,13 @@ void TMainWindow::optionsAction() {
 }
 //------------------------------------------------------------------------------
 void TMainWindow::objectsEditorAction() {
-    setCentralWidget(mObjectsEditorWidget);
+//    setCentralWidget(mObjectsEditorWidget);
     mObjectsEditorAction->setChecked(true);
     mMapsEditorAction->setChecked(false);
 }
 //------------------------------------------------------------------------------
 void TMainWindow::mapsEditorAction() {
+//    setCentralWidget(mMapsEditorWidget);
     mObjectsEditorAction->setChecked(false);
     mMapsEditorAction->setChecked(true);
 }

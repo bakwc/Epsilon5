@@ -156,10 +156,10 @@ void TMapContainer::saveToFile(const QString& fileName)
         if (!map.isValid()) {
             continue;
         }
-        mapDir.setPath(mBaseDirectory + "/" + map.mapInfo().name);
+        mapDir.setPath(mBaseDirectory + "/" + map.mapInfo()->name);
         if (!mapDir.exists()) {
-            mapDir.mkdir(map.mapInfo().name);
-            mapDir.setPath(mBaseDirectory + "/" + map.mapInfo().name);
+            mapDir.mkdir(map.mapInfo()->name);
+            mapDir.setPath(mBaseDirectory + "/" + map.mapInfo()->name);
         }
         // Save objects
         if (map.objects()->count() > 0) {
@@ -185,13 +185,13 @@ void TMapContainer::saveToFile(const QString& fileName)
         try {
             mapInfoToFile(QString(mapDir.absolutePath())
                           .append("/").append(DEFAULT_MAP_CONFIG_FILE),
-                          map.mapInfo());
+                          *map.mapInfo());
         } catch (const UException& ex) {
             qDebug("%s", ex.what());
             continue;
         }
         // Append to list
-        stream << map.mapInfo().name << "\n";
+        stream << map.mapInfo()->name << "\n";
     }
     file.close();
 }
@@ -222,5 +222,50 @@ void TMapContainer::setBaseDirectory(const QString& directory)
 const QString& TMapContainer::baseDirectory() const
 {
     return mBaseDirectory;
+}
+//------------------------------------------------------------------------------
+QString TMapContainer::mapName(const QModelIndex &index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapItem>().mapInfo()->name;
+}
+//------------------------------------------------------------------------------
+qint32 TMapContainer::mapWidth(const QModelIndex &index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapItem>().mapInfo()->width;
+}
+//------------------------------------------------------------------------------
+qint32 TMapContainer::mapHeight(const QModelIndex &index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapItem>().mapInfo()->height;
+}
+//------------------------------------------------------------------------------
+void TMapContainer::setMapName(const QModelIndex &index, const QString &name)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapItem& mapItem = item->data().value<TMapItem>();
+    mapItem.mapInfo()->name = name;
+    item->setData(QVariant::fromValue(mapItem));
+    item->setText(mapItem.mapInfo()->pack());
+}
+//------------------------------------------------------------------------------
+void TMapContainer::setMapWidth(const QModelIndex &index, qint32 value)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapItem& mapItem = item->data().value<TMapItem>();
+    mapItem.mapInfo()->width = value;
+    item->setData(QVariant::fromValue(mapItem));
+    item->setText(mapItem.mapInfo()->pack());
+}
+//------------------------------------------------------------------------------
+void TMapContainer::setMapHeight(const QModelIndex &index, qint32 value)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapItem& mapItem = item->data().value<TMapItem>();
+    mapItem.mapInfo()->height = value;
+    item->setData(QVariant::fromValue(mapItem));
+    item->setText(mapItem.mapInfo()->pack());
 }
 //------------------------------------------------------------------------------

@@ -72,6 +72,7 @@ TMainWindow::TMainWindow(QWidget* parent)
 //    } catch (const UException& ex) {
 //        qDebug( "%s", qPrintable(ex.what()) );
 //    }
+    mMapsEditorWidget->setObjectsModel(mObjectsEditorWidget->objectsModel());
 }
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow()
@@ -159,3 +160,4 @@ void TMainWindow::fullscreenAction()
 {
     setWindowState(windowState() ^ Qt::WindowFullScreen);
 }
+//------------------------------------------------------------------------------

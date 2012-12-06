@@ -16,7 +16,7 @@ public:
              const TMapRespawnContainer& respawnContainer = TMapRespawnContainer(),
              QObject* parent = 0);
     ~TMapItem();
-    TMapInfo mapInfo() const;
+    TMapInfo* mapInfo() const;
     QString serialize() const;
     bool isValid();
     bool isValid() const;

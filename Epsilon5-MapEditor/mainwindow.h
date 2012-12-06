@@ -6,6 +6,8 @@
 //#include "mapcreator.h"
 //------------------------------------------------------------------------------
 class TSettings;
+class TObjectsEditorForm;
+class TMapsEditorForm;
 //------------------------------------------------------------------------------
 class TMainWindow : public QMainWindow
 {
@@ -34,7 +36,7 @@ private:
     QAction* mSaveAtc;
     QAction* mObjectsEditorAction;
     QAction* mMapsEditorAction;
-    QWidget* mObjectsEditorWidget;
-    QWidget* mMapsEditorWidget;
+    TObjectsEditorForm* mObjectsEditorWidget;
+    TMapsEditorForm* mMapsEditorWidget;
 };
 //------------------------------------------------------------------------------

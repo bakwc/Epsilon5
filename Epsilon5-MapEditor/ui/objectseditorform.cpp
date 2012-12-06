@@ -239,3 +239,7 @@ void TObjectsEditorForm::saveAction()
     file.close();
 }
 //------------------------------------------------------------------------------
+QAbstractItemModel* TObjectsEditorForm::objectsModel()
+{
+    return mObjects;
+}

@@ -26,6 +26,14 @@ public:
     void setBaseDirectory(const QString& directory);
     const QString& baseDirectory() const;
 
+    QString mapName(const QModelIndex& index) const;
+    qint32 mapWidth(const QModelIndex& index) const;
+    qint32 mapHeight(const QModelIndex& index) const;
+
+    void setMapName(const QModelIndex& index, const QString& name);
+    void setMapWidth(const QModelIndex& index, qint32 value);
+    void setMapHeight(const QModelIndex& index, qint32 value);
+
 private:
     TMapInfo mapInfoFromFile(const QString& fileName);
     void mapInfoToFile(const QString& fileName, const TMapInfo& info);

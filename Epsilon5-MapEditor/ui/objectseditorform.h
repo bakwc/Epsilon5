@@ -18,6 +18,7 @@ class TObjectsEditorForm : public QWidget
 public:
     explicit TObjectsEditorForm(QWidget* parent = 0);
     ~TObjectsEditorForm();
+    QAbstractItemModel* objectsModel();
 
 public slots:
     void updateDataList();

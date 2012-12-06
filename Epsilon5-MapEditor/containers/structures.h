@@ -5,7 +5,8 @@
 enum ETeam {
     T_Neutral = 0,
     T_One,
-    T_Second
+    T_Second,
+    ETEAM_SIZE      // MUST be last
 };
 //------------------------------------------------------------------------------
 struct TObjectItem {
@@ -38,8 +39,17 @@ struct TMapRespawnInfo {
     quint32 spawnRadius;
     bool isCapturable;
     bool isMain;
-    quint32 captireTime;
+    quint32 captureTime;
     ETeam team;
+
+    TMapRespawnInfo()
+        : isCapturable(false)
+        , isMain(false)
+        , team(T_Neutral)
+    {}
+
+    QString pack();
+    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 Q_DECLARE_METATYPE(TObjectItem)

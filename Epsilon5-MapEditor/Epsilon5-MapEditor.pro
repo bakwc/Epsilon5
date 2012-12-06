@@ -25,7 +25,10 @@ SOURCES += \
     containers/mapcontainer.cpp \
     containers/structures.cpp \
     containers/mapobjectcontainer.cpp \
-    containers/maprespawncontainer.cpp
+    containers/maprespawncontainer.cpp \
+    containers/mapitem.cpp \
+    containers/mapobjectitem.cpp \
+    containers/maprespawnitem.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -49,7 +52,10 @@ HEADERS += \
     containers/mapcontainer.h \
     containers/mapobjectcontainer.h \
     containers/maprespawncontainer.h \
-    containers/stuctures.h
+    containers/mapitem.h \
+    containers/mapobjectitem.h \
+    containers/maprespawnitem.h \
+    containers/structures.h
 
 FORMS += \
 #    createmapdialog.ui \

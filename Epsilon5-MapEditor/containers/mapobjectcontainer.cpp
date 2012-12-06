@@ -1,32 +1,16 @@
 // mapobjectcontainer.cpp
-#include "mapobjectcontainer.h"
-//------------------------------------------------------------------------------
-TMapObjectItem::TMapObjectItem()
-    : mInfo(new TMapObjectInfo)
-{
-}
-//------------------------------------------------------------------------------
-TMapObjectItem::TMapObjectItem(TMapObjectInfo* objectInfo)
-    : mInfo(objectInfo)
-{
-}
-//------------------------------------------------------------------------------
-TMapObjectItem::~TMapObjectItem()
-{
-    if (mInfo) {
-        delete mInfo;
-    }
-}
-//------------------------------------------------------------------------------
+#include "containers/mapobjectcontainer.h"
 //------------------------------------------------------------------------------
 TMapObjectContainer::TMapObjectContainer(QObject* parent)
-    : TContainer(parent)
+//    : TContainer(parent)
+    : QObject(parent)
 {
 }
 //------------------------------------------------------------------------------
 TMapObjectContainer::TMapObjectContainer(TMapObjectContainer* container,
         QObject* parent)
-    : TContainer(parent)
+//    : TContainer(parent)
+    : QObject(parent)
 {
 }
 //------------------------------------------------------------------------------

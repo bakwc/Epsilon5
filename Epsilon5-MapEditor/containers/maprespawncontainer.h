@@ -1,23 +1,24 @@
-// maprespawnscontainer.h
+// maprespawncontainer.h
 #pragma once
-#include "stuctures.h"
-#include "container.h"
+#include <QObject>
+#include "containers/structures.h"
+#include "containers/container.h"
+#include "containers/maprespawnitem.h"
 //------------------------------------------------------------------------------
-class TMapRespawnItem : public QObject
+class TMapRespawnContainer : public QObject
 {
     Q_OBJECT
 public:
-    TMapRespawnItem();
-    ~TMapRespawnItem();
-    TMapRespawnItem(TMapRespawnInfo* mapInfo);
+    TMapRespawnContainer(QObject* parent = 0);
+    ~TMapRespawnContainer();
+    void addRespawn(const TMapRespawnInfo& info);
+//    void removeRespawn(const TMapRespawnItem& item);
+    void removeRespawn(const QModelIndex& index);
+    QStandardItemModel* model();
+    void loadFromFile(const QString& fileName);
+    void saveToFile(const QString& fileName);
 
 private:
-    TMapRespawnInfo* mInfo;
-};
-//------------------------------------------------------------------------------
-class TMapRespawnContainer : public TContainer
-{
-public:
-    TMapRespawnContainer(QObject* parent = 0);
+    QStandardItemModel* mModel;
 };
 //------------------------------------------------------------------------------

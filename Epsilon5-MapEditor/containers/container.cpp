@@ -1,9 +1,24 @@
-#include "container.h"
+// container.cpp
+#include "containers/container.h"
 //------------------------------------------------------------------------------
-TContainer::TContainer(QObject* parent)
+template<typename Tmodel, typename Titem>
+TContainer<Tmodel, Titem>::TContainer(QObject* parent)
     : QObject(parent)
-    , mModel(new QStandardItemModel(this))
+//    : QStandardItemModel(parent)
+    , mModel(new Tmodel(this))
     , mLastValidId(0)
 {
+}
+//------------------------------------------------------------------------------
+template<typename Tmodel, typename Titem>
+Titem* TContainer<Tmodel, Titem>::item(int row, int column) const
+{
+    return qobject_cast<Titem>(QStandardItemModel::item(row, column));
+}
+//------------------------------------------------------------------------------
+template<typename Tmodel, typename Titem>
+QAbstractItemModel* TContainer<Tmodel, Titem>::model() const
+{
+    return this;
 }
 //------------------------------------------------------------------------------

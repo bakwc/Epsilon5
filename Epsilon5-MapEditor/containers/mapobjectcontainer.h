@@ -1,21 +1,10 @@
 // mapobjectcontainer.h
 #pragma once
-#include "stuctures.h"
-#include "container.h"
+#include "containers/structures.h"
+#include "containers/container.h"
+#include "containers/mapobjectitem.h"
 //------------------------------------------------------------------------------
-class TMapObjectItem : public QObject
-{
-    Q_OBJECT
-public:
-    TMapObjectItem();
-    ~TMapObjectItem();
-    TMapObjectItem(TMapObjectInfo* mapInfo);
-
-private:
-    TMapObjectInfo* mInfo;
-};
-//------------------------------------------------------------------------------
-class TMapObjectContainer : public TContainer
+class TMapObjectContainer : public QObject//TContainer<TMapObjectContainer, TMapObjectItem>
 {
 public:
     TMapObjectContainer(QObject* parent = 0);

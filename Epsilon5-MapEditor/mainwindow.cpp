@@ -1,4 +1,5 @@
 // mainwindow.cpp
+#include <QListView>
 #include <QMenuBar>
 #include <QMessageBox>
 #include "global.h"
@@ -6,6 +7,7 @@
 //#include "openmapdialog.h"
 #include "ui/configurationdialog.h"
 #include "ui/objectseditorform.h"
+#include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -35,10 +37,33 @@ TMainWindow::TMainWindow(QWidget* parent)
             this, SLOT(mapsEditorAction()));
     mMapsEditorAction->setCheckable(true);
     mObjectsEditorAction->setCheckable(true);
+
+
     // Activate default widget
-    setCentralWidget(mObjectsEditorWidget);
+//    setCentralWidget(mObjectsEditorWidget);
 //    setCentralWidget(mMapsEditorWidget);
-    mObjectsEditorAction->setChecked(true);
+//    mObjectsEditorAction->setChecked(true);
+    mObjectsEditorWidget->hide();
+
+
+    TMapRespawnContainer* container = new TMapRespawnContainer(this);
+    QListView* listView = new QListView(this);
+    listView->resize(400,300);
+    listView->setModel(container->model());
+    setCentralWidget(listView);
+
+//    TMapRespawnInfo resp;
+    try {
+        container->loadFromFile(Global::Settings()->GetObjectsPath() + "/points.txt");
+    } catch (const UException& ex) {
+        qDebug( "%s", qPrintable(ex.what()) );
+    }
+
+    container->addRespawn(TMapRespawnInfo());
+
+    container->saveToFile(Global::Settings()->GetObjectsPath() + "/points-new.txt");
+
+
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(toolsMenu);
     this->setMenuBar(menuBar);

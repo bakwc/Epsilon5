@@ -1,39 +1,18 @@
-// mapscontainer.h
+// mapcontainer.h
 #pragma once
-#include <QStandardItem>
-#include "object.h"
-#include "objectcontainer.h"
-#include "respawncontainer.h"
-#include "container.h"
+#include "containers/container.h"
+#include "containers/mapitem.h"
+#include "containers/mapobjectcontainer.h"
+#include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
-//class USettings;
-//class TMapInfo;
-//class TMapObjectContainer;
-//class TMapRespawnContainer;
-//------------------------------------------------------------------------------
-class TMapItem : public QStandardItem
-{
-    Q_OBJECT
-public:
-    TMapItem();
-//    TMapItem(TMapInfo* mapInfo);
-//    TMapItem(TMapInfo* mapInfo, TMapObjectContainer* objects,
-//            TMapRespawnContainer* respawns);
-
-private:
-    TMapInfo* mInfo;
-    TMapObjectContainer* mObjects;
-    TMapRespawnContainer* mRespawns;
-};
-//------------------------------------------------------------------------------
-class TMapContainer : public TContainer
+class TMapContainer : public QObject //TContainer<TMapContainer, TMapItem>
 {
 public:
     typedef quint32 TMapId;
 
 public:
     TMapContainer(QObject* parent = 0);
-    void clear();
+//    void clear();
     TMapId addMap(const TMapInfo& info, const QIcon& preview);
     void removeMap(TMapId mapId);
 

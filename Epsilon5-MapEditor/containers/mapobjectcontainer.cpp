@@ -63,8 +63,11 @@ void TMapObjectContainer::saveToFile(const QString &fileName)
 
     QTextStream stream(&file);
     for( int i = 0; i < mModel->rowCount(); ++i ) {
-        stream << mModel->item(i)->data()
-            .value<TMapObjectItem>().objectInfo().pack() << "\n";
+        const TMapObjectItem* object = mModel->item(i)->data()
+                .value<TMapObjectItem>();
+        if( !object->isValid() )
+            continue;
+        stream << object->serialize() << "\n";
     }
     file.close();
 }

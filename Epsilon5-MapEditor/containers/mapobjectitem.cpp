@@ -8,7 +8,7 @@ TMapObjectItem::TMapObjectItem(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
-TMapObjectItem::TMapObjectItem(const TMapObjectItem &object)
+TMapObjectItem::TMapObjectItem(const TMapObjectItem& object)
     : QObject(object.parent())
     , mInfo(object.mInfo)
     , mValid(object.mValid)

@@ -12,9 +12,9 @@ public:
     TMapItem(QObject* parent = 0);
     TMapItem(const TMapItem& map);
     TMapItem(const TMapInfo& mapInfo,
-        const TMapObjectContainer& objectContainer = TMapObjectContainer(),
-        const TMapRespawnContainer& respawnContainer = TMapRespawnContainer(),
-        QObject* parent = 0);
+             const TMapObjectContainer& objectContainer = TMapObjectContainer(),
+             const TMapRespawnContainer& respawnContainer = TMapRespawnContainer(),
+             QObject* parent = 0);
     ~TMapItem();
     TMapInfo mapInfo() const;
     QString serialize() const;

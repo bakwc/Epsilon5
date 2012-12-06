@@ -20,9 +20,9 @@ TMapItem::TMapItem(const TMapItem& map)
 }
 //------------------------------------------------------------------------------
 TMapItem::TMapItem(const TMapInfo& mapInfo,
-    const TMapObjectContainer& objectContainer,
-    const TMapRespawnContainer& respawnContainer,
-    QObject* parent)
+        const TMapObjectContainer& objectContainer,
+        const TMapRespawnContainer& respawnContainer,
+        QObject* parent)
     : QObject(parent)
     , mInfo(new TMapInfo(mapInfo))
     , mObjects(new TMapObjectContainer(objectContainer))

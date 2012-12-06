@@ -43,33 +43,27 @@ TMainWindow::TMainWindow(QWidget* parent)
             this, SLOT(mapsEditorAction()), QKeySequence("Alt+2"));
     mMapsEditorAction->setCheckable(true);
     mObjectsEditorAction->setCheckable(true);
-
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(viewMenu);
     menuBar->addMenu(toolsMenu);
     this->setMenuBar(menuBar);
     setMinimumSize(600, 400);
     connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
-
     QWidget* widget = new QWidget(this);
     setCentralWidget(widget);
-
     QVBoxLayout* vbox = new QVBoxLayout(widget);
     vbox->addWidget(mObjectsEditorWidget);
     vbox->addWidget(mMapsEditorWidget);
     widget->setLayout(vbox);
-
     // Activate default widget
     //setCentralWidget(mObjectsEditorWidget);
 //    setCentralWidget(mMapsEditorWidget);
     mObjectsEditorAction->setChecked(true);
     mMapsEditorWidget->hide();
-
 //    TMapRespawnContainer* container = new TMapRespawnContainer(this);
 //    QListView* listView = new QListView(this);
 //    listView->resize(400,300);
 //    setCentralWidget(listView);
-
 //    try {
 //        listView->setModel(container->model());
 //        container->loadFromFile(Global::Settings()->GetObjectsPath() + "/points.txt");
@@ -82,8 +76,7 @@ TMainWindow::TMainWindow(QWidget* parent)
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow()
 {
-    if( !isFullScreen() )
-    {
+    if (!isFullScreen()) {
         Global::Settings()->SetWindowSize(size());
         Global::Settings()->SetWindowPos(pos());
     }

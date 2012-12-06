@@ -8,7 +8,7 @@ TMapRespawnItem::TMapRespawnItem(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
-TMapRespawnItem::TMapRespawnItem(const TMapRespawnItem &respawn)
+TMapRespawnItem::TMapRespawnItem(const TMapRespawnItem& respawn)
     : QObject(respawn.parent())
     , mInfo(respawn.mInfo)
     , mValid(respawn.mValid)

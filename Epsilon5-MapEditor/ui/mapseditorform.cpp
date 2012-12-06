@@ -7,7 +7,7 @@
 #include "mapseditorform.h"
 #include "ui_mapseditorform.h"
 //------------------------------------------------------------------------------
-TMapsEditorForm::TMapsEditorForm(QWidget *parent)
+TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::TMapsEditorForm)
     , mMaps(new TMapContainer(this))
@@ -18,15 +18,11 @@ TMapsEditorForm::TMapsEditorForm(QWidget *parent)
     setLayout(ui->mainLayout);
     ui->browserGroupBox->setLayout(ui->horizontalLayout);
     ui->sceneGroupBox->setLayout(ui->sceneLayout);
-
     ui->sceneLayout->addWidget(mView);
     mScene->addSimpleText("Testing");
-
     mMaps->setBaseDirectory(Global::Settings()->GetMapsPath());
-    mMaps->loadFromFile(Global::Settings()->GetMapsPath() + "/maplist.txt");
+    mMaps->loadFromFile("maplist.txt");
     ui->mapsView->setModel(mMaps->model());
-
-
 }
 //------------------------------------------------------------------------------
 TMapsEditorForm::~TMapsEditorForm()
@@ -34,8 +30,7 @@ TMapsEditorForm::~TMapsEditorForm()
     delete ui;
 }
 //------------------------------------------------------------------------------
-void TMapsEditorForm::resizeEvent(QResizeEvent *event)
+void TMapsEditorForm::resizeEvent(QResizeEvent* event)
 {
-
 }
 //------------------------------------------------------------------------------

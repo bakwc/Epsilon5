@@ -10,7 +10,7 @@ public:
     TMapRespawnItem(QObject* parent = 0);
     TMapRespawnItem(const TMapRespawnItem& respawn);
     TMapRespawnItem(const TMapRespawnInfo& respawnInfo,
-        QObject* parent = 0);
+                    QObject* parent = 0);
     ~TMapRespawnItem();
     TMapRespawnInfo respawnInfo() const;
     QString serialize() const;

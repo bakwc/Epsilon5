@@ -6,7 +6,8 @@ class TMapContainer;
 class QGraphicsScene;
 class QGraphicsView;
 //------------------------------------------------------------------------------
-namespace Ui {
+namespace Ui
+{
 class TMapsEditorForm;
 }
 //------------------------------------------------------------------------------
@@ -15,14 +16,14 @@ class TMapsEditorForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit TMapsEditorForm(QWidget *parent = 0);
+    explicit TMapsEditorForm(QWidget* parent = 0);
     ~TMapsEditorForm();
 
 protected:
-    void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent*);
 
 private:
-    Ui::TMapsEditorForm *ui;
+    Ui::TMapsEditorForm* ui;
     TMapContainer* mMaps;
     QGraphicsScene* mScene;
     QGraphicsView* mView;

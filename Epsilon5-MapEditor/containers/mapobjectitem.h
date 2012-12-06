@@ -10,7 +10,7 @@ public:
     TMapObjectItem(QObject* parent = 0);
     TMapObjectItem(const TMapObjectItem& object);
     TMapObjectItem(const TMapObjectInfo& objectInfo,
-        QObject* parent = 0);
+                   QObject* parent = 0);
     ~TMapObjectItem();
     TMapObjectInfo objectInfo() const;
     QString serialize() const;

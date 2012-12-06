@@ -3,18 +3,15 @@
 #include <QObject>
 #include <QStandardItemModel>
 //------------------------------------------------------------------------------
-template<typename Tmodel, typename Titem>
-class TContainer : public QStandardItemModel
+class TContainer : public QObject
 {
-//    Q_OBJECT
+    Q_OBJECT
 public:
     TContainer(QObject* parent = 0);
-    Titem* item(int row, int column = 0) const;
-    QAbstractItemModel* model() const;
+    QStandardItemModel* model() const;
 
 protected:
-//    QStandardItemModel* mModel;
-    Tmodel* mModel;
+    QStandardItemModel* mModel;
     quint32 mLastValidId;
 };
 //------------------------------------------------------------------------------

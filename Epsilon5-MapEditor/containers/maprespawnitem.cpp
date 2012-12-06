@@ -1,7 +1,6 @@
 // maprespawnitem.cpp
-#include "maprespawnitem.h"
+#include "containers/maprespawnitem.h"
 //------------------------------------------------------------------------------
-//TMapRespawnItem::TMapRespawnItem()
 TMapRespawnItem::TMapRespawnItem(QObject* parent)
     : QObject(parent)
     , mInfo(new TMapRespawnInfo)
@@ -9,19 +8,23 @@ TMapRespawnItem::TMapRespawnItem(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
-TMapRespawnItem::TMapRespawnItem(const TMapRespawnInfo& respawnInfo)
-//TMapRespawnItem::TMapRespawnItem(const TMapRespawnInfo& respawnInfo, QObject* parent)
-//    : QObject(parent)
-    : mInfo(new TMapRespawnInfo(respawnInfo))
+TMapRespawnItem::TMapRespawnItem(const TMapRespawnItem &respawn)
+    : QObject(respawn.parent())
+    , mInfo(respawn.mInfo)
+    , mValid(respawn.mValid)
+{
+}
+//------------------------------------------------------------------------------
+TMapRespawnItem::TMapRespawnItem(const TMapRespawnInfo& respawnInfo,
+        QObject* parent)
+    : QObject(parent)
+    , mInfo(new TMapRespawnInfo(respawnInfo))
 {
     mValid = checkData();
 }
 //------------------------------------------------------------------------------
 TMapRespawnItem::~TMapRespawnItem()
 {
-    if (mInfo) {
-        delete mInfo;
-    }
 }
 //------------------------------------------------------------------------------
 bool TMapRespawnItem::checkData()
@@ -43,3 +46,4 @@ QString TMapRespawnItem::serialize()
 {
     return mInfo->pack();
 }
+//------------------------------------------------------------------------------

@@ -49,20 +49,16 @@ TMainWindow::TMainWindow(QWidget* parent)
     TMapRespawnContainer* container = new TMapRespawnContainer(this);
     QListView* listView = new QListView(this);
     listView->resize(400,300);
-    listView->setModel(container->model());
     setCentralWidget(listView);
 
-//    TMapRespawnInfo resp;
     try {
+        listView->setModel(container->model());
         container->loadFromFile(Global::Settings()->GetObjectsPath() + "/points.txt");
+        container->addRespawn(TMapRespawnInfo());
+        container->saveToFile(Global::Settings()->GetObjectsPath() + "/points-new.txt");
     } catch (const UException& ex) {
         qDebug( "%s", qPrintable(ex.what()) );
     }
-
-    container->addRespawn(TMapRespawnInfo());
-
-    container->saveToFile(Global::Settings()->GetObjectsPath() + "/points-new.txt");
-
 
     menuBar->addMenu(fileMenu);
     menuBar->addMenu(toolsMenu);

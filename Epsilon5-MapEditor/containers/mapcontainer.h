@@ -1,24 +1,20 @@
 // mapcontainer.h
 #pragma once
+#include "containers/structures.h"
 #include "containers/container.h"
 #include "containers/mapitem.h"
 #include "containers/mapobjectcontainer.h"
 #include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
-class TMapContainer : public QObject //TContainer<TMapContainer, TMapItem>
+class TMapContainer : public TContainer
 {
 public:
-    typedef quint32 TMapId;
-
-public:
     TMapContainer(QObject* parent = 0);
-//    void clear();
-    TMapId addMap(const TMapInfo& info, const QIcon& preview);
-    void removeMap(TMapId mapId);
-
-    const TMapObjectContainer* objects(TMapId mapId) const;
-    TMapObjectContainer* objects(TMapId mapId);
-
-private:
+    TMapContainer(const TMapContainer& container);
+    ~TMapContainer();
+    void addMap(const TMapInfo& info);
+    void removeMap(const QModelIndex& index);
+    void loadFromFile(const QString& fileName);
+    void saveToFile(const QString& fileName);
 };
 //------------------------------------------------------------------------------

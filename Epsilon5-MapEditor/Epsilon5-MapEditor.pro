@@ -18,12 +18,12 @@ SOURCES += \
 #    mapitemsignal.cpp \
     settings.cpp \
     application.cpp \
+    imagecache.cpp \
     ui/configurationdialog.cpp \
     ui/objectseditorform.cpp \
-    imagecache.cpp \
+    containers/structures.cpp \
     containers/container.cpp \
     containers/mapcontainer.cpp \
-    containers/structures.cpp \
     containers/mapobjectcontainer.cpp \
     containers/maprespawncontainer.cpp \
     containers/mapitem.cpp \
@@ -45,9 +45,10 @@ HEADERS += \
     application.h \
     settings.h \
     global.h \
+    imagecache.h \
     ui/configurationdialog.h \
     ui/objectseditorform.h \
-    imagecache.h \
+    containers/structures.h \
     containers/container.h \
     containers/mapcontainer.h \
     containers/mapobjectcontainer.h \
@@ -55,7 +56,6 @@ HEADERS += \
     containers/mapitem.h \
     containers/mapobjectitem.h \
     containers/maprespawnitem.h \
-    containers/structures.h
 
 FORMS += \
 #    createmapdialog.ui \

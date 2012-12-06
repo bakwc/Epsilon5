@@ -5,10 +5,12 @@
 #include "../utils/uexception.h"
 //------------------------------------------------------------------------------
 TMapRespawnContainer::TMapRespawnContainer(QObject* parent)
-//    : TContainer(parent)
-//    : QStandardItemModel(parent)
-    : QObject(parent)
-    , mModel(new QStandardItemModel(this))
+    : TContainer(parent)
+{
+}
+//------------------------------------------------------------------------------
+TMapRespawnContainer::TMapRespawnContainer(const TMapRespawnContainer &container)
+    : TContainer(container.parent())
 {
 }
 //------------------------------------------------------------------------------
@@ -16,30 +18,19 @@ TMapRespawnContainer::~TMapRespawnContainer()
 {
 }
 //------------------------------------------------------------------------------
-QStandardItemModel* TMapRespawnContainer::model()
-{
-    return mModel;
-}
-//------------------------------------------------------------------------------
 void TMapRespawnContainer::addRespawn(const TMapRespawnInfo& info)
 {
-//    TMapRespawnItem* item = new TMapRespawnItem(info);
-    QStandardItem* item = new QStandardItem();
-    item->setData(QVariant::fromValue(info));
+    QStandardItem* item = new QStandardItem;
+    TMapRespawnItem *respawn = new TMapRespawnItem(info, this);
+    item->setData(QVariant::fromValue(*respawn));
+    item->setText(respawn->serialize());
+    item->setSelectable(false);
     mModel->appendRow(item);
-//    appendRow(item);
 }
-//------------------------------------------------------------------------------
-//void TMapRespawnContainer::removeRespawn(const TMapRespawnItem& item)
-//{
-//    mModel->removeRow(item.row());
-////    removeRow(item.row());
-//}
 //------------------------------------------------------------------------------
 void TMapRespawnContainer::removeRespawn(const QModelIndex &index)
 {
     mModel->removeRow(index.row());
-//    removeRow(index.row())
 }
 //------------------------------------------------------------------------------
 void TMapRespawnContainer::loadFromFile(const QString &fileName)
@@ -65,11 +56,6 @@ void TMapRespawnContainer::loadFromFile(const QString &fileName)
     file.close();
 }
 //------------------------------------------------------------------------------
-//TMapRespawnItem* TMapRespawnContainer::item(int row, int column) const
-//{
-//    return (TMapRespawnItem*)(TContainer::item(row, column));
-//}
-//------------------------------------------------------------------------------
 void TMapRespawnContainer::saveToFile(const QString &fileName)
 {
     QFile file(fileName, this);
@@ -79,9 +65,9 @@ void TMapRespawnContainer::saveToFile(const QString &fileName)
     }
 
     QTextStream stream(&file);
-    QString line;
     for( int i = 0; i < mModel->rowCount(); ++i ) {
-        stream << mModel->item(i)->data().value<TMapRespawnItem>().respawnInfo().pack() << "\n";
+        stream << mModel->item(i)->data()
+            .value<TMapRespawnItem>().serialize() << "\n";
     }
     file.close();
 }

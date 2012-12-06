@@ -1,16 +1,28 @@
 // mapobjectitem.h
 #pragma once
-#include <QStandardItem>
+#include <QObject>
 #include "containers/structures.h"
 //------------------------------------------------------------------------------
-class TMapObjectItem : public QStandardItem
+class TMapObjectItem : public QObject
 {
+    Q_OBJECT
 public:
-    TMapObjectItem();
+    TMapObjectItem(QObject* parent = 0);
+    TMapObjectItem(const TMapObjectItem& object);
+    TMapObjectItem(const TMapObjectInfo& objectInfo,
+        QObject* parent = 0);
     ~TMapObjectItem();
-    TMapObjectItem(TMapObjectInfo* mapInfo);
+    TMapObjectInfo objectInfo() const;
+    QString serialize();
+    bool isValid();
+
+private:
+    bool checkData();
 
 private:
     TMapObjectInfo* mInfo;
+    bool mValid;
 };
+//------------------------------------------------------------------------------
+Q_DECLARE_METATYPE(TMapObjectItem)
 //------------------------------------------------------------------------------

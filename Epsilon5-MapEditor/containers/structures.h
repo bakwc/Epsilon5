@@ -6,7 +6,7 @@ enum ETeam {
     T_Neutral = 0,
     T_One,
     T_Second,
-    ETEAM_SIZE      // MUST be last
+    ETEAM_SIZE      // MUST be last!
 };
 //------------------------------------------------------------------------------
 struct TObjectItem {
@@ -20,9 +20,13 @@ struct TObjectItem {
 };
 //------------------------------------------------------------------------------
 struct TMapInfo {
+    QString name;
     quint32 width;
     quint32 height;
-    QString name;
+
+    TMapInfo();
+    QString pack();
+    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 struct TMapObjectInfo {
@@ -30,6 +34,10 @@ struct TMapObjectInfo {
     qint32 x;
     qint32 y;
     qreal angle;
+
+    TMapObjectInfo();
+    QString pack();
+    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 struct TMapRespawnInfo {
@@ -42,18 +50,10 @@ struct TMapRespawnInfo {
     quint32 captureTime;
     ETeam team;
 
-    TMapRespawnInfo()
-        : isCapturable(false)
-        , isMain(false)
-        , team(T_Neutral)
-    {}
-
+    TMapRespawnInfo();
     QString pack();
     bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 Q_DECLARE_METATYPE(TObjectItem)
-Q_DECLARE_METATYPE(TMapInfo)
-Q_DECLARE_METATYPE(TMapObjectInfo)
-Q_DECLARE_METATYPE(TMapRespawnInfo)
 //------------------------------------------------------------------------------

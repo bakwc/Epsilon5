@@ -1,25 +1,36 @@
 #include "containers/mapcontainer.h"
 //------------------------------------------------------------------------------
 TMapContainer::TMapContainer(QObject* parent)
-//    : TContainer(parent)
-    : QObject(parent)
+    : TContainer(parent)
 {
 }
 //------------------------------------------------------------------------------
-//void TMapContainer::clear()
-//{
-//    mModel->clear();
-//}
+TMapContainer::TMapContainer(const TMapContainer &container)
+    : TContainer(container.parent())
+{
+}
 //------------------------------------------------------------------------------
-TMapContainer::TMapId TMapContainer::addMap(const TMapInfo& info, const QIcon& preview)
+TMapContainer::~TMapContainer()
+{
+}
+//------------------------------------------------------------------------------
+void TMapContainer::addMap(const TMapInfo &info)
 {
     Q_UNUSED(info);
-    Q_UNUSED(preview);
-    return 0;
 }
 //------------------------------------------------------------------------------
-void TMapContainer::removeMap(TMapContainer::TMapId mapId)
+void TMapContainer::removeMap(const QModelIndex &index)
 {
-    Q_UNUSED(mapId);
+    Q_UNUSED(index);
+}
+//------------------------------------------------------------------------------
+void TMapContainer::loadFromFile(const QString &fileName)
+{
+    Q_UNUSED(fileName);
+}
+//------------------------------------------------------------------------------
+void TMapContainer::saveToFile(const QString &fileName)
+{
+    Q_UNUSED(fileName);
 }
 //------------------------------------------------------------------------------

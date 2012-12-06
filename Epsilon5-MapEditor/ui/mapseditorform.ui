@@ -34,6 +34,17 @@
       <property name="title">
        <string>Graphic scene</string>
       </property>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>271</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="sceneLayout"/>
+      </widget>
      </widget>
     </item>
     <item>

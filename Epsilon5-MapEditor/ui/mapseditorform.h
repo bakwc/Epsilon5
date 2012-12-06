@@ -3,6 +3,8 @@
 #include <QWidget>
 //------------------------------------------------------------------------------
 class TMapContainer;
+class QGraphicsScene;
+class QGraphicsView;
 //------------------------------------------------------------------------------
 namespace Ui {
 class TMapsEditorForm;
@@ -16,8 +18,13 @@ public:
     explicit TMapsEditorForm(QWidget *parent = 0);
     ~TMapsEditorForm();
 
+protected:
+    void resizeEvent(QResizeEvent *);
+
 private:
     Ui::TMapsEditorForm *ui;
     TMapContainer* mMaps;
+    QGraphicsScene* mScene;
+    QGraphicsView* mView;
 };
 //------------------------------------------------------------------------------

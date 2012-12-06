@@ -17,13 +17,14 @@ public:
         QObject* parent = 0);
     ~TMapItem();
     TMapInfo mapInfo() const;
-    QString serialize();
+    QString serialize() const;
     bool isValid();
-    TMapObjectContainer* objects();
-    TMapRespawnContainer* respawns();
+    bool isValid() const;
+    TMapObjectContainer* objects() const;
+    TMapRespawnContainer* respawns() const;
 
 private:
-    bool checkData();
+    bool checkData() const;
 
 private:
     TMapInfo* mInfo;

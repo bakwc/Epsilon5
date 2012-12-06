@@ -13,8 +13,9 @@ public:
         QObject* parent = 0);
     ~TMapRespawnItem();
     TMapRespawnInfo respawnInfo() const;
-    QString serialize();
+    QString serialize() const;
     bool isValid();
+    bool isValid() const;
 
 private:
     bool checkData();

@@ -132,10 +132,83 @@ TMapInfo TMapContainer::mapInfoFromFile(const QString &fileName)
     return info;
 }
 //------------------------------------------------------------------------------
+void TMapContainer::mapInfoToFile(const QString &fileName, const TMapInfo& info)
+{
+    USettings settings;
+    USettings::TParametersHash params;
+    params["name"] = info.name;
+    params["width"] = QString().number(info.width);
+    params["height"] = QString().number(info.height);
+
+    try {
+        settings.LoadDefaults(params);
+        settings.Save(fileName);
+    } catch (USettings& ex) {
+        throw UException(QString(Q_FUNC_INFO)
+            .append(":: illegal map config detected in '%1'").arg(fileName));
+    }
+}
+//------------------------------------------------------------------------------
 // Save maplist to file
 void TMapContainer::saveToFile(const QString &fileName)
 {
-    Q_UNUSED(fileName);
+    QFile file(fileName);
+    if( !file.open(QFile::WriteOnly | QFile::Text | QFile::Truncate)) {
+        throw UException(QString(Q_FUNC_INFO)
+            .append(":: open file error: '%1'").arg(fileName));
+    }
+
+    QDir mapDir(mBaseDirectory);
+    QTextStream stream(&file);
+    for( int i = 0; i < mModel->rowCount(); ++i )
+    {
+        const TMapItem& map = mModel->item(i)->data().value<TMapItem>();
+        if( !map.isValid() )
+            continue;
+
+        mapDir.setPath(mBaseDirectory + "/" + map.mapInfo().name);
+        if( !mapDir.exists() )
+        {
+            mapDir.mkdir(map.mapInfo().name);
+            mapDir.setPath(mBaseDirectory + "/" + map.mapInfo().name);
+        }
+
+        // Save objects
+        if( map.objects()->count() > 0 ) {
+            try {
+                map.objects()->saveToFile(QString(mapDir.absolutePath())
+                        .append("/").append(DEFAULT_OBJECTS_FILE));
+            } catch (const UException& ex) {
+                qDebug( "%s", ex.what() );
+                continue;
+            }
+        }
+
+        // Save respawns
+        if( map.respawns()->count() > 0 ) {
+            try {
+                map.respawns()->saveToFile(QString(mapDir.absolutePath())
+                        .append("/").append(DEFAULT_RESPAWNS_FILE));
+            } catch (const UException& ex) {
+                qDebug( "%s", ex.what() );
+                continue;
+            }
+        }
+
+        // Save config
+        try {
+            mapInfoToFile(QString(mapDir.absolutePath())
+                    .append("/").append(DEFAULT_MAP_CONFIG_FILE),
+                    map.mapInfo());
+        } catch (const UException& ex) {
+            qDebug( "%s", ex.what() );
+            continue;
+        }
+
+        // Append to list
+        stream << map.mapInfo().name << "\n";
+    }
+    file.close();
 }
 //------------------------------------------------------------------------------
 QStandardItemModel* TMapContainer::objectModel(const QModelIndex &index) const
@@ -160,5 +233,10 @@ void TMapContainer::setBaseDirectory(const QString &directory)
     }
 
     mBaseDirectory = directory;
+}
+//------------------------------------------------------------------------------
+const QString& TMapContainer::baseDirectory() const
+{
+    return mBaseDirectory;
 }
 //------------------------------------------------------------------------------

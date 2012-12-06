@@ -35,7 +35,7 @@ TMapItem::~TMapItem()
 {
 }
 //------------------------------------------------------------------------------
-bool TMapItem::checkData()
+bool TMapItem::checkData() const
 {
     // TODO: Add map checking
     return !mInfo->name.isEmpty();
@@ -46,22 +46,27 @@ bool TMapItem::isValid()
     return mValid = checkData();
 }
 //------------------------------------------------------------------------------
+bool TMapItem::isValid() const
+{
+    return mValid;
+}
+//------------------------------------------------------------------------------
 TMapInfo TMapItem::mapInfo() const
 {
     return *mInfo;
 }
 //------------------------------------------------------------------------------
-QString TMapItem::serialize()
+QString TMapItem::serialize() const
 {
     return mInfo->pack();
 }
 //------------------------------------------------------------------------------
-TMapObjectContainer* TMapItem::objects()
+TMapObjectContainer* TMapItem::objects() const
 {
     return mObjects;
 }
 //------------------------------------------------------------------------------
-TMapRespawnContainer* TMapItem::respawns()
+TMapRespawnContainer* TMapItem::respawns() const
 {
     return mRespawns;
 }

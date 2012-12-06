@@ -63,11 +63,11 @@ void TMapRespawnContainer::saveToFile(const QString &fileName)
 
     QTextStream stream(&file);
     for( int i = 0; i < mModel->rowCount(); ++i ) {
-        const TMapRespawnItem* respawn = mModel->item(i)->data()
+        const TMapRespawnItem& respawn = mModel->item(i)->data()
                 .value<TMapRespawnItem>();
-        if( !respawn->isValid() )
+        if( !respawn.isValid() )
             continue;
-        stream << respawn->serialize() << "\n";
+        stream << respawn.serialize() << "\n";
     }
     file.close();
 }

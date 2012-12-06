@@ -37,12 +37,17 @@ bool TMapRespawnItem::isValid()
     return mValid = checkData();
 }
 //------------------------------------------------------------------------------
+bool TMapRespawnItem::isValid() const
+{
+    return mValid;
+}
+//------------------------------------------------------------------------------
 TMapRespawnInfo TMapRespawnItem::respawnInfo() const
 {
     return *mInfo;
 }
 //------------------------------------------------------------------------------
-QString TMapRespawnItem::serialize()
+QString TMapRespawnItem::serialize() const
 {
     return mInfo->pack();
 }

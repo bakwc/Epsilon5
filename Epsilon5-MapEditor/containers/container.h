@@ -10,6 +10,7 @@ public:
     TContainer(QObject* parent = 0);
     QStandardItemModel* model() const;
     void clear();
+    int count() const;
 
 protected:
     QStandardItemModel* mModel;

@@ -24,9 +24,11 @@ public:
     QStandardItemModel* objectModel(const QModelIndex &index) const;
     QStandardItemModel* respawnModel(const QModelIndex &index) const;
     void setBaseDirectory(const QString& directory);
+    const QString& baseDirectory() const;
 
 private:
     TMapInfo mapInfoFromFile(const QString& fileName);
+    void mapInfoToFile(const QString& fileName, const TMapInfo& info);
 
 private:
     QString mBaseDirectory;

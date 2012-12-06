@@ -36,12 +36,17 @@ bool TMapObjectItem::isValid()
     return mValid = checkData();
 }
 //------------------------------------------------------------------------------
+bool TMapObjectItem::isValid() const
+{
+    return mValid;
+}
+//------------------------------------------------------------------------------
 TMapObjectInfo TMapObjectItem::objectInfo() const
 {
     return *mInfo;
 }
 //------------------------------------------------------------------------------
-QString TMapObjectItem::serialize()
+QString TMapObjectItem::serialize() const
 {
     return mInfo->pack();
 }

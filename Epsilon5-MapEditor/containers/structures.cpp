@@ -17,7 +17,7 @@ TMapInfo::TMapInfo()
 //------------------------------------------------------------------------------
 QString TMapInfo::pack()
 {
-    return QString("%1:%2:%3");
+    return QString("%1:%2:%3").arg(name).arg(width).arg(height);
 }
 //------------------------------------------------------------------------------
 bool TMapInfo::unpack(const QString &string)

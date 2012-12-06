@@ -20,6 +20,7 @@ public slots:
     void optionsAction();
     void objectsEditorAction();
     void mapsEditorAction();
+    void fullscreenAction();
 
 signals:
     void resized();

@@ -28,7 +28,8 @@ SOURCES += \
     containers/maprespawncontainer.cpp \
     containers/mapitem.cpp \
     containers/mapobjectitem.cpp \
-    containers/maprespawnitem.cpp
+    containers/maprespawnitem.cpp \
+    ui/mapseditorform.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -56,12 +57,14 @@ HEADERS += \
     containers/mapitem.h \
     containers/mapobjectitem.h \
     containers/maprespawnitem.h \
+    ui/mapseditorform.h
 
 FORMS += \
 #    createmapdialog.ui \
 #    openmapdialog.ui \
     ui/configurationdialog.ui \
-    ui/objectseditorform.ui
+    ui/objectseditorform.ui \
+    ui/mapseditorform.ui
 
 QMAKE_CXXFLAGS += -std=c++0x
 # -mfpmath=sse

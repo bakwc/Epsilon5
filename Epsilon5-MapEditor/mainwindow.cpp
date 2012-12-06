@@ -1,4 +1,5 @@
 // mainwindow.cpp
+#include <QVBoxLayout>
 #include <QListView>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -7,6 +8,7 @@
 //#include "openmapdialog.h"
 #include "ui/configurationdialog.h"
 #include "ui/objectseditorform.h"
+#include "ui/mapseditorform.h"
 #include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
@@ -14,7 +16,7 @@ TMainWindow::TMainWindow(QWidget* parent)
     , mObjectsEditorAction(new QAction(this))
     , mMapsEditorAction(new QAction(this))
     , mObjectsEditorWidget(new TObjectsEditorForm(this))
-    , mMapsEditorWidget(new QWidget(this))
+    , mMapsEditorWidget(new TMapsEditorForm(this))
 {
     // Relocate window
     resize(Global::Settings()->GetWindowSize());
@@ -27,50 +29,64 @@ TMainWindow::TMainWindow(QWidget* parent)
     mSaveAtc = fileMenu->addAction(tr("Save"));
     fileMenu->addSeparator();
     fileMenu->addAction(tr("Quit"), this, SLOT(close()), QKeySequence("F12"));
+    // View menu
+    QMenu* viewMenu = new QMenu(tr("View"), menuBar);
+    viewMenu->addAction(tr("Fullscreen"), this,
+            SLOT(fullscreenAction()), QKeySequence("F11"));
     // Tools menu
     QMenu* toolsMenu = new QMenu(tr("Tools"), menuBar);
     toolsMenu->addAction(tr("Options..."), this, SLOT(optionsAction()));
     toolsMenu->addSeparator();
     mObjectsEditorAction = toolsMenu->addAction(tr("Objects Editor"),
-            this, SLOT(objectsEditorAction()));
+            this, SLOT(objectsEditorAction()), QKeySequence("Alt+1"));
     mMapsEditorAction = toolsMenu->addAction(tr("Maps Editor"),
-            this, SLOT(mapsEditorAction()));
+            this, SLOT(mapsEditorAction()), QKeySequence("Alt+2"));
     mMapsEditorAction->setCheckable(true);
     mObjectsEditorAction->setCheckable(true);
 
-
-    // Activate default widget
-//    setCentralWidget(mObjectsEditorWidget);
-//    setCentralWidget(mMapsEditorWidget);
-//    mObjectsEditorAction->setChecked(true);
-    mObjectsEditorWidget->hide();
-
-
-    TMapRespawnContainer* container = new TMapRespawnContainer(this);
-    QListView* listView = new QListView(this);
-    listView->resize(400,300);
-    setCentralWidget(listView);
-
-    try {
-        listView->setModel(container->model());
-        container->loadFromFile(Global::Settings()->GetObjectsPath() + "/points.txt");
-        container->addRespawn(TMapRespawnInfo());
-        container->saveToFile(Global::Settings()->GetObjectsPath() + "/points-new.txt");
-    } catch (const UException& ex) {
-        qDebug( "%s", qPrintable(ex.what()) );
-    }
-
     menuBar->addMenu(fileMenu);
+    menuBar->addMenu(viewMenu);
     menuBar->addMenu(toolsMenu);
     this->setMenuBar(menuBar);
     setMinimumSize(600, 400);
     connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
+
+    QWidget* widget = new QWidget(this);
+    setCentralWidget(widget);
+
+    QVBoxLayout* vbox = new QVBoxLayout(widget);
+    vbox->addWidget(mObjectsEditorWidget);
+    vbox->addWidget(mMapsEditorWidget);
+    widget->setLayout(vbox);
+
+    // Activate default widget
+    //setCentralWidget(mObjectsEditorWidget);
+//    setCentralWidget(mMapsEditorWidget);
+    mObjectsEditorAction->setChecked(true);
+    mMapsEditorWidget->hide();
+
+//    TMapRespawnContainer* container = new TMapRespawnContainer(this);
+//    QListView* listView = new QListView(this);
+//    listView->resize(400,300);
+//    setCentralWidget(listView);
+
+//    try {
+//        listView->setModel(container->model());
+//        container->loadFromFile(Global::Settings()->GetObjectsPath() + "/points.txt");
+//        container->addRespawn(TMapRespawnInfo());
+//        container->saveToFile(Global::Settings()->GetObjectsPath() + "/points-new.txt");
+//    } catch (const UException& ex) {
+//        qDebug( "%s", qPrintable(ex.what()) );
+//    }
 }
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow()
 {
-    Global::Settings()->SetWindowSize(size());
-    Global::Settings()->SetWindowPos(pos());
+    if( !isFullScreen() )
+    {
+        Global::Settings()->SetWindowSize(size());
+        Global::Settings()->SetWindowPos(pos());
+    }
 }
 //------------------------------------------------------------------------------
 void TMainWindow::newAction()
@@ -127,14 +143,16 @@ void TMainWindow::optionsAction()
 //------------------------------------------------------------------------------
 void TMainWindow::objectsEditorAction()
 {
-//    setCentralWidget(mObjectsEditorWidget);
+    mObjectsEditorWidget->show();
+    mMapsEditorWidget->hide();
     mObjectsEditorAction->setChecked(true);
     mMapsEditorAction->setChecked(false);
 }
 //------------------------------------------------------------------------------
 void TMainWindow::mapsEditorAction()
 {
-//    setCentralWidget(mMapsEditorWidget);
+    mObjectsEditorWidget->hide();
+    mMapsEditorWidget->show();
     mObjectsEditorAction->setChecked(false);
     mMapsEditorAction->setChecked(true);
 }
@@ -144,3 +162,7 @@ void TMainWindow::resizeEvent(QResizeEvent*)
     emit resized();
 }
 //------------------------------------------------------------------------------
+void TMainWindow::fullscreenAction()
+{
+    setWindowState(windowState() ^ Qt::WindowFullScreen);
+}

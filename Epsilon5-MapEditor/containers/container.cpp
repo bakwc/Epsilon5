@@ -13,3 +13,9 @@ QStandardItemModel* TContainer::model() const
     return mModel;
 }
 //------------------------------------------------------------------------------
+void TContainer::clear()
+{
+    mModel->clear();
+    mLastValidId = 0;
+}
+//------------------------------------------------------------------------------

@@ -19,6 +19,8 @@ public:
     TMapInfo mapInfo() const;
     QString serialize();
     bool isValid();
+    TMapObjectContainer* objects();
+    TMapRespawnContainer* respawns();
 
 private:
     bool checkData();

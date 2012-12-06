@@ -24,7 +24,7 @@ void TMapRespawnContainer::addRespawn(const TMapRespawnInfo& info)
     TMapRespawnItem *respawn = new TMapRespawnItem(info, this);
     item->setData(QVariant::fromValue(*respawn));
     item->setText(respawn->serialize());
-    item->setSelectable(false);
+    item->setEditable(false);
     mModel->appendRow(item);
 }
 //------------------------------------------------------------------------------
@@ -46,10 +46,7 @@ void TMapRespawnContainer::loadFromFile(const QString &fileName)
     while( !stream.atEnd() )
     {
         if( !info.unpack(stream.readLine()) )
-        {
-            qDebug( "%s :: Ingonring...", Q_FUNC_INFO );
             continue;
-        }
 
         addRespawn(info);
     }

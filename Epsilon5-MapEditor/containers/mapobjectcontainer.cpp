@@ -23,8 +23,8 @@ void TMapObjectContainer::addObject(const TMapObjectInfo &info)
     QStandardItem* item = new QStandardItem;
     TMapObjectItem* object = new TMapObjectItem(info);
     item->setData(QVariant::fromValue(*object));
-    item->setText(object->objectInfo().pack());
-    item->setSelectable(false);
+    item->setText(object->serialize());
+    item->setEditable(false);
     mModel->appendRow(item);
 }
 //------------------------------------------------------------------------------
@@ -46,10 +46,7 @@ void TMapObjectContainer::loadFromFile(const QString &fileName)
     while( !stream.atEnd() )
     {
         if( !info.unpack(stream.readLine()) )
-        {
-            qDebug( "%s :: Ingonring...", Q_FUNC_INFO );
             continue;
-        }
 
         addObject(info);
     }

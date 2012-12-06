@@ -9,6 +9,7 @@ class TContainer : public QObject
 public:
     TContainer(QObject* parent = 0);
     QStandardItemModel* model() const;
+    void clear();
 
 protected:
     QStandardItemModel* mModel;

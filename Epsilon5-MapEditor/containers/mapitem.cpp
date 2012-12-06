@@ -56,3 +56,13 @@ QString TMapItem::serialize()
     return mInfo->pack();
 }
 //------------------------------------------------------------------------------
+TMapObjectContainer* TMapItem::objects()
+{
+    return mObjects;
+}
+//------------------------------------------------------------------------------
+TMapRespawnContainer* TMapItem::respawns()
+{
+    return mRespawns;
+}
+//------------------------------------------------------------------------------

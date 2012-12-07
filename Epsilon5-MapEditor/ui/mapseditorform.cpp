@@ -35,6 +35,14 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     // Connecting...
     connect(ui->mapNameEdit, SIGNAL(editingFinished()),
             this, SLOT(updateMapSettings()));
+    connect(ui->posXObjectBox, SIGNAL(editingFinished()),
+            this, SLOT(updateObjectSettings()));
+    connect(ui->posYObjectBox, SIGNAL(editingFinished()),
+            this, SLOT(updateObjectSettings()));
+    connect(ui->angleObjectBox, SIGNAL(editingFinished()),
+            this, SLOT(updateObjectSettings()));
+    connect(ui->idObjectEdit, SIGNAL(editingFinished()),
+            this, SLOT(updateObjectSettings()));
 
     // Just for testing...
     mScene->addSimpleText("Testing");
@@ -76,6 +84,9 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
 void TMapsEditorForm::on_toolBox_currentChanged(int index)
 {
     Q_UNUSED( index );
+    if( ui->mapsView->currentIndex().row() < 0 )
+        return;
+
     if( ui->toolBox->currentWidget() == ui->pageObjects )
     {
         ui->listView->setModel(mMaps->objectModel(ui->mapsView->currentIndex()));
@@ -97,6 +108,19 @@ void TMapsEditorForm::updateMapSettings()
     mMaps->setMapHeight(index, ui->mapHeightBox->value());
 }
 //------------------------------------------------------------------------------
+void TMapsEditorForm::updateObjectSettings()
+{
+    QModelIndex mapIndex = ui->mapsView->currentIndex();
+    QModelIndex index = ui->listView->currentIndex();
+    if( !mapIndex.isValid() || !index.isValid() )
+        return;
+
+    mMaps->objects(mapIndex)->setX(index, ui->posXObjectBox->value());
+    mMaps->objects(mapIndex)->setX(index, ui->posYObjectBox->value());
+    mMaps->objects(mapIndex)->setAngle(index, ui->angleObjectBox->value());
+    mMaps->objects(mapIndex)->setId(index, ui->idObjectEdit->text().toUInt());
+}
+//------------------------------------------------------------------------------
 void TMapsEditorForm::showMapListContentMenu(QPoint point)
 {
     QMenu menu;
@@ -112,3 +136,24 @@ void TMapsEditorForm::saveMapListAction()
     mMaps->saveToFile("maplist.txt");
 }
 //------------------------------------------------------------------------------
+void TMapsEditorForm::on_listView_clicked(QModelIndex index)
+{
+    if( ui->toolBox->currentWidget() == ui->pageObjects )
+    {
+        ui->posXObjectBox->setValue(
+                mMaps->objects(ui->mapsView->currentIndex())->x(index));
+        ui->posYObjectBox->setValue(
+                mMaps->objects(ui->mapsView->currentIndex())->y(index));
+        ui->angleObjectBox->setValue(
+                mMaps->objects(ui->mapsView->currentIndex())->angle(index));
+        ui->idObjectEdit->setText(QString().number(
+                mMaps->objects(ui->mapsView->currentIndex())->id(index)));
+        return;
+    }
+
+    if( ui->toolBox->currentWidget() == ui->pageRespawns )
+    {
+
+        return;
+    }
+}

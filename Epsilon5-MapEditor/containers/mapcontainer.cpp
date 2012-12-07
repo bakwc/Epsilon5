@@ -226,22 +226,32 @@ const QString& TMapContainer::baseDirectory() const
     return mBaseDirectory;
 }
 //------------------------------------------------------------------------------
-QString TMapContainer::mapName(const QModelIndex &index) const
+TMapItem TMapContainer::mapItemFromIndex(const QModelIndex &index) const
 {
     const QStandardItem* item = mModel->itemFromIndex(index);
-    return item->data().value<TMapItem>().mapInfo()->name;
+    return item->data().value<TMapItem>();
+}
+//TMapObjectItem TMapContainer::objectItemFromIndex(const QModelIndex& mapIndex,
+//        const QModelIndex& index) const
+//{
+//    const QStandardItem* item = mModel->itemFromIndex(mapIndex);
+//    TMapItem mapItem = item->data().value<TMapItem>();
+//    return mapItem.objects();
+//}
+//------------------------------------------------------------------------------
+QString TMapContainer::mapName(const QModelIndex &index) const
+{
+    return mapItemFromIndex(index).mapInfo()->name;
 }
 //------------------------------------------------------------------------------
 qint32 TMapContainer::mapWidth(const QModelIndex &index) const
 {
-    const QStandardItem* item = mModel->itemFromIndex(index);
-    return item->data().value<TMapItem>().mapInfo()->width;
+    return mapItemFromIndex(index).mapInfo()->width;
 }
 //------------------------------------------------------------------------------
 qint32 TMapContainer::mapHeight(const QModelIndex &index) const
 {
-    const QStandardItem* item = mModel->itemFromIndex(index);
-    return item->data().value<TMapItem>().mapInfo()->height;
+    return mapItemFromIndex(index).mapInfo()->height;
 }
 //------------------------------------------------------------------------------
 void TMapContainer::setMapName(const QModelIndex &index, const QString &name)
@@ -270,4 +280,50 @@ void TMapContainer::setMapHeight(const QModelIndex &index, qint32 value)
     item->setData(QVariant::fromValue(mapItem));
     item->setText(mapItem.mapInfo()->pack());
 }
+//------------------------------------------------------------------------------
+TMapObjectContainer* TMapContainer::objects(const QModelIndex &mapIndex)
+{
+    QStandardItem* item = mModel->itemFromIndex(mapIndex);
+    const TMapItem& mapItem = item->data().value<TMapItem>();
+    return mapItem.objects();
+}
+//------------------------------------------------------------------------------
+//qint32 objectX(const QModelIndex& mapIndex, const QModelIndex& index) const
+//{
+//}
+////------------------------------------------------------------------------------
+//qint32 TMapContainer::objectY(const QModelIndex& mapIndex,
+//        const QModelIndex& index) const
+//{
+//}
+////------------------------------------------------------------------------------
+//qreal TMapContainer::objectAngle(const QModelIndex& mapIndex,
+//        const QModelIndex& index) const
+//{
+//}
+////------------------------------------------------------------------------------
+//quint32 TMapContainer::objectId(const QModelIndex& mapIndex,
+//        const QModelIndex& index) const
+//{
+//}
+////------------------------------------------------------------------------------
+//void TMapContainer::setObjectX(const QModelIndex& mapIndex,
+//        const QModelIndex& index, qint32 x)
+//{
+//}
+////------------------------------------------------------------------------------
+//void TMapContainer::setObjectY(const QModelIndex& mapIndex,
+//        const QModelIndex& index, qint32 y)
+//{
+//}
+////------------------------------------------------------------------------------
+//void TMapContainer::setObjectAngle(const QModelIndex& mapIndex,
+//        const QModelIndex& index, qreal angle)
+//{
+//}
+////------------------------------------------------------------------------------
+//void sTMapContainer::etObjectId(const QModelIndex& mapIndex,
+//        const QModelIndex& index, quint32 id)
+//{
+//}
 //------------------------------------------------------------------------------

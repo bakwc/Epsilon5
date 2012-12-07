@@ -48,9 +48,9 @@ bool TMapObjectItem::isValid() const
     return mValid;
 }
 //------------------------------------------------------------------------------
-TMapObjectInfo TMapObjectItem::objectInfo() const
+TMapObjectInfo* TMapObjectItem::objectInfo() const
 {
-    return *mInfo;
+    return mInfo;
 }
 //------------------------------------------------------------------------------
 QString TMapObjectItem::serialize() const

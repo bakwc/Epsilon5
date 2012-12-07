@@ -77,3 +77,63 @@ void TMapObjectContainer::saveToFile(const QString& fileName)
     file.close();
 }
 //------------------------------------------------------------------------------
+qint32 TMapObjectContainer::x(const QModelIndex& index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapObjectItem>().objectInfo()->x;
+}
+//------------------------------------------------------------------------------
+qint32 TMapObjectContainer::y(const QModelIndex& index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapObjectItem>().objectInfo()->y;
+}
+//------------------------------------------------------------------------------
+qreal TMapObjectContainer::angle(const QModelIndex& index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapObjectItem>().objectInfo()->angle;
+}
+//------------------------------------------------------------------------------
+quint32 TMapObjectContainer::id(const QModelIndex& index) const
+{
+    const QStandardItem* item = mModel->itemFromIndex(index);
+    return item->data().value<TMapObjectItem>().objectInfo()->id;
+}
+//------------------------------------------------------------------------------
+void TMapObjectContainer::setX(const QModelIndex& index, qint32 x)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapObjectItem& objectItem = item->data().value<TMapObjectItem>();
+    objectItem.objectInfo()->x = x;
+    item->setData(QVariant::fromValue(objectItem));
+    item->setText(objectItem.objectInfo()->pack());
+}
+//------------------------------------------------------------------------------
+void TMapObjectContainer::setY(const QModelIndex& index, qint32 y)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapObjectItem& objectItem = item->data().value<TMapObjectItem>();
+    objectItem.objectInfo()->y = y;
+    item->setData(QVariant::fromValue(objectItem));
+    item->setText(objectItem.objectInfo()->pack());
+}
+//------------------------------------------------------------------------------
+void TMapObjectContainer::setAngle(const QModelIndex& index, qreal angle)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapObjectItem& objectItem = item->data().value<TMapObjectItem>();
+    objectItem.objectInfo()->angle = angle;
+    item->setData(QVariant::fromValue(objectItem));
+    item->setText(objectItem.objectInfo()->pack());
+}
+//------------------------------------------------------------------------------
+void TMapObjectContainer::setId(const QModelIndex& index, quint32 id)
+{
+    QStandardItem* item = mModel->itemFromIndex(index);
+    const TMapObjectItem& objectItem = item->data().value<TMapObjectItem>();
+    objectItem.objectInfo()->id = id;
+    item->setData(QVariant::fromValue(objectItem));
+    item->setText(objectItem.objectInfo()->pack());
+}
+//------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ public:
     ~TMapObjectItem();
     TMapObjectItem& operator =(const TMapObjectItem& object);
 
-    TMapObjectInfo objectInfo() const;
+    TMapObjectInfo* objectInfo() const;
     QString serialize() const;
     bool isValid();
     bool isValid() const;

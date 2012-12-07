@@ -85,7 +85,7 @@
           <item>
            <widget class="QToolBox" name="toolBox">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -99,11 +99,11 @@
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>200</height>
+              <height>300</height>
              </size>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="pageSettings">
              <property name="geometry">
@@ -111,7 +111,7 @@
                <x>0</x>
                <y>0</y>
                <width>252</width>
-               <height>116</height>
+               <height>127</height>
               </rect>
              </property>
              <attribute name="label">
@@ -209,8 +209,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>96</width>
-               <height>26</height>
+               <width>252</width>
+               <height>127</height>
               </rect>
              </property>
              <attribute name="label">
@@ -267,7 +267,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QSpinBox" name="spinBox_3">
+                <widget class="QSpinBox" name="posXObjectBox">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -286,7 +286,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QSpinBox" name="spinBox_4">
+                <widget class="QSpinBox" name="posYObjectBox">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -305,7 +305,7 @@
                 </widget>
                </item>
                <item row="2" column="1">
-                <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                <widget class="QDoubleSpinBox" name="angleObjectBox">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -321,7 +321,7 @@
                 </widget>
                </item>
                <item row="3" column="1">
-                <widget class="QLineEdit" name="lineEdit_2">
+                <widget class="QLineEdit" name="idObjectEdit">
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
                  </property>
@@ -338,8 +338,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>96</width>
-               <height>26</height>
+               <width>252</width>
+               <height>127</height>
               </rect>
              </property>
              <attribute name="label">
@@ -566,7 +566,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>200</width>
+                  <width>100</width>
                   <height>150</height>
                  </size>
                 </property>
@@ -608,7 +608,7 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>150</width>
+                  <width>100</width>
                   <height>0</height>
                  </size>
                 </property>

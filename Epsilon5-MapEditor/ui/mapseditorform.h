@@ -26,6 +26,7 @@ protected:
 
 private slots:
     void on_mapsView_clicked(QModelIndex index);
+    void on_toolBox_currentChanged(int index);
 
     void showMapListContentMenu(QPoint point);
     void updateMapSettings();

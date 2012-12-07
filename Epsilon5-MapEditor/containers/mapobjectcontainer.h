@@ -10,6 +10,8 @@ public:
     TMapObjectContainer(QObject* parent = 0);
     TMapObjectContainer(const TMapObjectContainer& container);
     ~TMapObjectContainer();
+    TMapObjectContainer& operator =(const TMapObjectContainer& container);
+
     void addObject(const TMapObjectInfo& info);
     void removeObject(const QModelIndex& index);
     void loadFromFile(const QString& fileName);

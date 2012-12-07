@@ -8,13 +8,6 @@ TMapObjectItem::TMapObjectItem(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
-TMapObjectItem::TMapObjectItem(const TMapObjectItem& object)
-    : QObject(object.parent())
-    , mInfo(object.mInfo)
-    , mValid(object.mValid)
-{
-}
-//------------------------------------------------------------------------------
 TMapObjectItem::TMapObjectItem(const TMapObjectInfo& objectInfo, QObject* parent)
     : QObject(parent)
     , mInfo(new TMapObjectInfo(objectInfo))
@@ -22,8 +15,22 @@ TMapObjectItem::TMapObjectItem(const TMapObjectInfo& objectInfo, QObject* parent
     mValid = checkData();
 }
 //------------------------------------------------------------------------------
+TMapObjectItem::TMapObjectItem(const TMapObjectItem& object)
+    : QObject(object.parent())
+    , mInfo(new TMapObjectInfo(*object.mInfo))
+    , mValid(object.mValid)
+{
+}
+//------------------------------------------------------------------------------
 TMapObjectItem::~TMapObjectItem()
 {
+}
+//------------------------------------------------------------------------------
+TMapObjectItem& TMapObjectItem::operator =(const TMapObjectItem& object)
+{
+    mInfo = new TMapObjectInfo(*object.mInfo);
+    mValid = object.mValid;
+    return *this;
 }
 //------------------------------------------------------------------------------
 bool TMapObjectItem::checkData()

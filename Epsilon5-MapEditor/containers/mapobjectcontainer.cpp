@@ -10,12 +10,18 @@ TMapObjectContainer::TMapObjectContainer(QObject* parent)
 }
 //------------------------------------------------------------------------------
 TMapObjectContainer::TMapObjectContainer(const TMapObjectContainer& container)
-    : TContainer(container.parent())
+    : TContainer(container)
 {
 }
 //------------------------------------------------------------------------------
 TMapObjectContainer::~TMapObjectContainer()
 {
+}
+//------------------------------------------------------------------------------
+TMapObjectContainer& TMapObjectContainer::operator =(
+        const TMapObjectContainer& container)
+{
+    return TMapObjectContainer::operator =(container);
 }
 //------------------------------------------------------------------------------
 void TMapObjectContainer::addObject(const TMapObjectInfo& info)
@@ -26,6 +32,7 @@ void TMapObjectContainer::addObject(const TMapObjectInfo& info)
     item->setText(object->serialize());
     item->setEditable(false);
     mModel->appendRow(item);
+    ++mLastValidId;
 }
 //------------------------------------------------------------------------------
 void TMapObjectContainer::removeObject(const QModelIndex& index)

@@ -8,6 +8,28 @@ TContainer::TContainer(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
+TContainer::TContainer(const TContainer& container)
+    : QObject(container.parent())
+    , mModel(new QStandardItemModel(this))
+    , mLastValidId(container.mLastValidId)
+{
+    for (int i = 0; i < container.mModel->rowCount(); ++i) {
+        QStandardItem* item = container.mModel->item(i);
+        mModel->appendRow(item->clone());
+    }
+}
+//------------------------------------------------------------------------------
+TContainer::~TContainer()
+{
+}
+//------------------------------------------------------------------------------
+TContainer& TContainer::operator =(const TContainer& container)
+{
+    mModel = new QStandardItemModel(container.mModel);
+    mLastValidId = container.mLastValidId;
+    return *this;
+}
+//------------------------------------------------------------------------------
 QStandardItemModel* TContainer::model() const
 {
     return mModel;

@@ -15,6 +15,13 @@ TMapInfo::TMapInfo()
 {
 }
 //------------------------------------------------------------------------------
+TMapInfo::TMapInfo(const TMapInfo &info)
+    : name(info.name)
+    , width(info.width)
+    , height(info.height)
+{
+}
+//------------------------------------------------------------------------------
 QString TMapInfo::pack()
 {
     return QString("%1:%2x%3").arg(name).arg(width).arg(height);
@@ -51,9 +58,17 @@ TMapObjectInfo::TMapObjectInfo()
 {
 }
 //------------------------------------------------------------------------------
+TMapObjectInfo::TMapObjectInfo(const TMapObjectInfo &info)
+    : id(info.id)
+    , x(info.x)
+    , y(info.y)
+    , angle(info.angle)
+{
+}
+//------------------------------------------------------------------------------
 QString TMapObjectInfo::pack()
 {
-    return QString("%1:%2:%3:%4").arg(id).arg(x).arg(y).arg(angle);
+    return QString("%1:%2:%3:%4").arg(x).arg(y).arg(angle).arg(id);
 }
 //------------------------------------------------------------------------------
 bool TMapObjectInfo::unpack(const QString& string)
@@ -64,19 +79,19 @@ bool TMapObjectInfo::unpack(const QString& string)
     if (vars.count() != STRUCTURE_FIELDS_COUNT) {
         return false;
     }
-    id = vars[0].toInt(&isOk);
+    x = vars[0].toInt(&isOk);
     if (!isOk) {
         return false;
     }
-    x = vars[1].toUInt(&isOk);
+    y = vars[1].toInt(&isOk);
     if (!isOk) {
         return false;
     }
-    y = vars[2].toUInt(&isOk);
+    angle = vars[2].toDouble(&isOk);
     if (!isOk) {
         return false;
     }
-    angle = vars[3].toDouble(&isOk);
+    id = vars[3].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
@@ -92,6 +107,18 @@ TMapRespawnInfo::TMapRespawnInfo()
     , isMain(false)
     , captureTime(10)
     , team(T_Neutral)
+{
+}
+//------------------------------------------------------------------------------
+TMapRespawnInfo::TMapRespawnInfo(const TMapRespawnInfo &info)
+    : x(info.x)
+    , y(info.y)
+    , captureRadius(info.captureRadius)
+    , spawnRadius(info.spawnRadius)
+    , isCapturable(info.isCapturable)
+    , isMain(info.isMain)
+    , captureTime(info.captureTime)
+    , team(info.team)
 {
 }
 //------------------------------------------------------------------------------

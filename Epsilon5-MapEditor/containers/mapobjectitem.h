@@ -8,10 +8,12 @@ class TMapObjectItem : public QObject
     Q_OBJECT
 public:
     TMapObjectItem(QObject* parent = 0);
-    TMapObjectItem(const TMapObjectItem& object);
     TMapObjectItem(const TMapObjectInfo& objectInfo,
-                   QObject* parent = 0);
+               QObject* parent = 0);
+    TMapObjectItem(const TMapObjectItem& object);
     ~TMapObjectItem();
+    TMapObjectItem& operator =(const TMapObjectItem& object);
+
     TMapObjectInfo objectInfo() const;
     QString serialize() const;
     bool isValid();

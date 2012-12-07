@@ -10,7 +10,7 @@ TMapRespawnContainer::TMapRespawnContainer(QObject* parent)
 }
 //------------------------------------------------------------------------------
 TMapRespawnContainer::TMapRespawnContainer(const TMapRespawnContainer& container)
-    : TContainer(container.parent())
+    : TContainer(container)
 {
 }
 //------------------------------------------------------------------------------
@@ -26,6 +26,7 @@ void TMapRespawnContainer::addRespawn(const TMapRespawnInfo& info)
     item->setText(respawn->serialize());
     item->setEditable(false);
     mModel->appendRow(item);
+    ++mLastValidId;
 }
 //------------------------------------------------------------------------------
 void TMapRespawnContainer::removeRespawn(const QModelIndex& index)

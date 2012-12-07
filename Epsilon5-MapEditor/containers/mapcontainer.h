@@ -12,6 +12,7 @@ public:
     TMapContainer(QObject* parent = 0);
     TMapContainer(const TMapContainer& container);
     ~TMapContainer();
+
     void addMap(const TMapInfo& info,
                 const TMapRespawnContainer& respawns);
     void addMap(const TMapInfo& info,

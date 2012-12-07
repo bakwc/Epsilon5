@@ -8,13 +8,6 @@ TMapRespawnItem::TMapRespawnItem(QObject* parent)
 {
 }
 //------------------------------------------------------------------------------
-TMapRespawnItem::TMapRespawnItem(const TMapRespawnItem& respawn)
-    : QObject(respawn.parent())
-    , mInfo(respawn.mInfo)
-    , mValid(respawn.mValid)
-{
-}
-//------------------------------------------------------------------------------
 TMapRespawnItem::TMapRespawnItem(const TMapRespawnInfo& respawnInfo,
         QObject* parent)
     : QObject(parent)
@@ -23,8 +16,22 @@ TMapRespawnItem::TMapRespawnItem(const TMapRespawnInfo& respawnInfo,
     mValid = checkData();
 }
 //------------------------------------------------------------------------------
+TMapRespawnItem::TMapRespawnItem(const TMapRespawnItem& respawn)
+    : QObject(respawn.parent())
+    , mInfo(new TMapRespawnInfo(*respawn.mInfo))
+    , mValid(respawn.mValid)
+{
+}
+//------------------------------------------------------------------------------
 TMapRespawnItem::~TMapRespawnItem()
 {
+}
+//------------------------------------------------------------------------------
+TMapRespawnItem& TMapRespawnItem::operator =(const TMapRespawnItem& respawn)
+{
+    mInfo = new TMapRespawnInfo(*respawn.mInfo);
+    mValid = respawn.mValid;
+    return *this;
 }
 //------------------------------------------------------------------------------
 bool TMapRespawnItem::checkData()

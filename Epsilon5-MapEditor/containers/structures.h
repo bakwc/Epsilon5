@@ -25,6 +25,7 @@ struct TMapInfo {
     quint32 height;
 
     TMapInfo();
+    TMapInfo(const TMapInfo& info);
     QString pack();
     bool unpack(const QString& string);
 };
@@ -36,6 +37,7 @@ struct TMapObjectInfo {
     qreal angle;
 
     TMapObjectInfo();
+    TMapObjectInfo(const TMapObjectInfo& info);
     QString pack();
     bool unpack(const QString& string);
 };
@@ -51,6 +53,7 @@ struct TMapRespawnInfo {
     ETeam team;
 
     TMapRespawnInfo();
+    TMapRespawnInfo(const TMapRespawnInfo& info);
     QString pack();
     bool unpack(const QString& string);
 };

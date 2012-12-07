@@ -18,7 +18,7 @@ TMapContainer::TMapContainer(QObject* parent)
 }
 //------------------------------------------------------------------------------
 TMapContainer::TMapContainer(const TMapContainer& container)
-    : TContainer(container.parent())
+    : TContainer(container)
     , mBaseDirectory(QString(DEFAULT_BASE_DIRECTORY))
 {
 }
@@ -43,6 +43,7 @@ void TMapContainer::addMap(const TMapInfo& info,
     item->setText(map->serialize());
     item->setEditable(false);
     mModel->appendRow(item);
+    ++mLastValidId;
 }
 //------------------------------------------------------------------------------
 void TMapContainer::removeMap(const QModelIndex& index)
@@ -100,7 +101,8 @@ void TMapContainer::loadMapFromFile(const QString& mapName)
         qDebug("%s", ex.what());
     }
     addMap(mapInfoFromFile(QString(mapDir.absolutePath()
-            .append("/").append(DEFAULT_MAP_CONFIG_FILE))));
+            .append("/").append(DEFAULT_MAP_CONFIG_FILE))),
+            objects, respawns);
 }
 //------------------------------------------------------------------------------
 TMapInfo TMapContainer::mapInfoFromFile(const QString& fileName)

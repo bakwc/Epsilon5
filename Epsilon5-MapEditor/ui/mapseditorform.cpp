@@ -66,11 +66,23 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     if( ui->toolBox->currentWidget() == ui->pageObjects )
     {
         ui->listView->setModel(mMaps->objectModel(index));
-
     }
     else if( ui->toolBox->currentWidget() == ui->pageRespawns )
     {
         ui->listView->setModel(mMaps->respawnModel(index));
+    }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::on_toolBox_currentChanged(int index)
+{
+    Q_UNUSED( index );
+    if( ui->toolBox->currentWidget() == ui->pageObjects )
+    {
+        ui->listView->setModel(mMaps->objectModel(ui->mapsView->currentIndex()));
+    }
+    else if( ui->toolBox->currentWidget() == ui->pageRespawns )
+    {
+        ui->listView->setModel(mMaps->respawnModel(ui->mapsView->currentIndex()));
     }
 }
 //------------------------------------------------------------------------------
@@ -99,3 +111,4 @@ void TMapsEditorForm::saveMapListAction()
 {
     mMaps->saveToFile("maplist.txt");
 }
+//------------------------------------------------------------------------------

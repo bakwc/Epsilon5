@@ -5,6 +5,8 @@
 #include <QStringList>
 #include "containers/structures.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 const quint32 DEFAULT_MAP_WIDTH = 4000;
 const quint32 DEFAULT_MAP_HEIGTH = DEFAULT_MAP_WIDTH;
 //------------------------------------------------------------------------------
@@ -15,7 +17,7 @@ TMapInfo::TMapInfo()
 {
 }
 //------------------------------------------------------------------------------
-TMapInfo::TMapInfo(const TMapInfo &info)
+TMapInfo::TMapInfo(const TMapInfo& info)
     : name(info.name)
     , width(info.width)
     , height(info.height)
@@ -58,7 +60,7 @@ TMapObjectInfo::TMapObjectInfo()
 {
 }
 //------------------------------------------------------------------------------
-TMapObjectInfo::TMapObjectInfo(const TMapObjectInfo &info)
+TMapObjectInfo::TMapObjectInfo(const TMapObjectInfo& info)
     : id(info.id)
     , x(info.x)
     , y(info.y)
@@ -110,7 +112,7 @@ TMapRespawnInfo::TMapRespawnInfo()
 {
 }
 //------------------------------------------------------------------------------
-TMapRespawnInfo::TMapRespawnInfo(const TMapRespawnInfo &info)
+TMapRespawnInfo::TMapRespawnInfo(const TMapRespawnInfo& info)
     : x(info.x)
     , y(info.y)
     , captureRadius(info.captureRadius)

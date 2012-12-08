@@ -1,6 +1,8 @@
 // maprespawnitem.cpp
 #include "containers/maprespawnitem.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 TMapRespawnItem::TMapRespawnItem(QObject* parent)
     : QObject(parent)
     , mInfo(new TMapRespawnInfo)

@@ -4,6 +4,9 @@
 #include "containers/container.h"
 #include "containers/mapobjectitem.h"
 //------------------------------------------------------------------------------
+namespace oldcontainers
+{
+//------------------------------------------------------------------------------
 class TMapObjectContainer : public TContainer
 {
 public:
@@ -27,4 +30,6 @@ public:
     void loadFromFile(const QString& fileName);
     void saveToFile(const QString& fileName);
 };
+//------------------------------------------------------------------------------
+}
 //------------------------------------------------------------------------------

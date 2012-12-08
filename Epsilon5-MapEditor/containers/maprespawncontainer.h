@@ -4,6 +4,9 @@
 #include "containers/container.h"
 #include "containers/maprespawnitem.h"
 //------------------------------------------------------------------------------
+namespace oldcontainers
+{
+//------------------------------------------------------------------------------
 class TMapRespawnContainer : public TContainer
 {
 public:
@@ -15,4 +18,6 @@ public:
     void loadFromFile(const QString& fileName);
     void saveToFile(const QString& fileName);
 };
+//------------------------------------------------------------------------------
+}
 //------------------------------------------------------------------------------

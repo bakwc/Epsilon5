@@ -5,6 +5,9 @@
 #include "containers/mapobjectcontainer.h"
 #include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
+namespace oldcontainers
+{
+//------------------------------------------------------------------------------
 class TMapItem : public QObject
 {
     Q_OBJECT
@@ -35,5 +38,7 @@ private:
     bool mValid;
 };
 //------------------------------------------------------------------------------
-Q_DECLARE_METATYPE(TMapItem)
+}
+//------------------------------------------------------------------------------
+Q_DECLARE_METATYPE(oldcontainers::TMapItem)
 //------------------------------------------------------------------------------

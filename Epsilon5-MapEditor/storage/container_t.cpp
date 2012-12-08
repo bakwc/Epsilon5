@@ -1,7 +1,4 @@
-#include "sceneview.h"
+#include "storage/container_t.h"
 //------------------------------------------------------------------------------
-TSceneView::TSceneView(TScene* scene, QWidget* parent)
-    : QGraphicsView(scene, parent)
-{
-}
+using namespace containers;
 //------------------------------------------------------------------------------

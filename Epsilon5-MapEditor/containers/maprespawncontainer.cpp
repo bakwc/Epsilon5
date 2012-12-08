@@ -4,6 +4,8 @@
 #include "containers/maprespawncontainer.h"
 #include "../utils/uexception.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 TMapRespawnContainer::TMapRespawnContainer(QObject* parent)
     : TContainer(parent)
 {

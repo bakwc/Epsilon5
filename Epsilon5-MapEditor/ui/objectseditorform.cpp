@@ -136,7 +136,7 @@ void TObjectsEditorForm::on_addButton_clicked()
 void TObjectsEditorForm::addButtonAction(QModelIndex index)
 {
     const TImageCacheItem& item = mDataCache[index.data().toUInt()];
-    TObjectItem obj;
+    oldcontainers::TObjectItem obj;
     obj.id = mLastUsedId++ + 100;
     obj.name = item.name.trimmed();
     obj.isDynamic = false;
@@ -165,7 +165,7 @@ void TObjectsEditorForm::on_deleteButton_clicked()
 void TObjectsEditorForm::on_objectsListView_clicked(QModelIndex index)
 {
     QStandardItem* item = mObjects->item(index.row());
-    const TObjectItem& itemData = item->data().value<TObjectItem>();
+    const oldcontainers::TObjectItem& itemData = item->data().value<oldcontainers::TObjectItem>();
     ui->idEdit->setText(QString().number(itemData.id));
     ui->nameBox->lineEdit()->setText(itemData.name);
     ui->widthBox->setValue(itemData.width);
@@ -184,14 +184,14 @@ void TObjectsEditorForm::on_settingsApplyButton_clicked()
         return;
     }
     QStandardItem* item = mObjects->item(index.row());
-    TObjectItem obj;
+    oldcontainers::TObjectItem obj;
     obj.id = ui->idEdit->text().toUInt();
     obj.name = ui->nameBox->lineEdit()->text().trimmed();
     obj.isDynamic = ui->dynamicBox->isChecked();
     obj.width = ui->widthBox->text().toUInt();
     obj.height = ui->heightBox->text().toUInt();
     obj.isValid = true;
-    obj.fileName = item->data().value<TObjectItem>().fileName;
+    obj.fileName = item->data().value<oldcontainers::TObjectItem>().fileName;
     QVariant itemData;
     itemData.setValue(obj);
     item->setText(obj.name);
@@ -218,7 +218,7 @@ void TObjectsEditorForm::saveAction()
     QString fToName;
     for (int i = 0; i < mObjects->rowCount(); ++i) {
         const QStandardItem* item = mObjects->item(i);
-        const TObjectItem& itemData = item->data().value<TObjectItem>();
+        const oldcontainers::TObjectItem& itemData = item->data().value<oldcontainers::TObjectItem>();
         if (!itemData.isValid) {
             continue;
         }

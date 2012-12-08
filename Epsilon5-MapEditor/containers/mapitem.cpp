@@ -1,6 +1,8 @@
 // mapitem.cpp
 #include "containers/mapitem.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 TMapItem::TMapItem(QObject* parent)
     : QObject(parent)
     , mInfo(new TMapInfo)

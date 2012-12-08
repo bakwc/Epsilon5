@@ -3,13 +3,16 @@
 #include <QObject>
 #include "containers/structures.h"
 //------------------------------------------------------------------------------
+namespace oldcontainers
+{
+//------------------------------------------------------------------------------
 class TMapObjectItem : public QObject
 {
     Q_OBJECT
 public:
     TMapObjectItem(QObject* parent = 0);
     TMapObjectItem(const TMapObjectInfo& objectInfo,
-               QObject* parent = 0);
+                   QObject* parent = 0);
     TMapObjectItem(const TMapObjectItem& object);
     ~TMapObjectItem();
     TMapObjectItem& operator =(const TMapObjectItem& object);
@@ -27,5 +30,7 @@ private:
     bool mValid;
 };
 //------------------------------------------------------------------------------
-Q_DECLARE_METATYPE(TMapObjectItem)
+}
+//------------------------------------------------------------------------------
+Q_DECLARE_METATYPE(oldcontainers::TMapObjectItem)
 //------------------------------------------------------------------------------

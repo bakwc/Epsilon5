@@ -21,18 +21,26 @@ SOURCES += \
     imagecache.cpp \
     ui/configurationdialog.cpp \
     ui/objectseditorform.cpp \
+    ui/mapseditorform.cpp \
     containers/structures.cpp \
     containers/container.cpp \
     containers/mapcontainer.cpp \
     containers/mapobjectcontainer.cpp \
     containers/maprespawncontainer.cpp \
-    containers/mapitem.cpp \
     containers/mapobjectitem.cpp \
     containers/maprespawnitem.cpp \
-    ui/mapseditorform.cpp \
     graphics/scene.cpp \
     graphics/sceneview.cpp \
-    graphics/staticobject.cpp
+    graphics/staticobject.cpp \
+    storage/container_t.cpp \
+    storage/st_mapcontainer.cpp \
+    containers/mapitem.cpp \
+    storage/st_mapitem.cpp \
+    storage/st_objectcontainer.cpp \
+    storage/st_objectitem.cpp \
+    storage/st_respawncontainer.cpp \
+    storage/st_respawnitem.cpp
+
 
 HEADERS += \
     ../utils/uexception.h \
@@ -52,18 +60,27 @@ HEADERS += \
     imagecache.h \
     ui/configurationdialog.h \
     ui/objectseditorform.h \
+    ui/mapseditorform.h \
     containers/structures.h \
     containers/container.h \
-    containers/mapcontainer.h \
     containers/mapobjectcontainer.h \
     containers/maprespawncontainer.h \
     containers/mapitem.h \
     containers/mapobjectitem.h \
     containers/maprespawnitem.h \
-    ui/mapseditorform.h \
     graphics/scene.h \
     graphics/sceneview.h \
-    graphics/staticobject.h
+    graphics/staticobject.h \
+    storage/container_t.h \
+    storage/st_mapcontainer.h \
+    containers/mapcontainer.h \
+    storage/st_storageinfos.h \
+    storage/st_respawnitem.h \
+    storage/st_respawncontainer.h \
+    storage/st_objectitem.h \
+    storage/st_objectcontainer.h \
+    storage/st_mapitem.h \
+    storage/item_t.h
 
 FORMS += \
 #    createmapdialog.ui \

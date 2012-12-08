@@ -6,6 +6,8 @@
 #include "../utils/usettings.h"
 #include "containers/mapcontainer.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 const char* DEFAULT_OBJECTS_FILE = "objects.txt";
 const char* DEFAULT_RESPAWNS_FILE = "points.txt";
 const char* DEFAULT_MAP_CONFIG_FILE = "config.ini";
@@ -102,7 +104,7 @@ void TMapContainer::loadMapFromFile(const QString& mapName)
     }
     addMap(mapInfoFromFile(QString(mapDir.absolutePath()
             .append("/").append(DEFAULT_MAP_CONFIG_FILE))),
-            objects, respawns);
+           objects, respawns);
 }
 //------------------------------------------------------------------------------
 TMapInfo TMapContainer::mapInfoFromFile(const QString& fileName)
@@ -226,7 +228,7 @@ const QString& TMapContainer::baseDirectory() const
     return mBaseDirectory;
 }
 //------------------------------------------------------------------------------
-TMapItem TMapContainer::mapItemFromIndex(const QModelIndex &index) const
+TMapItem TMapContainer::mapItemFromIndex(const QModelIndex& index) const
 {
     const QStandardItem* item = mModel->itemFromIndex(index);
     return item->data().value<TMapItem>();
@@ -239,22 +241,22 @@ TMapItem TMapContainer::mapItemFromIndex(const QModelIndex &index) const
 //    return mapItem.objects();
 //}
 //------------------------------------------------------------------------------
-QString TMapContainer::mapName(const QModelIndex &index) const
+QString TMapContainer::mapName(const QModelIndex& index) const
 {
     return mapItemFromIndex(index).mapInfo()->name;
 }
 //------------------------------------------------------------------------------
-qint32 TMapContainer::mapWidth(const QModelIndex &index) const
+qint32 TMapContainer::mapWidth(const QModelIndex& index) const
 {
     return mapItemFromIndex(index).mapInfo()->width;
 }
 //------------------------------------------------------------------------------
-qint32 TMapContainer::mapHeight(const QModelIndex &index) const
+qint32 TMapContainer::mapHeight(const QModelIndex& index) const
 {
     return mapItemFromIndex(index).mapInfo()->height;
 }
 //------------------------------------------------------------------------------
-void TMapContainer::setMapName(const QModelIndex &index, const QString &name)
+void TMapContainer::setMapName(const QModelIndex& index, const QString& name)
 {
     QStandardItem* item = mModel->itemFromIndex(index);
     const TMapItem& mapItem = item->data().value<TMapItem>();
@@ -263,7 +265,7 @@ void TMapContainer::setMapName(const QModelIndex &index, const QString &name)
     item->setText(mapItem.mapInfo()->pack());
 }
 //------------------------------------------------------------------------------
-void TMapContainer::setMapWidth(const QModelIndex &index, qint32 value)
+void TMapContainer::setMapWidth(const QModelIndex& index, qint32 value)
 {
     QStandardItem* item = mModel->itemFromIndex(index);
     const TMapItem& mapItem = item->data().value<TMapItem>();
@@ -272,7 +274,7 @@ void TMapContainer::setMapWidth(const QModelIndex &index, qint32 value)
     item->setText(mapItem.mapInfo()->pack());
 }
 //------------------------------------------------------------------------------
-void TMapContainer::setMapHeight(const QModelIndex &index, qint32 value)
+void TMapContainer::setMapHeight(const QModelIndex& index, qint32 value)
 {
     QStandardItem* item = mModel->itemFromIndex(index);
     const TMapItem& mapItem = item->data().value<TMapItem>();
@@ -281,7 +283,7 @@ void TMapContainer::setMapHeight(const QModelIndex &index, qint32 value)
     item->setText(mapItem.mapInfo()->pack());
 }
 //------------------------------------------------------------------------------
-TMapObjectContainer* TMapContainer::objects(const QModelIndex &mapIndex)
+TMapObjectContainer* TMapContainer::objects(const QModelIndex& mapIndex)
 {
     QStandardItem* item = mModel->itemFromIndex(mapIndex);
     const TMapItem& mapItem = item->data().value<TMapItem>();

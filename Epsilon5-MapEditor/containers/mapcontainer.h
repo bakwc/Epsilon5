@@ -6,6 +6,9 @@
 #include "containers/mapobjectcontainer.h"
 #include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
+namespace oldcontainers
+{
+//------------------------------------------------------------------------------
 class TMapContainer : public TContainer
 {
 public:
@@ -58,4 +61,6 @@ private:
 private:
     QString mBaseDirectory;
 };
+//------------------------------------------------------------------------------
+}
 //------------------------------------------------------------------------------

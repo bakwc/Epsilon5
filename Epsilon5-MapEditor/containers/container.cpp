@@ -1,6 +1,8 @@
 // container.cpp
 #include "containers/container.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 TContainer::TContainer(QObject* parent)
     : QObject(parent)
     , mModel(new QStandardItemModel(this))

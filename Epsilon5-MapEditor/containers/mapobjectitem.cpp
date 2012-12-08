@@ -1,5 +1,7 @@
 // mapobjectitem.cpp
-#include "mapobjectitem.h"
+#include "containers/mapobjectitem.h"
+//------------------------------------------------------------------------------
+using namespace oldcontainers;
 //------------------------------------------------------------------------------
 TMapObjectItem::TMapObjectItem(QObject* parent)
     : QObject(parent)

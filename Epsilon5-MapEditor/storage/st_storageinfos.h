@@ -1,51 +1,30 @@
-// structures.h
 #pragma once
-#include <QMetaType>
+#include <QtCore>
 //------------------------------------------------------------------------------
-namespace oldcontainers
+namespace containers
 {
 //------------------------------------------------------------------------------
 enum ETeam {
     T_Neutral = 0,
     T_One,
     T_Second,
-    ETEAM_SIZE      // MUST be last!
-};
-//------------------------------------------------------------------------------
-struct TObjectItem {
-    quint32 id;
-    quint32 width;
-    quint32 height;
-    bool isDynamic;
-    bool isValid;
-    QString name;
-    QString fileName;
+    ETEAM_SIZE      // MUST be the lastest!
 };
 //------------------------------------------------------------------------------
 struct TMapInfo {
     QString name;
     quint32 width;
     quint32 height;
-
-    TMapInfo();
-    TMapInfo(const TMapInfo& info);
-    QString pack();
-    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
-struct TMapObjectInfo {
+struct TObjectInfo {
     quint32 id;
     qint32 x;
     qint32 y;
     qreal angle;
-
-    TMapObjectInfo();
-    TMapObjectInfo(const TMapObjectInfo& info);
-    QString pack();
-    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
-struct TMapRespawnInfo {
+struct TRespawnInfo {
     qint32 x;
     qint32 y;
     quint32 captureRadius;
@@ -54,14 +33,7 @@ struct TMapRespawnInfo {
     bool isMain;
     quint32 captureTime;
     ETeam team;
-
-    TMapRespawnInfo();
-    TMapRespawnInfo(const TMapRespawnInfo& info);
-    QString pack();
-    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 }
-//------------------------------------------------------------------------------
-Q_DECLARE_METATYPE(oldcontainers::TObjectItem)
 //------------------------------------------------------------------------------

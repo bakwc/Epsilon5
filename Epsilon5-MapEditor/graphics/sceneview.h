@@ -6,7 +6,7 @@ class TSceneView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit TSceneView(TScene* scene, QWidget *parent = 0);
+    explicit TSceneView(TScene* scene, QWidget* parent = 0);
 
 signals:
 

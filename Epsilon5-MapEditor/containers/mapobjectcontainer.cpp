@@ -4,6 +4,8 @@
 #include "containers/mapobjectcontainer.h"
 #include "../utils/uexception.h"
 //------------------------------------------------------------------------------
+using namespace oldcontainers;
+//------------------------------------------------------------------------------
 TMapObjectContainer::TMapObjectContainer(QObject* parent)
     : TContainer(parent)
 {
@@ -19,7 +21,7 @@ TMapObjectContainer::~TMapObjectContainer()
 }
 //------------------------------------------------------------------------------
 TMapObjectContainer& TMapObjectContainer::operator =(
-        const TMapObjectContainer& container)
+    const TMapObjectContainer& container)
 {
     return TMapObjectContainer::operator =(container);
 }

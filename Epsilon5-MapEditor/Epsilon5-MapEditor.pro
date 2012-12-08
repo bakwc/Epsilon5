@@ -29,7 +29,10 @@ SOURCES += \
     containers/mapitem.cpp \
     containers/mapobjectitem.cpp \
     containers/maprespawnitem.cpp \
-    ui/mapseditorform.cpp
+    ui/mapseditorform.cpp \
+    graphics/scene.cpp \
+    graphics/sceneview.cpp \
+    graphics/staticobject.cpp
 
 HEADERS += \
     ../utils/uexception.h \
@@ -57,7 +60,10 @@ HEADERS += \
     containers/mapitem.h \
     containers/mapobjectitem.h \
     containers/maprespawnitem.h \
-    ui/mapseditorform.h
+    ui/mapseditorform.h \
+    graphics/scene.h \
+    graphics/sceneview.h \
+    graphics/staticobject.h
 
 FORMS += \
 #    createmapdialog.ui \

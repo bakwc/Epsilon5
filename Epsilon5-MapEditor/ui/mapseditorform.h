@@ -4,7 +4,8 @@
 #include <QModelIndex>
 //------------------------------------------------------------------------------
 class TMapContainer;
-class QGraphicsScene;
+class TScene;
+class TSceneView;
 class QGraphicsView;
 class QAbstractItemModel;
 //------------------------------------------------------------------------------
@@ -34,10 +35,12 @@ private slots:
     void updateObjectSettings();
     void saveMapListAction();
 
+    void initScene(const QModelIndex& index);
+
 private:
     Ui::TMapsEditorForm* ui;
     TMapContainer* mMaps;
-    QGraphicsScene* mScene;
-    QGraphicsView* mView;
+    TScene* mScene;
+    TSceneView* mSceneView;
 };
 //------------------------------------------------------------------------------

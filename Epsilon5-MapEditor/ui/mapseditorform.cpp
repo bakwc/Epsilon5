@@ -5,6 +5,9 @@
 #include <QGraphicsView>
 #include "containers/mapcontainer.h"
 #include "global.h"
+#include "graphics/scene.h"
+#include "graphics/sceneview.h"
+#include "graphics/staticobject.h"
 #include "mapseditorform.h"
 #include "ui_mapseditorform.h"
 //------------------------------------------------------------------------------
@@ -12,8 +15,8 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::TMapsEditorForm)
     , mMaps(new TMapContainer(this))
-    , mScene(new QGraphicsScene(this))
-    , mView(new QGraphicsView(mScene, this))
+    , mScene(new TScene(this))
+    , mSceneView(new TSceneView(mScene, this))
 {
     ui->setupUi(this);
 
@@ -21,7 +24,7 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     setLayout(ui->mainLayout);
     ui->browserGroupBox->setLayout(ui->horizontalLayout);
     ui->sceneGroupBox->setLayout(ui->sceneLayout);
-    ui->sceneLayout->addWidget(mView);
+    ui->sceneLayout->addWidget(mSceneView);
     ui->mapsView->setModel(mMaps->model());
     ui->pageSettings->setLayout(ui->pageSettingsLayout);
     ui->pageObjects->setLayout(ui->pageObjectsLayout);
@@ -45,9 +48,12 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
             this, SLOT(updateObjectSettings()));
 
     // Just for testing...
-    mScene->addSimpleText("Testing");
     mMaps->setBaseDirectory(Global::Settings()->GetMapsPath());
-    mMaps->loadFromFile("maplist.txt");
+    try {
+        mMaps->loadFromFile("maplist.txt");
+    } catch (const UException& ex) {
+        qDebug("%s", ex.what());
+    }
 }
 //------------------------------------------------------------------------------
 TMapsEditorForm::~TMapsEditorForm()
@@ -67,6 +73,9 @@ void TMapsEditorForm::setObjectsModel(QAbstractItemModel *model)
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
 {
+    if( !index.isValid() )
+        return;
+
     ui->mapNameEdit->setText(mMaps->mapName(index));
     ui->mapWidthBox->setValue(mMaps->mapWidth(index));
     ui->mapHeightBox->setValue(mMaps->mapHeight(index));
@@ -79,6 +88,8 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     {
         ui->listView->setModel(mMaps->respawnModel(index));
     }
+
+    initScene(index);
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_toolBox_currentChanged(int index)
@@ -153,7 +164,26 @@ void TMapsEditorForm::on_listView_clicked(QModelIndex index)
 
     if( ui->toolBox->currentWidget() == ui->pageRespawns )
     {
-
         return;
+    }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::initScene(const QModelIndex &index)
+{
+    if( !index.isValid() )
+        return;
+
+    TMapObjectContainer* objects = mMaps->objects(index);
+    mScene->sceneRect().setSize(QSize(mMaps->mapWidth(index),mMaps->mapHeight(index)));
+    //mSceneView->maximumViewportSize()
+    mSceneView->setSceneRect(0,0,mScene->width(), mScene->height());
+    QModelIndex objectIndex;
+    for( int i = 0; i < objects->count(); ++i )
+    {
+        TStaticObject* mapObject = new TStaticObject();
+        objectIndex = objects->model()->index(i, 0);
+        mapObject->setPos(QPointF(objects->x(objectIndex), objects->y(objectIndex)));
+        //mapObject->setPixmap();
+        mScene->addItem(mapObject);
     }
 }

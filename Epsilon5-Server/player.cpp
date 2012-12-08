@@ -59,7 +59,7 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
             fireInfo.Vx = GetVx();
             fireInfo.Vy = GetVy();
             fireInfo.Angle = angle;
-            fireInfo.WeaponNumber = 0;
+            fireInfo.Weapon = control.weapon();
             fireInfo.PlayerId = Id;
             fireInfo.PrimaryAttack = control.keystatus().keyattack1();
             emit Fire(fireInfo);

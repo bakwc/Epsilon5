@@ -9,7 +9,7 @@ class TBullet;
 
 struct TFireInfo {
     double X, Y, Vx, Vy, Angle;
-    size_t WeaponNumber;
+    Epsilon5::Weapon Weapon;
     bool PrimaryAttack;
     size_t PlayerId;
 };

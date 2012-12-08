@@ -56,6 +56,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
     Control.mutable_keystatus()->set_keyright(false);
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
+    Control.set_weapon(Epsilon5::Pistol);
 
     startTimer(20);
 }
@@ -148,6 +149,20 @@ void TMainDisplay::setMovementKeysState(bool state, const QKeyEvent *event)
 void TMainDisplay::keyPressEvent(QKeyEvent *event)
 {
     setMovementKeysState(true, event);
+
+    switch(event->key()) {
+    case '1':
+        Control.set_weapon(Epsilon5::Pistol);
+        break;
+    case '2':
+        Control.set_weapon(Epsilon5::Machinegun);
+        break;
+    case '3':
+        Control.set_weapon(Epsilon5::Shotgun);
+        break;
+    default:
+        break;
+    }
 }
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
@@ -320,12 +335,24 @@ void TMainDisplay::drawWorld(QPainter &painter)
         }
 
         // Bullets drawing
-        img = &Images->GetImage("bullet");
 
         for (int i = 0; i != CurrentWorld->bullets_size(); i++) {
             const Epsilon5::Bullet &bullet = CurrentWorld->bullets(i);
             int cx = GetCorrect(playerX, bullet.x());
             int cy = GetCorrect(playerY, bullet.y());
+
+            switch (bullet.bullet_type()) {
+            case Epsilon5::Bullet_Type_ARBUZ:
+                img = &Images->GetImage("arbuz");
+                break;
+            case Epsilon5::Bullet_Type_LITTLE_BULLET:
+                qDebug() << "little bullet";
+                img = &Images->GetImage("bullet");
+                break;
+            default:
+                throw UException("Unknown bullet");
+                break;
+            }
 
             painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
                               widgetCenter.y() + cy - img->height() / 2, *img);

@@ -1,5 +1,11 @@
 package Epsilon5;
 
+enum Weapon {
+    Pistol = 0;
+    Machinegun = 1;
+    Shotgun = 2;
+}
+
 message Player {
     required int32 id = 1;
 
@@ -24,6 +30,12 @@ message Bullet {
 
     optional double vx = 3;
     optional double vy = 4;
+    enum Type {
+        ARBUZ = 0;
+        LITTLE_BULLET = 1;
+        ROCKET = 2;
+    }
+    optional Type bullet_type = 5 [default = ARBUZ];
 }
 
 message Object {
@@ -49,7 +61,6 @@ message World {
 }
 
 message Control {
-
     message KeyStatus {
         required bool keyUp = 1;
         required bool keyDown = 2;
@@ -62,7 +73,7 @@ message Control {
 
     required KeyStatus keyStatus = 1;
     required double angle = 2;
-    required int32 weapon = 3;
+    required Weapon weapon = 3;
 }
 
 message Auth {

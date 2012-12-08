@@ -67,6 +67,7 @@ QByteArray TWorld::Serialize() {
         auto bullet=world.add_bullets();
         bullet->set_x((*i)->GetX() * OBJECT_SCALE_UP);
         bullet->set_y((*i)->GetY() * OBJECT_SCALE_UP);
+        bullet->set_bullet_type((*i)->GetType());
         if (needFullPacket) {
             bullet->set_vx((*i)->GetVx() * OBJECT_SCALE_UP);
             bullet->set_vy((*i)->GetVy() * OBJECT_SCALE_UP);

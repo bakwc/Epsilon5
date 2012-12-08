@@ -9,7 +9,8 @@ TImageStorage::TImageStorage(QObject *parent) :
 void TImageStorage::LoadAll() {
     LoadImage("player", "resources/mad.png");
     LoadImage("enemy", "resources/peka.png");
-    LoadImage("bullet", "resources/arbuz.png");
+    LoadImage("arbuz", "resources/arbuz.png");
+    LoadImage("bullet", "resources/bullet.png");
     LoadImage("flag_t1", "resources/flag_t1.png");
     LoadImage("flag_t2", "resources/flag_t2.png");
     LoadImage("flag_tn", "resources/flag_tn.png");

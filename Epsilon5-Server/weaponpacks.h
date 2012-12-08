@@ -5,20 +5,15 @@
 #include <QTime>
 #include <QString>
 #include "../utils/ucast.h"
+#include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "player.h"
 
 class TWorld;
 class TBullet;
 
-enum EWeaponType {
-    WT_Pistol,
-    WT_Machinegun,
-    WT_Shotgun
-};
-
 struct TTimeKey {
     size_t PlayerId;
-    EWeaponType WeaponType;
+    Epsilon5::Weapon WeaponType;
     operator QString() {
         return ToString(PlayerId) + ":" + ToString((size_t)(WeaponType));
     }

@@ -42,6 +42,46 @@ class Control_KeyStatus;
 class Auth;
 class PlayerInfo;
 
+enum Bullet_Type {
+  Bullet_Type_ARBUZ = 0,
+  Bullet_Type_LITTLE_BULLET = 1,
+  Bullet_Type_ROCKET = 2
+};
+bool Bullet_Type_IsValid(int value);
+const Bullet_Type Bullet_Type_Type_MIN = Bullet_Type_ARBUZ;
+const Bullet_Type Bullet_Type_Type_MAX = Bullet_Type_ROCKET;
+const int Bullet_Type_Type_ARRAYSIZE = Bullet_Type_Type_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* Bullet_Type_descriptor();
+inline const ::std::string& Bullet_Type_Name(Bullet_Type value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    Bullet_Type_descriptor(), value);
+}
+inline bool Bullet_Type_Parse(
+    const ::std::string& name, Bullet_Type* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Bullet_Type>(
+    Bullet_Type_descriptor(), name, value);
+}
+enum Weapon {
+  Pistol = 0,
+  Machinegun = 1,
+  Shotgun = 2
+};
+bool Weapon_IsValid(int value);
+const Weapon Weapon_MIN = Pistol;
+const Weapon Weapon_MAX = Shotgun;
+const int Weapon_ARRAYSIZE = Weapon_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* Weapon_descriptor();
+inline const ::std::string& Weapon_Name(Weapon value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    Weapon_descriptor(), value);
+}
+inline bool Weapon_Parse(
+    const ::std::string& name, Weapon* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Weapon>(
+    Weapon_descriptor(), name, value);
+}
 // ===================================================================
 
 class Player : public ::google::protobuf::Message {
@@ -158,6 +198,13 @@ class Player : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 hp() const;
   inline void set_hp(::google::protobuf::uint32 value);
   
+  // optional bool team = 9;
+  inline bool has_team() const;
+  inline void clear_team();
+  static const int kTeamFieldNumber = 9;
+  inline bool team() const;
+  inline void set_team(bool value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Player)
  private:
   inline void set_has_id();
@@ -176,6 +223,8 @@ class Player : public ::google::protobuf::Message {
   inline void clear_has_name();
   inline void set_has_hp();
   inline void clear_has_hp();
+  inline void set_has_team();
+  inline void clear_has_team();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -187,9 +236,10 @@ class Player : public ::google::protobuf::Message {
   ::google::protobuf::uint32 hp_;
   double angle_;
   ::std::string* name_;
+  bool team_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -252,6 +302,31 @@ class Bullet : public ::google::protobuf::Message {
   
   // nested types ----------------------------------------------------
   
+  typedef Bullet_Type Type;
+  static const Type ARBUZ = Bullet_Type_ARBUZ;
+  static const Type LITTLE_BULLET = Bullet_Type_LITTLE_BULLET;
+  static const Type ROCKET = Bullet_Type_ROCKET;
+  static inline bool Type_IsValid(int value) {
+    return Bullet_Type_IsValid(value);
+  }
+  static const Type Type_MIN =
+    Bullet_Type_Type_MIN;
+  static const Type Type_MAX =
+    Bullet_Type_Type_MAX;
+  static const int Type_ARRAYSIZE =
+    Bullet_Type_Type_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  Type_descriptor() {
+    return Bullet_Type_descriptor();
+  }
+  static inline const ::std::string& Type_Name(Type value) {
+    return Bullet_Type_Name(value);
+  }
+  static inline bool Type_Parse(const ::std::string& name,
+      Type* value) {
+    return Bullet_Type_Parse(name, value);
+  }
+  
   // accessors -------------------------------------------------------
   
   // required int32 x = 1;
@@ -282,6 +357,13 @@ class Bullet : public ::google::protobuf::Message {
   inline double vy() const;
   inline void set_vy(double value);
   
+  // optional .Epsilon5.Bullet.Type bullet_type = 5 [default = ARBUZ];
+  inline bool has_bullet_type() const;
+  inline void clear_bullet_type();
+  static const int kBulletTypeFieldNumber = 5;
+  inline ::Epsilon5::Bullet_Type bullet_type() const;
+  inline void set_bullet_type(::Epsilon5::Bullet_Type value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Bullet)
  private:
   inline void set_has_x();
@@ -292,6 +374,8 @@ class Bullet : public ::google::protobuf::Message {
   inline void clear_has_vx();
   inline void set_has_vy();
   inline void clear_has_vy();
+  inline void set_has_bullet_type();
+  inline void clear_has_bullet_type();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -299,9 +383,10 @@ class Bullet : public ::google::protobuf::Message {
   ::google::protobuf::int32 y_;
   double vx_;
   double vy_;
+  int bullet_type_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -863,20 +948,30 @@ class Control : public ::google::protobuf::Message {
   inline double angle() const;
   inline void set_angle(double value);
   
+  // required .Epsilon5.Weapon weapon = 3;
+  inline bool has_weapon() const;
+  inline void clear_weapon();
+  static const int kWeaponFieldNumber = 3;
+  inline Epsilon5::Weapon weapon() const;
+  inline void set_weapon(Epsilon5::Weapon value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Control)
  private:
   inline void set_has_keystatus();
   inline void clear_has_keystatus();
   inline void set_has_angle();
   inline void clear_has_angle();
+  inline void set_has_weapon();
+  inline void clear_has_weapon();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::Epsilon5::Control_KeyStatus* keystatus_;
   double angle_;
+  int weapon_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1286,6 +1381,28 @@ inline void Player::set_hp(::google::protobuf::uint32 value) {
   hp_ = value;
 }
 
+// optional bool team = 9;
+inline bool Player::has_team() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Player::set_has_team() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Player::clear_has_team() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Player::clear_team() {
+  team_ = false;
+  clear_has_team();
+}
+inline bool Player::team() const {
+  return team_;
+}
+inline void Player::set_team(bool value) {
+  set_has_team();
+  team_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Bullet
@@ -1376,6 +1493,29 @@ inline double Bullet::vy() const {
 inline void Bullet::set_vy(double value) {
   set_has_vy();
   vy_ = value;
+}
+
+// optional .Epsilon5.Bullet.Type bullet_type = 5 [default = ARBUZ];
+inline bool Bullet::has_bullet_type() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Bullet::set_has_bullet_type() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Bullet::clear_has_bullet_type() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Bullet::clear_bullet_type() {
+  bullet_type_ = 0;
+  clear_has_bullet_type();
+}
+inline ::Epsilon5::Bullet_Type Bullet::bullet_type() const {
+  return static_cast< ::Epsilon5::Bullet_Type >(bullet_type_);
+}
+inline void Bullet::set_bullet_type(::Epsilon5::Bullet_Type value) {
+  GOOGLE_DCHECK(::Epsilon5::Bullet_Type_IsValid(value));
+  set_has_bullet_type();
+  bullet_type_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -1857,6 +1997,29 @@ inline void Control::set_angle(double value) {
   angle_ = value;
 }
 
+// required .Epsilon5.Weapon weapon = 3;
+inline bool Control::has_weapon() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Control::set_has_weapon() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Control::clear_has_weapon() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Control::clear_weapon() {
+  weapon_ = 0;
+  clear_has_weapon();
+}
+inline Epsilon5::Weapon Control::weapon() const {
+  return static_cast< Epsilon5::Weapon >(weapon_);
+}
+inline void Control::set_weapon(Epsilon5::Weapon value) {
+  GOOGLE_DCHECK(Epsilon5::Weapon_IsValid(value));
+  set_has_weapon();
+  weapon_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Auth
@@ -2012,6 +2175,14 @@ inline ::std::string* PlayerInfo::release_map() {
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Epsilon5::Bullet_Type>() {
+  return ::Epsilon5::Bullet_Type_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< Epsilon5::Weapon>() {
+  return Epsilon5::Weapon_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf

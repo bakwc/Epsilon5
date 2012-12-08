@@ -81,7 +81,6 @@ void TNetwork::OnDataReceived() {
                 World.Clear();
                 if (World.ParseFromArray(content.data(), content.size())) {
                     qint32 packetnumber = World.packet_number();
-                    qDebug() << packetnumber;
                     emit WorldReceived();
                     SendControls(packetnumber);
                 } else {

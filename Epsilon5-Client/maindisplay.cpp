@@ -337,7 +337,6 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
             img = &Images->GetImage("arbuz");
             break;
         case Epsilon5::Bullet_Type_LITTLE_BULLET:
-            qDebug() << "little bullet";
             img = &Images->GetImage("bullet");
             break;
         default:

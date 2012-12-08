@@ -47,7 +47,7 @@ private:
     void mouseReleaseEvent(QMouseEvent* event);
 
     QPoint GetPlayerCoordinates();
-    void DrawText(QPainter& painter, const QPoint& pos, const QString& text);
+    void DrawText(QPainter& painter, const QPoint& pos, const QString& text, int FONT_SIZE_PT);
     void DrawFps(QPainter& painter);
     void DrawPing(QPainter& painter);
     void DrawWorld(QPainter& painter);

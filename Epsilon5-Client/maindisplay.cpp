@@ -92,7 +92,7 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     DrawPing(painter);
 
     if( !Application->GetNetwork()->IsServerAlive() )
-        DrawText(painter, QPoint(0, height() - 5), tr("Not connected"));
+        DrawText(painter, QPoint(0, height() - 5), tr("Not connected"),28);
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -229,19 +229,18 @@ void TMainDisplay::DrawFps(QPainter& painter)
     }
 
     const QPen penOld = painter.pen();
-    DrawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps));
+    DrawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps), 10);
 
     ++frames;
 }
 
 void TMainDisplay::DrawPing(QPainter& painter)
 {
-    DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping));
+    DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping), 10);
 }
 
-void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos, const QString& text)
+void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos, const QString& text, int FONT_SIZE_PT = 10)
 {
-    const int FONT_SIZE_PT = 10;
     // Helvetica font present on all Systems
     painter.setFont(QFont("Helvetica", FONT_SIZE_PT));
     painter.setPen(Qt::black);

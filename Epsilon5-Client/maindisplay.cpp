@@ -19,10 +19,11 @@
 const quint16 BASE_WINDOW_WIDTH = 800;
 const quint16 BASE_WINDOW_HEIGHT = 600;
 
-int GetCorrect(int player, int enemy) {
-    return enemy - player;
+QPoint GetCorrect(QPoint playerPos, QPoint objectPos) {
+    return objectPos - playerPos;
 }
 
+// Transform direction vector into angle
 static double getAngle(const QPoint& point)
 {
     double angle;
@@ -72,7 +73,6 @@ void TMainDisplay::Init() {
 TMainDisplay::~TMainDisplay()
 {
     CurrentWorld = NULL;
-
     if (isFullScreen() && !IsFullScreenWindowed)
         restoreMode();
 }
@@ -87,12 +87,12 @@ void TMainDisplay::timerEvent(QTimerEvent *) {
 
 void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-    drawWorld(painter);
-    drawFps(painter);
-    drawPing(painter);
+    DrawWorld(painter);
+    DrawFps(painter);
+    DrawPing(painter);
 
     if( !Application->GetNetwork()->IsServerAlive() )
-        drawText(painter, QPoint(0, height() - 5), tr("Not connected"));
+        DrawText(painter, QPoint(0, height() - 5), tr("Not connected"));
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -111,7 +111,7 @@ void TMainDisplay::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
-void TMainDisplay::setMovementKeysState(bool state, const QKeyEvent *event)
+void TMainDisplay::SetMovementKeysState(bool state, const QKeyEvent *event)
 {
 #ifdef Q_OS_UNIX
     // TEST: Codes in input.h differ from event->scancodes by MAGIC_NUMBER.
@@ -148,7 +148,7 @@ void TMainDisplay::setMovementKeysState(bool state, const QKeyEvent *event)
 
 void TMainDisplay::keyPressEvent(QKeyEvent *event)
 {
-    setMovementKeysState(true, event);
+    SetMovementKeysState(true, event);
 
     switch(event->key()) {
     case '1':
@@ -167,7 +167,7 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
 
 void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
 {
-    setMovementKeysState(false, event);
+    SetMovementKeysState(false, event);
 
     switch (event->key())
     {
@@ -213,7 +213,7 @@ void TMainDisplay::toggleFullscreen() {
     IsFullScreenWindowed = false;
 }
 
-void TMainDisplay::drawFps(QPainter& painter)
+void TMainDisplay::DrawFps(QPainter& painter)
 {
     // TODO: move fps calculation to another place, here must be only drawing
     static int frames = 0;
@@ -229,18 +229,18 @@ void TMainDisplay::drawFps(QPainter& painter)
     }
 
     const QPen penOld = painter.pen();
-    drawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps));
+    DrawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps));
 
     ++frames;
 }
 
-void TMainDisplay::drawPing(QPainter& painter)
+void TMainDisplay::DrawPing(QPainter& painter)
 {
     qint64 Ping = Application->GetNetwork()->GetPing();
-    drawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping));
+    DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping));
 }
 
-void TMainDisplay::drawText(QPainter &painter, const QPoint& pos, const QString& text)
+void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos, const QString& text)
 {
     const int FONT_SIZE_PT = 10;
     // Helvetica font present on all Systems
@@ -251,164 +251,184 @@ void TMainDisplay::drawText(QPainter &painter, const QPoint& pos, const QString&
     painter.drawText(pos.x(), pos.y(), text);
 }
 
-void TMainDisplay::drawWorld(QPainter &painter)
+// Detecting our coordinates
+QPoint TMainDisplay::GetPlayerCoordinates() {
+    QPoint res;
+    size_t playerId = Application->GetNetwork()->GetId();
+    for (int i = 0; i != CurrentWorld->players_size(); i++) {
+        const Epsilon5::Player &player = CurrentWorld->players(i);
+        if ((size_t)player.id() == playerId) {
+            res.setX(player.x());
+            res.setY(player.y());
+        }
+    }
+    return res;
+}
+
+void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
+                               const QPoint& playerPos, const QPoint &widgetCenter)
 {
+    // Players drawing
+    const int nickMaxWidth = 200;
+    const QImage* img;
+
+    const QFont oldFont = painter.font();
+    const QPen oldPen = painter.pen();
+    QFont nickFont(oldFont);
+    nickFont.setBold(true);
+    nickFont.setPointSize(12);
+
+    for (int i = 0; i != CurrentWorld->players_size(); i++) {
+        const Epsilon5::Player &player = CurrentWorld->players(i);
+        QPoint pos = QPoint(player.x(), player.y()) - playerPos;
+
+        QString nickName;
+        if (player.has_name()) {
+            nickName = player.name().c_str();
+            PlayerNames[player.id()] = nickName;
+        } else {
+            if (PlayerNames.find(player.id()) != PlayerNames.end()) {
+                nickName = PlayerNames[player.id()];
+            }
+        }
+
+        size_t hp = player.hp();
+
+        if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
+            img = &Images->GetImage("player");
+            miniMap.setPen(Qt::red);
+            nickName += " - " + QString::number(hp) + "%";
+        } else {
+            img = &Images->GetImage("enemy");
+            miniMap.setPen(Qt::black);
+        }
+
+        miniMap.drawEllipse(50 + player.x() / 40, 50 + player.y() / 40, 2, 2);
+
+        painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
+                          widgetCenter.y() + pos.y() - img->height() / 2, *img);
+
+        painter.setPen(Qt::yellow);
+        painter.setFont(nickFont);
+        QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,
+                        widgetCenter.y() + pos.y() - img->height()/2
+                               - painter.fontInfo().pixelSize(),
+                        nickMaxWidth, painter.fontInfo().pixelSize());
+
+        painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
+        painter.setPen(oldPen);
+        painter.setFont(oldFont);
+    }
+}
+
+void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
+                               const QPoint& widgetCenter)
+{
+    const QImage* img;
+    for (int i = 0; i != CurrentWorld->bullets_size(); i++) {
+        const Epsilon5::Bullet &bullet = CurrentWorld->bullets(i);
+        QPoint currentBulletPos(bullet.x(), bullet.y());
+        QPoint pos = GetCorrect(playerPos, currentBulletPos);
+
+        switch (bullet.bullet_type()) {
+        case Epsilon5::Bullet_Type_ARBUZ:
+            img = &Images->GetImage("arbuz");
+            break;
+        case Epsilon5::Bullet_Type_LITTLE_BULLET:
+            qDebug() << "little bullet";
+            img = &Images->GetImage("bullet");
+            break;
+        default:
+            throw UException("Unknown bullet");
+            break;
+        }
+
+        painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
+                          widgetCenter.y() + pos.y() - img->height() / 2, *img);
+    }
+}
+
+void TMainDisplay::DrawObjects(QPainter& painter, const QPoint& playerPos,
+                               const QPoint& widgetCenter)
+{
+    const QImage* img;
+    for (int i = 0; i != CurrentWorld->objects_size(); i++) {
+        const Epsilon5::Object& object = CurrentWorld->objects(i);
+
+        QPoint currentObjectPos(object.x(), object.y());
+        QPoint pos = GetCorrect(playerPos, currentObjectPos);
+
+        // BUG: Type of ID mismatch (int32 vs size_t on server)
+        if( object.id() < 0 )
+            continue;
+
+        img = Objects->GetImageById(object.id());
+        QTransform transform;
+        transform.rotate(object.angle() * 180 / M_PI);
+        QImage rimg = img->transformed(transform);
+
+        painter.drawImage(widgetCenter.x() + pos.x() - rimg.width() / 2,
+                          widgetCenter.y() + pos.y() - rimg.height() / 2, rimg);
+    }
+}
+
+void TMainDisplay::DrawRespPoints(QPainter& painter, const QPoint& playerPos,
+                                  const QPoint& widgetCenter)
+{
+    const QImage* img;
+    if (CurrentWorld->resp_points_size() > 0) {
+        RespPoints.clear();
+        for (int i = 0; i < CurrentWorld->resp_points_size(); i++) {
+            RespPoint pos;
+            pos.X = CurrentWorld->resp_points(i).x();
+            pos.Y = CurrentWorld->resp_points(i).y();
+            pos.Team = (ETeam)(CurrentWorld->resp_points(i).team());
+            RespPoints.push_back(pos);
+        }
+    }
+
+    for (int i = 0; i < RespPoints.size(); i++) {
+        if (RespPoints[i].Team == T_One) {
+            img = &Images->GetImage("flag_t1");
+        } else if (RespPoints[i].Team == T_Second) {
+            img = &Images->GetImage("flag_t2");
+        } else {
+            img = &Images->GetImage("flag_tn");
+        }
+        QPoint currentRespPos(RespPoints[i].X, RespPoints[i].Y);
+        QPoint pos = GetCorrect(playerPos, currentRespPos);
+        painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
+                          widgetCenter.y() + pos.y() - img->height() / 2, *img);
+    }
+}
+
+void TMainDisplay::DrawWorld(QPainter& painter){
     if( !CurrentWorld )
         return;
 
     try {
-        QPoint gamerPos, cursorPos;
-
-        const int nickMaxWidth = 200;
-        int playerX = 0;
-        int playerY = 0;
-
-        size_t playerId = Application->GetNetwork()->GetId();
-
-        for (int i = 0; i != CurrentWorld->players_size(); i++) {
-            const Epsilon5::Player &player = CurrentWorld->players(i);
-            if ((size_t)player.id() == playerId) {
-                playerX = player.x();
-                playerY = player.y();
-            }
-        }
-
         QPoint widgetCenter(width() / 2, height() / 2);
-        Map->DrawFrame(playerX, playerY, size(), painter);
+        QPoint playerPos = GetPlayerCoordinates();
 
-        const QFont oldFont = painter.font();
-        const QPen oldPen = painter.pen();
-        QFont nickFont(oldFont);
-        nickFont.setBold(true);
-        nickFont.setPointSize(12);
+        Map->DrawBackground(playerPos, size(), painter);
 
+        // Prepare minimap painter
         QImage miniMapImg(100, 100, QImage::Format_ARGB32);
         miniMapImg.fill(qRgba(255, 255, 255, 100));
         QPainter miniMap(&miniMapImg);
 
-        // Players drawing
-        const QImage* img;
-        for (int i = 0; i != CurrentWorld->players_size(); i++) {
-            const Epsilon5::Player &player = CurrentWorld->players(i);
-
-            int cx = GetCorrect(playerX, player.x());
-            int cy = GetCorrect(playerY, player.y());
-
-            QString nickName;
-            if (player.has_name()) {
-                nickName = player.name().c_str();
-                PlayerNames[player.id()] = nickName;
-            } else {
-                if (PlayerNames.find(player.id()) != PlayerNames.end()) {
-                    nickName = PlayerNames[player.id()];
-                }
-            }
-
-            size_t hp = player.hp();
-
-            if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
-                gamerPos.setX(widgetCenter.x() + cx);
-                gamerPos.setY(widgetCenter.y() + cy);
-                img = &Images->GetImage("player");
-                miniMap.setPen(Qt::red);
-                nickName += " - " + QString::number(hp) + "%";
-            } else {
-                img = &Images->GetImage("enemy");
-                miniMap.setPen(Qt::black);
-            }
-
-            miniMap.drawEllipse(50 + player.x() / 40, 50 + player.y() / 40, 2, 2);
-
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
-
-            painter.setPen(Qt::yellow);
-            painter.setFont(nickFont);
-            QRect nickRect = QRect(widgetCenter.x() + cx - nickMaxWidth/2,
-                            widgetCenter.y() + cy - img->height()/2
-                                   - painter.fontInfo().pixelSize(),
-                            nickMaxWidth, painter.fontInfo().pixelSize());
-
-            painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
-            painter.setPen(oldPen);
-            painter.setFont(oldFont);
-        }
-
-        // Bullets drawing
-
-        for (int i = 0; i != CurrentWorld->bullets_size(); i++) {
-            const Epsilon5::Bullet &bullet = CurrentWorld->bullets(i);
-            int cx = GetCorrect(playerX, bullet.x());
-            int cy = GetCorrect(playerY, bullet.y());
-
-            switch (bullet.bullet_type()) {
-            case Epsilon5::Bullet_Type_ARBUZ:
-                img = &Images->GetImage("arbuz");
-                break;
-            case Epsilon5::Bullet_Type_LITTLE_BULLET:
-                qDebug() << "little bullet";
-                img = &Images->GetImage("bullet");
-                break;
-            default:
-                throw UException("Unknown bullet");
-                break;
-            }
-
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
-        }
-
-        // Objects drawing
-        for (int i = 0; i != CurrentWorld->objects_size(); i++) {
-            const Epsilon5::Object& object = CurrentWorld->objects(i);
-
-            // BUG: Type of ID mismatch (int32 vs size_t on server)
-            if( object.id() < 0 )
-                continue;
-
-            int cx = GetCorrect(playerX, object.x());
-            int cy = GetCorrect(playerY, object.y());
-
-            img = Objects->GetImageById(object.id());
-            QTransform transform;
-            transform.rotate(object.angle() * 180 / M_PI);
-            QImage rimg = img->transformed(transform);
-
-            painter.drawImage(widgetCenter.x() + cx - rimg.width() / 2,
-                              widgetCenter.y() + cy - rimg.height() / 2, rimg);
-        }
-
-        if (CurrentWorld->resp_points_size() > 0) {
-            RespPoints.clear();
-            for (int i = 0; i < CurrentWorld->resp_points_size(); i++) {
-                RespPoint pos;
-                pos.X = CurrentWorld->resp_points(i).x();
-                pos.Y = CurrentWorld->resp_points(i).y();
-                pos.Team = (ETeam)(CurrentWorld->resp_points(i).team());
-                RespPoints.push_back(pos);
-            }
-        }
-
-
-        for (int i = 0; i < RespPoints.size(); i++) {
-            if (RespPoints[i].Team == T_One) {
-                img = &Images->GetImage("flag_t1");
-            } else if (RespPoints[i].Team == T_Second) {
-                img = &Images->GetImage("flag_t2");
-            } else {
-                img = &Images->GetImage("flag_tn");
-            }
-            int cx = GetCorrect(playerX, RespPoints[i].X);
-            int cy = GetCorrect(playerY, RespPoints[i].Y);
-            painter.drawImage(widgetCenter.x() + cx - img->width() / 2,
-                              widgetCenter.y() + cy - img->height() / 2, *img);
-        }
+        // Drawing staff
+        DrawPlayers(painter, miniMap, playerPos, widgetCenter);
+        DrawBullets(painter, playerPos, widgetCenter);
+        DrawObjects(painter, playerPos, widgetCenter);
+        DrawRespPoints(painter, playerPos, widgetCenter);
 
         // Minimap drawing
         painter.drawImage(10, 30, miniMapImg);
 
-        cursorPos = this->mapFromGlobal(QCursor::pos());
-        double angle = getAngle(cursorPos - gamerPos);
+        // Detect targeting angle for Control packet
+        QPoint cursorPos = this->mapFromGlobal(QCursor::pos());
+        double angle = getAngle(cursorPos - widgetCenter);
         Control.set_angle(angle);
 
         this->update();

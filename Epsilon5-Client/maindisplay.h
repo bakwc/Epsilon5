@@ -39,19 +39,24 @@ public slots:
     void toggleFullscreenWindowed();
 
 private:
-    void paintEvent(QPaintEvent *);
-    void timerEvent(QTimerEvent *);
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent*);
+    void timerEvent(QTimerEvent*);
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
 
-    void drawText(QPainter& painter, const QPoint& pos, const QString& text);
-    void drawFps(QPainter& painter);
-    void drawPing(QPainter& painter);
-    void drawWorld(QPainter& painter);
+    QPoint GetPlayerCoordinates();
+    void DrawText(QPainter& painter, const QPoint& pos, const QString& text);
+    void DrawFps(QPainter& painter);
+    void DrawPing(QPainter& painter);
+    void DrawWorld(QPainter& painter);
+    void DrawPlayers(QPainter& painter, QPainter& miniMap, const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawBullets(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawObjects(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawRespPoints(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
 
-    void setMovementKeysState(bool state, const QKeyEvent* event);
+    void SetMovementKeysState(bool state, const QKeyEvent* event);
 
 private:
     TApplication* Application;

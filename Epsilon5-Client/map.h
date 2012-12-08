@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QImage>
 #include <QPainter>
+#include <QPoint>
 
 class TMap : public QObject
 {
@@ -10,7 +11,9 @@ class TMap : public QObject
 public:
     TMap(QObject *parent = 0);
     ~TMap();
-    void DrawFrame(int x, int y, const QSize& frameSize, QPainter &painter);
+
+    // Draw background at correct position
+    void DrawBackground(const QPoint& playerPos, const QSize& frameSize, QPainter &painter);
 public slots:
     void LoadMap(QString map);
 private:

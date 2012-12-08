@@ -28,14 +28,14 @@ TMap::~TMap()
         delete Background;
 }
 
-void TMap::DrawFrame(int x, int y, const QSize& frameSize, QPainter& painter) {
+void TMap::DrawBackground(const QPoint& playerPos, const QSize& frameSize, QPainter& painter) {
     if (!Loaded) {
         throw UException("Map not loaded!");
     }
     int centerX = Background->width() / 2;
     int centerY = Background->height() / 2;
-    int newPekaPosX = centerX + x;
-    int newPekaPosY = centerY + y;
+    int newPekaPosX = centerX + playerPos.x();
+    int newPekaPosY = centerY + playerPos.y();
     int cutX = newPekaPosX - frameSize.width() / 2;
     int cutY = newPekaPosY - frameSize.height() / 2;
 

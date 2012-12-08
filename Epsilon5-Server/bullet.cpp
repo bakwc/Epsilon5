@@ -37,7 +37,7 @@ TBullet::TBullet(double x, double y, double vx, double vy,
     CollisionInfo.ObjType = TObjectInfo::OT_Bullet;
     CollisionInfo.Object = this;
 
-    Ttl = 300;
+    Ttl = 120;
 }
 
 void TBullet::ApplyCustomPhysics() {

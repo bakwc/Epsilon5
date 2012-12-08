@@ -12,13 +12,13 @@ public:
     TObjectItem(const TObjectItem& object);
     TObjectItem& operator=(const TObjectItem& object);
 
-    quint32 id() const;
+    quint32 objectId() const;
     qint32 x() const;
     qint32 y() const;
     QPoint pos() const;
     qreal angle() const;
 
-    void setId(quint32 id);
+    void setObjectId(quint32 objectId);
     void setPos(const QPoint& pos);
     void setX(qint32 x);
     void setY(qint32 y);

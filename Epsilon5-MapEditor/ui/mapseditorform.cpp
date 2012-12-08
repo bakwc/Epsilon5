@@ -16,8 +16,11 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     , mMaps(new containers::TMapContainer(this))
     , mScene(new TScene(this))
     , mSceneView(new TSceneView(mScene, this))
+    , mTeamValue(1)
+    , mBrowserState(E_BrowserFull)
 {
     ui->setupUi(this);
+
     // Additional ui setups
     setLayout(ui->mainLayout);
     ui->browserGroupBox->setLayout(ui->horizontalLayout);
@@ -27,6 +30,8 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     ui->pageSettings->setLayout(ui->pageSettingsLayout);
     ui->pageObjects->setLayout(ui->pageObjectsLayout);
     ui->pageRespawns->setLayout(ui->gridLayout);
+    ui->teamButton->setText("");
+
     // Connect to content menus
     ui->mapsView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->mapsView, SIGNAL(customContextMenuRequested(QPoint)),
@@ -42,6 +47,25 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
             this, SLOT(updateObjectSettings()));
     connect(ui->idObjectEdit, SIGNAL(editingFinished()),
             this, SLOT(updateObjectSettings()));
+    connect(ui->posXRespawnBox, SIGNAL(editingFinished()),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->posYRespawnBox, SIGNAL(editingFinished()),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->spawnRadRespawnBox, SIGNAL(editingFinished()),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->captRadRespawnBox, SIGNAL(editingFinished()),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->captTimeRespawnBox, SIGNAL(editingFinished()),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->isCapturableCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->isMainCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(updateRespawnSettings()));
+    connect(ui->teamButton, SIGNAL(clicked()),
+            this, SLOT(updateRespawnSettings()));
+
+    mSceneView->setFocus();
+
     // Just for testing...
 //    mMaps->setBaseDirectory(Global::Settings()->GetMapsPath());
     try {
@@ -71,13 +95,14 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     if (!index.isValid()) {
         return;
     }
-    ui->mapNameEdit->setText(mMaps->mapName(index));
-    ui->mapWidthBox->setValue(mMaps->mapWidth(index));
-    ui->mapHeightBox->setValue(mMaps->mapHeight(index));
+
+    ui->mapNameEdit->setText(mMaps->item(index).name());
+    ui->mapWidthBox->setValue(mMaps->item(index).width());
+    ui->mapHeightBox->setValue(mMaps->item(index).height());
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
-        ui->listView->setModel(mMaps->objectModel(index));
+        ui->listView->setModel(mMaps->item(index).objects().model());
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
-        ui->listView->setModel(mMaps->respawnModel(index));
+        ui->listView->setModel(mMaps->item(index).respawns().model());
     }
     initScene(index);
 }
@@ -89,10 +114,29 @@ void TMapsEditorForm::on_toolBox_currentChanged(int index)
         return;
     }
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
-        ui->listView->setModel(mMaps->objectModel(ui->mapsView->currentIndex()));
+        ui->listView->setModel(mMaps->item(ui->mapsView->currentIndex())
+                .objects().model());
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
-        ui->listView->setModel(mMaps->respawnModel(ui->mapsView->currentIndex()));
+        ui->listView->setModel(mMaps->item(ui->mapsView->currentIndex())
+                .respawns().model());
     }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::on_teamButton_clicked()
+{
+    ++mTeamValue;
+    mTeamValue %= 3;
+    updateTeamButton();
+}
+
+void TMapsEditorForm::updateTeamButton()
+{
+    if( mTeamValue == 1 )
+        ui->teamButton->setText("1");
+    else if (mTeamValue > 1)
+        ui->teamButton->setText("2");
+    else
+        ui->teamButton->setText("");
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateMapSettings()
@@ -101,9 +145,10 @@ void TMapsEditorForm::updateMapSettings()
     if (!index.isValid()) {
         return;
     }
-    mMaps->setMapName(index, ui->mapNameEdit->text().trimmed());
-    mMaps->setMapWidth(index, ui->mapWidthBox->value());
-    mMaps->setMapHeight(index, ui->mapHeightBox->value());
+    mMaps->item(index).setName(ui->mapNameEdit->text().trimmed());
+    mMaps->item(index).setSize(ui->mapWidthBox->value(), ui->mapHeightBox->value());
+
+    mMaps->updateView();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateObjectSettings()
@@ -113,10 +158,34 @@ void TMapsEditorForm::updateObjectSettings()
     if (!mapIndex.isValid() || !index.isValid()) {
         return;
     }
-    mMaps->objects(mapIndex)->setX(index, ui->posXObjectBox->value());
-    mMaps->objects(mapIndex)->setX(index, ui->posYObjectBox->value());
-    mMaps->objects(mapIndex)->setAngle(index, ui->angleObjectBox->value());
-    mMaps->objects(mapIndex)->setId(index, ui->idObjectEdit->text().toUInt());
+
+    containers::TObjectItem& object = mMaps->item(mapIndex).objects().item(index);
+    object.setX(ui->posXObjectBox->value());
+    object.setY(ui->posYObjectBox->value());
+    object.setAngle(ui->angleObjectBox->value());
+    object.setObjectId(ui->idObjectEdit->text().toUInt());
+
+    mMaps->item(mapIndex).objects().updateView();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::updateRespawnSettings()
+{
+    QModelIndex mapIndex = ui->mapsView->currentIndex();
+    QModelIndex index = ui->listView->currentIndex();
+    if (!mapIndex.isValid() || !index.isValid()) {
+        return;
+    }
+
+    containers::TRespawnItem& respawn = mMaps->item(mapIndex).respawns().item(index);
+    respawn.setPos(QPoint(ui->posXRespawnBox->value(), ui->posYRespawnBox->value()));
+    respawn.setCapturable(ui->isCapturableCheckBox);
+    respawn.setMain(ui->isMainCheckBox);
+    respawn.setTeam((containers::ETeam) mTeamValue);
+    respawn.setCaptureRadius(ui->captRadRespawnBox->value());
+    respawn.setCaptureTime(ui->captTimeRespawnBox->value());
+    respawn.setSpawnRadius(ui->spawnRadRespawnBox->value());
+
+    mMaps->item(mapIndex).respawns().updateView();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::showMapListContentMenu(QPoint point)
@@ -125,31 +194,57 @@ void TMapsEditorForm::showMapListContentMenu(QPoint point)
     menu.addAction(tr("Load maplist..."));
     menu.addAction(tr("Save maplist..."), this, SLOT(saveMapListAction()));
     menu.addSeparator();
-    menu.addAction(tr("Refresh"));
+    menu.addAction(tr("Refresh"), this, SLOT(refreshMapListAction()));
     menu.exec(ui->mapsView->mapToGlobal(point));
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::saveMapListAction()
 {
-    mMaps->saveToFile("maplist.txt");
+    mMaps->saveMapList("maplist.txt", Global::Settings()->GetMapsPath());
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::refreshMapListAction()
+{
+    auto it = mMaps->constBegin();
+    for( ; it != mMaps->constEnd(); ++it )
+    {
+        const containers::TMapItem& map = *it;
+        qDebug() << map.name() << "\n"
+            << "objects:" << map.objects().count() << "\n"
+            << "respawns:" << map.respawns().count();
+    }
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_listView_clicked(QModelIndex index)
 {
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
-        ui->posXObjectBox->setValue(
-            mMaps->objects(ui->mapsView->currentIndex())->x(index));
-        ui->posYObjectBox->setValue(
-            mMaps->objects(ui->mapsView->currentIndex())->y(index));
-        ui->angleObjectBox->setValue(
-            mMaps->objects(ui->mapsView->currentIndex())->angle(index));
-        ui->idObjectEdit->setText(QString().number(
-                    mMaps->objects(ui->mapsView->currentIndex())->id(index)));
+        const containers::TObjectItem& object = mMaps->item(
+                ui->mapsView->currentIndex()).objects().item(index);
+
+        ui->posXObjectBox->setValue(object.x());
+        ui->posYObjectBox->setValue(object.y());
+        ui->angleObjectBox->setValue(object.angle());
+        ui->idObjectEdit->setText(QString().number(object.id()));
         return;
     }
     if (ui->toolBox->currentWidget() == ui->pageRespawns) {
+        const containers::TRespawnItem& respawn = mMaps->item(
+                ui->mapsView->currentIndex()).respawns().item(index);
+
+        ui->posXRespawnBox->setValue(respawn.x());
+        ui->posYRespawnBox->setValue(respawn.y());
+        ui->captRadRespawnBox->setValue(respawn.captureRadius());
+        ui->spawnRadRespawnBox->setValue(respawn.spawnRadius());
+        ui->captTimeRespawnBox->setValue(respawn.captureTime());
+        ui->isCapturableCheckBox->setChecked(respawn.isCapturable());
+        ui->isMainCheckBox->setChecked(respawn.isMain());
+
+        mTeamValue = respawn.team() - 1;
+        updateTeamButton();
         return;
     }
+
+    mMaps->updateView();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::initScene(const QModelIndex& index)
@@ -157,16 +252,75 @@ void TMapsEditorForm::initScene(const QModelIndex& index)
     if (!index.isValid()) {
         return;
     }
-    oldcontainers::TMapObjectContainer* objects = mMaps->objects(index);
-    mScene->sceneRect().setSize(QSize(mMaps->mapWidth(index), mMaps->mapHeight(index)));
-    //mSceneView->maximumViewportSize()
+    mScene->clear();
+
+    containers::TMapItem& map = mMaps->item(index);
+    mScene->sceneRect().setSize(map.size());
     mSceneView->setSceneRect(0, 0, mScene->width(), mScene->height());
-    QModelIndex objectIndex;
-    for (int i = 0; i < objects->count(); ++i) {
-        TStaticObject* mapObject = new TStaticObject();
-        objectIndex = objects->model()->index(i, 0);
-        mapObject->setPos(QPointF(objects->x(objectIndex), objects->y(objectIndex)));
-        //mapObject->setPixmap();
+
+    TStaticObject* backgroundObject = new TStaticObject(QPixmap(map.background()));
+    backgroundObject->setFixed();
+    mScene->addItem(backgroundObject);
+
+    auto it = map.objects().constBegin();
+    for( ; it != map.objects().constEnd(); ++it )
+    {
+        const containers::TObjectItem object = *it;
+        TStaticObject* mapObject = new TStaticObject(QPixmap(object.resourceFile()));
+        mapObject->setPos(object.pos());
         mScene->addItem(mapObject);
     }
 }
+//------------------------------------------------------------------------------
+void TMapsEditorForm::toggleBrowserBox()
+{
+    if( mBrowserState == E_BrowserFull )
+    {
+        ui->browserGroupBox->show();
+        ui->mapsView->show();
+        ui->line->show();
+        ui->line_2->show();
+        ui->labelMapsList->show();
+        ui->label->show();
+        ui->toolBox->show();
+        ui->objectsView->show();
+        ui->browserGroupBox->setMaximumWidth(400);
+        ui->browserGroupBox->setMinimumWidth(600);
+        mBrowserState = E_BrowserHalf;
+        return;
+    }
+    if( mBrowserState == E_BrowserHalf )
+    {
+        ui->browserGroupBox->show();
+        ui->mapsView->hide();
+        ui->line->hide();
+        ui->line_2->hide();
+        ui->labelMapsList->hide();
+        ui->label->hide();
+        ui->toolBox->hide();
+        ui->objectsView->hide();
+        ui->browserGroupBox->setMaximumWidth(300);
+        ui->browserGroupBox->setMinimumWidth(200);
+        mBrowserState = E_BrowserNone;
+        return;
+    }
+    if( mBrowserState == E_BrowserNone )
+    {
+        ui->browserGroupBox->hide();
+        ui->mapsView->hide();
+        ui->line->hide();
+        ui->line_2->hide();
+        ui->labelMapsList->hide();
+        ui->label->hide();
+        ui->toolBox->hide();
+        ui->objectsView->hide();
+        mBrowserState = E_BrowserFull;
+    }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::keyReleaseEvent(QKeyEvent * event)
+{
+    if( event->key() == Qt::Key_F1 )
+        toggleBrowserBox();
+}
+//------------------------------------------------------------------------------

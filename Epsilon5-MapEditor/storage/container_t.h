@@ -2,6 +2,7 @@
 #include <QHash>
 #include <QStandardItemModel>
 #include "../../utils/uexception.h"
+#include "storage/item_t.h"
 //------------------------------------------------------------------------------
 namespace containers
 {
@@ -44,7 +45,10 @@ public:
     }
 
     THashId addItem(const T& item) {
+        ++mLastValidId;
         mContainer->insert(mLastValidId, item);
+        T& mod = mContainer->operator [](mLastValidId);
+        mod.setId(mLastValidId);
         return mLastValidId;
     }
 
@@ -57,11 +61,13 @@ public:
             throw UException(QString(Q_FUNC_INFO)
                     .append(":: not valid id passed:'%1'").arg(id));
         mContainer->remove(id);
+        refreshModel();
     }
 
     void clearItems() {
         mContainer->clear();
         mLastValidId = 0;
+        refreshModel();
     }
 
     // TODO: make add/remove functions for list of items
@@ -90,6 +96,24 @@ public:
         return mContainer[id];
     }
 
+    const T& operator[](QModelIndex viewIndex) const {
+        const QStandardItem* viewItem = mModel->itemFromIndex(viewIndex);
+        return mContainer[viewItem->data().toUInt()];
+    }
+
+    T& operator[](QModelIndex viewIndex) {
+        QStandardItem* viewItem = mModel->itemFromIndex(viewIndex);
+        return mContainer->operator [](viewItem->data().toUInt());
+    }
+
+    const T& item(QModelIndex viewIndex) const {
+        return operator[](viewIndex);
+    }
+
+    T& item(QModelIndex viewIndex) {
+        return operator[](viewIndex);
+    }
+
     QStandardItemModel* model() const {
         return mModel;
     }
@@ -98,14 +122,32 @@ public:
         return mModel;
     }
 
+    void setItemInfo(const QModelIndex& index, const QString& text = QString(),
+            const QIcon& icon = QIcon()) {
+        QStandardItem* viewItem = mModel->itemFromIndex(index);
+        viewItem->setIcon(icon);
+        viewItem->setText(text);
+    }
+
+    void updateView()
+    {
+        QModelIndex index;
+        for( int i = 0; i < mModel->rowCount(); ++i )
+        {
+            index = mModel->index(i, 0);
+            setItemInfo(index, item(index).pack(), item(index).previewIcon());
+        }
+    }
+
 protected:
     void addToModel(THashId id, const QString& text = QString(),
             const QIcon& icon = QIcon()) {
-        QStandardItem* viewItem = QStandardItem(icon, text);
+        QStandardItem* viewItem = new QStandardItem(icon, text);
         viewItem->setData(id);
+        viewItem->setEditable(false);
         mModel->appendRow(viewItem);
     }
-
+protected:
     void refreshModel() {
         QStandardItem* viewItem;
         T item;
@@ -115,6 +157,7 @@ protected:
             if( !mContainer->contains(viewItem->data().toUInt()) ) {
                 mModel->removeRow(i);
                 --i;
+                continue;
             }
         }
     }

@@ -24,13 +24,15 @@ TObjectContainer::TObjectItemId TObjectContainer::addObject(
         const TObjectInfo& info)
 {
     TObjectItem object(info);
-    return addItem(object);
+    return addObject(object);
 }
 //------------------------------------------------------------------------------
 TObjectContainer::TObjectItemId TObjectContainer::addObject(
         const TObjectItem& object)
 {
-    return addItem(object);
+    TObjectItemId id = addItem(object);
+    addToModel(id, object.pack());
+    return id;
 }
 //------------------------------------------------------------------------------
 void TObjectContainer::removeObject(const TObjectItem& item)
@@ -54,6 +56,7 @@ void TObjectContainer::loadObjectList(const QString& objectList,
         throw UException(QString(Q_FUNC_INFO)
                 .append(":: open file error: '%1'").arg(objectList));
     }
+
     QTextStream stream(&file);
     TObjectItem object;
     while (!stream.atEnd()) {

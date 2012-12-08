@@ -24,13 +24,15 @@ TRespawnContainer::TRespawnItemId TRespawnContainer::addRespawn(
         const TRespawnInfo& info)
 {
     TRespawnItem item(info);
-    return addItem(item);
+    return addRespawn(item);
 }
 //------------------------------------------------------------------------------
 TRespawnContainer::TRespawnItemId TRespawnContainer::addRespawn(
         const TRespawnItem& item)
 {
-    return addItem(item);
+    TRespawnItemId id = addItem(item);
+    addToModel(id, item.pack());
+    return id;
 }
 //------------------------------------------------------------------------------
 void TRespawnContainer::removeRespawn(const TRespawnItem& item)

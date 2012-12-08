@@ -18,9 +18,9 @@ TObjectItem& TObjectItem::operator =(const TObjectItem& object)
     return *this;
 }
 //------------------------------------------------------------------------------
-quint32 TObjectItem::id() const
+quint32 TObjectItem::objectId() const
 {
-    return mId; //info().id;
+    return info().id;
 }
 //------------------------------------------------------------------------------
 qint32 TObjectItem::x() const
@@ -43,10 +43,9 @@ qreal TObjectItem::angle() const
     return info().angle;
 }
 //------------------------------------------------------------------------------
-void TObjectItem::setId(quint32 id)
+void TObjectItem::setObjectId(quint32 id)
 {
     info().id = id;
-    mId = id;
 }
 //------------------------------------------------------------------------------
 void TObjectItem::setPos(const QPoint& pos)

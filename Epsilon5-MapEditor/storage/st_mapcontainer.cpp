@@ -21,7 +21,9 @@ TMapContainer::TMapContainer(QObject* parent)
 //------------------------------------------------------------------------------
 TMapContainer::TMapItemId TMapContainer::addMap(const TMapItem& mapItem)
 {
-    return addItem(mapItem);
+    TMapItemId id = addItem(mapItem);
+    addToModel(id, mapItem.name());
+    return id;
 }
 //------------------------------------------------------------------------------
 void TMapContainer::removeMap(const TMapItem &mapItem)
@@ -34,6 +36,7 @@ void TMapContainer::removeMap(TMapItemId id)
     removeItem(id);
 }
 //------------------------------------------------------------------------------
+// Load maps from maplist file from baseDirectory by map's name
 void TMapContainer::loadMapList(const QString& listFileName,
         const QDir& baseDirectory)
 {
@@ -42,6 +45,7 @@ void TMapContainer::loadMapList(const QString& listFileName,
         throw UException(QString(Q_FUNC_INFO)
                 .append(":: open file error: '%1'").arg(listFileName));
     }
+
     QTextStream stream(&file);
     QDir dir(baseDirectory);
     QString line;
@@ -53,7 +57,7 @@ void TMapContainer::loadMapList(const QString& listFileName,
         }
         // Load map via loading map files (config, objects, points, ...)
         try {
-            loadMapByName(dir.dirName());
+            loadMapByName(dir.dirName(), baseDirectory.absolutePath());
         } catch (const UException& ex) {
             qDebug("%s", ex.what());
         }
@@ -208,4 +212,14 @@ void TMapContainer::saveMap(const TMapItem &map)
 {
     saveMapByName(map.name(), map.resourceFile());
 }
+//------------------------------------------------------------------------------
+//void TMapContainer::updateView()
+//{
+//    QModelIndex index;
+//    for( int i = 0; i < model()->rowCount(); ++i )
+//    {
+//        index = model()->index(i, 0);
+//        setItemInfo(index, item(index).pack(), item(index).previewIcon());
+//    }
+//}
 //------------------------------------------------------------------------------

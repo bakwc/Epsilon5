@@ -22,15 +22,12 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     if (mButton == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier) {
         mAngle = rotation() + event->pos().x() - mCursorPosition.x();
         mAngle %= 360;
-//        setTransformOriginPoint(QPoint(pos().x() + pixmap().width()/2,
-//            pos().y() + pixmap().height()/2));
         setTransformOriginPoint(QPoint(pixmap().width() / 2,
                 pixmap().height() / 2));
         setRotation(mAngle);
-//        resetTransform();
         return;
     }
-    if (mButton == Qt::LeftButton) {
+    if (mButton == Qt::LeftButton && !mFixed) {
         setPos(mapToScene(event->pos().x() - pixmap().width() / 2,
                 event->pos().y() - pixmap().height() / 2));
     }
@@ -46,4 +43,9 @@ void TStaticObject::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     Q_UNUSED(event);
     mButton = Qt::NoButton;
+}
+
+void TStaticObject::setFixed(bool value)
+{
+    mFixed = value;
 }

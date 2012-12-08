@@ -7,11 +7,15 @@ TMapItem::TMapItem(const TMapInfo& info,
     : TTItem(info)
     , mObjects(objects)
     , mRespawns(respawns)
+    , mBackgroundFile()
 {
 }
 //------------------------------------------------------------------------------
 TMapItem::TMapItem(const TMapItem& map)
     : TTItem(map)
+    , mObjects(map.mObjects)
+    , mRespawns(map.mRespawns)
+    , mBackgroundFile(map.mBackgroundFile)
 {
 }
 //------------------------------------------------------------------------------

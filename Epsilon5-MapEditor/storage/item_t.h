@@ -8,15 +8,16 @@ namespace containers
 template<typename T>
 class TTItem
 {
-protected:
-    typedef quint32 TItemId;
 public:
-    TTItem()
-        : mValid(true)
+    typedef quint32 TItemId;
+
+public:
+    TTItem(const T& info = T())
+        : mValid(false)
         , mId(0)
         , mResourceFile()
         , mPreviewIcon()
-        , mInfo(T()) {
+        , mInfo(info) {
     }
     TTItem(const TTItem& item)
         : mValid(item.mValid)
@@ -31,20 +32,44 @@ public:
         return *this;
     }
 
+    TItemId id() const {
+        return mId;
+    }
+
+    void setId(TItemId id) {
+        mId = id;
+    }
+
     bool isValid() const {
         return mValid;
     }
 
-protected:
+    const QIcon& previewIcon() const {
+        return mPreviewIcon;
+    }
+
+    void setPreviewIcon(const QPixmap& pixmap) {
+        mPreviewIcon = QIcon(QPixmap(pixmap));
+    }
+
+    QString resourceFile() const {
+        return mResourceFile;
+    }
+
+    void setResourceFile(const QString& resourceFile) {
+        mResourceFile = resourceFile;
+    }
+
     const T& info() const {
         return mInfo;
     }
 
+protected:
     T& info() {
         return mInfo;
     }
 
-private:
+protected:
     bool mValid;
     TItemId mId;
     QString mResourceFile;

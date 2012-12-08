@@ -1,6 +1,6 @@
 #pragma once
 #include "storage/item_t.h"
-#include "storage/st_storageinfos.h"
+#include "storage/st_storageinfo.h"
 #include "storage/st_objectcontainer.h"
 #include "storage/st_respawncontainer.h"
 //------------------------------------------------------------------------------
@@ -10,7 +10,9 @@ namespace containers
 class TMapItem : public TTItem<TMapInfo>
 {
 public:
-    TMapItem();
+    TMapItem(const TMapInfo& info = TMapInfo(),
+            const TObjectContainer& objects = TObjectContainer(),
+            const TRespawnContainer& respawns = TRespawnContainer());
     TMapItem(const TMapItem& map);
     TMapItem& operator=(const TMapItem& map);
 
@@ -23,9 +25,22 @@ public:
     void setSize(quint32 width, quint32 height);
     void setSize(const QSize& size);
 
+    bool validate();
+
+    const TObjectContainer& objects() const;
+    TObjectContainer& objects();
+    const TRespawnContainer& respawns() const;
+    TRespawnContainer& respawns();
+    const QString& background() const;
+    void setBackground(const QString& file);
+
+    QString pack() const;
+    bool unpack(const QString& string);
+
 private:
     TObjectContainer mObjects;
     TRespawnContainer mRespawns;
+    QString mBackgroundFile;
 };
 //------------------------------------------------------------------------------
 }

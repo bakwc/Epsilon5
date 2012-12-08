@@ -13,7 +13,7 @@
 TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::TMapsEditorForm)
-    , mMaps(new oldcontainers::TMapContainer(this))
+    , mMaps(new containers::TMapContainer(this))
     , mScene(new TScene(this))
     , mSceneView(new TSceneView(mScene, this))
 {
@@ -43,9 +43,9 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     connect(ui->idObjectEdit, SIGNAL(editingFinished()),
             this, SLOT(updateObjectSettings()));
     // Just for testing...
-    mMaps->setBaseDirectory(Global::Settings()->GetMapsPath());
+//    mMaps->setBaseDirectory(Global::Settings()->GetMapsPath());
     try {
-        mMaps->loadFromFile("maplist.txt");
+        mMaps->loadMapList("maplist.txt", Global::Settings()->GetMapsPath());
     } catch (const UException& ex) {
         qDebug("%s", ex.what());
     }

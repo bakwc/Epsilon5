@@ -1,6 +1,6 @@
 #pragma once
 #include "storage/item_t.h"
-#include "storage/st_storageinfos.h"
+#include "storage/st_storageinfo.h"
 //------------------------------------------------------------------------------
 namespace containers
 {
@@ -8,7 +8,7 @@ namespace containers
 class TObjectItem : public TTItem<TObjectInfo>
 {
 public:
-    TObjectItem();
+    TObjectItem(const TObjectInfo& info = TObjectInfo());
     TObjectItem(const TObjectItem& object);
     TObjectItem& operator=(const TObjectItem& object);
 
@@ -23,6 +23,11 @@ public:
     void setX(qint32 x);
     void setY(qint32 y);
     void setAngle(qreal angle);
+
+    bool validate();
+
+    QString pack() const;
+    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 }

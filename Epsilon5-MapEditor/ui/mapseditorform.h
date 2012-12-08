@@ -2,11 +2,8 @@
 #pragma once
 #include <QWidget>
 #include <QModelIndex>
-#include "containers/mapcontainer.h"
+#include "storage/st_mapcontainer.h"
 //------------------------------------------------------------------------------
-//namespace oldcontainers {
-//class TMapContainer;
-//}
 class TScene;
 class TSceneView;
 class QGraphicsView;
@@ -42,7 +39,7 @@ private slots:
 
 private:
     Ui::TMapsEditorForm* ui;
-    oldcontainers::TMapContainer* mMaps;
+    containers::TMapContainer* mMaps;
     TScene* mScene;
     TSceneView* mSceneView;
 };

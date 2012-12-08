@@ -1,5 +1,6 @@
 #pragma once
 #include <QHash>
+#include <QStandardItemModel>
 #include "../../utils/uexception.h"
 //------------------------------------------------------------------------------
 namespace containers
@@ -17,14 +18,29 @@ public:
     explicit TTContainer()
         : mContainer(new THashContainer)
         , mLastValidId(0)
+        , mModel(new QStandardItemModel)
     {}
     TTContainer(const TTContainer& container)
         : mContainer(container.mContainer)
         , mLastValidId(container.mLastValidId)
-    {}
+        , mModel(new QStandardItemModel)
+    {
+        // Deep copy of model
+        for (int i = 0; i < container.mModel->rowCount(); ++i) {
+            QStandardItem* item = container.mModel->item(i);
+            mModel->appendRow(item->clone());
+        }
+    }
+    ~TTContainer()
+    {
+        if( !mModel )
+            return;
 
-    void count() {
-        mContainer->count();
+        delete mModel;
+    }
+
+    int count() const {
+        return mContainer->count();
     }
 
     THashId addItem(const T& item) {
@@ -32,7 +48,11 @@ public:
         return mLastValidId;
     }
 
-    void removeItem(THashId id, const T& item) {
+    void removeItem(const T& item) {
+        removeItem(item.id());
+    }
+
+    void removeItem(THashId id) {
         if (!mContainer->contains(id))
             throw UException(QString(Q_FUNC_INFO)
                     .append(":: not valid id passed:'%1'").arg(id));
@@ -70,9 +90,39 @@ public:
         return mContainer[id];
     }
 
+    QStandardItemModel* model() const {
+        return mModel;
+    }
+
+    QStandardItemModel* model() {
+        return mModel;
+    }
+
+protected:
+    void addToModel(THashId id, const QString& text = QString(),
+            const QIcon& icon = QIcon()) {
+        QStandardItem* viewItem = QStandardItem(icon, text);
+        viewItem->setData(id);
+        mModel->appendRow(viewItem);
+    }
+
+    void refreshModel() {
+        QStandardItem* viewItem;
+        T item;
+        for( int i = 0; i < mModel->rowCount(); ++i )
+        {
+            viewItem = mModel->item(i);
+            if( !mContainer->contains(viewItem->data().toUInt()) ) {
+                mModel->removeRow(i);
+                --i;
+            }
+        }
+    }
+
 private:
     THashContainer* mContainer;
     THashId mLastValidId;
+    QStandardItemModel* mModel;
 };
 //------------------------------------------------------------------------------
 }

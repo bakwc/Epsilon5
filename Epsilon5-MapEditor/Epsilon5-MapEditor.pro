@@ -22,19 +22,19 @@ SOURCES += \
     ui/configurationdialog.cpp \
     ui/objectseditorform.cpp \
     ui/mapseditorform.cpp \
-    containers/structures.cpp \
-    containers/container.cpp \
-    containers/mapcontainer.cpp \
-    containers/mapobjectcontainer.cpp \
-    containers/maprespawncontainer.cpp \
-    containers/mapobjectitem.cpp \
-    containers/maprespawnitem.cpp \
+#    containers/structures.cpp \
+#    containers/container.cpp \
+#    containers/mapcontainer.cpp \
+#    containers/mapobjectcontainer.cpp \
+#    containers/maprespawncontainer.cpp \
+#    containers/mapobjectitem.cpp \
+#    containers/maprespawnitem.cpp \
+#    containers/mapitem.cpp \
     graphics/scene.cpp \
     graphics/sceneview.cpp \
     graphics/staticobject.cpp \
     storage/container_t.cpp \
     storage/st_mapcontainer.cpp \
-    containers/mapitem.cpp \
     storage/st_mapitem.cpp \
     storage/st_objectcontainer.cpp \
     storage/st_objectitem.cpp \
@@ -61,26 +61,26 @@ HEADERS += \
     ui/configurationdialog.h \
     ui/objectseditorform.h \
     ui/mapseditorform.h \
-    containers/structures.h \
-    containers/container.h \
-    containers/mapobjectcontainer.h \
-    containers/maprespawncontainer.h \
-    containers/mapitem.h \
-    containers/mapobjectitem.h \
-    containers/maprespawnitem.h \
+#    containers/mapcontainer.h \
+#    containers/structures.h \
+#    containers/container.h \
+#    containers/mapobjectcontainer.h \
+#    containers/maprespawncontainer.h \
+#    containers/mapitem.h \
+#    containers/mapobjectitem.h \
+#    containers/maprespawnitem.h \
     graphics/scene.h \
     graphics/sceneview.h \
     graphics/staticobject.h \
     storage/container_t.h \
     storage/st_mapcontainer.h \
-    containers/mapcontainer.h \
-    storage/st_storageinfos.h \
     storage/st_respawnitem.h \
     storage/st_respawncontainer.h \
     storage/st_objectitem.h \
     storage/st_objectcontainer.h \
     storage/st_mapitem.h \
-    storage/item_t.h
+    storage/item_t.h \
+    storage/st_storageinfo.h
 
 FORMS += \
 #    createmapdialog.ui \

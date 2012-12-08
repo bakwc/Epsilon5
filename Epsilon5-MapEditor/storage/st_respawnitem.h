@@ -1,6 +1,6 @@
 #pragma once
 #include "storage/item_t.h"
-#include "storage/st_storageinfos.h"
+#include "storage/st_storageinfo.h"
 //------------------------------------------------------------------------------
 namespace containers
 {
@@ -8,7 +8,7 @@ namespace containers
 class TRespawnItem : public TTItem<TRespawnInfo>
 {
 public:
-    TRespawnItem();
+    TRespawnItem(const TRespawnInfo& info = TRespawnInfo());
     TRespawnItem(const TRespawnItem& respawn);
     TRespawnItem& operator=(const TRespawnItem& respawn);
 
@@ -31,6 +31,11 @@ public:
     void setMain(bool value = true);
     void setCaptureTime(quint32 time);
     void setTeam(ETeam team);
+
+    bool validate();
+
+    QString pack() const;
+    bool unpack(const QString& string);
 };
 //------------------------------------------------------------------------------
 }

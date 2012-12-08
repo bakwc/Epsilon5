@@ -2,7 +2,11 @@
 //------------------------------------------------------------------------------
 using namespace containers;
 //------------------------------------------------------------------------------
-TMapItem::TMapItem()
+TMapItem::TMapItem(const TMapInfo& info,
+        const TObjectContainer& objects, const TRespawnContainer& respawns)
+    : TTItem(info)
+    , mObjects(objects)
+    , mRespawns(respawns)
 {
 }
 //------------------------------------------------------------------------------
@@ -54,5 +58,70 @@ void TMapItem::setSize(const QSize& size)
 {
     info().width = size.width();
     info().height = size.height();
+}
+//------------------------------------------------------------------------------
+bool TMapItem::validate()
+{
+    mValid = !(info().name).isEmpty();
+    return mValid;
+}
+//------------------------------------------------------------------------------
+const TObjectContainer& TMapItem::objects() const
+{
+    return mObjects;
+}
+//------------------------------------------------------------------------------
+TObjectContainer& TMapItem::objects()
+{
+    return mObjects;
+}
+//------------------------------------------------------------------------------
+const TRespawnContainer& TMapItem::respawns() const
+{
+    return mRespawns;
+}
+//------------------------------------------------------------------------------
+TRespawnContainer& TMapItem::respawns()
+{
+    return mRespawns;
+}
+//------------------------------------------------------------------------------
+QString TMapItem::pack() const
+{
+    return QString("%1:%2x%3").arg(info().name)
+            .arg(info().width).arg(info().height);
+}
+//------------------------------------------------------------------------------
+bool TMapItem::unpack(const QString& string)
+{
+    const quint8 STRUCTURE_FIELDS_COUNT = 4;
+    QStringList vars = string.split(":");
+    bool isOk;
+    if (vars.count() != STRUCTURE_FIELDS_COUNT) {
+        return false;
+    }
+    info().name = vars[0].trimmed();
+    if (info().name.isEmpty()) {
+        return false;
+    }
+    info().width = vars[1].toUInt(&isOk);
+    if (!isOk) {
+        return false;
+    }
+    info().height = vars[2].toUInt(&isOk);
+    if (!isOk) {
+        return false;
+    }
+    return true;
+}
+//------------------------------------------------------------------------------
+const QString& TMapItem::background() const
+{
+    return mBackgroundFile;
+}
+//------------------------------------------------------------------------------
+void TMapItem::setBackground(const QString &file)
+{
+    mBackgroundFile = file.trimmed();
 }
 //------------------------------------------------------------------------------

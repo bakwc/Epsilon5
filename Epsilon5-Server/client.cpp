@@ -58,7 +58,10 @@ void TClient::OnDataReceived(const QByteArray &data)
                     throw UException("Player not spawned!");
                 }
                 Epsilon5::Control control;
+
                 if (control.ParseFromArray(content.data(), content.size())) {
+                    size_t currentPacket = control.packet_number();
+                    Server()->Application()->GetWorld()->SetPingForPlayer(Id, currentPacket);
                     SetSeen();
                     emit ControlReceived(control);
                 } else {

@@ -7,6 +7,7 @@
 #include <QSet>
 #include <Box2D/Box2D.h>
 #include <QDebug>
+#include <QTime>
 
 #include "player.h"
 #include "bullet.h"
@@ -33,6 +34,7 @@ public:
     }
     TPlayer* GetPlayer(size_t id);
     QByteArray Serialize();
+    void SetPingForPlayer(size_t id, size_t packetNumber);
 public slots:
     void PlayerSpawn(size_t id, ETeam team);
     void PlayerKill(size_t id);
@@ -44,6 +46,7 @@ public slots:
     inline void NeedFullPacket() {
         FullPacketResendTtl = 0;
     }
+
 
 private:
     void timerEvent(QTimerEvent *);
@@ -62,4 +65,6 @@ private:
     TDynamicObjectsList DynamicObjects;
     TStaticObjectsList WorldBorders;
     size_t FullPacketResendTtl;
+    size_t CurrentPacketNumber;
+    QHash<size_t, QTime> Times;
 };

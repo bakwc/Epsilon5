@@ -236,7 +236,6 @@ void TMainDisplay::DrawFps(QPainter& painter)
 
 void TMainDisplay::DrawPing(QPainter& painter)
 {
-    qint64 Ping = Application->GetNetwork()->GetPing();
     DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping));
 }
 
@@ -260,6 +259,9 @@ QPoint TMainDisplay::GetPlayerCoordinates() {
         if ((size_t)player.id() == playerId) {
             res.setX(player.x());
             res.setY(player.y());
+            if (player.has_ping()) {
+                Ping = player.ping();
+            }
         }
     }
     return res;

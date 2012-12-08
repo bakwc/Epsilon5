@@ -69,4 +69,5 @@ private:
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
     QVector<RespPoint> RespPoints;
+    int Ping;
 };

@@ -11,8 +11,6 @@ TNetwork::TNetwork(QObject *parent)
     : QObject(parent)
     , Socket(new QUdpSocket(this))
     , Id(0)
-    , Ping(0)
-    , LastTime(QDateTime::currentMSecsSinceEpoch())
     , IsAlive(false)
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
@@ -29,9 +27,6 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 
 void TNetwork::OnDataReceived() {
     IsAlive = true;
-    qint64 time = QDateTime::currentMSecsSinceEpoch();
-    Ping = time - LastTime;
-    LastTime = time;
     QByteArray receivedPacket = Socket->readAll();
     EPacketType packetType;
     quint16 packedDataSize;
@@ -85,8 +80,10 @@ void TNetwork::OnDataReceived() {
                 }
                 World.Clear();
                 if (World.ParseFromArray(content.data(), content.size())) {
+                    qint32 packetnumber = World.packet_number();
+                    qDebug() << packetnumber;
                     emit WorldReceived();
-                    SendControls();
+                    SendControls(packetnumber);
                 } else {
                     throw UException("Error parsing world");
                 }
@@ -123,9 +120,10 @@ void TNetwork::Start() {
         Application()->GetSettings()->GetServerPort());
 }
 
-void TNetwork::SendControls() {
-    const Epsilon5::Control& control = Application()->GetMainDisplay()->GetControl();
+void TNetwork::SendControls(size_t packetnumber) {
+    Epsilon5::Control control = Application()->GetMainDisplay()->GetControl();
     QByteArray message;
+    control.set_packet_number(packetnumber);
     message.resize(control.ByteSize());
     control.SerializeToArray(message.data(),message.size());
     Send(message, PT_Control);

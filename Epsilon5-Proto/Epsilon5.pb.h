@@ -205,6 +205,13 @@ class Player : public ::google::protobuf::Message {
   inline bool team() const;
   inline void set_team(bool value);
   
+  // optional uint32 ping = 10;
+  inline bool has_ping() const;
+  inline void clear_ping();
+  static const int kPingFieldNumber = 10;
+  inline ::google::protobuf::uint32 ping() const;
+  inline void set_ping(::google::protobuf::uint32 value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Player)
  private:
   inline void set_has_id();
@@ -225,6 +232,8 @@ class Player : public ::google::protobuf::Message {
   inline void clear_has_hp();
   inline void set_has_team();
   inline void clear_has_team();
+  inline void set_has_ping();
+  inline void clear_has_ping();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -237,9 +246,10 @@ class Player : public ::google::protobuf::Message {
   double angle_;
   ::std::string* name_;
   bool team_;
+  ::google::protobuf::uint32 ping_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -723,8 +733,17 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >*
       mutable_resp_points();
   
+  // required uint32 packet_number = 5;
+  inline bool has_packet_number() const;
+  inline void clear_packet_number();
+  static const int kPacketNumberFieldNumber = 5;
+  inline ::google::protobuf::uint32 packet_number() const;
+  inline void set_packet_number(::google::protobuf::uint32 value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
+  inline void set_has_packet_number();
+  inline void clear_has_packet_number();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -732,9 +751,10 @@ class World : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_points_;
+  ::google::protobuf::uint32 packet_number_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -955,6 +975,13 @@ class Control : public ::google::protobuf::Message {
   inline Epsilon5::Weapon weapon() const;
   inline void set_weapon(Epsilon5::Weapon value);
   
+  // required uint32 packet_number = 4;
+  inline bool has_packet_number() const;
+  inline void clear_packet_number();
+  static const int kPacketNumberFieldNumber = 4;
+  inline ::google::protobuf::uint32 packet_number() const;
+  inline void set_packet_number(::google::protobuf::uint32 value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Control)
  private:
   inline void set_has_keystatus();
@@ -963,15 +990,18 @@ class Control : public ::google::protobuf::Message {
   inline void clear_has_angle();
   inline void set_has_weapon();
   inline void clear_has_weapon();
+  inline void set_has_packet_number();
+  inline void clear_has_packet_number();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::Epsilon5::Control_KeyStatus* keystatus_;
   double angle_;
   int weapon_;
+  ::google::protobuf::uint32 packet_number_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1403,6 +1433,28 @@ inline void Player::set_team(bool value) {
   team_ = value;
 }
 
+// optional uint32 ping = 10;
+inline bool Player::has_ping() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void Player::set_has_ping() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void Player::clear_has_ping() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void Player::clear_ping() {
+  ping_ = 0u;
+  clear_has_ping();
+}
+inline ::google::protobuf::uint32 Player::ping() const {
+  return ping_;
+}
+inline void Player::set_ping(::google::protobuf::uint32 value) {
+  set_has_ping();
+  ping_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Bullet
@@ -1806,6 +1858,28 @@ World::mutable_resp_points() {
   return &resp_points_;
 }
 
+// required uint32 packet_number = 5;
+inline bool World::has_packet_number() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void World::set_has_packet_number() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void World::clear_has_packet_number() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void World::clear_packet_number() {
+  packet_number_ = 0u;
+  clear_has_packet_number();
+}
+inline ::google::protobuf::uint32 World::packet_number() const {
+  return packet_number_;
+}
+inline void World::set_packet_number(::google::protobuf::uint32 value) {
+  set_has_packet_number();
+  packet_number_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Control_KeyStatus
@@ -2018,6 +2092,28 @@ inline void Control::set_weapon(Epsilon5::Weapon value) {
   GOOGLE_DCHECK(Epsilon5::Weapon_IsValid(value));
   set_has_weapon();
   weapon_ = value;
+}
+
+// required uint32 packet_number = 4;
+inline bool Control::has_packet_number() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Control::set_has_packet_number() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Control::clear_has_packet_number() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Control::clear_packet_number() {
+  packet_number_ = 0u;
+  clear_has_packet_number();
+}
+inline ::google::protobuf::uint32 Control::packet_number() const {
+  return packet_number_;
+}
+inline void Control::set_packet_number(::google::protobuf::uint32 value) {
+  set_has_packet_number();
+  packet_number_ = value;
 }
 
 // -------------------------------------------------------------------

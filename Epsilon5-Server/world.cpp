@@ -10,6 +10,7 @@ TWorld::TWorld(QObject *parent)
     : QObject(parent)
     , B2World(new b2World(b2Vec2(0, 0)))
     , FullPacketResendTtl(0)
+    , CurrentPacketNumber(0)
 {
     B2World->ClearForces();
     B2World->SetContactListener(this);
@@ -58,6 +59,7 @@ QByteArray TWorld::Serialize() {
             player->set_angle(i.value()->GetAngle());
             QByteArray playerName = i.value()->GetNickname().toLocal8Bit();
             player->set_name(playerName.data(), playerName.size());
+            player->set_ping(i.value()->GetPing());
         }
         player->set_hp(i.value()->GetHP());
     }
@@ -101,6 +103,11 @@ QByteArray TWorld::Serialize() {
     if (needFullPacket) {
         Application()->GetMaps()->SerialiseRespPoints(world);
     }
+
+    world.set_packet_number(CurrentPacketNumber++);
+
+    Times[CurrentPacketNumber].start();
+    //qDebug() << (size_t)-1;
 
     QByteArray result;
     result.resize(world.ByteSize());
@@ -274,4 +281,13 @@ void TWorld::BeginContact(b2Contact* contact) {
     if (bullet) {
         bullet->Destroy();
     }
+}
+
+
+void TWorld::SetPingForPlayer(size_t id, size_t packetNumber) {
+
+    int ping = Times[packetNumber].elapsed();
+
+    Players[id]->SetPing(ping);
+
 }

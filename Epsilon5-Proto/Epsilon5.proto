@@ -22,6 +22,8 @@ message Player {
     required uint32 hp = 8;
 
     optional bool team = 9;
+
+    optional uint32 ping = 10;
 }
 
 message Bullet {
@@ -58,6 +60,7 @@ message World {
     repeated Bullet bullets = 2;
     repeated Object objects = 3;
     repeated RespPoint resp_points = 4;
+    required uint32 packet_number = 5;
 }
 
 message Control {
@@ -74,6 +77,7 @@ message Control {
     required KeyStatus keyStatus = 1;
     required double angle = 2;
     required Weapon weapon = 3;
+    required uint32 packet_number = 4;
 }
 
 message Auth {

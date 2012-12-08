@@ -27,6 +27,13 @@ public:
     inline QString GetNickname() {
         return NickName;
     }
+    inline void SetPing(int ping) {
+        Ping = ping;
+    }
+    inline int GetPing() {
+        return Ping;
+    }
+
     inline ETeam GetTeam() {
         return Team;
     }
@@ -43,4 +50,5 @@ private:
     size_t HP;
     TObjectInfo CollisionInfo;
     ETeam Team;
+    int Ping;
 };

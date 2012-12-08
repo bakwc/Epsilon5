@@ -57,7 +57,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       "Epsilon5.proto");
   GOOGLE_CHECK(file != NULL);
   Player_descriptor_ = file->message_type(0);
-  static const int Player_offsets_[9] = {
+  static const int Player_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, y_),
@@ -67,6 +67,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, hp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, team_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, ping_),
   };
   Player_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -136,11 +137,12 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RespPoint));
   World_descriptor_ = file->message_type(4);
-  static const int World_offsets_[4] = {
+  static const int World_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, players_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, bullets_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, objects_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, resp_points_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, packet_number_),
   };
   World_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -154,10 +156,11 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(World));
   Control_descriptor_ = file->message_type(5);
-  static const int Control_offsets_[3] = {
+  static const int Control_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, keystatus_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, angle_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, weapon_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, packet_number_),
   };
   Control_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -284,30 +287,31 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016Epsilon5.proto\022\010Epsilon5\"y\n\006Player\022\n\n\002"
-    "id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\n\n\002vx\030\004 \001"
-    "(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007 "
-    "\001(\t\022\n\n\002hp\030\010 \002(\r\022\014\n\004team\030\t \001(\010\"\233\001\n\006Bullet"
-    "\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n\002vx\030\003 \001(\001\022\n\n\002vy"
-    "\030\004 \001(\001\0221\n\013bullet_type\030\005 \001(\0162\025.Epsilon5.B"
-    "ullet.Type:\005ARBUZ\"0\n\004Type\022\t\n\005ARBUZ\020\000\022\021\n\r"
-    "LITTLE_BULLET\020\001\022\n\n\006ROCKET\020\002\"9\n\006Object\022\n\n"
-    "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle"
-    "\030\004 \002(\001\"@\n\tRespPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002("
-    "\005\022\014\n\004team\030\003 \002(\005\022\017\n\007is_main\030\004 \002(\010\"\232\001\n\005Wor"
-    "ld\022!\n\007players\030\001 \003(\0132\020.Epsilon5.Player\022!\n"
-    "\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\022!\n\007obje"
-    "cts\030\003 \003(\0132\020.Epsilon5.Object\022(\n\013resp_poin"
-    "ts\030\004 \003(\0132\023.Epsilon5.RespPoint\"\342\001\n\007Contro"
-    "l\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5.Control."
-    "KeyStatus\022\r\n\005angle\030\002 \002(\001\022 \n\006weapon\030\003 \002(\016"
-    "2\020.Epsilon5.Weapon\032v\n\tKeyStatus\022\r\n\005keyUp"
-    "\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010"
-    "\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyAttack1\030\005 \002(\010\022\022"
-    "\n\nkeyAttack2\030\006 \002(\010\"\024\n\004Auth\022\014\n\004name\030\001 \002(\t"
-    "\"%\n\nPlayerInfo\022\n\n\002id\030\001 \002(\005\022\013\n\003map\030\002 \002(\t*"
-    "1\n\006Weapon\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n"
-    "\007Shotgun\020\002", 930);
+    "\n\016Epsilon5.proto\022\010Epsilon5\"\207\001\n\006Player\022\n\n"
+    "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\n\n\002vx\030\004 "
+    "\001(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007"
+    " \001(\t\022\n\n\002hp\030\010 \002(\r\022\014\n\004team\030\t \001(\010\022\014\n\004ping\030\n"
+    " \001(\r\"\233\001\n\006Bullet\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n"
+    "\002vx\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\0221\n\013bullet_type\030\005 \001"
+    "(\0162\025.Epsilon5.Bullet.Type:\005ARBUZ\"0\n\004Type"
+    "\022\t\n\005ARBUZ\020\000\022\021\n\rLITTLE_BULLET\020\001\022\n\n\006ROCKET"
+    "\020\002\"9\n\006Object\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y"
+    "\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"@\n\tRespPoint\022\t\n\001x\030"
+    "\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003 \002(\005\022\017\n\007is_mai"
+    "n\030\004 \002(\010\"\261\001\n\005World\022!\n\007players\030\001 \003(\0132\020.Eps"
+    "ilon5.Player\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5"
+    ".Bullet\022!\n\007objects\030\003 \003(\0132\020.Epsilon5.Obje"
+    "ct\022(\n\013resp_points\030\004 \003(\0132\023.Epsilon5.RespP"
+    "oint\022\025\n\rpacket_number\030\005 \002(\r\"\371\001\n\007Control\022"
+    ".\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5.Control.Ke"
+    "yStatus\022\r\n\005angle\030\002 \002(\001\022 \n\006weapon\030\003 \002(\0162\020"
+    ".Epsilon5.Weapon\022\025\n\rpacket_number\030\004 \002(\r\032"
+    "v\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002"
+    " \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022"
+    "\022\n\nkeyAttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\""
+    "\024\n\004Auth\022\014\n\004name\030\001 \002(\t\"%\n\nPlayerInfo\022\n\n\002i"
+    "d\030\001 \002(\005\022\013\n\003map\030\002 \002(\t*1\n\006Weapon\022\n\n\006Pistol"
+    "\020\000\022\016\n\nMachinegun\020\001\022\013\n\007Shotgun\020\002", 991);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -366,6 +370,7 @@ const int Player::kAngleFieldNumber;
 const int Player::kNameFieldNumber;
 const int Player::kHpFieldNumber;
 const int Player::kTeamFieldNumber;
+const int Player::kPingFieldNumber;
 #endif  // !_MSC_VER
 
 Player::Player()
@@ -393,6 +398,7 @@ void Player::SharedCtor() {
   name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   hp_ = 0u;
   team_ = false;
+  ping_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -445,6 +451,7 @@ void Player::Clear() {
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     team_ = false;
+    ping_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -596,6 +603,22 @@ bool Player::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(80)) goto parse_ping;
+        break;
+      }
+      
+      // optional uint32 ping = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_ping:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &ping_)));
+          set_has_ping();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -667,6 +690,11 @@ void Player::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->team(), output);
   }
   
+  // optional uint32 ping = 10;
+  if (has_ping()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(10, this->ping(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -723,6 +751,11 @@ void Player::SerializeWithCachedSizes(
   // optional bool team = 9;
   if (has_team()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->team(), target);
+  }
+  
+  // optional uint32 ping = 10;
+  if (has_ping()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(10, this->ping(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -793,6 +826,13 @@ int Player::ByteSize() const {
       total_size += 1 + 1;
     }
     
+    // optional uint32 ping = 10;
+    if (has_ping()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->ping());
+    }
+    
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -849,6 +889,9 @@ void Player::MergeFrom(const Player& from) {
     if (from.has_team()) {
       set_team(from.team());
     }
+    if (from.has_ping()) {
+      set_ping(from.ping());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -882,6 +925,7 @@ void Player::Swap(Player* other) {
     std::swap(name_, other->name_);
     std::swap(hp_, other->hp_);
     std::swap(team_, other->team_);
+    std::swap(ping_, other->ping_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1949,6 +1993,7 @@ const int World::kPlayersFieldNumber;
 const int World::kBulletsFieldNumber;
 const int World::kObjectsFieldNumber;
 const int World::kRespPointsFieldNumber;
+const int World::kPacketNumberFieldNumber;
 #endif  // !_MSC_VER
 
 World::World()
@@ -1967,6 +2012,7 @@ World::World(const World& from)
 
 void World::SharedCtor() {
   _cached_size_ = 0;
+  packet_number_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2000,6 +2046,9 @@ World* World::New() const {
 }
 
 void World::Clear() {
+  if (_has_bits_[4 / 32] & (0xffu << (4 % 32))) {
+    packet_number_ = 0u;
+  }
   players_.Clear();
   bullets_.Clear();
   objects_.Clear();
@@ -2070,6 +2119,22 @@ bool World::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(34)) goto parse_resp_points;
+        if (input->ExpectTag(40)) goto parse_packet_number;
+        break;
+      }
+      
+      // required uint32 packet_number = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_packet_number:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &packet_number_)));
+          set_has_packet_number();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -2116,6 +2181,11 @@ void World::SerializeWithCachedSizes(
       4, this->resp_points(i), output);
   }
   
+  // required uint32 packet_number = 5;
+  if (has_packet_number()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->packet_number(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2152,6 +2222,11 @@ void World::SerializeWithCachedSizes(
         4, this->resp_points(i), target);
   }
   
+  // required uint32 packet_number = 5;
+  if (has_packet_number()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->packet_number(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2162,6 +2237,15 @@ void World::SerializeWithCachedSizes(
 int World::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[4 / 32] & (0xffu << (4 % 32))) {
+    // required uint32 packet_number = 5;
+    if (has_packet_number()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->packet_number());
+    }
+    
+  }
   // repeated .Epsilon5.Player players = 1;
   total_size += 1 * this->players_size();
   for (int i = 0; i < this->players_size(); i++) {
@@ -2223,6 +2307,11 @@ void World::MergeFrom(const World& from) {
   bullets_.MergeFrom(from.bullets_);
   objects_.MergeFrom(from.objects_);
   resp_points_.MergeFrom(from.resp_points_);
+  if (from._has_bits_[4 / 32] & (0xffu << (4 % 32))) {
+    if (from.has_packet_number()) {
+      set_packet_number(from.packet_number());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2239,6 +2328,7 @@ void World::CopyFrom(const World& from) {
 }
 
 bool World::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000010) != 0x00000010) return false;
   
   for (int i = 0; i < players_size(); i++) {
     if (!this->players(i).IsInitialized()) return false;
@@ -2261,6 +2351,7 @@ void World::Swap(World* other) {
     bullets_.Swap(&other->bullets_);
     objects_.Swap(&other->objects_);
     resp_points_.Swap(&other->resp_points_);
+    std::swap(packet_number_, other->packet_number_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2678,6 +2769,7 @@ void Control_KeyStatus::Swap(Control_KeyStatus* other) {
 const int Control::kKeyStatusFieldNumber;
 const int Control::kAngleFieldNumber;
 const int Control::kWeaponFieldNumber;
+const int Control::kPacketNumberFieldNumber;
 #endif  // !_MSC_VER
 
 Control::Control()
@@ -2700,6 +2792,7 @@ void Control::SharedCtor() {
   keystatus_ = NULL;
   angle_ = 0;
   weapon_ = 0;
+  packet_number_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2740,6 +2833,7 @@ void Control::Clear() {
     }
     angle_ = 0;
     weapon_ = 0;
+    packet_number_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -2797,6 +2891,22 @@ bool Control::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(32)) goto parse_packet_number;
+        break;
+      }
+      
+      // required uint32 packet_number = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_packet_number:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &packet_number_)));
+          set_has_packet_number();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -2836,6 +2946,11 @@ void Control::SerializeWithCachedSizes(
       3, this->weapon(), output);
   }
   
+  // required uint32 packet_number = 4;
+  if (has_packet_number()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->packet_number(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2860,6 +2975,11 @@ void Control::SerializeWithCachedSizes(
   if (has_weapon()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       3, this->weapon(), target);
+  }
+  
+  // required uint32 packet_number = 4;
+  if (has_packet_number()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->packet_number(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2889,6 +3009,13 @@ int Control::ByteSize() const {
     if (has_weapon()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->weapon());
+    }
+    
+    // required uint32 packet_number = 4;
+    if (has_packet_number()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->packet_number());
     }
     
   }
@@ -2927,6 +3054,9 @@ void Control::MergeFrom(const Control& from) {
     if (from.has_weapon()) {
       set_weapon(from.weapon());
     }
+    if (from.has_packet_number()) {
+      set_packet_number(from.packet_number());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2944,7 +3074,7 @@ void Control::CopyFrom(const Control& from) {
 }
 
 bool Control::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   if (has_keystatus()) {
     if (!this->keystatus().IsInitialized()) return false;
@@ -2957,6 +3087,7 @@ void Control::Swap(Control* other) {
     std::swap(keystatus_, other->keystatus_);
     std::swap(angle_, other->angle_);
     std::swap(weapon_, other->weapon_);
+    std::swap(packet_number_, other->packet_number_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

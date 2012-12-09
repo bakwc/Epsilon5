@@ -18,8 +18,9 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
 
     switch (weaponType) {
     case Epsilon5::Pistol: {
-        if (LastShoots[key].elapsed() > 600) {
-            LastShoots[key].restart();
+        TShootInfo& shootInfo = LastShoots[key];
+        if (shootInfo.Time.elapsed() > 400) {
+            shootInfo.Time.restart();
             double x, y, vx, vy;
             vx = 62 * sin(fireInfo.Angle + M_PI / 2);
             vy = 62 * cos(fireInfo.Angle + M_PI / 2);
@@ -31,26 +32,43 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
         }
     } break;
     case Epsilon5::Machinegun: {
-        if (LastShoots[key].elapsed() > 110) {
-            LastShoots[key].restart();
+        TShootInfo& shootInfo = LastShoots[key];
+
+        if (shootInfo.MachineGunClip == 0 && shootInfo.Time.elapsed() > machinegunReloadTime) {
+            shootInfo.MachineGunClip = 30;
+            shootInfo.Time.restart();
+        }
+
+        if (shootInfo.Time.elapsed() > 100 && shootInfo.MachineGunClip >= 1) {
             double x, y, vx, vy;
             vx = 78 * sin(fireInfo.Angle + M_PI / 2);
             vy = 78 * cos(fireInfo.Angle + M_PI / 2);
             x = fireInfo.X + vx / 25;
             y = fireInfo.Y + vy / 25;
+            shootInfo.MachineGunClip--;
+            shootInfo.Time.restart();
             TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_LITTLE_BULLET,
                                           ((TApplication*)(parent()))->GetWorld());
             emit SpawnBullet(bullet);
         }
     } break;
     case Epsilon5::Shotgun: {
-        if (LastShoots[key].elapsed() > 1100) {
-            LastShoots[key].restart();
+
+        TShootInfo& shootInfo = LastShoots[key];
+
+        if (shootInfo.ShotGunClip == 0 && shootInfo.Time.elapsed() > shotgunReloadTime) {
+            shootInfo.ShotGunClip = 8;
+            shootInfo.Time.restart();
+        }
+
+        if (shootInfo.Time.elapsed() > 900 && shootInfo.ShotGunClip >= 1) {
             double x, y, vx, vy;
             vx = 78 * sin(fireInfo.Angle + M_PI / 2);
             vy = 78 * cos(fireInfo.Angle + M_PI / 2);
             x = fireInfo.X + vx / 25;
             y = fireInfo.Y + vy / 25;
+            shootInfo.ShotGunClip--;
+            shootInfo.Time.restart();
             for (size_t i = 0; i < 5; i++) {
                 TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
                                               ((TApplication*)(parent()))->GetWorld());
@@ -63,3 +81,4 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
     }
 
 }
+

@@ -4,6 +4,7 @@
 #include <QHash>
 #include <QTime>
 #include <QString>
+#include <QTimer>
 #include "../utils/ucast.h"
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "player.h"
@@ -19,6 +20,18 @@ struct TTimeKey {
     }
 };
 
+struct TShootInfo {
+    TShootInfo() {
+        MachineGunClip = 30;
+        ShotGunClip = 8;
+        Time.start();
+    }
+
+    QTime Time;
+    int MachineGunClip;
+    int ShotGunClip;
+};
+
 class TWeaponPacks : public QObject
 {
     Q_OBJECT
@@ -29,5 +42,7 @@ public slots:
 signals:
     void SpawnBullet(TBullet *bullet);
 private:
-    QHash<QString, QTime> LastShoots;
+    QHash<QString, TShootInfo> LastShoots;
+    static const int shotgunReloadTime = 3500;
+    static const int machinegunReloadTime = 2000;
 };

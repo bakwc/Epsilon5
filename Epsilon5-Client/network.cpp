@@ -107,6 +107,7 @@ void TNetwork::OnError(QAbstractSocket::SocketError socketError)
 void TNetwork::OnConnected()
 {
     SendPlayerAuth();
+    Application()->SetState(ST_InGame);
 }
 
 TApplication* TNetwork::Application() {
@@ -114,6 +115,7 @@ TApplication* TNetwork::Application() {
 }
 
 void TNetwork::Start() {
+    Application()->SetState(ST_Connecting);
     Socket->connectToHost(QHostAddress(
         Application()->GetSettings()->GetServerAddr()),
         Application()->GetSettings()->GetServerPort());

@@ -9,6 +9,7 @@
 #include "map.h"
 #include "objects.h"
 #include "../utils/ufullscreenwrapper.h"
+#include "menu.h"
 
 class TApplication;
 
@@ -32,7 +33,7 @@ public:
     void Init();
     ~TMainDisplay();
     inline const Epsilon5::Control& GetControl() { return Control; }
-
+    QPoint GetCenter();
 public slots:
     void RedrawWorld();
     void toggleFullscreen();
@@ -46,7 +47,7 @@ private:
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
 
-    QPoint GetPlayerCoordinates();
+    QPoint GetPlayerCoordinatesAndPing();
     void DrawText(QPainter& painter, const QPoint& pos, const QString& text, int FONT_SIZE_PT);
     void DrawFps(QPainter& painter);
     void DrawPing(QPainter& painter);
@@ -70,4 +71,5 @@ private:
     QHash<size_t, QString> PlayerNames;
     QVector<RespPoint> RespPoints;
     int Ping;
+    TMenu Menu;
 };

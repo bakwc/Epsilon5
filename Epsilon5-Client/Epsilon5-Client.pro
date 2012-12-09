@@ -25,7 +25,8 @@ SOURCES += \
     settings.cpp \
     objects.cpp \
     ../utils/ucast.cpp \
-    graphics/basicitem.cpp
+    graphics/basicitem.cpp \
+    menu.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -41,11 +42,13 @@ HEADERS  += \
     settings.h \
     objects.h \
     ../utils/ucast.h \
-    graphics/basicitem.h
+    graphics/basicitem.h \
+    menu.h
 
 FORMS    +=
 
-QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
+QMAKE_CXXFLAGS += -std=c++0x
+# -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 
 LIBS += -lprotobuf
 

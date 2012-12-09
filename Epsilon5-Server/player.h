@@ -33,10 +33,13 @@ public:
     inline int GetPing() {
         return Ping;
     }
-
     inline ETeam GetTeam() {
         return Team;
     }
+    inline bool GetTeamBool() {
+        return Team == T_One;
+    }
+
 signals:
     void Death(size_t id);
     void Fire(TFireInfo& fireInfo);

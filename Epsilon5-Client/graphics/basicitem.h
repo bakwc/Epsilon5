@@ -1,14 +1,13 @@
-#ifndef BASICITEM_H
-#define BASICITEM_H
+#pragma once
 
 #include <QPainter>
 #include <QPixmap>
 #include <QVector>
 
-class BasicItem
+class TBasicItem
 {
 public:
-    BasicItem();
+    TBasicItem();
 
     virtual void paint(QPainter *painter) = 0;
 
@@ -16,25 +15,24 @@ private:
     QPixmap pix;
 };
 
-class Animation
+class TAnimation
 {
 public:
-    Animation(const QVector<QPixmap>& frames) :
-        Frames(frames) {}
+    TAnimation(const QVector<QPixmap>& frames)
+        : Frames(frames)
+    {}
 
-    void Anim()
-    {
+    void Anim() {
         if (Ind == Frames.size()-1)
             Ind = 0;
         else
             ++Ind;
     }
 
-    QPixmap& GetPix() { Frames[Ind]; }
-
+    QPixmap& GetPix() {
+        Frames[Ind];
+    }
 private:
     QVector<QPixmap>    Frames;
     int                 Ind;
 };
-
-#endif // BASICITEM_H

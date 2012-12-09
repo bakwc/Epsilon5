@@ -12,6 +12,7 @@
 #include "maindisplay.h"
 #include "application.h"
 
+
 #ifdef Q_OS_UNIX
 #include <linux/input.h>
 #endif
@@ -46,6 +47,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
     , Objects(new TObjects(this))
     , IsFullScreenWindowed(false)
     , CurrentWorld(NULL)
+    , Menu()
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
@@ -60,6 +62,8 @@ TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
     Control.set_weapon(Epsilon5::Pistol);
 
     startTimer(20);
+
+
 }
 
 void TMainDisplay::Init() {
@@ -68,6 +72,8 @@ void TMainDisplay::Init() {
 
     connect(Application->GetNetwork(), SIGNAL(LoadMap(QString)),
             Map, SLOT(LoadMap(QString)));
+
+    Menu.Init();
 }
 
 TMainDisplay::~TMainDisplay()
@@ -86,13 +92,27 @@ void TMainDisplay::timerEvent(QTimerEvent *) {
 }
 
 void TMainDisplay::paintEvent(QPaintEvent *) {
+    EState state = Application->GetState();
     QPainter painter(this);
-    DrawWorld(painter);
-    DrawFps(painter);
-    DrawPing(painter);
+    switch (state) {
+    case ST_Connecting : {
+        painter.fillRect(0, 0, width(), height(), Qt::gray);
+    } break;
+    case ST_LoadingMap: {
 
-    if( !Application->GetNetwork()->IsServerAlive() )
-        DrawText(painter, QPoint(0, height() - 5), tr("Not connected"),28);
+    } break;
+    case ST_MainMenu : {
+        Menu.paint(&painter);
+    } break;
+    default:
+        DrawWorld(painter);
+        DrawFps(painter);
+        DrawPing(painter);
+
+        if( !Application->GetNetwork()->IsServerAlive() )
+            DrawText(painter, QPoint(0, height() - 5), tr("Not connected"),28);
+        break;
+    }
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent *event) {
@@ -101,6 +121,7 @@ void TMainDisplay::mousePressEvent(QMouseEvent *event) {
     } else {
         Control.mutable_keystatus()->set_keyattack2(true);
     }
+    qApp->sendEvent(&Menu, event);
 }
 
 void TMainDisplay::mouseReleaseEvent(QMouseEvent *event) {
@@ -251,7 +272,7 @@ void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos, const QString&
 }
 
 // Detecting our coordinates
-QPoint TMainDisplay::GetPlayerCoordinates() {
+QPoint TMainDisplay::GetPlayerCoordinatesAndPing() {
     QPoint res;
     size_t playerId = Application->GetNetwork()->GetId();
     for (int i = 0; i != CurrentWorld->players_size(); i++) {
@@ -265,6 +286,10 @@ QPoint TMainDisplay::GetPlayerCoordinates() {
         }
     }
     return res;
+}
+
+QPoint TMainDisplay::GetCenter() {
+    return QPoint(width() / 2, height() / 2);
 }
 
 void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
@@ -417,7 +442,7 @@ void TMainDisplay::DrawWorld(QPainter& painter){
 
     try {
         QPoint widgetCenter(width() / 2, height() / 2);
-        QPoint playerPos = GetPlayerCoordinates();
+        QPoint playerPos = GetPlayerCoordinatesAndPing();
 
         Map->DrawBackground(playerPos, size(), painter);
 
@@ -434,6 +459,10 @@ void TMainDisplay::DrawWorld(QPainter& painter){
 
         // Minimap drawing
         painter.drawImage(10, 30, miniMapImg);
+
+        if (Application->GetState() == ST_SelectingResp) {
+            // TODO - Draw resp menu
+        }
 
         // Detect targeting angle for Control packet
         QPoint cursorPos = this->mapFromGlobal(QCursor::pos());

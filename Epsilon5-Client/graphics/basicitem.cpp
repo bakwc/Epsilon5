@@ -1,5 +1,5 @@
 #include "basicitem.h"
 
-BasicItem::BasicItem()
+TBasicItem::TBasicItem()
 {
 }

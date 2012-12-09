@@ -290,7 +290,7 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "\n\016Epsilon5.proto\022\010Epsilon5\"\207\001\n\006Player\022\n\n"
     "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\n\n\002vx\030\004 "
     "\001(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007"
-    " \001(\t\022\n\n\002hp\030\010 \002(\r\022\014\n\004team\030\t \001(\010\022\014\n\004ping\030\n"
+    " \001(\t\022\n\n\002hp\030\010 \002(\r\022\014\n\004team\030\t \002(\010\022\014\n\004ping\030\n"
     " \001(\r\"\233\001\n\006Bullet\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n"
     "\002vx\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\0221\n\013bullet_type\030\005 \001"
     "(\0162\025.Epsilon5.Bullet.Type:\005ARBUZ\"0\n\004Type"
@@ -591,7 +591,7 @@ bool Player::MergePartialFromCodedStream(
         break;
       }
       
-      // optional bool team = 9;
+      // required bool team = 9;
       case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -685,7 +685,7 @@ void Player::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(8, this->hp(), output);
   }
   
-  // optional bool team = 9;
+  // required bool team = 9;
   if (has_team()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->team(), output);
   }
@@ -748,7 +748,7 @@ void Player::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(8, this->hp(), target);
   }
   
-  // optional bool team = 9;
+  // required bool team = 9;
   if (has_team()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->team(), target);
   }
@@ -821,7 +821,7 @@ int Player::ByteSize() const {
     
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    // optional bool team = 9;
+    // required bool team = 9;
     if (has_team()) {
       total_size += 1 + 1;
     }
@@ -909,7 +909,7 @@ void Player::CopyFrom(const Player& from) {
 }
 
 bool Player::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000087) != 0x00000087) return false;
+  if ((_has_bits_[0] & 0x00000187) != 0x00000187) return false;
   
   return true;
 }

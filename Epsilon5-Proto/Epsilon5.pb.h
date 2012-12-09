@@ -198,7 +198,7 @@ class Player : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 hp() const;
   inline void set_hp(::google::protobuf::uint32 value);
   
-  // optional bool team = 9;
+  // required bool team = 9;
   inline bool has_team() const;
   inline void clear_team();
   static const int kTeamFieldNumber = 9;
@@ -1411,7 +1411,7 @@ inline void Player::set_hp(::google::protobuf::uint32 value) {
   hp_ = value;
 }
 
-// optional bool team = 9;
+// required bool team = 9;
 inline bool Player::has_team() const {
   return (_has_bits_[0] & 0x00000100u) != 0;
 }

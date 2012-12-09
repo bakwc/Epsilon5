@@ -5,6 +5,7 @@ TApplication::TApplication(int& argc, char *argv[])
     , MainDisplay(this)
     , Network(new TNetwork(this))
     , Settings(new TSettings(this))
+    , State(ST_MainMenu)
 {
     connect(Network, SIGNAL(WorldReceived()), &MainDisplay, SLOT(RedrawWorld()));
 }
@@ -12,7 +13,6 @@ TApplication::TApplication(int& argc, char *argv[])
 bool TApplication::Init() {
     MainDisplay.Init();
     MainDisplay.show();
-    Network->Start();
     MainDisplay.toggleFullscreenWindowed();
-    return true; // TODO: normal initialisation
+    return true;
 }

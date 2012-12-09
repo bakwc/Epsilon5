@@ -13,9 +13,10 @@ class TNetwork : public QObject
 public:
     explicit TNetwork(QObject *parent = 0);
     const Epsilon5::World& GetWorld() const;
-    void Start();
     inline size_t GetId() { return Id; }
     inline bool IsServerAlive() { return IsAlive; }
+public slots:
+    void Start();
 signals:
     void WorldReceived();
     void LoadMap(QString map);

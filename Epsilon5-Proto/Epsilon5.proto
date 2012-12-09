@@ -21,7 +21,7 @@ message Player {
 
     required uint32 hp = 8;
 
-    optional bool team = 9;
+    required bool team = 9;
 
     optional uint32 ping = 10;
 }

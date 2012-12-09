@@ -51,25 +51,11 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
             vy = 78 * cos(fireInfo.Angle + M_PI / 2);
             x = fireInfo.X + vx / 25;
             y = fireInfo.Y + vy / 25;
-            TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
-
-            bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
-
-            bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
-
-            bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
-
-            bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
+            for (size_t i = 0; i < 5; i++) {
+                TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
+                                              ((TApplication*)(parent()))->GetWorld());
+                emit SpawnBullet(bullet);
+            }
         }
     } break;
     default:

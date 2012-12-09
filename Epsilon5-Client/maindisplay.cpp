@@ -172,12 +172,7 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key_F11:
-        if(event->modifiers().testFlag(Qt::ShiftModifier)) {
-            toggleFullscreen();
-        }
-        else {
-            toggleFullscreenWindowed();
-        }
+        toggleFullscreen();
         break;
     case Qt::Key_F12:
         close();
@@ -187,30 +182,13 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void TMainDisplay::toggleFullscreenWindowed() {
-    if( isFullScreen() && !IsFullScreenWindowed )
-        restoreMode();
-
-    setWindowState( windowState() ^ Qt::WindowFullScreen );
-    IsFullScreenWindowed = isFullScreen();
-    if( isFullScreen() )
-    {
-        QDesktopWidget dw;
-        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
-        setFixedSize(screenRect.size());
-        return;
-    }
-    setFixedSize(baseSize());
-}
 
 void TMainDisplay::toggleFullscreen() {
-    if( isFullScreen() && !IsFullScreenWindowed )
-    {
-        restoreMode();
-        return;
+    if (isFullScreen()) {
+        this->showNormal();
+    } else {
+        this->showFullScreen();
     }
-    changeToMode(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
-    IsFullScreenWindowed = false;
 }
 
 void TMainDisplay::DrawFps(QPainter& painter)

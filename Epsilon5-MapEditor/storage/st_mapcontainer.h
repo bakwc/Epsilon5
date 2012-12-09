@@ -18,6 +18,7 @@ public:
     TMapItemId addMap(const TMapItem& mapItem);
     void removeMap(const TMapItem& mapItem);
     void removeMap(TMapItemId id);
+    void deleteMap(const TMapItem& mapItem);
 
     void loadMapByName(const QString& mapName,
             const QDir& baseDirectory = QDir::currentPath());

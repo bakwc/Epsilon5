@@ -4,17 +4,20 @@ using namespace containers;
 //------------------------------------------------------------------------------
 TObjectItem::TObjectItem(const TObjectInfo& info)
     : TTItem(info)
+    , mName("")
 {
 }
 //------------------------------------------------------------------------------
 TObjectItem::TObjectItem(const TObjectItem& object)
     : TTItem(object)
+    , mName(object.mName)
 {
 }
 //------------------------------------------------------------------------------
 TObjectItem& TObjectItem::operator =(const TObjectItem& object)
 {
     TTItem::operator =(object);
+    mName = object.mName;
     return *this;
 }
 //------------------------------------------------------------------------------
@@ -41,6 +44,21 @@ QPoint TObjectItem::pos() const
 qreal TObjectItem::angle() const
 {
     return info().angle;
+}
+//------------------------------------------------------------------------------
+QString TObjectItem::name() const
+{
+    return mName;
+}
+//------------------------------------------------------------------------------
+bool TObjectItem::hasResource() const
+{
+    return !mName.isEmpty();
+}
+//------------------------------------------------------------------------------
+void TObjectItem::setName(const QString &name)
+{
+    mName = name.trimmed();
 }
 //------------------------------------------------------------------------------
 void TObjectItem::setObjectId(quint32 id)
@@ -77,16 +95,19 @@ bool TObjectItem::validate()
 //------------------------------------------------------------------------------
 QString TObjectItem::pack() const
 {
-    return QString("%1:%2:%3:%4").arg(info().x).arg(info().y)
+    QString str = QString("%1:%2:%3:%4").arg(info().x).arg(info().y)
             .arg(info().angle).arg(info().id);
+    if( hasResource() )
+        str.append(":").append(mName);
+    return str;
 }
 //------------------------------------------------------------------------------
-bool TObjectItem::unpack(const QString& string)
+bool TObjectItem::unpack(const QString& string, bool withResourceName)
 {
     const quint8 STRUCTURE_FIELDS_COUNT = 4;
     QStringList vars = string.split(":");
     bool isOk;
-    if (vars.count() != STRUCTURE_FIELDS_COUNT) {
+    if (vars.count() != STRUCTURE_FIELDS_COUNT + withResourceName) {
         return false;
     }
     info().x = vars[0].toInt(&isOk);
@@ -104,6 +125,9 @@ bool TObjectItem::unpack(const QString& string)
     info().id = vars[3].toUInt(&isOk);
     if (!isOk) {
         return false;
+    }
+    if( withResourceName ) {
+        setName(vars[4].trimmed());
     }
     return true;
 }

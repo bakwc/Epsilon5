@@ -51,6 +51,8 @@ void TRespawnContainer::loadRespawnList(const QString& respawnList,
     // TODO: Make usage of baseDirectory
     Q_UNUSED(baseDirectory);
 
+    clearItems();
+
     QFile file(respawnList);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         throw UException(QString(Q_FUNC_INFO)

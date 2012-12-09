@@ -34,10 +34,21 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
 
     // Connect to content menus
     ui->mapsView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->objectsView->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->listView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->mapsView, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showMapListContentMenu(QPoint)));
+    connect(ui->objectsView, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(showObjectsContentMenu(QPoint)));
+    connect(ui->listView, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(showListViewContentMenu(QPoint)));
+
     // Connecting...
     connect(ui->mapNameEdit, SIGNAL(editingFinished()),
+            this, SLOT(updateMapSettings()));
+    connect(ui->mapWidthBox, SIGNAL(editingFinished()),
+            this, SLOT(updateMapSettings()));
+    connect(ui->mapHeightBox, SIGNAL(editingFinished()),
             this, SLOT(updateMapSettings()));
     connect(ui->posXObjectBox, SIGNAL(editingFinished()),
             this, SLOT(updateObjectSettings()));
@@ -65,6 +76,7 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
             this, SLOT(updateRespawnSettings()));
 
     mSceneView->setFocus();
+    ui->objectsView->setModel(mResObjects.model());
 
     // Just for testing...
 //    mMaps->setBaseDirectory(Global::Settings()->GetMapsPath());
@@ -104,6 +116,8 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
         ui->listView->setModel(mMaps->item(index).respawns().model());
     }
+
+    loadObjectsListAction();
     initScene(index);
 }
 //------------------------------------------------------------------------------
@@ -115,7 +129,10 @@ void TMapsEditorForm::on_toolBox_currentChanged(int index)
     }
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
         ui->listView->setModel(mMaps->item(ui->mapsView->currentIndex())
-                .objects().model());
+                .objects().model());   // Connect to content menus
+        ui->mapsView->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui->mapsView, SIGNAL(customContextMenuRequested(QPoint)),
+                this, SLOT(showMapListContentMenu(QPoint)));
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
         ui->listView->setModel(mMaps->item(ui->mapsView->currentIndex())
                 .respawns().model());
@@ -178,8 +195,8 @@ void TMapsEditorForm::updateRespawnSettings()
 
     containers::TRespawnItem& respawn = mMaps->item(mapIndex).respawns().item(index);
     respawn.setPos(QPoint(ui->posXRespawnBox->value(), ui->posYRespawnBox->value()));
-    respawn.setCapturable(ui->isCapturableCheckBox);
-    respawn.setMain(ui->isMainCheckBox);
+    respawn.setCapturable(ui->isCapturableCheckBox->isChecked());
+    respawn.setMain(ui->isMainCheckBox->isChecked());
     respawn.setTeam((containers::ETeam) mTeamValue);
     respawn.setCaptureRadius(ui->captRadRespawnBox->value());
     respawn.setCaptureTime(ui->captTimeRespawnBox->value());
@@ -191,11 +208,41 @@ void TMapsEditorForm::updateRespawnSettings()
 void TMapsEditorForm::showMapListContentMenu(QPoint point)
 {
     QMenu menu;
-    menu.addAction(tr("Load maplist..."));
+    menu.addAction(tr("Load maplist..."), this, SLOT(loadMapListAction()));
     menu.addAction(tr("Save maplist..."), this, SLOT(saveMapListAction()));
+    menu.addSeparator();
+    menu.addAction(tr("New map"), this, SLOT(newMapListAction()));
+    if( ui->mapsView->currentIndex().isValid() )
+    {
+        menu.addAction(tr("Delete map"), this, SLOT(deleteMapListAction()));
+    }
     menu.addSeparator();
     menu.addAction(tr("Refresh"), this, SLOT(refreshMapListAction()));
     menu.exec(ui->mapsView->mapToGlobal(point));
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::showObjectsContentMenu(QPoint point)
+{
+    QMenu menu;
+    menu.addAction(tr("Load source objects list..."), this,
+            SLOT(loadObjectsListAction()));
+    menu.addSeparator();
+    menu.addAction(tr("Refresh"), this, SLOT(refreshObjectsListAction()));
+    menu.exec(ui->objectsView->mapToGlobal(point));
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::showListViewContentMenu(QPoint point)
+{
+
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::loadMapListAction()
+{   // Connect to content menus
+    ui->mapsView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->mapsView, SIGNAL(customContextMenuRequested(QPoint)),
+            this, SLOT(showMapListContentMenu(QPoint)));
+    mMaps->loadMapList("maplist.txt", Global::Settings()->GetMapsPath());
+    mMaps->updateView();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::saveMapListAction()
@@ -205,14 +252,23 @@ void TMapsEditorForm::saveMapListAction()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::refreshMapListAction()
 {
-    auto it = mMaps->constBegin();
-    for( ; it != mMaps->constEnd(); ++it )
+    auto it = mMaps->begin();
+    for( ; it != mMaps->end(); ++it )
     {
-        const containers::TMapItem& map = *it;
-        qDebug() << map.name() << "\n"
-            << "objects:" << map.objects().count() << "\n"
-            << "respawns:" << map.respawns().count();
+        containers::TMapItem& map = *it;
+        map.validate();
     }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::newMapListAction()
+{
+    containers::TMapItem map;
+    qDebug() << mMaps->addMap(map);
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::deleteMapListAction()
+{
+//    mMaps->removeMap(index);
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_listView_clicked(QModelIndex index)
@@ -224,7 +280,7 @@ void TMapsEditorForm::on_listView_clicked(QModelIndex index)
         ui->posXObjectBox->setValue(object.x());
         ui->posYObjectBox->setValue(object.y());
         ui->angleObjectBox->setValue(object.angle());
-        ui->idObjectEdit->setText(QString().number(object.id()));
+        ui->idObjectEdit->setText(QString().number(object.objectId()));
         return;
     }
     if (ui->toolBox->currentWidget() == ui->pageRespawns) {
@@ -245,31 +301,6 @@ void TMapsEditorForm::on_listView_clicked(QModelIndex index)
     }
 
     mMaps->updateView();
-}
-//------------------------------------------------------------------------------
-void TMapsEditorForm::initScene(const QModelIndex& index)
-{
-    if (!index.isValid()) {
-        return;
-    }
-    mScene->clear();
-
-    containers::TMapItem& map = mMaps->item(index);
-    mScene->sceneRect().setSize(map.size());
-    mSceneView->setSceneRect(0, 0, mScene->width(), mScene->height());
-
-    TStaticObject* backgroundObject = new TStaticObject(QPixmap(map.background()));
-    backgroundObject->setFixed();
-    mScene->addItem(backgroundObject);
-
-    auto it = map.objects().constBegin();
-    for( ; it != map.objects().constEnd(); ++it )
-    {
-        const containers::TObjectItem object = *it;
-        TStaticObject* mapObject = new TStaticObject(QPixmap(object.resourceFile()));
-        mapObject->setPos(object.pos());
-        mScene->addItem(mapObject);
-    }
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::toggleBrowserBox()
@@ -322,5 +353,70 @@ void TMapsEditorForm::keyReleaseEvent(QKeyEvent * event)
 {
     if( event->key() == Qt::Key_F1 )
         toggleBrowserBox();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::initScene(const QModelIndex& index)
+{
+    if (!index.isValid()) {
+        return;
+    }
+    mScene->clear();
+
+    containers::TMapItem& map = mMaps->item(index);
+    mScene->sceneRect().setSize(map.size());
+//    mSceneView->setSceneRect(0, 0, mScene->width(), mScene->height());
+    mSceneView->setSceneRect(-mScene->width()/2,-mScene->height()/2,
+        mScene->width()/2, mScene->height()/2);
+    mSceneView->centerOn(0,0);
+//    mSceneView->centerOn(mScene->width()/2, mScene->height()/2);
+    mScene->setBackground(QPixmap(map.background()));
+    connect(mScene, SIGNAL(viewportMoved(const QPointF&)),
+            mSceneView, SLOT(moveCenterOn(const QPointF&)));
+
+    auto it = map.objects().constBegin();
+    for( ; it != map.objects().constEnd(); ++it )
+    {
+        const containers::TObjectItem object = *it;
+        qDebug() << object.pos() << object.resourceFile();
+        TStaticObject* mapObject = new TStaticObject(
+                QPixmap(object.resourceFile()));
+        mapObject->setPos(object.pos());
+        mScene->addItem(mapObject);
+    }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::refreshObjectsListAction()
+{
+
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::loadObjectsListAction()
+{
+    ui->objectsView->setModel(mResObjects.model());
+    mResObjects.loadObjectList(
+        Global::Settings()->GetObjectsPath() + "/objects.txt",
+        Global::Settings()->GetObjectsPath(), true);
+
+    QStandardItem* item;
+    QModelIndex objectIndex;
+    for(int i = 0; i < mResObjects.model()->rowCount(); ++i )
+    {
+        objectIndex = mResObjects.model()->index(i,0);
+        item = mResObjects.model()->itemFromIndex(objectIndex);
+        containers::TObjectItem& resObject = mResObjects[item->data().toUInt()];
+        mResObjects.setItemInfo(objectIndex,
+            QIcon(QPixmap(resObject.resourceFile())));
+
+        containers::TObjectContainer& objects = mMaps->item(
+                ui->mapsView->currentIndex()).objects();
+        auto it = objects.begin();
+        for( ; it != objects.end(); ++it )
+        {
+            if( (*it).objectId() != resObject.objectId() )
+                continue;
+
+            (*it).setResourceFile(resObject.resourceFile());
+        }
+    }
 }
 //------------------------------------------------------------------------------

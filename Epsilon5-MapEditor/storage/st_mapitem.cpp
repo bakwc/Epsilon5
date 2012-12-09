@@ -9,6 +9,8 @@ TMapItem::TMapItem(const TMapInfo& info,
     , mRespawns(respawns)
     , mBackgroundFile()
 {
+    if( this->info().name.isEmpty() )
+        this->info().name = "Unnamed map";
 }
 //------------------------------------------------------------------------------
 TMapItem::TMapItem(const TMapItem& map)

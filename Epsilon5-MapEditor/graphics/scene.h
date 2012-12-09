@@ -8,15 +8,18 @@ public:
     explicit TScene(QObject* parent = 0);
 
     void init();
+    void setBackground(const QPixmap& pixmap);
 
 signals:
-
-public slots:
+    void viewportMoved(const QPointF& pos);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent);
 
+private:
+    Qt::MouseButton mButton;
+    QPointF mOriginPos;
 };
 //------------------------------------------------------------------------------

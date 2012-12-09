@@ -1,4 +1,5 @@
 // imagecache.h
+#pragma once
 #include <QObject>
 #include <QIcon>
 #include <QVector>

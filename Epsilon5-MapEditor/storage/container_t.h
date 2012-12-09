@@ -93,7 +93,7 @@ public:
     }
 
     T& operator[](THashId id) {
-        return mContainer[id];
+        return mContainer->operator [](id);
     }
 
     const T& operator[](QModelIndex viewIndex) const {
@@ -122,11 +122,21 @@ public:
         return mModel;
     }
 
-    void setItemInfo(const QModelIndex& index, const QString& text = QString(),
-            const QIcon& icon = QIcon()) {
+    void setItemInfo(const QModelIndex& index, const QString& text,
+            const QIcon& icon) {
         QStandardItem* viewItem = mModel->itemFromIndex(index);
         viewItem->setIcon(icon);
         viewItem->setText(text);
+    }
+
+    void setItemInfo(const QModelIndex& index, const QString& text = QString()) {
+        QStandardItem* viewItem = mModel->itemFromIndex(index);
+        viewItem->setText(text);
+    }
+
+    void setItemInfo(const QModelIndex& index, const QIcon& icon) {
+        QStandardItem* viewItem = mModel->itemFromIndex(index);
+        viewItem->setIcon(icon);
     }
 
     void updateView()
@@ -147,7 +157,7 @@ protected:
         viewItem->setEditable(false);
         mModel->appendRow(viewItem);
     }
-protected:
+
     void refreshModel() {
         QStandardItem* viewItem;
         T item;

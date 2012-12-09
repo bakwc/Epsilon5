@@ -46,6 +46,8 @@ void TMapContainer::loadMapList(const QString& listFileName,
                 .append(":: open file error: '%1'").arg(listFileName));
     }
 
+    clearItems();
+
     QTextStream stream(&file);
     QDir dir(baseDirectory);
     QString line;
@@ -120,14 +122,15 @@ void TMapContainer::saveMapList(const QString& listFileName,
     for( ; it != constEnd(); ++it )
     {
         const TMapItem& map = *it;
-        if (!map.isValid()) {
+        if( !map.isValid() ) {
+            qDebug( "Not valid map '%s'", qPrintable(map.name()));
             continue;
         }
 
         // Create folder for map files
         mapDir.setPath(baseDirectory.absolutePath() + "/" + map.name());
         if (!mapDir.exists()) {
-            mapDir.mkdir(map.name());
+            mapDir.mkdir(map.resourceFile());
             mapDir.setPath(baseDirectory.absolutePath() + "/" + map.name());
         }
         // Save objects
@@ -222,4 +225,9 @@ void TMapContainer::saveMap(const TMapItem &map)
 //        setItemInfo(index, item(index).pack(), item(index).previewIcon());
 //    }
 //}
+//------------------------------------------------------------------------------
+void TMapContainer::deleteMap(const TMapItem &mapItem)
+{
+
+}
 //------------------------------------------------------------------------------

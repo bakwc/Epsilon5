@@ -2,6 +2,7 @@
 #pragma once
 #include <QWidget>
 #include <QModelIndex>
+#include "imagecache.h"
 #include "storage/st_mapcontainer.h"
 //------------------------------------------------------------------------------
 class TScene;
@@ -40,12 +41,20 @@ private slots:
 
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);
+    void showObjectsContentMenu(QPoint point);
+    void showListViewContentMenu(QPoint point);
     void updateMapSettings();
     void updateObjectSettings();
     void updateRespawnSettings();
     void updateTeamButton();
     void saveMapListAction();
     void refreshMapListAction();
+    void loadMapListAction();
+    void newMapListAction();
+    void deleteMapListAction();
+
+    void refreshObjectsListAction();
+    void loadObjectsListAction();
 
     void initScene(const QModelIndex& index);
     void keyReleaseEvent(QKeyEvent *);
@@ -57,5 +66,7 @@ private:
     TSceneView* mSceneView;
     int mTeamValue;
     EBrowserBoxStates mBrowserState;
+    TImageCache mImages;
+    containers::TObjectContainer mResObjects;
 };
 //------------------------------------------------------------------------------

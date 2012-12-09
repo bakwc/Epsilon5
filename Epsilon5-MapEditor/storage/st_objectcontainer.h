@@ -23,9 +23,11 @@ public:
     void removeObject(TObjectItemId id);
 
     void loadObjectList(const QString& objectList,
-            const QDir& baseDirectory = QDir::currentPath());
+            const QDir& baseDirectory = QDir::currentPath(),
+            bool withResource = false);
     void saveObjectList(const QString& objectList,
-            const QDir& baseDirectory = QDir::currentPath()) const;
+            const QDir& baseDirectory = QDir::currentPath(),
+            bool withResource = false) const;
 };
 //------------------------------------------------------------------------------
 }

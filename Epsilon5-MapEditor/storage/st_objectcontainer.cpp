@@ -46,10 +46,12 @@ void TObjectContainer::removeObject(TObjectItemId id)
 }
 //------------------------------------------------------------------------------
 void TObjectContainer::loadObjectList(const QString& objectList,
-        const QDir& baseDirectory)
+        const QDir& baseDirectory, bool withResourse)
 {
     // TODO: Make usage of baseDirectory
     Q_UNUSED(baseDirectory);
+
+    clearItems();
 
     QFile file(objectList);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -60,17 +62,20 @@ void TObjectContainer::loadObjectList(const QString& objectList,
     QTextStream stream(&file);
     TObjectItem object;
     while (!stream.atEnd()) {
-        if (!object.unpack(stream.readLine())) {
+        if (!object.unpack(stream.readLine(), withResourse)) {
             continue;
         }
-        object.setResourceFile(objectList);
+        if( withResourse && !object.name().isEmpty()) {
+            object.setResourceFile(
+                baseDirectory.absolutePath() + "/" + object.name() + ".png");
+        }
         addObject(object);
     }
     file.close();
 }
 //------------------------------------------------------------------------------
 void TObjectContainer::saveObjectList(const QString& objectList,
-        const QDir& baseDirectory) const
+        const QDir& baseDirectory, bool withResource) const
 {
     // TODO: Make usage of baseDirectory
     Q_UNUSED(baseDirectory);
@@ -85,7 +90,7 @@ void TObjectContainer::saveObjectList(const QString& objectList,
     for( ; it != constEnd(); ++it )
     {
         const TObjectItem& object = *it;
-        if (!object.isValid()) {
+        if (!object.isValid() || (withResource && object.name().isEmpty())) {
             continue;
         }
         stream << object.pack() << "\n";

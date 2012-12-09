@@ -2,7 +2,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include "graphics/staticobject.h"
 
-TStaticObject::TStaticObject(QGraphicsItem* parent)
+TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(parent)
     , mCursorPosition(QPointF(0, 0))
     , mFixed(false)
@@ -11,13 +11,18 @@ TStaticObject::TStaticObject(QGraphicsItem* parent)
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 
-TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsItem* parent)
+TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
     , mCursorPosition(QPointF(0, 0))
     , mFixed(false)
 {
     setPixmap(pixmap);
     setFlags(ItemIsSelectable | ItemIsMovable);
+}
+
+QRectF TStaticObject::boundingRect()
+{
+    return QRectF(0, 0, pixmap().width(), pixmap().height());
 }
 
 void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
@@ -36,7 +41,9 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     if (mButton == Qt::LeftButton) {
         setPos(mapToScene(event->pos().x() - pixmap().width() / 2,
                 event->pos().y() - pixmap().height() / 2));
+//        qDebug( "item pos: %fx%f", pos().x(), pos().y() );
     }
+    //emit moved();//&mObjectId);
 }
 
 void TStaticObject::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -63,3 +70,15 @@ void TStaticObject::setFixed(bool value)
 //    painter->drawPixmap(QPoint(0,0), pixmap());
 //    painter->drawEllipse(QPoint(0,0), 10, 10);
 //}
+
+//------------------------------------------------------------------------------
+void TStaticObject::setObjectId(quint32 id)
+{
+    mObjectId = id;
+}
+//------------------------------------------------------------------------------
+quint32 TStaticObject::objectId()
+{
+    return mObjectId;
+}
+//------------------------------------------------------------------------------

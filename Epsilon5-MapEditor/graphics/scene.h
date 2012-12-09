@@ -6,12 +6,10 @@ class TScene : public QGraphicsScene
     Q_OBJECT
 public:
     explicit TScene(QObject* parent = 0);
-
     void init();
-    void setBackground(const QPixmap& pixmap);
 
 signals:
-    void viewportMoved(const QPointF& pos);
+    void moveItem(quint32 id, QPointF position, qreal angle);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
@@ -21,5 +19,6 @@ protected:
 private:
     Qt::MouseButton mButton;
     QPointF mOriginPos;
+    QPointF mLastObjectPos;
 };
 //------------------------------------------------------------------------------

@@ -9,6 +9,7 @@ class TScene;
 class TSceneView;
 class QGraphicsView;
 class QAbstractItemModel;
+class QGraphicsItem;
 //------------------------------------------------------------------------------
 namespace Ui
 {
@@ -39,6 +40,7 @@ private slots:
     void on_listView_clicked(QModelIndex index);
     void on_teamButton_clicked();
 
+    void onItemMove(quint32 id, QPointF position, qreal angle);
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);
     void showObjectsContentMenu(QPoint point);
@@ -59,9 +61,12 @@ private slots:
     void initScene(const QModelIndex& index);
     void keyReleaseEvent(QKeyEvent *);
 
+    void timerEvent(QTimerEvent *);
+
 private:
     Ui::TMapsEditorForm* ui;
     containers::TMapContainer* mMaps;
+    containers::TMapItem* mCurrentMap;
     TScene* mScene;
     TSceneView* mSceneView;
     int mTeamValue;

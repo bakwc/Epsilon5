@@ -18,6 +18,7 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     , mSceneView(new TSceneView(mScene, this))
     , mTeamValue(1)
     , mBrowserState(E_BrowserFull)
+    , mCurrentMap(0)
 {
     ui->setupUi(this);
 
@@ -85,6 +86,8 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     } catch (const UException& ex) {
         qDebug("%s", ex.what());
     }
+
+//    startTimer(10);
 }
 //------------------------------------------------------------------------------
 TMapsEditorForm::~TMapsEditorForm()
@@ -108,13 +111,15 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
         return;
     }
 
-    ui->mapNameEdit->setText(mMaps->item(index).name());
-    ui->mapWidthBox->setValue(mMaps->item(index).width());
-    ui->mapHeightBox->setValue(mMaps->item(index).height());
+    mCurrentMap = &mMaps->item(index);
+
+    ui->mapNameEdit->setText(mCurrentMap->name());
+    ui->mapWidthBox->setValue(mCurrentMap->width());
+    ui->mapHeightBox->setValue(mCurrentMap->height());
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
-        ui->listView->setModel(mMaps->item(index).objects().model());
+        ui->listView->setModel(mCurrentMap->objects().model());
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
-        ui->listView->setModel(mMaps->item(index).respawns().model());
+        ui->listView->setModel(mCurrentMap->respawns().model());
     }
 
     loadObjectsListAction();
@@ -241,6 +246,7 @@ void TMapsEditorForm::loadMapListAction()
     ui->mapsView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->mapsView, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(showMapListContentMenu(QPoint)));
+    mMaps->clearItems();
     mMaps->loadMapList("maplist.txt", Global::Settings()->GetMapsPath());
     mMaps->updateView();
 }
@@ -369,9 +375,10 @@ void TMapsEditorForm::initScene(const QModelIndex& index)
         mScene->width()/2, mScene->height()/2);
     mSceneView->centerOn(0,0);
 //    mSceneView->centerOn(mScene->width()/2, mScene->height()/2);
-    mScene->setBackground(QPixmap(map.background()));
-    connect(mScene, SIGNAL(viewportMoved(const QPointF&)),
-            mSceneView, SLOT(moveCenterOn(const QPointF&)));
+//    mScene->setBackground(QPixmap(map.background()));
+    mSceneView->setBackground(QPixmap(map.background()));
+//    connect(mScene, SIGNAL(viewportMoved(const QPointF*)),
+//            mSceneView, SLOT(moveCenterOn(const QPointF*)));
 
     auto it = map.objects().constBegin();
     for( ; it != map.objects().constEnd(); ++it )
@@ -381,8 +388,14 @@ void TMapsEditorForm::initScene(const QModelIndex& index)
         TStaticObject* mapObject = new TStaticObject(
                 QPixmap(object.resourceFile()));
         mapObject->setPos(object.pos());
+        mapObject->setObjectId(object.id());
+//        connect(mapObject, SIGNAL(moved(quint32)), this, SLOT(onItemMove(quint32)));
         mScene->addItem(mapObject);
     }
+
+//    connect(mScene, SIGNAL(moveItem(QGraphicsItem*)), this, SLOT(onItemMove(QGraphicsItem*)));
+    connect(mScene, SIGNAL(moveItem(quint32, QPointF, qreal)),
+            this, SLOT(onItemMove(quint32, QPointF, qreal)));
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::refreshObjectsListAction()
@@ -418,5 +431,35 @@ void TMapsEditorForm::loadObjectsListAction()
             (*it).setResourceFile(resObject.resourceFile());
         }
     }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::timerEvent(QTimerEvent *)
+{
+    static QPointF ppp = QPointF(0, 0);
+    static int dx = 2;
+
+    ppp.setX(ppp.x() + dx);
+    if (ppp.x() > mScene->width()/3 || ppp.x() < -mScene->width()/3 )
+        dx = -dx;
+    qDebug() << ppp;
+    mSceneView->centerOn(ppp);
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::onItemMove(quint32 id, QPointF position, qreal angle)
+{
+    if( !mCurrentMap )
+        return;
+
+    auto it = mCurrentMap->objects().begin();
+    for( ; it != mCurrentMap->objects().end(); ++it )
+    {
+        containers::TObjectItem& object = (*it);
+        if( object.id() == id )
+        {
+            object.setPos(position.toPoint());
+            object.setAngle(angle);
+        }
+    }
+    mCurrentMap->objects().updateView();
 }
 //------------------------------------------------------------------------------

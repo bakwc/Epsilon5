@@ -1,50 +1,66 @@
+#include <QPaintEvent>
 #include <QGraphicsSceneMouseEvent>
 #include "sceneview.h"
 //------------------------------------------------------------------------------
 TSceneView::TSceneView(TScene* scene, QWidget* parent)
     : QGraphicsView(scene, parent)
-    , mCursor(QPointF(0, 0))
+    , mFixedPoint(QPoint())
+    , mPx(new QPixmap())
 {
 }
 //------------------------------------------------------------------------------
-void TSceneView::mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void TSceneView::paintEvent(QPaintEvent *event)
 {
-    qDebug("dfsdf");
-    if( mouseEvent->button() == Qt::LeftButton )
-    {
-        qDebug("Ssss");
-//        scrollContentsBy(mouseEvent->pos().x() - mCursor.x(),
-//                mouseEvent->pos().y() - mCursor.y());
-        return;
-    }
-    QGraphicsView::mouseMoveEvent((QMouseEvent*)mouseEvent);
+    QGraphicsView::paintEvent(event);
 }
 //------------------------------------------------------------------------------
-void TSceneView::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void TSceneView::setBackground(const QPixmap &pixmap)
 {
-    if( mouseEvent->button() == Qt::LeftButton )
-    {
-        mCursor = mouseEvent->pos();
-        return;
-    }
-    QGraphicsView::mousePressEvent((QMouseEvent*)mouseEvent);
+    *mPx = pixmap.copy();
+    setSceneRect(-mPx->width()/2, -mPx->height()/2, mPx->width(), mPx->height());
 }
 //------------------------------------------------------------------------------
-void TSceneView::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+void TSceneView::drawBackground(QPainter *painter, const QRectF &rect)
 {
-//    releaseMouse();
-    QGraphicsView::mouseReleaseEvent((QMouseEvent*)mouseEvent);
+    painter->drawPixmap(-mPx->width()/2, -mPx->height()/2,
+            mPx->width(), mPx->height(), *mPx);
 }
 //------------------------------------------------------------------------------
-void TSceneView::moveCenterOn(const QPointF& pos)
-{
-//    qDebug("%s", qPrintable(QString(Q_FUNC_INFO).append(":: %1 %2")
-//            .arg(pos.x()).arg(pos.y())));
-////    QPointF xx = mapFromScene(pos);
+//void TSceneView::mousePressEvent(QMouseEvent* mouseEvent)
+//{
+//    if( mouseEvent->button() == Qt::RightButton )
+//        mFixedPoint = mouseEvent->pos();
+//    QGraphicsView::mousePressEvent(mouseEvent);
+//}
+////------------------------------------------------------------------------------
+//void TSceneView::mouseMoveEvent(QMouseEvent* mouseEvent)
+//{
+//    if( mFixedPoint.isNull() )
+//        return;
 
-//    qDebug("%s", qPrintable(QString(Q_FUNC_INFO).append(":: %1 %2")
-//            .arg(xx.x()).arg(xx.y())));
-//    if( pos.x() || pos.y() ) {
-//        centerOn(mapFromScene(pos));
-//    }
+//    QPointF offset = mapToScene(mFixedPoint) - mapToScene(mouseEvent->pos());
+//    mFixedPoint = mouseEvent->pos();
+//    centerOn(mFixedPoint + offset);
+//    QGraphicsView::mouseMoveEvent(mouseEvent);
+//}
+////------------------------------------------------------------------------------
+//void TSceneView::mouseReleaseEvent(QMouseEvent* mouseEvent)
+//{
+//    mFixedPoint = QPoint();
+//    QGraphicsView::mouseReleaseEvent(mouseEvent);
+//}
+//------------------------------------------------------------------------------
+void TSceneView::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
+{
+//    QGraphicsView::mousePressEvent(mouseEvent);
+}
+
+void TSceneView::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
+{
+//    QGraphicsView::mouseMoveEvent(mouseEvent);
+}
+
+void TSceneView::mouseReleaseEvent(QGraphicsSceneMouseEvent* mouseEvent)
+{
+//    QGraphicsView::mouseReleaseEvent(mouseEvent);
 }

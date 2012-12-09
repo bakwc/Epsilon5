@@ -4,9 +4,12 @@
 class TStaticObject : public QGraphicsPixmapItem
 {
 public:
-    TStaticObject(QGraphicsItem* parent = 0);
-    TStaticObject(const QPixmap& pixmap, QGraphicsItem* parent = 0);
+    explicit TStaticObject(QGraphicsPixmapItem* parent = 0);
+    TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent = 0);
     void setFixed(bool value = true);
+    QRectF boundingRect();
+    quint32 objectId();
+    void setObjectId(quint32 id);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
@@ -21,5 +24,6 @@ private:
     Qt::MouseButton mButton;
     int mAngle;
     bool mFixed;
+    quint32 mObjectId;
 };
 //------------------------------------------------------------------------------

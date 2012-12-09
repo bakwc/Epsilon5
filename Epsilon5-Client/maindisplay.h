@@ -37,7 +37,6 @@ public:
 public slots:
     void RedrawWorld();
     void toggleFullscreen();
-    void toggleFullscreenWindowed();
 
 private:
     void paintEvent(QPaintEvent*);

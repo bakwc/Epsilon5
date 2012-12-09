@@ -62,6 +62,7 @@ QByteArray TWorld::Serialize() {
             player->set_ping(i.value()->GetPing());
         }
         player->set_hp(i.value()->GetHP());
+        player->set_team(i.value()->GetTeamBool());
     }
 
     for (auto i = Bullets.begin(); i != Bullets.end();i++)
@@ -285,9 +286,8 @@ void TWorld::BeginContact(b2Contact* contact) {
 
 
 void TWorld::SetPingForPlayer(size_t id, size_t packetNumber) {
-
-    int ping = Times[packetNumber].elapsed();
-
-    Players[id]->SetPing(ping);
-
+    if (Players.find(id) != Players.end()) {
+        int ping = Times[packetNumber].elapsed();
+        Players[id]->SetPing(ping);
+    }
 }

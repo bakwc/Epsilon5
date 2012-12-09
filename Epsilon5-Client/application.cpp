@@ -13,5 +13,6 @@ bool TApplication::Init() {
     MainDisplay.Init();
     MainDisplay.show();
     Network->Start();
+    MainDisplay.toggleFullscreenWindowed();
     return true; // TODO: normal initialisation
 }

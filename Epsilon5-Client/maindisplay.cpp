@@ -236,6 +236,7 @@ void TMainDisplay::DrawFps(QPainter& painter)
 
 void TMainDisplay::DrawPing(QPainter& painter)
 {
+    if(Ping != 2686572)
     DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping), 10);
 }
 

@@ -20,37 +20,8 @@ TRespawnContainer& TRespawnContainer::operator =(const TRespawnContainer& contai
     return *this;
 }
 //------------------------------------------------------------------------------
-TRespawnContainer::TRespawnItemId TRespawnContainer::addRespawn(
-        const TRespawnInfo& info)
+void TRespawnContainer::loadRespawnList(const QString& respawnList)
 {
-    TRespawnItem item(info);
-    return addRespawn(item);
-}
-//------------------------------------------------------------------------------
-TRespawnContainer::TRespawnItemId TRespawnContainer::addRespawn(
-        const TRespawnItem& item)
-{
-    TRespawnItemId id = addItem(item);
-    addToModel(id, item.pack());
-    return id;
-}
-//------------------------------------------------------------------------------
-void TRespawnContainer::removeRespawn(const TRespawnItem& item)
-{
-    removeItem(item);
-}
-//------------------------------------------------------------------------------
-void TRespawnContainer::removeRespawn(TRespawnItemId id)
-{
-    removeItem(id);
-}
-//------------------------------------------------------------------------------
-void TRespawnContainer::loadRespawnList(const QString& respawnList,
-        const QDir& baseDirectory)
-{
-    // TODO: Make usage of baseDirectory
-    Q_UNUSED(baseDirectory);
-
     clearItems();
 
     QFile file(respawnList);
@@ -64,18 +35,13 @@ void TRespawnContainer::loadRespawnList(const QString& respawnList,
         if (!item.unpack(stream.readLine())) {
             continue;
         }
-        item.setResourceFile(respawnList);
-        addRespawn(item);
+        addItem(item);
     }
     file.close();
 }
 //------------------------------------------------------------------------------
-void TRespawnContainer::saveRespawnList(const QString& respawnList,
-        const QDir& baseDirectory) const
+void TRespawnContainer::saveRespawnList(const QString& respawnList) const
 {
-    // TODO: Make usage of baseDirectory
-    Q_UNUSED(baseDirectory);
-
     QFile file(respawnList);
     if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
         throw UException(QString(Q_FUNC_INFO)
@@ -83,11 +49,11 @@ void TRespawnContainer::saveRespawnList(const QString& respawnList,
     }
     QTextStream stream(&file);
     auto it = constBegin();
-    for ( ; it != constEnd(); ++it )
-    {
+    for (; it != constEnd(); ++it) {
         const TRespawnItem& respawn = (*it);
-        if( !respawn.isValid() )
+        if (!respawn.isValid()) {
             continue;
+        }
 
         stream << respawn.pack() << "\n";
     }

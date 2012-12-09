@@ -14,30 +14,32 @@ public:
 public:
     TTItem(const T& info = T())
         : mValid(false)
-        , mId(0)
+        , mItemId(0)
         , mResourceFile()
         , mPreviewIcon()
         , mInfo(info) {
     }
+
     TTItem(const TTItem& item)
         : mValid(item.mValid)
-        , mId(item.mId)
+        , mItemId(item.mItemId)
         , mResourceFile(item.mResourceFile)
         , mPreviewIcon(item.mPreviewIcon)
-        , mInfo(item.mInfo)
-    {}
+        , mInfo(item.mInfo) {
+    }
+
     TTItem& operator =(const TTItem& item) {
         mValid = item.mValid;
         mInfo = item.mInfo;
         return *this;
     }
 
-    TItemId id() const {
-        return mId;
+    TItemId itemId() const {
+        return mItemId;
     }
 
-    void setId(TItemId id) {
-        mId = id;
+    void setItemId(TItemId id) {
+        mItemId = id;
     }
 
     bool isValid() const {
@@ -71,7 +73,7 @@ protected:
 
 protected:
     bool mValid;
-    TItemId mId;
+    TItemId mItemId;
     QString mResourceFile;
     QIcon mPreviewIcon;
     T mInfo;

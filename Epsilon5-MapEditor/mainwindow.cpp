@@ -7,15 +7,15 @@
 #include "mainwindow.h"
 //#include "openmapdialog.h"
 #include "ui/configurationdialog.h"
-#include "ui/objectseditorform.h"
+//#include "ui/objectseditorform.h"
 #include "ui/mapseditorform.h"
-#include "containers/maprespawncontainer.h"
+//#include "containers/maprespawncontainer.h"
 //------------------------------------------------------------------------------
 TMainWindow::TMainWindow(QWidget* parent)
     : QMainWindow(parent)
     , mObjectsEditorAction(new QAction(this))
     , mMapsEditorAction(new QAction(this))
-    , mObjectsEditorWidget(new TObjectsEditorForm(this))
+//    , mObjectsEditorWidget(new TObjectsEditorForm(this))
     , mMapsEditorWidget(new TMapsEditorForm(this))
 {
     // Relocate window
@@ -48,11 +48,11 @@ TMainWindow::TMainWindow(QWidget* parent)
     menuBar->addMenu(toolsMenu);
     this->setMenuBar(menuBar);
     setMinimumSize(600, 400);
-    connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
+//    connect(this, SIGNAL(resized()), mObjectsEditorWidget, SLOT(updateDataList()));
     QWidget* widget = new QWidget(this);
     setCentralWidget(widget);
     QVBoxLayout* vbox = new QVBoxLayout(widget);
-    vbox->addWidget(mObjectsEditorWidget);
+//    vbox->addWidget(mObjectsEditorWidget);
     vbox->addWidget(mMapsEditorWidget);
     widget->setLayout(vbox);
     // Activate default widget
@@ -61,12 +61,12 @@ TMainWindow::TMainWindow(QWidget* parent)
 //    mMapsEditorWidget->hide();
 
     mMapsEditorAction->setChecked(true);
-    mObjectsEditorWidget->hide();
+//    mObjectsEditorWidget->hide();
 
     mObjectsEditorAction->setDisabled(true);
 
 
-    mMapsEditorWidget->setObjectsModel(mObjectsEditorWidget->objectsModel());
+//    mMapsEditorWidget->setObjectsModel(mObjectsEditorWidget->objectsModel());
 }
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow()
@@ -131,7 +131,7 @@ void TMainWindow::optionsAction()
 //------------------------------------------------------------------------------
 void TMainWindow::objectsEditorAction()
 {
-    mObjectsEditorWidget->show();
+//    mObjectsEditorWidget->show();
     mMapsEditorWidget->hide();
     mObjectsEditorAction->setChecked(true);
     mMapsEditorAction->setChecked(false);
@@ -139,7 +139,7 @@ void TMainWindow::objectsEditorAction()
 //------------------------------------------------------------------------------
 void TMainWindow::mapsEditorAction()
 {
-    mObjectsEditorWidget->hide();
+//    mObjectsEditorWidget->hide();
     mMapsEditorWidget->show();
     mObjectsEditorAction->setChecked(false);
     mMapsEditorAction->setChecked(true);

@@ -1,5 +1,5 @@
 #pragma once
-#include "storage/item_t.h"
+#include "storage/st_item_t.h"
 #include "storage/st_storageinfo.h"
 //------------------------------------------------------------------------------
 namespace containers

@@ -1,5 +1,5 @@
 #pragma once
-#include "storage/item_t.h"
+#include "storage/st_item_t.h"
 #include "storage/st_storageinfo.h"
 #include "storage/st_objectcontainer.h"
 #include "storage/st_respawncontainer.h"
@@ -11,8 +11,8 @@ class TMapItem : public TTItem<TMapInfo>
 {
 public:
     TMapItem(const TMapInfo& info = TMapInfo(),
-            const TObjectContainer& objects = TObjectContainer(),
-            const TRespawnContainer& respawns = TRespawnContainer());
+             const TObjectContainer& objects = TObjectContainer(),
+             const TRespawnContainer& respawns = TRespawnContainer());
     TMapItem(const TMapItem& map);
     TMapItem& operator=(const TMapItem& map);
 

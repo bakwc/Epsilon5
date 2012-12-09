@@ -9,8 +9,6 @@ TMapItem::TMapItem(const TMapInfo& info,
     , mRespawns(respawns)
     , mBackgroundFile()
 {
-    if( this->info().name.isEmpty() )
-        this->info().name = "Unnamed map";
 }
 //------------------------------------------------------------------------------
 TMapItem::TMapItem(const TMapItem& map)
@@ -68,7 +66,7 @@ void TMapItem::setSize(const QSize& size)
 //------------------------------------------------------------------------------
 bool TMapItem::validate()
 {
-    mValid = !(info().name).isEmpty();
+    mValid = !(info().name.trimmed()).isEmpty();
     return mValid;
 }
 //------------------------------------------------------------------------------
@@ -95,7 +93,7 @@ TRespawnContainer& TMapItem::respawns()
 QString TMapItem::pack() const
 {
     return QString("%1:%2x%3").arg(info().name)
-            .arg(info().width).arg(info().height);
+           .arg(info().width).arg(info().height);
 }
 //------------------------------------------------------------------------------
 bool TMapItem::unpack(const QString& string)
@@ -118,7 +116,7 @@ bool TMapItem::unpack(const QString& string)
     if (!isOk) {
         return false;
     }
-    return true;
+    return validate();
 }
 //------------------------------------------------------------------------------
 const QString& TMapItem::background() const
@@ -126,7 +124,7 @@ const QString& TMapItem::background() const
     return mBackgroundFile;
 }
 //------------------------------------------------------------------------------
-void TMapItem::setBackground(const QString &file)
+void TMapItem::setBackground(const QString& file)
 {
     mBackgroundFile = file.trimmed();
 }

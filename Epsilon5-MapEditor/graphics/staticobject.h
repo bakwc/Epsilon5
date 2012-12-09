@@ -16,9 +16,6 @@ protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
 
-//    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-//               QWidget *widget);
-
 private:
     QPointF mCursorPosition;
     Qt::MouseButton mButton;

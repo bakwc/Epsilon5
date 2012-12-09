@@ -1,26 +1,27 @@
-#include "storage/st_objectcontainer.h"
+#include "st_sourceobjectcontainer.h"
 //------------------------------------------------------------------------------
 using namespace containers;
 //------------------------------------------------------------------------------
-TObjectContainer::TObjectContainer(QObject* parent)
+TSObjectContainer::TSObjectContainer(QObject* parent)
     : QObject(parent)
     , TTContainer()
 {
 }
 //------------------------------------------------------------------------------
-TObjectContainer::TObjectContainer(const TObjectContainer& container)
+TSObjectContainer::TSObjectContainer(const TSObjectContainer& container)
     : QObject(container.parent())
     , TTContainer(container)
 {
 }
 //------------------------------------------------------------------------------
-TObjectContainer& TObjectContainer::operator =(const TObjectContainer& container)
+TSObjectContainer& TSObjectContainer::operator =(const TSObjectContainer& container)
 {
     TTContainer::operator =(container);
     return *this;
 }
 //------------------------------------------------------------------------------
-void TObjectContainer::loadObjectList(const QString& objectList)
+void TSObjectContainer::loadObjectList(const QString& objectList,
+        const QDir& baseDirectory)
 {
     clearItems();
 
@@ -29,19 +30,22 @@ void TObjectContainer::loadObjectList(const QString& objectList)
         throw UException(QString(Q_FUNC_INFO)
                 .append(":: open file error: '%1'").arg(objectList));
     }
-
     QTextStream stream(&file);
-    TObjectItem object;
+    TSObjectItem object;
     while (!stream.atEnd()) {
         if (!object.unpack(stream.readLine())) {
             continue;
         }
-        addItem(object);
+        if (!object.resourceName().isEmpty()) {
+            object.setResourceFile( baseDirectory.absolutePath() + "/"
+                + object.resourceName() + ".png");
+        }
+        addI(object);
     }
     file.close();
 }
 //------------------------------------------------------------------------------
-void TObjectContainer::saveObjectList(const QString& objectList) const
+void TSObjectContainer::saveObjectList(const QString& objectList) const
 {
     QFile file(objectList);
     if (!file.open(QFile::WriteOnly | QFile::Truncate | QFile::Text)) {
@@ -51,8 +55,8 @@ void TObjectContainer::saveObjectList(const QString& objectList) const
     QTextStream stream(&file);
     auto it = constBegin();
     for (; it != constEnd(); ++it) {
-        const TObjectItem& object = *it;
-        if (!object.isValid() ) {
+        const TSObjectItem& object = (*it);
+        if (!object.isValid()) {
             continue;
         }
         stream << object.pack() << "\n";

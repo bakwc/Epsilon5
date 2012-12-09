@@ -1,7 +1,7 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include "graphics/staticobject.h"
-
+//------------------------------------------------------------------------------
 TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(parent)
     , mCursorPosition(QPointF(0, 0))
@@ -10,7 +10,7 @@ TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
     setPixmap(QPixmap(32, 32));
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
-
+//------------------------------------------------------------------------------
 TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
     , mCursorPosition(QPointF(0, 0))
@@ -19,16 +19,17 @@ TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
     setPixmap(pixmap);
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
-
+//------------------------------------------------------------------------------
 QRectF TStaticObject::boundingRect()
 {
     return QRectF(0, 0, pixmap().width(), pixmap().height());
 }
-
+//------------------------------------------------------------------------------
 void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 {
-    if( mFixed )
+    if (mFixed) {
         return;
+    }
 
     if (mButton == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier) {
         mAngle = rotation() + event->pos().x() - mCursorPosition.x();
@@ -43,34 +44,24 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
                 event->pos().y() - pixmap().height() / 2));
 //        qDebug( "item pos: %fx%f", pos().x(), pos().y() );
     }
-    //emit moved();//&mObjectId);
 }
-
+//------------------------------------------------------------------------------
 void TStaticObject::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
     mButton = event->button();
     mCursorPosition = event->pos();
 }
-
+//------------------------------------------------------------------------------
 void TStaticObject::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
     Q_UNUSED(event);
     mButton = Qt::NoButton;
 }
-
+//------------------------------------------------------------------------------
 void TStaticObject::setFixed(bool value)
 {
     mFixed = value;
 }
-
-//void TStaticObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-//           QWidget *widget)
-//{
-//    //painter->drawRoundedRect(-10, -10, 20, 20, 5, 5);
-//    painter->drawPixmap(QPoint(0,0), pixmap());
-//    painter->drawEllipse(QPoint(0,0), 10, 10);
-//}
-
 //------------------------------------------------------------------------------
 void TStaticObject::setObjectId(quint32 id)
 {

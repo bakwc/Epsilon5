@@ -1,5 +1,6 @@
 #pragma once
 #include <QGraphicsScene>
+#include "staticobject.h"
 //------------------------------------------------------------------------------
 class TScene : public QGraphicsScene
 {
@@ -20,5 +21,6 @@ private:
     Qt::MouseButton mButton;
     QPointF mOriginPos;
     QPointF mLastObjectPos;
+    TStaticObject* mLastObject;
 };
 //------------------------------------------------------------------------------

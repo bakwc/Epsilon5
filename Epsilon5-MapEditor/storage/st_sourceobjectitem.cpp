@@ -1,104 +1,115 @@
-#include "storage/st_objectitem.h"
+#include "st_sourceobjectitem.h"
 //------------------------------------------------------------------------------
 using namespace containers;
 //------------------------------------------------------------------------------
-TObjectItem::TObjectItem(const TObjectInfo& info)
+TSObjectItem::TSObjectItem(const TSObjectInfo& info)
     : TTItem(info)
 {
 }
 //------------------------------------------------------------------------------
-TObjectItem::TObjectItem(const TObjectItem& object)
+TSObjectItem::TSObjectItem(const TSObjectItem& object)
     : TTItem(object)
 {
 }
 //------------------------------------------------------------------------------
-TObjectItem& TObjectItem::operator =(const TObjectItem& object)
+TSObjectItem& TSObjectItem::operator =(const TSObjectItem& object)
 {
     TTItem::operator =(object);
     return *this;
 }
 //------------------------------------------------------------------------------
-quint32 TObjectItem::objectId() const
+quint32 TSObjectItem::objectId() const
 {
     return info().id;
 }
 //------------------------------------------------------------------------------
-qint32 TObjectItem::x() const
+quint32 TSObjectItem::width() const
 {
-    return info().x;
+    return info().width;
 }
 //------------------------------------------------------------------------------
-qint32 TObjectItem::y() const
+quint32 TSObjectItem::height() const
 {
-    return info().y;
+    return info().height;
 }
 //------------------------------------------------------------------------------
-QPoint TObjectItem::pos() const
+QSize TSObjectItem::size() const
 {
-    return QPoint(info().x, info().y);
+    return QSize(info().width, info().height);
 }
 //------------------------------------------------------------------------------
-qreal TObjectItem::angle() const
+bool TSObjectItem::isDynamic() const
 {
-    return info().angle;
+    return info().isDynamic;
 }
 //------------------------------------------------------------------------------
-void TObjectItem::setObjectId(quint32 id)
+const QString& TSObjectItem::resourceName() const
+{
+    return info().name;
+}
+//------------------------------------------------------------------------------
+void TSObjectItem::setObjectId(quint32 id)
 {
     info().id = id;
 }
 //------------------------------------------------------------------------------
-void TObjectItem::setPos(const QPoint& pos)
+void TSObjectItem::setSize(const QSize& size)
 {
-    info().x = pos.x();
-    info().y = pos.y();
+    info().width = size.width();
+    info().height = size.height();
 }
 //------------------------------------------------------------------------------
-void TObjectItem::setX(qint32 x)
+void TSObjectItem::setWidth(quint32 width)
 {
-    info().x = x;
+    info().width = width;
 }
 //------------------------------------------------------------------------------
-void TObjectItem::setY(qint32 y)
+void TSObjectItem::setHeight(quint32 height)
 {
-    info().y = y;
+    info().height = height;
 }
 //------------------------------------------------------------------------------
-void TObjectItem::setAngle(qreal angle)
+void TSObjectItem::setDynamic(bool value)
 {
-    info().angle = angle;
+    info().isDynamic = value;
 }
 //------------------------------------------------------------------------------
-bool TObjectItem::validate()
+void TSObjectItem::setResourceName(const QString& name)
 {
-    mValid = info().id > 0;
+    info().name = name.trimmed().replace("[ \t\n]", "_");
+}
+//------------------------------------------------------------------------------
+bool TSObjectItem::validate()
+{
+    mValid = info().id > 0 && !info().name.isEmpty()
+            && !info().name.contains("[ \t\n]");
     return mValid;
 }
 //------------------------------------------------------------------------------
-QString TObjectItem::pack() const
+QString TSObjectItem::pack() const
 {
-    QString str = QString("%1:%2:%3:%4").arg(info().x).arg(info().y)
-                  .arg(info().angle).arg(info().id);
+    QString str = QString("%1:%2:%3:%4:%5").arg(info().width).arg(info().height)
+            .arg(info().isDynamic).arg(info().id).arg(info().name);
     return str;
 }
 //------------------------------------------------------------------------------
-bool TObjectItem::unpack(const QString& string)
+bool TSObjectItem::unpack(const QString& string)
 {
-    const quint8 STRUCTURE_FIELDS_COUNT = 4;
+    const quint8 STRUCTURE_FIELDS_COUNT = 5;
     QStringList vars = string.split(":");
     bool isOk;
     if (vars.count() != STRUCTURE_FIELDS_COUNT) {
         return false;
     }
-    info().x = vars[0].toInt(&isOk);
+    info().width = vars[0].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
-    info().y = vars[1].toInt(&isOk);
+    info().height = vars[1].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
-    info().angle = vars[2].toDouble(&isOk);
+    info().isDynamic = vars[2].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
@@ -106,6 +117,8 @@ bool TObjectItem::unpack(const QString& string)
     if (!isOk) {
         return false;
     }
+    info().name = vars[4].trimmed();
     return validate();
 }
 //------------------------------------------------------------------------------
+

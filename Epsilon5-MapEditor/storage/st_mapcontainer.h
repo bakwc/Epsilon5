@@ -1,13 +1,13 @@
 #pragma once
 #include <QObject>
-#include "storage/container_t.h"
+#include "storage/st_container_t.h"
 #include "storage/st_storageinfo.h"
 #include "storage/st_mapitem.h"
 //------------------------------------------------------------------------------
 namespace containers
 {
 //------------------------------------------------------------------------------
-class TMapContainer : public QObject, public TTContainer<TMapItem>
+class TMapContainer : public QObject, public TTContainer<TMapItem, TMapInfo>
 {
     Q_OBJECT
 public:
@@ -15,15 +15,11 @@ public:
 
 public:
     explicit TMapContainer(QObject* parent = 0);
-    TMapItemId addMap(const TMapItem& mapItem);
-    void removeMap(const TMapItem& mapItem);
-    void removeMap(TMapItemId id);
-    void deleteMap(const TMapItem& mapItem);
 
     void loadMapByName(const QString& mapName,
             const QDir& baseDirectory = QDir::currentPath());
-    void saveMapByName(const QString& mapName,
-            const QDir& baseDirectory = QDir::currentPath());
+    void saveMap(const TMapItem& map,
+            const QDir& baseDirectory);
     void loadMapList(const QString& listFileName,
             const QDir& baseDirectory = QDir::currentPath());
     void saveMapList(const QString& listFileName,
@@ -31,6 +27,8 @@ public:
 
     void loadMap(const TMapItem& map);
     void saveMap(const TMapItem& map);
+
+    void deleteMap(const TMapItem& map);
 
 private:
     TMapInfo mapInfoFromFile(const QString& fileName);

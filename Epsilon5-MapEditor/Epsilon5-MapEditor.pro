@@ -20,7 +20,7 @@ SOURCES += \
     application.cpp \
     imagecache.cpp \
     ui/configurationdialog.cpp \
-    ui/objectseditorform.cpp \
+#    ui/objectseditorform.cpp \
     ui/mapseditorform.cpp \
 #    containers/structures.cpp \
 #    containers/container.cpp \
@@ -33,13 +33,16 @@ SOURCES += \
     graphics/scene.cpp \
     graphics/sceneview.cpp \
     graphics/staticobject.cpp \
-    storage/container_t.cpp \
     storage/st_mapcontainer.cpp \
     storage/st_mapitem.cpp \
     storage/st_objectcontainer.cpp \
     storage/st_objectitem.cpp \
     storage/st_respawncontainer.cpp \
-    storage/st_respawnitem.cpp
+    storage/st_respawnitem.cpp \
+    storage/st_container_t.cpp \
+    storage/st_item_t.cpp \
+    storage/st_sourceobjectitem.cpp \
+    storage/st_sourceobjectcontainer.cpp
 
 
 HEADERS += \
@@ -59,7 +62,7 @@ HEADERS += \
     global.h \
     imagecache.h \
     ui/configurationdialog.h \
-    ui/objectseditorform.h \
+#    ui/objectseditorform.h \
     ui/mapseditorform.h \
 #    containers/mapcontainer.h \
 #    containers/structures.h \
@@ -72,21 +75,23 @@ HEADERS += \
     graphics/scene.h \
     graphics/sceneview.h \
     graphics/staticobject.h \
-    storage/container_t.h \
     storage/st_mapcontainer.h \
     storage/st_respawnitem.h \
     storage/st_respawncontainer.h \
     storage/st_objectitem.h \
     storage/st_objectcontainer.h \
     storage/st_mapitem.h \
-    storage/item_t.h \
-    storage/st_storageinfo.h
+    storage/st_storageinfo.h \
+    storage/st_container_t.h \
+    storage/st_item_t.h \
+    storage/st_sourceobjectitem.h \
+    storage/st_sourceobjectcontainer.h
 
 FORMS += \
 #    createmapdialog.ui \
 #    openmapdialog.ui \
     ui/configurationdialog.ui \
-    ui/objectseditorform.ui \
+#    ui/objectseditorform.ui \
     ui/mapseditorform.ui
 
 QMAKE_CXXFLAGS += -std=c++0x

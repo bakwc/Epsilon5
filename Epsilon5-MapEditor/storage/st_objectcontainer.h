@@ -1,12 +1,12 @@
 #pragma once
 #include <QObject>
-#include "container_t.h"
+#include "st_container_t.h"
 #include "st_objectitem.h"
 //------------------------------------------------------------------------------
 namespace containers
 {
 //------------------------------------------------------------------------------
-class TObjectContainer : public QObject, public TTContainer<TObjectItem>
+class TObjectContainer : public QObject, public TTContainer<TObjectItem, TObjectInfo>
 {
     Q_OBJECT
 public:
@@ -17,17 +17,8 @@ public:
     TObjectContainer(const TObjectContainer& container);
     TObjectContainer& operator =(const TObjectContainer& containers);
 
-    TObjectItemId addObject(const TObjectInfo& info);
-    TObjectItemId addObject(const TObjectItem& object);
-    void removeObject(const TObjectItem& object);
-    void removeObject(TObjectItemId id);
-
-    void loadObjectList(const QString& objectList,
-            const QDir& baseDirectory = QDir::currentPath(),
-            bool withResource = false);
-    void saveObjectList(const QString& objectList,
-            const QDir& baseDirectory = QDir::currentPath(),
-            bool withResource = false) const;
+    void loadObjectList(const QString& objectList);
+    void saveObjectList(const QString& objectList) const;
 };
 //------------------------------------------------------------------------------
 }

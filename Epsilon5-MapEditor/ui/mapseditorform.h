@@ -59,9 +59,9 @@ private slots:
     void loadObjectsListAction();
 
     void initScene(const QModelIndex& index);
-    void keyReleaseEvent(QKeyEvent *);
+    void keyReleaseEvent(QKeyEvent*);
 
-    void timerEvent(QTimerEvent *);
+    void timerEvent(QTimerEvent*);
 
 private:
     Ui::TMapsEditorForm* ui;

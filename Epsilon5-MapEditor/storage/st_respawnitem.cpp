@@ -117,9 +117,9 @@ bool TRespawnItem::validate()
 QString TRespawnItem::pack() const
 {
     return QString("%1:%2:%3:%4:%5:%6:%7:%8").arg(info().x).arg(info().y)
-            .arg(info().captureRadius)
-            .arg(info().spawnRadius).arg(info().isCapturable)
-            .arg(info().isMain).arg(info().captureTime).arg(info().team);
+           .arg(info().captureRadius)
+           .arg(info().spawnRadius).arg(info().isCapturable)
+           .arg(info().isMain).arg(info().captureTime).arg(info().team);
 }
 //------------------------------------------------------------------------------
 bool TRespawnItem::unpack(const QString& string)

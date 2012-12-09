@@ -285,7 +285,7 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
         QPoint pos = QPoint(player.x(), player.y()) - playerPos;
 
         QString nickName;
-        if (player.has_name()) {
+        if (player.has_name()) { // New player
             nickName = player.name().c_str();
             PlayerNames[player.id()] = nickName;
         } else {
@@ -296,12 +296,19 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
 
         size_t hp = player.hp();
 
+        // Set player or enemy image
         if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
             img = &Images->GetImage("player");
             miniMap.setPen(Qt::red);
             nickName += " - " + QString::number(hp) + "%";
         } else {
-            img = &Images->GetImage("enemy");
+            // Get team image
+            if (player.team())
+                img = &Images->GetImage("peka_t2");
+            else
+                img = &Images->GetImage("peka_t1");
+
+//            img = &Images->GetImage("enemy");
             miniMap.setPen(Qt::black);
         }
 
@@ -310,6 +317,7 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
 
+        // Draw player name
         painter.setPen(Qt::yellow);
         painter.setFont(nickFont);
         QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,

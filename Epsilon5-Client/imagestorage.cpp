@@ -14,6 +14,9 @@ void TImageStorage::LoadAll() {
     LoadImage("flag_t1", "resources/flag_t1.png");
     LoadImage("flag_t2", "resources/flag_t2.png");
     LoadImage("flag_tn", "resources/flag_tn.png");
+
+    LoadImage("peka_t1", "resources/peka_t1");
+    LoadImage("peka_t2", "resources/peka_t2");
 }
 
 const QImage& TImageStorage::GetImage(const QString& imageName) {

@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QDir>
 #include "../utils/uexception.h"
+#include "../utils/usettings.h"
 
 #include "map.h"
 
@@ -18,6 +19,10 @@ TMap::TMap(QObject *parent)
 }
 
 void TMap::LoadMap(QString map) {
+    USettings settings;
+    settings.Load("maps/" + map + "/config.ini");
+    QString color = settings.GetParameter("color");
+    Color = QColor(color);
     Background->load("maps/" + map + "/background.png");
     Loaded = true;
 }
@@ -38,6 +43,6 @@ void TMap::DrawBackground(const QPoint& playerPos, const QSize& frameSize, QPain
     int newPekaPosY = centerY + playerPos.y();
     int cutX = newPekaPosX - frameSize.width() / 2;
     int cutY = newPekaPosY - frameSize.height() / 2;
-
+    painter.fillRect(0, 0, frameSize.width(), frameSize.height(), Color);
     painter.drawImage(-cutX, -cutY, *Background);
 }

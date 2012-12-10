@@ -4,6 +4,7 @@
 #include <QImage>
 #include <QPainter>
 #include <QPoint>
+#include <QColor>
 
 class TMap : public QObject
 {
@@ -20,5 +21,6 @@ private:
     size_t Width;
     size_t Height;
     QImage* Background;
+    QColor Color;
     bool Loaded;
 };

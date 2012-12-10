@@ -49,14 +49,17 @@ private slots:
     void on_mapsView_clicked(QModelIndex index);
     void on_toolBox_currentChanged(int index);
     void on_listView_clicked(QModelIndex index);
+    void on_listView_doubleClicked(QModelIndex index);
     void on_teamButton_clicked();
     void on_backgroundButton_clicked();
+    void on_objectsView_doubleClicked(QModelIndex index);
 
     void onItemMove(quint32 id, QPointF position, qreal angle);
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);
     void showObjectsContentMenu(QPoint point);
     void showListViewContentMenu(QPoint point);
+    void updateScene();
     void updateMapSettings();
     void updateObjectSettings();
     void updateRespawnSettings();
@@ -73,9 +76,6 @@ private slots:
 
     void refreshObjectsListAction();
     void loadSObjectsListAction();
-
-    void initScene();
-    void keyReleaseEvent(QKeyEvent*);
 
     void timerEvent(QTimerEvent*);
 

@@ -19,7 +19,6 @@ protected:
 private:
     QPointF mCursorPosition;
     Qt::MouseButton mButton;
-    int mAngle;
     bool mFixed;
     quint32 mObjectId;
 };

@@ -4,7 +4,7 @@
 //------------------------------------------------------------------------------
 TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(parent)
-    , mCursorPosition(QPointF(0, 0))
+    , mCursorPosition(QPointF())
     , mFixed(false)
 {
     setPixmap(QPixmap(32, 32));
@@ -13,7 +13,7 @@ TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
 //------------------------------------------------------------------------------
 TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
-    , mCursorPosition(QPointF(0, 0))
+    , mCursorPosition(QPointF())
     , mFixed(false)
 {
     setPixmap(pixmap);
@@ -32,17 +32,19 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     }
 
     if (mButton == Qt::LeftButton && event->modifiers() == Qt::ShiftModifier) {
-        mAngle = rotation() + event->pos().x() - mCursorPosition.x();
-        mAngle %= 360;
+        int angle = (rotation() + event->pos().x() - mCursorPosition.x());
+        angle %= 360;
         setTransformOriginPoint(QPoint(pixmap().width() / 2,
                 pixmap().height() / 2));
-        setRotation(mAngle);
+        setRotation(angle);
         return;
     }
     if (mButton == Qt::LeftButton) {
+        setTransformOriginPoint(0, 0);
         setPos(mapToScene(event->pos().x() - pixmap().width() / 2,
                 event->pos().y() - pixmap().height() / 2));
-//        qDebug( "item pos: %fx%f", pos().x(), pos().y() );
+        setTransformOriginPoint(QPoint(pixmap().width() / 2,
+                pixmap().height() / 2));
     }
 }
 //------------------------------------------------------------------------------

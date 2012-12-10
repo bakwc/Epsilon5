@@ -17,6 +17,11 @@ void TImageStorage::LoadAll() {
 
     LoadImage("peka_t1", "resources/peka_t1");
     LoadImage("peka_t2", "resources/peka_t2");
+
+    LoadImage("menu-connect", "resources/menu-connect.png");
+    LoadImage("menu-connect-h", "resources/menu-connect-h.png");
+    LoadImage("menu-exit", "resources/menu-exit.png");
+    LoadImage("menu-exit-h", "resources/menu-exit-h.png");
 }
 
 const QImage& TImageStorage::GetImage(const QString& imageName) {
@@ -30,6 +35,9 @@ const QImage& TImageStorage::GetImage(const QString& imageName) {
 void TImageStorage::LoadImage(const QString& imageName, const QString& filename)
 {
     QImage *image = new QImage(filename);
+    if (image->isNull()) {
+        throw UException(QString("Loading failed: ") + filename);
+    }
     Images.insert(imageName, image);
 }
 

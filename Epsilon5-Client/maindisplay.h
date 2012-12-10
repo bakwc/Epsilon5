@@ -34,6 +34,7 @@ public:
     ~TMainDisplay();
     inline const Epsilon5::Control& GetControl() { return Control; }
     QPoint GetCenter();
+    QPoint GetCursorPos();
 public slots:
     void RedrawWorld();
     void toggleFullscreen();

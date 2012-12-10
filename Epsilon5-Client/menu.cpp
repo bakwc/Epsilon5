@@ -6,15 +6,14 @@
 #include <QBrush>
 #include <QDebug>
 
-QSize TMenuItem::Size = QSize(100, 50);
-
-TMenu::TMenu(QObject *parent)
+TMenu::TMenu(TImageStorage* images, QObject* parent)
     : QObject(parent)
+    , Images(images)
 {
 
 }
 
-TMenuItem *TMenu::AddMenuItem(TMenuItem *item)
+TMenuItem* TMenu::AddMenuItem(TMenuItem* item)
 {
     Items.push_back(item);
     return item;
@@ -31,10 +30,18 @@ void TMenu::paint(QPainter* p)
 
 void TMenuItem::paint(QPainter* p)
 {
-    p->setFont(QFont("Arial", 22));
-    p->setBrush(QBrush(Qt::white));
-    p->setPen(Qt::white);
-    p->drawStaticText(Pos, Str);
+    QPoint cursorpos = Application()->GetMainDisplay()->GetCursorPos();
+    QPoint pos = Application()->GetMainDisplay()->GetCenter() + Pos;
+    pos.setX(pos.x() - Image.width() / 2);
+    pos.setY(pos.y() - Image.height() / 2);
+    if (cursorpos.x() > pos.x() && cursorpos.y() > pos.y()
+            && cursorpos.x() < pos.x() + Image.width()
+            && cursorpos.y() < pos.y() + Image.height())
+    {
+        p->drawImage(pos, ImageHover);
+    } else {
+        p->drawImage(pos, Image);
+    }
 }
 
 bool TMenuItem::event(QEvent* ev)
@@ -42,15 +49,25 @@ bool TMenuItem::event(QEvent* ev)
     if (ev->type() == QEvent::MouseButtonPress) {
         QMouseEvent* mEv = (QMouseEvent*)ev;
 
+        QPoint pos = Application()->GetMainDisplay()->GetCenter() + Pos;
+        pos.setX(pos.x() - Image.width() / 2);
+        pos.setY(pos.y() - Image.height() / 2);
         QPoint p = mEv->pos();
 
-        if (p.x() > Pos.x() && p.x() < Pos.x() + Size.width()
-                && p.y() > Pos.y() && p.y() < Pos.y() + Size.height()) {
+        if (p.x() > pos.x() && p.x() < pos.x() + Image.width()
+                && p.y() > pos.y() && p.y() < pos.y() + Image.height())
+        {
             emit Clicked();
+            Application()->GetMainDisplay()->update();
         }
     }
 
     return QObject::event(ev);
+}
+
+TApplication *TMenuItem::Application()
+{
+    return (TApplication*)qApp;
 }
 
 TApplication* TMenu::Application() {
@@ -59,18 +76,27 @@ TApplication* TMenu::Application() {
 
 void TMenu::Init()
 {
-    QPoint center = Application()->GetMainDisplay()->GetCenter();
-    TMenuItem *item = AddMenuItem(new TMenuItem("Connect", QPoint(center.x(), center.y() - 50), this));
+    TMenuItem* item = AddMenuItem(new TMenuItem(
+                                      Images->GetImage("menu-connect"),
+                                      Images->GetImage("menu-connect-h"),
+                                      QPoint(0, -50),
+                                      this));
     connect(item, SIGNAL(Clicked()), Application()->GetNetwork(), SLOT(Start()));
 
-    item = AddMenuItem(new TMenuItem("Exit", QPoint(center.x(), center.y() + 50), this));
+    item = AddMenuItem(new TMenuItem(
+                                          Images->GetImage("menu-exit"),
+                                          Images->GetImage("menu-exit-h"),
+                                          QPoint(0, 50),
+                                          this));
     connect(item, SIGNAL(Clicked()), Application(), SLOT(quit()));
 }
 
 bool TMenu::event(QEvent *ev)
 {
-    for (int i = 0; i != Items.size(); ++i) {
-        qApp->sendEvent(Items[i], ev);
+    if (Application()->GetState() == ST_MainMenu) {
+        for (int i = 0; i != Items.size(); ++i) {
+            qApp->sendEvent(Items[i], ev);
+        }
     }
     return false;
 }

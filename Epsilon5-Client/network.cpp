@@ -75,6 +75,7 @@ void TNetwork::OnDataReceived() {
             }
                 break;
             case PT_World: {
+                Application()->SetState(ST_InGame);
                 if (Status != PS_Spawned) {
                     throw UException("Wrong packet: PT_World");
                 }
@@ -107,7 +108,7 @@ void TNetwork::OnError(QAbstractSocket::SocketError socketError)
 void TNetwork::OnConnected()
 {
     SendPlayerAuth();
-    Application()->SetState(ST_InGame);
+    Application()->SetState(ST_LoadingMap);
 }
 
 TApplication* TNetwork::Application() {
@@ -158,17 +159,17 @@ void TNetwork::Send(const QByteArray& originData, EPacketType packetType) {
 void TNetwork::timerEvent(QTimerEvent *event){
     Q_UNUSED(event);
 
-    if( IsAlive ) {
+    if (IsAlive) {
         IsAlive = false;
         return;
     }
     emit Disconnected();
 
-    if( Socket->state() == QUdpSocket::UnconnectedState ) {
+    if (Socket->state() == QUdpSocket::UnconnectedState && Application()->GetState() == ST_InGame ) {
         Start();
         return;
     }
-    if( Socket->state() == QUdpSocket::ConnectedState ) {
+    if (Socket->state() == QUdpSocket::ConnectedState) {
         SendPlayerAuth();
     }
 }

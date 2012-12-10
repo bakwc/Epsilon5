@@ -47,7 +47,7 @@ TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
     , Objects(new TObjects(this))
     , IsFullScreenWindowed(false)
     , CurrentWorld(NULL)
-    , Menu()
+    , Menu(Images)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
@@ -62,8 +62,6 @@ TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
     Control.set_weapon(Epsilon5::Pistol);
 
     startTimer(20);
-
-
 }
 
 void TMainDisplay::Init() {
@@ -96,10 +94,10 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     switch (state) {
     case ST_Connecting : {
-        painter.fillRect(0, 0, width(), height(), Qt::gray);
+        painter.fillRect(0, 0, width(), height(), Qt::black);
     } break;
     case ST_LoadingMap: {
-
+        painter.fillRect(0, 0, width(), height(), Qt::black);
     } break;
     case ST_MainMenu : {
         Menu.paint(&painter);
@@ -264,6 +262,11 @@ QPoint TMainDisplay::GetPlayerCoordinatesAndPing() {
         }
     }
     return res;
+}
+
+QPoint TMainDisplay::GetCursorPos()
+{
+    return this->mapFromGlobal(QCursor::pos());
 }
 
 QPoint TMainDisplay::GetCenter() {

@@ -396,9 +396,6 @@ void TMapsEditorForm::toggleBrowserBox()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::keyReleaseEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_F1) {
-        toggleBrowserBox();
-    }
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::initScene()

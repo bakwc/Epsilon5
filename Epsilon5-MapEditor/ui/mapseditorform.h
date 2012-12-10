@@ -50,6 +50,7 @@ private slots:
     void on_toolBox_currentChanged(int index);
     void on_listView_clicked(QModelIndex index);
     void on_teamButton_clicked();
+    void on_backgroundButton_clicked();
 
     void onItemMove(quint32 id, QPointF position, qreal angle);
     void toggleBrowserBox();
@@ -63,6 +64,7 @@ private slots:
     void updateMapView();
     void updateSObjectsView();
     void updateListView();
+    void updateSettings();
     void saveMapListAction();
     void refreshMapListAction();
     void loadMapListAction();
@@ -72,7 +74,7 @@ private slots:
     void refreshObjectsListAction();
     void loadSObjectsListAction();
 
-    void initScene(const QModelIndex& index);
+    void initScene();
     void keyReleaseEvent(QKeyEvent*);
 
     void timerEvent(QTimerEvent*);
@@ -85,6 +87,8 @@ private:
 
     containers::TMapContainer* mMaps;
     containers::TMapItem* mCurrentMap;
+    containers::TObjectItem* mCurrentObject;
+    containers::TRespawnItem* mCurrentRespawn;
     containers::TObjectContainer* mCurrentObjectList;
     containers::TRespawnContainer* mCurrentRespawnsList;
     containers::TSObjectContainer mSObjects;

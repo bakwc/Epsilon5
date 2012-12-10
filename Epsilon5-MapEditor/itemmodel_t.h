@@ -23,6 +23,8 @@ public:
     static const Titem* itemFromModelIndex(const T& container,
             const QStandardItemModel* model, const QModelIndex& index) {
         QStandardItem* viewItem = model->itemFromIndex(index);
+        if( !viewItem )
+            return 0;
         return &container.item(viewItem->data().toUInt());
     }
 
@@ -30,24 +32,10 @@ public:
     static TItemId itemIdFromModelIndex(const T& container,
             const QStandardItemModel* model, const QModelIndex& index) {
         QStandardItem* viewItem = model->itemFromIndex(index);
+        if( !viewItem )
+            return 0;
         return container[viewItem->data().toUInt()].itemId();
     }
-
-//    // Set icon for item model from container item (stupid method)
-//    static void setIconToModelItem(const Titem& item,
-//            QStandardItemModel* model, const QIcon& icon) {
-//        TItemId id = 0;
-//        QStandardItem* viewItem;
-//        for (int i = 0; i < model->rowCount(); ++i) {
-//            viewItem = model->item(i);
-//            id = viewItem->data().toUInt();
-//            if( id != item.itemId() )
-//                continue;
-
-//            viewItem->setIcon(icon);
-//            return;
-//        }
-//    }
 };
 //------------------------------------------------------------------------------
 typedef TTItemModelHelper<containers::TMapContainer,

@@ -4,6 +4,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QStandardItemModel>
+#include <QFileDialog>
 #include "global.h"
 #include "graphics/scene.h"
 #include "graphics/sceneview.h"
@@ -19,6 +20,8 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     , mBrowserState(E_BrowserFull)
     , mMaps(new containers::TMapContainer(this))
     , mCurrentMap(0)
+    , mCurrentObject(0)
+    , mCurrentRespawn(0)
     , mCurrentObjectList(0)
     , mCurrentRespawnsList(0)
     , mSObjects(0)
@@ -54,36 +57,42 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
             this, SLOT(showListViewContentMenu(QPoint)));
 
     // Connecting...
-    connect(ui->mapNameEdit, SIGNAL(editingFinished()),
-            this, SLOT(updateMapSettings()));
-    connect(ui->mapWidthBox, SIGNAL(editingFinished()),
-            this, SLOT(updateMapSettings()));
-    connect(ui->mapHeightBox, SIGNAL(editingFinished()),
-            this, SLOT(updateMapSettings()));
-    connect(ui->posXObjectBox, SIGNAL(editingFinished()),
-            this, SLOT(updateObjectSettings()));
-    connect(ui->posYObjectBox, SIGNAL(editingFinished()),
-            this, SLOT(updateObjectSettings()));
-    connect(ui->angleObjectBox, SIGNAL(editingFinished()),
-            this, SLOT(updateObjectSettings()));
-    connect(ui->idObjectEdit, SIGNAL(editingFinished()),
-            this, SLOT(updateObjectSettings()));
-    connect(ui->posXRespawnBox, SIGNAL(editingFinished()),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->posYRespawnBox, SIGNAL(editingFinished()),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->spawnRadRespawnBox, SIGNAL(editingFinished()),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->captRadRespawnBox, SIGNAL(editingFinished()),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->captTimeRespawnBox, SIGNAL(editingFinished()),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->isCapturableCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->isMainCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(updateRespawnSettings()));
-    connect(ui->teamButton, SIGNAL(clicked()),
-            this, SLOT(updateRespawnSettings()));
+//    connect(ui->mapNameEdit, SIGNAL(editingFinished()),
+//            this, SLOT(updateMapSettings()));
+//    connect(ui->mapWidthBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateMapSettings()));
+//    connect(ui->mapHeightBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateMapSettings()));
+//    connect(ui->posXObjectBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateObjectSettings()));
+//    connect(ui->posYObjectBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateObjectSettings()));
+//    connect(ui->angleObjectBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateObjectSettings()));
+//    connect(ui->idObjectEdit, SIGNAL(editingFinished()),
+//            this, SLOT(updateObjectSettings()));
+//    connect(ui->posXRespawnBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->posYRespawnBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->spawnRadRespawnBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->captRadRespawnBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->captTimeRespawnBox, SIGNAL(editingFinished()),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->isCapturableCheckBox, SIGNAL(toggled(bool)),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->isMainCheckBox, SIGNAL(toggled(bool)),
+//            this, SLOT(updateRespawnSettings()));
+//    connect(ui->teamButton, SIGNAL(clicked()),
+//            this, SLOT(updateRespawnSettings()));
+    connect(ui->applyButton, SIGNAL(clicked()),
+            this, SLOT(updateSettings()));
+    connect(ui->applyButton2, SIGNAL(clicked()),
+            this, SLOT(updateSettings()));
+    connect(ui->applyButton3, SIGNAL(clicked()),
+            this, SLOT(updateSettings()));
 
     mSceneView->setFocus();
 
@@ -112,7 +121,6 @@ void TMapsEditorForm::setObjectsModel(QAbstractItemModel* model)
 void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
 {
     if (!index.isValid()) {
-        mCurrentMap = 0;
         return;
     }
 
@@ -135,7 +143,7 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
 
     loadSObjectsListAction();
     updateListView();
-    initScene(index);
+    initScene();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_toolBox_currentChanged(int index)
@@ -165,7 +173,20 @@ void TMapsEditorForm::on_teamButton_clicked()
             : mTeamValue == E_TeamOne ? E_TeamTwo : E_TeamNone;
     updateTeamButton();
 }
+//------------------------------------------------------------------------------
+void TMapsEditorForm::on_backgroundButton_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this,
+        tr("Select background file..."), Global::Settings()->GetDataPath(),
+        tr("PNG images (*.png)"));
+    if( filename.isEmpty() || !QFile::exists(filename) || !mCurrentMap) {
+        return;
+    }
 
+    mCurrentMap->setBackground(filename);
+    updateMapSettings();
+}
+//------------------------------------------------------------------------------
 void TMapsEditorForm::updateTeamButton()
 {
     if (mTeamValue == E_TeamOne) {
@@ -188,19 +209,16 @@ void TMapsEditorForm::updateMapSettings()
     mCurrentMap->setName(ui->mapNameEdit->text().trimmed());
     mCurrentMap->setSize(
             QSize(ui->mapWidthBox->value(), ui->mapHeightBox->value()));
-
     updateMapView();
+    initScene();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateObjectSettings()
 {
-    if( !mCurrentMap || !mCurrentObjectList || !mLastModelIndex.isValid() )
+    if( !mCurrentMap || !mCurrentObjectList || !mCurrentObject )
         return;
 
-    containers::TObjectContainer& objects = mCurrentMap->objects();
-    containers::TObjectItem::TItemId objectId = TObjectHelper::itemIdFromModelIndex(
-        objects, mListViewModel, mLastModelIndex);
-    containers::TObjectItem* object = objects.item(objectId);
+    containers::TObjectItem* object = mCurrentObject;
 
     object->setX(ui->posXObjectBox->value());
     object->setY(ui->posYObjectBox->value());
@@ -212,13 +230,11 @@ void TMapsEditorForm::updateObjectSettings()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateRespawnSettings()
 {
-    if( !mCurrentMap || !mCurrentRespawnsList || !mLastModelIndex.isValid())
+    if( !mCurrentMap || !mCurrentRespawnsList || !mCurrentRespawn )
         return;
+    return;
 
-    containers::TRespawnContainer& respawns = mCurrentMap->respawns();
-    containers::TRespawnItem::TItemId respawnId = TRespawnHelper::itemIdFromModelIndex(
-        respawns, mListViewModel, mLastModelIndex);
-    containers::TRespawnItem* respawn = respawns.item(respawnId);
+    containers::TRespawnItem* respawn = mCurrentRespawn;
 
     respawn->setPos(QPoint(ui->posXRespawnBox->value(), ui->posYRespawnBox->value()));
     respawn->setCapturable(ui->isCapturableCheckBox->isChecked());
@@ -263,7 +279,6 @@ void TMapsEditorForm::showListViewContentMenu(QPoint point)
 //------------------------------------------------------------------------------
 void TMapsEditorForm::loadMapListAction()
 {
-    mCurrentMap = 0;
     mMaps->clearItems();
     try {
         mMaps->loadMapList("maplist.txt", Global::Settings()->GetMapsPath());
@@ -280,13 +295,11 @@ void TMapsEditorForm::saveMapListAction()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::refreshMapListAction()
 {
-    mCurrentMap = 0;
     updateMapView();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::  newMapListAction()
 {
-    mCurrentMap = 0;
     containers::TMapItem map;
     mMaps->addItem(map);
     updateMapView();
@@ -296,7 +309,6 @@ void TMapsEditorForm::deleteMapListAction()
 {
     mMaps->removeItem(TMapHelper::itemIdFromModelIndex(*mMaps, mMapsViewModel,
             ui->mapsView->currentIndex()));
-    mCurrentMap = 0;
     updateMapView();
 }
 //------------------------------------------------------------------------------
@@ -305,32 +317,32 @@ void TMapsEditorForm::on_listView_clicked(QModelIndex index)
     if( !mCurrentMap || !ui->listView->currentIndex().isValid() )
         return;
 
-    mLastModelIndex = ui->listView->currentIndex();
-
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
-        const containers::TObjectContainer& objects = mCurrentMap->objects();
-        const containers::TObjectItem* object = TObjectHelper::itemFromModelIndex(
-              objects, mListViewModel, index);
+        containers::TObjectContainer& objects = mCurrentMap->objects();
+        containers::TObjectItem::TItemId objectId = TObjectHelper::itemIdFromModelIndex(
+                objects, mListViewModel, index);
+        mCurrentObject = objects.item(objectId);
 
-        ui->posXObjectBox->setValue(object->x());
-        ui->posYObjectBox->setValue(object->y());
-        ui->angleObjectBox->setValue(object->angle());
-        ui->idObjectEdit->setText(QString().number(object->objectId()));
+        ui->posXObjectBox->setValue(mCurrentObject->x());
+        ui->posYObjectBox->setValue(mCurrentObject->y());
+        ui->angleObjectBox->setValue(mCurrentObject->angle());
+        ui->idObjectEdit->setText(QString().number(mCurrentObject->objectId()));
         mCurrentObjectList = &mCurrentMap->objects();
         return;
     }
     if (ui->toolBox->currentWidget() == ui->pageRespawns) {
-        const containers::TRespawnContainer& respawns = mCurrentMap->respawns();
-        const containers::TRespawnItem* respawn = TRespawnHelper::itemFromModelIndex(
-              respawns, mListViewModel, index);
+        containers::TRespawnContainer& respawns = mCurrentMap->respawns();
+        containers::TRespawnItem::TItemId respawnId = TRespawnHelper::itemIdFromModelIndex(
+            respawns, mListViewModel, index);
+        mCurrentRespawn = respawns.item(respawnId);
 
-        ui->posXRespawnBox->setValue(respawn->x());
-        ui->posYRespawnBox->setValue(respawn->y());
-        ui->captRadRespawnBox->setValue(respawn->captureRadius());
-        ui->spawnRadRespawnBox->setValue(respawn->spawnRadius());
-        ui->captTimeRespawnBox->setValue(respawn->captureTime());
-        ui->isCapturableCheckBox->setChecked(respawn->isCapturable());
-        ui->isMainCheckBox->setChecked(respawn->isMain());
+        ui->posXRespawnBox->setValue(mCurrentRespawn->x());
+        ui->posYRespawnBox->setValue(mCurrentRespawn->y());
+        ui->captRadRespawnBox->setValue(mCurrentRespawn->captureRadius());
+        ui->spawnRadRespawnBox->setValue(mCurrentRespawn->spawnRadius());
+        ui->captTimeRespawnBox->setValue(mCurrentRespawn->captureTime());
+        ui->isCapturableCheckBox->setChecked(mCurrentRespawn->isCapturable());
+        ui->isMainCheckBox->setChecked(mCurrentRespawn->isMain());
 
         updateTeamButton();
         mCurrentRespawnsList = &mCurrentMap->respawns();
@@ -389,38 +401,28 @@ void TMapsEditorForm::keyReleaseEvent(QKeyEvent* event)
     }
 }
 //------------------------------------------------------------------------------
-void TMapsEditorForm::initScene(const QModelIndex& index)
+void TMapsEditorForm::initScene()
 {
-    if (!index.isValid()) {
+    if( !mCurrentMap )
         return;
-    }
     mScene->clear();
 
-    const containers::TMapItem* map = TMapHelper::itemFromModelIndex(
-            *mMaps, mMapsViewModel, index);
-    mScene->sceneRect().setSize(map->size());
-    mSceneView->setSceneRect(0, 0, mScene->width(), mScene->height());
-    mSceneView->setSceneRect(-mScene->width() / 2, -mScene->height() / 2,
-            mScene->width() / 2, mScene->height() / 2);
-    mSceneView->centerOn(0, 0);
-    mSceneView->centerOn(mScene->width()/2, mScene->height()/2);
-    mSceneView->setBackground(QPixmap(map->background()));
-    qDebug() << map->background();
+    mScene->sceneRect().setSize(mCurrentMap->size());
+    mSceneView->setBackground(QPixmap(mCurrentMap->background()),
+            mCurrentMap->size());
+    qDebug() << mCurrentMap->background();
 
-    auto it = map->objects().constBegin();
-    for (; it != map->objects().constEnd(); ++it) {
+    auto it = mCurrentMap->objects().constBegin();
+    for (; it != mCurrentMap->objects().constEnd(); ++it) {
         const containers::TObjectItem object = *it;
-//        qDebug() << object.pos() << object.resourceFile();
         TStaticObject* mapObject = new TStaticObject(
             QPixmap(object.resourceFile()));
         mapObject->setPos(object.pos());
         mapObject->setObjectId(object.itemId());
-//        connect(mapObject, SIGNAL(moved(quint32)), this, SLOT(onItemMove(quint32)));
+        mapObject->setAngle(object.angle());
         mScene->addItem(mapObject);
     }
 
-//    connect(mScene, SIGNAL(moveItem(QGraphicsItem*)), this,
-//            SLOT(onItemMove(QGraphicsItem*)));
     connect(mScene, SIGNAL(moveItem(quint32, QPointF, qreal)),
             this, SLOT(onItemMove(quint32, QPointF, qreal)));
 }
@@ -441,7 +443,8 @@ void TMapsEditorForm::loadSObjectsListAction()
     }
 
     for (auto resIt = mSObjects.begin(); resIt != mSObjects.end(); ++resIt) {
-        qDebug() << (*resIt).resourceFile();
+        qDebug() << (*resIt).resourceFile() << (*resIt).width()
+            << (*resIt).height() << (*resIt).itemId() << (*resIt).objectId();
         TSObjectHelper::addItemToModel(*resIt, mSObjectsViewModel,
             QIcon(QPixmap((*resIt).resourceFile())));
 
@@ -525,5 +528,12 @@ void TMapsEditorForm::updateListView()
                     QIcon(QPixmap((*it).resourceFile())));
         }
     }
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::updateSettings()
+{
+    updateObjectSettings();
+    updateRespawnSettings();
+    updateMapSettings();
 }
 //------------------------------------------------------------------------------

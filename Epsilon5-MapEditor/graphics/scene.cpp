@@ -28,7 +28,7 @@ void TScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
     QGraphicsScene::mouseMoveEvent(mouseEvent);
     if (mLastObject) {
         emit moveItem(mLastObject->objectId(), mLastObject->pos(),
-                      mLastObject->rotation());
+                      mLastObject->angleRad());
     }
 }
 //------------------------------------------------------------------------------

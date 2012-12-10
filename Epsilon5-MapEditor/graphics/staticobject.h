@@ -10,11 +10,17 @@ public:
     QRectF boundingRect();
     quint32 objectId();
     void setObjectId(quint32 id);
+    void setAngle(qreal rad);
+    void setAngle(int grad);
+    qreal angleRad();
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
+
+private:
+    void rotateAtCenter(int angle);
 
 private:
     QPointF mCursorPosition;

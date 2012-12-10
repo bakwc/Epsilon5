@@ -8,6 +8,7 @@ class TSceneView : public QGraphicsView
 public:
     explicit TSceneView(TScene* scene, QWidget* parent = 0);
     void setBackground(const QPixmap& pixmap);
+    void setBackground(const QPixmap& pixmap, const QSize& sceneSize);
 
 protected:
     void drawBackground(QPainter* painter, const QRectF& rect);

@@ -111,7 +111,7 @@
                <x>0</x>
                <y>0</y>
                <width>252</width>
-               <height>131</height>
+               <height>152</height>
               </rect>
              </property>
              <attribute name="label">
@@ -123,7 +123,7 @@
                 <x>20</x>
                 <y>10</y>
                 <width>221</width>
-                <height>104</height>
+                <height>105</height>
                </rect>
               </property>
               <layout class="QFormLayout" name="pageSettingsLayout">
@@ -201,6 +201,24 @@
                  </property>
                 </widget>
                </item>
+               <item row="3" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QPushButton" name="applyButton3">
+                   <property name="text">
+                    <string>Apply</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="backgroundButton">
+                   <property name="text">
+                    <string>Background</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
               </layout>
              </widget>
             </widget>
@@ -210,7 +228,7 @@
                <x>0</x>
                <y>0</y>
                <width>252</width>
-               <height>131</height>
+               <height>152</height>
               </rect>
              </property>
              <attribute name="label">
@@ -316,7 +334,13 @@
                   <set>Qt::AlignCenter</set>
                  </property>
                  <property name="decimals">
-                  <number>4</number>
+                  <number>5</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-9.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>9.990000000000000</double>
                  </property>
                  <property name="singleStep">
                   <double>0.010000000000000</double>
@@ -333,6 +357,13 @@
                  </property>
                 </widget>
                </item>
+               <item row="4" column="1">
+                <widget class="QPushButton" name="applyButton">
+                 <property name="text">
+                  <string>Apply</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </widget>
@@ -342,7 +373,7 @@
                <x>0</x>
                <y>0</y>
                <width>252</width>
-               <height>131</height>
+               <height>152</height>
               </rect>
              </property>
              <attribute name="label">
@@ -510,6 +541,13 @@
                  </property>
                 </widget>
                </item>
+               <item row="3" column="2">
+                <widget class="QPushButton" name="applyButton2">
+                 <property name="text">
+                  <string>Apply</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </widget>
@@ -655,6 +693,28 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>posXObjectBox</tabstop>
+  <tabstop>posYObjectBox</tabstop>
+  <tabstop>angleObjectBox</tabstop>
+  <tabstop>idObjectEdit</tabstop>
+  <tabstop>applyButton</tabstop>
+  <tabstop>mapsView</tabstop>
+  <tabstop>objectsView</tabstop>
+  <tabstop>listView</tabstop>
+  <tabstop>posXRespawnBox</tabstop>
+  <tabstop>posYRespawnBox</tabstop>
+  <tabstop>captRadRespawnBox</tabstop>
+  <tabstop>spawnRadRespawnBox</tabstop>
+  <tabstop>captTimeRespawnBox</tabstop>
+  <tabstop>isMainCheckBox</tabstop>
+  <tabstop>isCapturableCheckBox</tabstop>
+  <tabstop>teamButton</tabstop>
+  <tabstop>applyButton2</tabstop>
+  <tabstop>mapNameEdit</tabstop>
+  <tabstop>mapWidthBox</tabstop>
+  <tabstop>mapHeightBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

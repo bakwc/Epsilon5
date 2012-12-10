@@ -3,7 +3,8 @@
 #include "storage/st_container_t.h"
 #include "storage/st_sourceobjectitem.h"
 //------------------------------------------------------------------------------
-namespace containers {
+namespace containers
+{
 //------------------------------------------------------------------------------
 class TSObjectContainer
     : public QObject

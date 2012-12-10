@@ -34,19 +34,19 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     QPointF objectCenter(pixmap().width() / 2, pixmap().height() / 2);
     bool fixedAngle = event->modifiers() == Qt::ControlModifier;
 
-    if( mButton == Qt::LeftButton )
-    {
+    if (mButton == Qt::LeftButton) {
         // Rotate object
-        if( event->modifiers() == Qt::ShiftModifier || fixedAngle )
-        {
+        if (event->modifiers() == Qt::ShiftModifier || fixedAngle) {
             int angle = (int)(event->pos().x() - mCursorPosition.x());
-            if( !fixedAngle )
+            if (!fixedAngle) {
                 angle %= 4;
+            }
             angle += rotation();
             angle %= 360;
 
-            if( fixedAngle )
+            if (fixedAngle) {
                 angle = (int) angle / 45 * 45;
+            }
 
             setTransformOriginPoint(objectCenter);
             setRotation(angle);
@@ -57,8 +57,8 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         // Move object
         setTransformOriginPoint(0, 0);
         setPos(mapToScene(
-                event->pos().x() - objectCenter.x(),
-                event->pos().y() - objectCenter.y()));
+                   event->pos().x() - objectCenter.x(),
+                   event->pos().y() - objectCenter.y()));
         setTransformOriginPoint(objectCenter);
 
     }

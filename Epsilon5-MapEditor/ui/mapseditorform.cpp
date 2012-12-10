@@ -125,7 +125,7 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     }
 
     containers::TMapItem::TItemId mapId = TMapHelper::itemIdFromModelIndex(
-            *mMaps, mMapsViewModel, index);
+                *mMaps, mMapsViewModel, index);
 
     mCurrentMap = mMaps->item(mapId);
     mCurrentObjectList = &mCurrentMap->objects();
@@ -135,7 +135,7 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     ui->mapWidthBox->setValue(mCurrentMap->width());
     ui->mapHeightBox->setValue(mCurrentMap->height());
 
-    if(ui->toolBox->currentWidget() == ui->pageObjects) {
+    if (ui->toolBox->currentWidget() == ui->pageObjects) {
         mListViewMode = E_ObjectsMode;
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
         mListViewMode = E_RespawnsMode;
@@ -155,13 +155,15 @@ void TMapsEditorForm::on_toolBox_currentChanged(int index)
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
         mListViewMode = E_ObjectsMode;
         ui->labelCurrent->setText(tr("Current objects:"));
-        if( mCurrentMap )
+        if (mCurrentMap) {
             mCurrentObjectList = &mCurrentMap->objects();
+        }
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
         mListViewMode = E_RespawnsMode;
         ui->labelCurrent->setText(tr("Current respawns:"));
-        if( mCurrentMap )
+        if (mCurrentMap) {
             mCurrentRespawnsList = &mCurrentMap->respawns();
+        }
     }
 
     updateListView();
@@ -170,16 +172,16 @@ void TMapsEditorForm::on_toolBox_currentChanged(int index)
 void TMapsEditorForm::on_teamButton_clicked()
 {
     mTeamValue = mTeamValue == E_TeamNone ? E_TeamOne
-            : mTeamValue == E_TeamOne ? E_TeamTwo : E_TeamNone;
+                 : mTeamValue == E_TeamOne ? E_TeamTwo : E_TeamNone;
     updateTeamButton();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_backgroundButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this,
-        tr("Select background file..."), Global::Settings()->GetDataPath(),
-        tr("PNG images (*.png)"));
-    if( filename.isEmpty() || !QFile::exists(filename) || !mCurrentMap) {
+            tr("Select background file..."), Global::Settings()->GetDataPath(),
+            tr("PNG images (*.png)"));
+    if (filename.isEmpty() || !QFile::exists(filename) || !mCurrentMap) {
         return;
     }
 
@@ -206,20 +208,22 @@ void TMapsEditorForm::updateTeamButton()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateMapSettings()
 {
-    if( !mCurrentMap )
+    if (!mCurrentMap) {
         return;
+    }
 
     mCurrentMap->setName(ui->mapNameEdit->text().trimmed());
     mCurrentMap->setSize(
-            QSize(ui->mapWidthBox->value(), ui->mapHeightBox->value()));
+        QSize(ui->mapWidthBox->value(), ui->mapHeightBox->value()));
     updateMapView();
     initScene();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateObjectSettings()
 {
-    if( !mCurrentMap || !mCurrentObjectList || !mCurrentObject )
+    if (!mCurrentMap || !mCurrentObjectList || !mCurrentObject) {
         return;
+    }
 
     containers::TObjectItem* object = mCurrentObject;
 
@@ -233,8 +237,9 @@ void TMapsEditorForm::updateObjectSettings()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::updateRespawnSettings()
 {
-    if( !mCurrentMap || !mCurrentRespawnsList || !mCurrentRespawn )
+    if (!mCurrentMap || !mCurrentRespawnsList || !mCurrentRespawn) {
         return;
+    }
     return;
 
     containers::TRespawnItem* respawn = mCurrentRespawn;
@@ -317,13 +322,14 @@ void TMapsEditorForm::deleteMapListAction()
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_listView_clicked(QModelIndex index)
 {
-    if( !mCurrentMap || !ui->listView->currentIndex().isValid() )
+    if (!mCurrentMap || !ui->listView->currentIndex().isValid()) {
         return;
+    }
 
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
         containers::TObjectContainer& objects = mCurrentMap->objects();
         containers::TObjectItem::TItemId objectId = TObjectHelper::itemIdFromModelIndex(
-                objects, mListViewModel, index);
+                    objects, mListViewModel, index);
         mCurrentObject = objects.item(objectId);
 
         ui->posXObjectBox->setValue(mCurrentObject->x());
@@ -336,7 +342,7 @@ void TMapsEditorForm::on_listView_clicked(QModelIndex index)
     if (ui->toolBox->currentWidget() == ui->pageRespawns) {
         containers::TRespawnContainer& respawns = mCurrentMap->respawns();
         containers::TRespawnItem::TItemId respawnId = TRespawnHelper::itemIdFromModelIndex(
-            respawns, mListViewModel, index);
+                    respawns, mListViewModel, index);
         mCurrentRespawn = respawns.item(respawnId);
 
         ui->posXRespawnBox->setValue(mCurrentRespawn->x());
@@ -403,8 +409,9 @@ void TMapsEditorForm::keyReleaseEvent(QKeyEvent* event)
 //------------------------------------------------------------------------------
 void TMapsEditorForm::initScene()
 {
-    if( !mCurrentMap )
+    if (!mCurrentMap) {
         return;
+    }
     mScene->clear();
 
     mScene->sceneRect().setSize(mCurrentMap->size());
@@ -444,13 +451,13 @@ void TMapsEditorForm::loadSObjectsListAction()
 
     for (auto resIt = mSObjects.begin(); resIt != mSObjects.end(); ++resIt) {
         qDebug() << (*resIt).resourceFile() << (*resIt).width()
-            << (*resIt).height() << (*resIt).itemId() << (*resIt).objectId();
+                 << (*resIt).height() << (*resIt).itemId() << (*resIt).objectId();
         TSObjectHelper::addItemToModel(*resIt, mSObjectsViewModel,
-            QIcon(QPixmap((*resIt).resourceFile())));
+                QIcon(QPixmap((*resIt).resourceFile())));
 
         containers::TObjectContainer& objects = mCurrentMap->objects();
-        for( auto objIt = objects.begin(); objIt != objects.end(); ++objIt) {
-            if( (*objIt).objectId() != (*resIt).objectId()) {
+        for (auto objIt = objects.begin(); objIt != objects.end(); ++objIt) {
+            if ((*objIt).objectId() != (*resIt).objectId()) {
                 continue;
             }
             (*objIt).setResourceFile((*resIt).resourceFile());
@@ -490,7 +497,7 @@ void TMapsEditorForm::updateMapView()
     mMapsViewModel->clear();
     for (auto it = mMaps->begin(); it != mMaps->end(); ++it) {
         qDebug() << "MapInfo:\n" << "name:" << (*it).name()
-            << ":" << (*it).width() << "x" << (*it).height();
+                 << ":" << (*it).width() << "x" << (*it).height();
 
         TMapHelper::addItemToModel((*it), mMapsViewModel,
                 QIcon(QPixmap((*it).resourceFile())));
@@ -509,21 +516,23 @@ void TMapsEditorForm::updateSObjectsView()
 void TMapsEditorForm::updateListView()
 {
     mListViewModel->clear();
-    if( mListViewMode == E_ObjectsMode ) {
-        if( !mCurrentObjectList)
+    if (mListViewMode == E_ObjectsMode) {
+        if (!mCurrentObjectList) {
             return;
+        }
 
         auto it = mCurrentObjectList->constBegin();
-        for ( ; it != mCurrentObjectList->constEnd(); ++it) {
+        for (; it != mCurrentObjectList->constEnd(); ++it) {
             TObjectHelper::addItemToModel((*it), mListViewModel,
                     QIcon(QPixmap((*it).resourceFile())));
         }
-    } else if( mListViewMode == E_RespawnsMode ) {
-        if( !mCurrentRespawnsList)
+    } else if (mListViewMode == E_RespawnsMode) {
+        if (!mCurrentRespawnsList) {
             return;
+        }
 
         auto it = mCurrentRespawnsList->constBegin();
-        for ( ; it != mCurrentRespawnsList->constEnd(); ++it) {
+        for (; it != mCurrentRespawnsList->constEnd(); ++it) {
             TRespawnHelper::addItemToModel((*it), mListViewModel,
                     QIcon(QPixmap((*it).resourceFile())));
         }

@@ -82,14 +82,14 @@ void TSObjectItem::setResourceName(const QString& name)
 bool TSObjectItem::validate()
 {
     mValid = info().id > 0 && !info().name.isEmpty()
-            && !info().name.contains("[ \t\n]");
+             && !info().name.contains("[ \t\n]");
     return mValid;
 }
 //------------------------------------------------------------------------------
 QString TSObjectItem::pack() const
 {
     QString str = QString("%1:%2:%3:%4:%5").arg(info().id).arg(info().width)
-            .arg(info().height).arg(info().isDynamic).arg(info().name);
+                  .arg(info().height).arg(info().isDynamic).arg(info().name);
     return str;
 }
 //------------------------------------------------------------------------------

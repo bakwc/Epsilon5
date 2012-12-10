@@ -37,8 +37,8 @@ void TSObjectContainer::loadObjectList(const QString& objectList,
             continue;
         }
         if (!object.resourceName().isEmpty()) {
-            object.setResourceFile( baseDirectory.absolutePath() + "/"
-                + object.resourceName() + ".png");
+            object.setResourceFile(baseDirectory.absolutePath() + "/"
+                    + object.resourceName() + ".png");
         }
         addItem(object);
     }

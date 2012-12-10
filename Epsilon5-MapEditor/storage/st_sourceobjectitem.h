@@ -2,7 +2,8 @@
 #include "st_storageinfo.h"
 #include "st_item_t.h"
 //------------------------------------------------------------------------------
-namespace containers {
+namespace containers
+{
 //------------------------------------------------------------------------------
 class TSObjectItem : public TTItem<TSObjectInfo>
 {

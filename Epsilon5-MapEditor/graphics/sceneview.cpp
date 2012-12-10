@@ -19,7 +19,7 @@ void TSceneView::setBackground(const QPixmap& pixmap)
     setBackground(pixmap, pixmap.size());
 }
 //------------------------------------------------------------------------------
-void TSceneView::setBackground(const QPixmap &pixmap, const QSize &sceneSize)
+void TSceneView::setBackground(const QPixmap& pixmap, const QSize& sceneSize)
 {
     *mPx = pixmap.copy(0, 0, sceneSize.width(), sceneSize.height());
     setSceneRect(-mPx->width() / 2, -mPx->height() / 2, mPx->width(), mPx->height());

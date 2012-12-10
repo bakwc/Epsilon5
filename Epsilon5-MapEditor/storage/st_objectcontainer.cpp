@@ -52,7 +52,7 @@ void TObjectContainer::saveObjectList(const QString& objectList) const
     auto it = constBegin();
     for (; it != constEnd(); ++it) {
         const TObjectItem& object = *it;
-        if (!object.isValid() ) {
+        if (!object.isValid()) {
             continue;
         }
         stream << object.pack() << "\n";

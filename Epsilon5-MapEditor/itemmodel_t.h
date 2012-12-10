@@ -23,8 +23,9 @@ public:
     static const Titem* itemFromModelIndex(const T& container,
             const QStandardItemModel* model, const QModelIndex& index) {
         QStandardItem* viewItem = model->itemFromIndex(index);
-        if( !viewItem )
+        if (!viewItem) {
             return 0;
+        }
         return &container.item(viewItem->data().toUInt());
     }
 
@@ -32,8 +33,9 @@ public:
     static TItemId itemIdFromModelIndex(const T& container,
             const QStandardItemModel* model, const QModelIndex& index) {
         QStandardItem* viewItem = model->itemFromIndex(index);
-        if( !viewItem )
+        if (!viewItem) {
             return 0;
+        }
         return container[viewItem->data().toUInt()].itemId();
     }
 };

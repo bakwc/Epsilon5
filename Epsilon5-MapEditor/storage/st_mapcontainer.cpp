@@ -86,7 +86,7 @@ void TMapContainer::loadMapByName(const QString& mapName,
 }
 //------------------------------------------------------------------------------
 //void TMapContainer::saveMapByName(const QString& mapName,
-void TMapContainer::saveMap(const TMapItem &map,
+void TMapContainer::saveMap(const TMapItem& map,
         const QDir& baseDirectory)
 {
     QDir mapDir(baseDirectory);

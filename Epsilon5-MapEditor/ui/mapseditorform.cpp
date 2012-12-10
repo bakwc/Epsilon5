@@ -184,6 +184,9 @@ void TMapsEditorForm::on_backgroundButton_clicked()
     }
 
     mCurrentMap->setBackground(filename);
+    mCurrentMap->setSize(QImage(filename).size());
+    ui->mapWidthBox->setValue(mCurrentMap->width());
+    ui->mapHeightBox->setValue(mCurrentMap->height());
     updateMapSettings();
 }
 //------------------------------------------------------------------------------

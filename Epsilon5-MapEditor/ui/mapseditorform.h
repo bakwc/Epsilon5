@@ -1,15 +1,14 @@
 // mapseditorform.h
 #pragma once
 #include <QWidget>
-#include <QModelIndex>
-#include "imagecache.h"
 #include "storage/st_mapcontainer.h"
+#include "storage/st_sourceobjectcontainer.h"
 //------------------------------------------------------------------------------
 class TScene;
 class TSceneView;
 class QGraphicsView;
-class QAbstractItemModel;
 class QGraphicsItem;
+class QStandardItemModel;
 //------------------------------------------------------------------------------
 namespace Ui
 {
@@ -24,6 +23,13 @@ class TMapsEditorForm : public QWidget
         E_BrowserHalf,
         E_BrowserFull,
         EBrowserBoxStatesCount
+    };
+
+    enum ETeamButtonStates {
+        E_TeamNone = 0,
+        E_TeamOne,
+        E_TeamTwo,
+        ETeamButtonStatesCount
     };
 
 public:
@@ -49,6 +55,7 @@ private slots:
     void updateObjectSettings();
     void updateRespawnSettings();
     void updateTeamButton();
+    void updateMapView();
     void saveMapListAction();
     void refreshMapListAction();
     void loadMapListAction();
@@ -65,13 +72,15 @@ private slots:
 
 private:
     Ui::TMapsEditorForm* ui;
+    ETeamButtonStates mTeamValue;
+    EBrowserBoxStates mBrowserState;
     containers::TMapContainer* mMaps;
     containers::TMapItem* mCurrentMap;
+    containers::TSObjectContainer mResObjects;
     TScene* mScene;
     TSceneView* mSceneView;
-    int mTeamValue;
-    EBrowserBoxStates mBrowserState;
-    TImageCache mImages;
-    containers::TObjectContainer mResObjects;
+    QStandardItemModel* mMapsViewModel;
+    QStandardItemModel* mListViewModel;
+    QStandardItemModel* mObjectsViewModel;
 };
 //------------------------------------------------------------------------------

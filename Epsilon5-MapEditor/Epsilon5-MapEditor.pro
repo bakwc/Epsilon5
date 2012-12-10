@@ -85,7 +85,8 @@ HEADERS += \
     storage/st_container_t.h \
     storage/st_item_t.h \
     storage/st_sourceobjectitem.h \
-    storage/st_sourceobjectcontainer.h
+    storage/st_sourceobjectcontainer.h \
+    itemmodel_t.h
 
 FORMS += \
 #    createmapdialog.ui \

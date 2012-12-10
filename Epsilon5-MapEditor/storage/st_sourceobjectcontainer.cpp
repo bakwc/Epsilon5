@@ -40,7 +40,7 @@ void TSObjectContainer::loadObjectList(const QString& objectList,
             object.setResourceFile( baseDirectory.absolutePath() + "/"
                 + object.resourceName() + ".png");
         }
-        addI(object);
+        addItem(object);
     }
     file.close();
 }

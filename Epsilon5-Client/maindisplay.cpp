@@ -82,9 +82,6 @@ void TMainDisplay::Init() {
 
 TMainDisplay::~TMainDisplay() {
     CurrentWorld = NULL;
-    if (isFullScreen() && !IsFullScreenWindowed) {
-        restoreMode();
-    }
 }
 
 void TMainDisplay::RedrawWorld() {
@@ -210,7 +207,11 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent* event)
 void TMainDisplay::toggleFullscreen() {
     if (isFullScreen()) {
         this->showNormal();
+        setFixedSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     } else {
+        QDesktopWidget dw;
+        const QRect& screenRect = dw.screenGeometry(dw.screenNumber(this));
+        setFixedSize(screenRect.size());
         this->showFullScreen();
     }
 }

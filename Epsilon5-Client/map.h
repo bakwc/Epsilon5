@@ -6,11 +6,10 @@
 #include <QPoint>
 #include <QColor>
 
-class TMap : public QObject
-{
+class TMap : public QObject {
     Q_OBJECT
 public:
-    TMap(QObject *parent = 0);
+    TMap(QObject* parent = 0);
     ~TMap();
 
     // Draw background at correct position

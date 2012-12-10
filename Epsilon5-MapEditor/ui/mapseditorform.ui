@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TMapsEditorForm</class>
+ <widget class="QWidget" name="TMapsEditorForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>827</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="horizontalLayoutWidget_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>751</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="mainLayout">
+    <item>
+     <widget class="QGroupBox" name="sceneGroupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Graphic scene</string>
+      </property>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>271</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="sceneLayout"/>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="browserGroupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>600</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>600</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Browser</string>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>526</width>
+         <height>511</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QToolBox" name="toolBox">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>240</width>
+              <height>200</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>300</height>
+             </size>
+            </property>
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <widget class="QWidget" name="pageSettings">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>252</width>
+               <height>152</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Map settings</string>
+             </attribute>
+             <widget class="QWidget" name="formLayoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>10</y>
+                <width>221</width>
+                <height>105</height>
+               </rect>
+              </property>
+              <layout class="QFormLayout" name="pageSettingsLayout">
+               <property name="fieldGrowthPolicy">
+                <enum>QFormLayout::ExpandingFieldsGrow</enum>
+               </property>
+               <property name="formAlignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Name:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="mapNameEdit"/>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_4">
+                 <property name="text">
+                  <string>Width:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="mapWidthBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_5">
+                 <property name="minimumSize">
+                  <size>
+                   <width>20</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Height:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QSpinBox" name="mapHeightBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="buttonSymbols">
+                  <enum>QAbstractSpinBox::UpDownArrows</enum>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <layout class="QHBoxLayout" name="horizontalLayout_2">
+                 <item>
+                  <widget class="QPushButton" name="applyButton3">
+                   <property name="text">
+                    <string>Apply</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="backgroundButton">
+                   <property name="text">
+                    <string>Background</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="pageObjects">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>252</width>
+               <height>152</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Map objects</string>
+             </attribute>
+             <widget class="QWidget" name="formLayoutWidget_2">
+              <property name="geometry">
+               <rect>
+                <x>30</x>
+                <y>0</y>
+                <width>191</width>
+                <height>140</height>
+               </rect>
+              </property>
+              <layout class="QFormLayout" name="pageObjectsLayout">
+               <property name="formAlignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+               </property>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_6">
+                 <property name="minimumSize">
+                  <size>
+                   <width>40</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Pos X:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Pos Y:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Angle:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>ID:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QSpinBox" name="posXObjectBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>-99999</number>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="posYObjectBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>-99999</number>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QDoubleSpinBox" name="angleObjectBox">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="decimals">
+                  <number>5</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-9.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>9.990000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>0.010000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLineEdit" name="idObjectEdit">
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QPushButton" name="applyButton">
+                 <property name="text">
+                  <string>Apply</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+            <widget class="QWidget" name="pageRespawns">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>252</width>
+               <height>152</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Map respawns</string>
+             </attribute>
+             <widget class="QWidget" name="gridLayoutWidget">
+              <property name="geometry">
+               <rect>
+                <x>-20</x>
+                <y>20</y>
+                <width>354</width>
+                <height>132</height>
+               </rect>
+              </property>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="1" column="2">
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string>Spawn radius:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Pos Y:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_10">
+                 <property name="text">
+                  <string>Pos X:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QSpinBox" name="captRadRespawnBox">
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QSpinBox" name="posXRespawnBox">
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>-99999</number>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="posYRespawnBox">
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="minimum">
+                  <number>-99999</number>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>Capture radius:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3">
+                <widget class="QSpinBox" name="spawnRadRespawnBox">
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QLabel" name="label_14">
+                 <property name="text">
+                  <string>Capture time:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="QSpinBox" name="captTimeRespawnBox">
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>99999</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <layout class="QVBoxLayout" name="verticalLayout_3">
+                 <item>
+                  <widget class="QCheckBox" name="isCapturableCheckBox">
+                   <property name="text">
+                    <string>Capturable</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="isMainCheckBox">
+                   <property name="text">
+                    <string>Main</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="2" column="0">
+                <widget class="QToolButton" name="teamButton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>100</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="2">
+                <widget class="QPushButton" name="applyButton2">
+                 <property name="text">
+                  <string>Apply</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_2">
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="labelCurrent">
+            <property name="text">
+             <string>Current objects:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListView" name="listView">
+            <property name="iconSize">
+             <size>
+              <width>64</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="gridSize">
+             <size>
+              <width>64</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="toolsLayout">
+            <item>
+             <layout class="QVBoxLayout" name="browserLayout">
+              <property name="margin">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="labelMapsList">
+                <property name="text">
+                 <string>Map list:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListView" name="mapsView">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>150</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>200</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="Line" name="line">
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Objects list:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListView" name="objectsView">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>100</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>64</width>
+                  <height>32</height>
+                 </size>
+                </property>
+                <property name="gridSize">
+                 <size>
+                  <width>64</width>
+                  <height>32</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>posXObjectBox</tabstop>
+  <tabstop>posYObjectBox</tabstop>
+  <tabstop>angleObjectBox</tabstop>
+  <tabstop>idObjectEdit</tabstop>
+  <tabstop>applyButton</tabstop>
+  <tabstop>mapsView</tabstop>
+  <tabstop>objectsView</tabstop>
+  <tabstop>listView</tabstop>
+  <tabstop>posXRespawnBox</tabstop>
+  <tabstop>posYRespawnBox</tabstop>
+  <tabstop>captRadRespawnBox</tabstop>
+  <tabstop>spawnRadRespawnBox</tabstop>
+  <tabstop>captTimeRespawnBox</tabstop>
+  <tabstop>isMainCheckBox</tabstop>
+  <tabstop>isCapturableCheckBox</tabstop>
+  <tabstop>teamButton</tabstop>
+  <tabstop>applyButton2</tabstop>
+  <tabstop>mapNameEdit</tabstop>
+  <tabstop>mapWidthBox</tabstop>
+  <tabstop>mapHeightBox</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

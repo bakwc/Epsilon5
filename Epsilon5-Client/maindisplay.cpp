@@ -28,17 +28,23 @@ QPoint GetCorrect(QPoint playerPos, QPoint objectPos) {
 static double getAngle(const QPoint& point)
 {
     double angle;
-    double x=point.x();
-    double y=point.y();
-    if (x>0) angle = atan(y/x); else
-    if (x<0 && y>0) angle = M_PI + atan(y/x); else
-    if (x<0 && y<0) angle = -M_PI + atan(y/x); else
-    if (x==0 && y>0) angle = M_PI/2; else
-    angle = -M_PI/2;
+    double x = point.x();
+    double y = point.y();
+    if (x > 0) {
+        angle = atan(y / x);
+    } else if (x < 0 && y > 0) {
+        angle = M_PI + atan(y / x);
+    } else if (x < 0 && y < 0) {
+        angle = -M_PI + atan(y / x);
+    } else if (x == 0 && y > 0) {
+        angle = M_PI / 2;
+    } else {
+        angle = -M_PI / 2;
+    }
     return -angle;
 }
 
-TMainDisplay::TMainDisplay(TApplication *application, QGLWidget *parent)
+TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     : QGLWidget(parent)
     , UFullscreenWrapper(this)
     , Application(application)
@@ -74,22 +80,22 @@ void TMainDisplay::Init() {
     Menu.Init();
 }
 
-TMainDisplay::~TMainDisplay()
-{
+TMainDisplay::~TMainDisplay() {
     CurrentWorld = NULL;
-    if (isFullScreen() && !IsFullScreenWindowed)
+    if (isFullScreen() && !IsFullScreenWindowed) {
         restoreMode();
+    }
 }
 
 void TMainDisplay::RedrawWorld() {
     CurrentWorld = &((TNetwork*)(QObject::sender()))->GetWorld();
 }
 
-void TMainDisplay::timerEvent(QTimerEvent *) {
+void TMainDisplay::timerEvent(QTimerEvent*) {
     this->update();
 }
 
-void TMainDisplay::paintEvent(QPaintEvent *) {
+void TMainDisplay::paintEvent(QPaintEvent*) {
     EState state = Application->GetState();
     QPainter painter(this);
     switch (state) {
@@ -113,7 +119,7 @@ void TMainDisplay::paintEvent(QPaintEvent *) {
     }
 }
 
-void TMainDisplay::mousePressEvent(QMouseEvent *event) {
+void TMainDisplay::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         Control.mutable_keystatus()->set_keyattack1(true);
     } else {
@@ -122,7 +128,7 @@ void TMainDisplay::mousePressEvent(QMouseEvent *event) {
     qApp->sendEvent(&Menu, event);
 }
 
-void TMainDisplay::mouseReleaseEvent(QMouseEvent *event) {
+void TMainDisplay::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         Control.mutable_keystatus()->set_keyattack1(false);
     } else {
@@ -184,7 +190,7 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
+void TMainDisplay::keyReleaseEvent(QKeyEvent* event)
 {
     SetMovementKeysState(false, event);
 
@@ -200,7 +206,6 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent *event)
         break;
     }
 }
-
 
 void TMainDisplay::toggleFullscreen() {
     if (isFullScreen()) {
@@ -218,8 +223,7 @@ void TMainDisplay::DrawFps(QPainter& painter)
     static QTime lasttime = QTime::currentTime();
 
     const QTime& time = QTime::currentTime();
-    if( lasttime.msecsTo(time) >= 1000 )
-    {
+    if (lasttime.msecsTo(time) >= 1000) {
         fps = frames;
         frames = 0;
         lasttime = time;
@@ -227,7 +231,6 @@ void TMainDisplay::DrawFps(QPainter& painter)
 
     const QPen penOld = painter.pen();
     DrawText(painter, QPoint(0, 10), QString("Fps: %1").arg(fps), 10);
-
     ++frames;
 }
 
@@ -279,17 +282,14 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
     // Players drawing
     const int nickMaxWidth = 200;
     const QImage* img;
-
     const QFont oldFont = painter.font();
     const QPen oldPen = painter.pen();
     QFont nickFont(oldFont);
     nickFont.setBold(true);
     nickFont.setPointSize(12);
-
     for (int i = 0; i != CurrentWorld->players_size(); i++) {
         const Epsilon5::Player &player = CurrentWorld->players(i);
         QPoint pos = QPoint(player.x(), player.y()) - playerPos;
-
         QString nickName;
         if (player.has_name()) { // New player
             nickName = player.name().c_str();
@@ -299,7 +299,6 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
                 nickName = PlayerNames[player.id()];
             }
         }
-
         size_t hp = player.hp();
 
         // Set player or enemy image

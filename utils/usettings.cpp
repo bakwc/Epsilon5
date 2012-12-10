@@ -27,7 +27,7 @@ void USettings::Load(const QString& fname, const QStringList& required) {
         if (acc.size() != 2) {
             continue;
         }
-        Parameters.insert(acc[0], acc[1]);
+        Parameters.insert(acc[0].trimmed(), acc[1].trimmed());
     }
     for (auto i = required.begin(); i != required.end(); i++) {
         if (Parameters.find(*i) == Parameters.end()) {
@@ -36,7 +36,6 @@ void USettings::Load(const QString& fname, const QStringList& required) {
     }
 }
 
-
 UFromStringFormat USettings::GetParameter(const QString& parameter) {
     if (Parameters.find(parameter) == Parameters.end()) {
         throw UException("Parameter not found in config");
@@ -44,3 +43,37 @@ UFromStringFormat USettings::GetParameter(const QString& parameter) {
     return FromString(Parameters[parameter]);
 }
 
+void USettings::SetParameter(const QString &parameter, const QString &value)
+{
+    if( parameter.isEmpty() )
+        return;
+
+    if( Parameters.keys().contains(parameter) )
+        Parameters.remove(parameter);
+
+    Parameters[parameter] = value;
+}
+
+void USettings::LoadDefaults(const TParametersHash &paramsList) {
+    Parameters = paramsList;
+}
+
+void USettings::Save(const QString &fname, bool keepOrigin)
+{
+    QFile file(fname);
+    if( keepOrigin && file.exists() )
+        return;
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate
+            | QIODevice::Text)) {
+        throw UException("Error opening file for writing " + fname);
+    }
+    QTextStream stream(&file);
+    QStringList vars(Parameters.uniqueKeys());
+    vars.sort();
+    auto it = vars.constBegin();
+    for(; it != vars.constEnd(); ++it){
+        stream << *it << "=" << Parameters[*it] << "\n";
+    }
+    file.flush();
+}

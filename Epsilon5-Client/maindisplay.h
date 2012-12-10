@@ -29,7 +29,7 @@ class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper
 {
     Q_OBJECT
 public:
-    explicit TMainDisplay(TApplication* application, QGLWidget *parent = 0);
+    explicit TMainDisplay(TApplication* application, QGLWidget* parent = 0);
     void Init();
     ~TMainDisplay();
     inline const Epsilon5::Control& GetControl() { return Control; }

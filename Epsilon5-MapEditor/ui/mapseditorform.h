@@ -32,6 +32,11 @@ class TMapsEditorForm : public QWidget
         ETeamButtonStatesCount
     };
 
+    enum EListViewModes {
+        E_ObjectsMode = 0,
+        E_RespawnsMode
+    };
+
 public:
     explicit TMapsEditorForm(QWidget* parent = 0);
     ~TMapsEditorForm();
@@ -56,6 +61,8 @@ private slots:
     void updateRespawnSettings();
     void updateTeamButton();
     void updateMapView();
+    void updateSObjectsView();
+    void updateListView();
     void saveMapListAction();
     void refreshMapListAction();
     void loadMapListAction();
@@ -63,7 +70,7 @@ private slots:
     void deleteMapListAction();
 
     void refreshObjectsListAction();
-    void loadObjectsListAction();
+    void loadSObjectsListAction();
 
     void initScene(const QModelIndex& index);
     void keyReleaseEvent(QKeyEvent*);
@@ -74,13 +81,18 @@ private:
     Ui::TMapsEditorForm* ui;
     ETeamButtonStates mTeamValue;
     EBrowserBoxStates mBrowserState;
+    EListViewModes mListViewMode;
+
     containers::TMapContainer* mMaps;
     containers::TMapItem* mCurrentMap;
-    containers::TSObjectContainer mResObjects;
+    containers::TObjectContainer* mCurrentObjectList;
+    containers::TRespawnContainer* mCurrentRespawnsList;
+    containers::TSObjectContainer mSObjects;
+    QModelIndex mLastModelIndex;
     TScene* mScene;
     TSceneView* mSceneView;
     QStandardItemModel* mMapsViewModel;
     QStandardItemModel* mListViewModel;
-    QStandardItemModel* mObjectsViewModel;
+    QStandardItemModel* mSObjectsViewModel;
 };
 //------------------------------------------------------------------------------

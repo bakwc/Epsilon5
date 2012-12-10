@@ -6,7 +6,9 @@
 namespace containers
 {
 //------------------------------------------------------------------------------
-class TObjectContainer : public QObject, public TTContainer<TObjectItem, TObjectInfo>
+class TObjectContainer
+    : public QObject
+    , public TTContainer<TObjectItem, TObjectInfo>
 {
     Q_OBJECT
 public:

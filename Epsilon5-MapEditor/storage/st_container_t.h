@@ -11,8 +11,8 @@ template<typename T, typename Tinfo>
 class TTContainer
 {
 protected:
-    typedef TTItem<Tinfo> TItem;
-    typedef typename TItem::TItemId TItemId;
+//    typedef TTItem<Tinfo> TItem;
+    typedef typename T::TItemId TItemId;
     typedef QHash<TItemId, T> THashContainer;
     typedef typename THashContainer::const_iterator const_iterator;
     typedef typename THashContainer::iterator iterator;
@@ -41,12 +41,12 @@ public:
     TItemId addItem(const T& item) {
         ++mLastValidId;
         mContainer->insert(mLastValidId, item);
-        TItem& mod = mContainer->operator [](mLastValidId);
+        T& mod = mContainer->operator [](mLastValidId);
         mod.setItemId(mLastValidId);
         return mLastValidId;
     }
 
-    void removeItem(const TItem& item) {
+    void removeItem(const T& item) {
         removeItem(item.itemId());
     }
 
@@ -80,20 +80,16 @@ public:
         return mContainer->end();
     }
 
-    const TItem& operator[](TItemId id) const {
+    const T& operator[](TItemId id) const {
         return item(id);
     }
 
-    TItem& operator[](TItemId id) {
-        return mContainer->operator [](id);
-    }
-
-    const TItem* item(TItemId id) const {
-        return mContainer[id];
-    }
-
-    TItem* item(TItemId id) {
+    T* item(TItemId id) {
         return &mContainer->operator [](id);
+    }
+
+    const T& item(TItemId id) const {
+        return mContainer->operator [](id);
     }
 
     // TODO: add function to reenumerate item IDs

@@ -88,8 +88,8 @@ bool TSObjectItem::validate()
 //------------------------------------------------------------------------------
 QString TSObjectItem::pack() const
 {
-    QString str = QString("%1:%2:%3:%4:%5").arg(info().width).arg(info().height)
-            .arg(info().isDynamic).arg(info().id).arg(info().name);
+    QString str = QString("%1:%2:%3:%4:%5").arg(info().id).arg(info().width)
+            .arg(info().height).arg(info().isDynamic).arg(info().name);
     return str;
 }
 //------------------------------------------------------------------------------
@@ -101,19 +101,19 @@ bool TSObjectItem::unpack(const QString& string)
     if (vars.count() != STRUCTURE_FIELDS_COUNT) {
         return false;
     }
-    info().width = vars[0].toUInt(&isOk);
+    info().id = vars[0].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
-    info().height = vars[1].toUInt(&isOk);
+    info().width = vars[1].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
-    info().isDynamic = vars[2].toUInt(&isOk);
+    info().height = vars[2].toUInt(&isOk);
     if (!isOk) {
         return false;
     }
-    info().id = vars[3].toUInt(&isOk);
+    info().isDynamic = vars[3].toUInt(&isOk);
     if (!isOk) {
         return false;
     }

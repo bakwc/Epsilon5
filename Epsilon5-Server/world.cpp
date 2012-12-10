@@ -257,30 +257,46 @@ void TWorld::BeginContact(b2Contact* contact) {
     void* obj1Data = contact->GetFixtureA()->GetBody()->GetUserData();
     void* obj2Data = contact->GetFixtureB()->GetBody()->GetUserData();
 
-    TPlayer* player = 0;
-    TBullet* bullet = 0;
-    if (obj1Data && obj2Data) {
-        TObjectInfo* obj1Info = (TObjectInfo*)obj1Data;
-        TObjectInfo* obj2Info = (TObjectInfo*)obj2Data;
+    TPlayer* player1 = 0;
+    TPlayer* player2 = 0;
 
-        if (obj1Info->ObjType == TObjectInfo::OT_Player &&
-                obj2Info->ObjType == TObjectInfo::OT_Bullet)
-        {
-            player = (TPlayer*)(obj1Info->Object);
-            bullet = (TBullet*)(obj2Info->Object);
-        } else if (obj1Info->ObjType == TObjectInfo::OT_Bullet &&
-                obj2Info->ObjType == TObjectInfo::OT_Player)
-        {
-            player = (TPlayer*)(obj2Info->Object);
-            bullet = (TBullet*)(obj1Info->Object);
+    TBullet* bullet1 = 0;
+    TBullet* bullet2 = 0;
+
+    if (obj1Data) {
+        TObjectInfo* objInfo = (TObjectInfo*)obj1Data;
+        if (objInfo->ObjType == TObjectInfo::OT_Player) {
+            player1 = (TPlayer*)(objInfo->Object);
+        }
+        if (objInfo->ObjType == TObjectInfo::OT_Bullet) {
+            bullet1 = (TBullet*)(objInfo->Object);
         }
     }
 
-    if (player) {
-        player->Hit();
+    if (obj2Data) {
+        TObjectInfo* objInfo = (TObjectInfo*)obj2Data;
+        if (objInfo->ObjType == TObjectInfo::OT_Player) {
+            player2 = (TPlayer*)(objInfo->Object);
+        }
+        if (objInfo->ObjType == TObjectInfo::OT_Bullet) {
+            bullet2 = (TBullet*)(objInfo->Object);
+        }
     }
-    if (bullet) {
-        bullet->Destroy();
+
+    if ((player1 && bullet2) || (player2 && bullet1)) {
+        if (player1) {
+            player1->Hit();
+        } else {
+            player2->Hit();
+        }
+    }
+
+    if ((bullet1 && !bullet2) || (bullet2 && !bullet1)) {
+        if (bullet1) {
+            bullet1->Destroy();
+        } else {
+            bullet2->Destroy();
+        }
     }
 }
 

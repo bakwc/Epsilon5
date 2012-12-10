@@ -22,14 +22,24 @@ struct TTimeKey {
 
 struct TShootInfo {
     TShootInfo() {
-        MachineGunClip = 30;
-        ShotGunClip = 8;
+        MachineGunAmmoInClip = 30;
+        MachineGunClips = 4;
+
+        ShotGunAmmoInClip = 8;
+        ShotGunClips = 3;
+
+        PistolAmmoInClip = 12; //usp 45
+        PistolClips = 5;
         Time.start();
     }
 
     QTime Time;
-    int MachineGunClip;
-    int ShotGunClip;
+    int MachineGunAmmoInClip;
+    int MachineGunClips;
+    int ShotGunAmmoInClip;
+    int ShotGunClips;
+    int PistolAmmoInClip;
+    int PistolClips;
 };
 
 class TWeaponPacks : public QObject
@@ -45,4 +55,5 @@ private:
     QHash<QString, TShootInfo> LastShoots;
     static const int shotgunReloadTime = 3500;
     static const int machinegunReloadTime = 2000;
+    static const int pistolReloadTime = 800;
 };

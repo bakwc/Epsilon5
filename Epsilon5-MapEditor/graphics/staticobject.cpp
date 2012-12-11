@@ -1,5 +1,6 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
+#include <qmath.h>
 #include "graphics/staticobject.h"
 //------------------------------------------------------------------------------
 TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)

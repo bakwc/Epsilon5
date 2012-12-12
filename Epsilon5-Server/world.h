@@ -35,9 +35,11 @@ public:
     TPlayer* GetPlayer(size_t id);
     QByteArray Serialize();
     void SetPingForPlayer(size_t id, size_t packetNumber);
+signals:
+    void PlayerKilled(size_t killerId); // When a player killed, id of a killer
 public slots:
     void PlayerSpawn(size_t id, ETeam team);
-    void PlayerKill(size_t id);
+    void PlayerKill(size_t id); // When a player killed, id of dead player
     void SpawnBullet(TBullet *bullet);
     void SpawnObject(size_t id, int x, int y, double angle);
     void SpawnBorders(const QSize &mapSize);

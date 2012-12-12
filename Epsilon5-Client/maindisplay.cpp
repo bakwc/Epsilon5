@@ -53,6 +53,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , Objects(new TObjects(this))
     , IsFullScreenWindowed(false)
     , CurrentWorld(NULL)
+    , ShowStats(false)
     , Menu(Images)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
@@ -182,6 +183,9 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
     case '3':
         Control.set_weapon(Epsilon5::Shotgun);
         break;
+    case Qt::Key_Tab:
+        ShowStats = true;
+        break;
     default:
         break;
     }
@@ -191,13 +195,15 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent* event)
 {
     SetMovementKeysState(false, event);
 
-    switch (event->key())
-    {
+    switch (event->key()) {
     case Qt::Key_F11:
         toggleFullscreen();
         break;
     case Qt::Key_F12:
         close();
+        break;
+    case Qt::Key_Tab:
+        ShowStats = false;
         break;
     default:
         break;
@@ -314,7 +320,6 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
             else
                 img = &Images->GetImage("peka_t1");
 
-//            img = &Images->GetImage("enemy");
             miniMap.setPen(Qt::black);
         }
 
@@ -394,7 +399,7 @@ void TMainDisplay::DrawRespPoints(QPainter& painter, const QPoint& playerPos,
     if (CurrentWorld->resp_points_size() > 0) {
         RespPoints.clear();
         for (int i = 0; i < CurrentWorld->resp_points_size(); i++) {
-            RespPoint pos;
+            TRespPoint pos;
             pos.X = CurrentWorld->resp_points(i).x();
             pos.Y = CurrentWorld->resp_points(i).y();
             pos.Team = (ETeam)(CurrentWorld->resp_points(i).team());
@@ -414,6 +419,43 @@ void TMainDisplay::DrawRespPoints(QPainter& painter, const QPoint& playerPos,
         QPoint pos = GetCorrect(playerPos, currentRespPos);
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
+    }
+}
+
+void TMainDisplay::DrawStats(QPainter& painter) {
+    if (CurrentWorld->players_stat_size() > 0) {
+        Stats.clear();
+        for (int i = 0; i < CurrentWorld->players_stat_size(); i++) {
+            TPlayerStat stat;
+            stat.Id = CurrentWorld->players_stat(i).id();
+            stat.Score = CurrentWorld->players_stat(i).score();
+            stat.Kills = CurrentWorld->players_stat(i).kills();
+            stat.Deaths = CurrentWorld->players_stat(i).deaths();
+            Stats.push_back(stat);
+        }
+    }
+
+    if (!Stats.empty() && ShowStats) {
+        QPoint widgetCenter(width() / 2, height() / 2);
+
+
+        QImage statsImg(400, Stats.size() * 20 + 40, QImage::Format_ARGB32);
+        statsImg.fill(qRgba(255, 255, 255, 100));
+        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() - Stats.size() * 20 - 20, statsImg);
+
+        painter.setFont(QFont("Helvetica", 18));
+        painter.setPen(Qt::black);
+
+        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() - Stats.size() / 2 * 20);
+
+        for (auto i = 0; i < Stats.size(); i++) {
+            QString statStr = QString("%1\t%2 - %3 - %4")
+                    .arg(PlayerNames[Stats[i].Id])
+                    .arg(Stats[i].Score)
+                    .arg(Stats[i].Kills)
+                    .arg(Stats[i].Deaths);
+            painter.drawText(startPos.x(), startPos.y() + i * 20, statStr);
+        }
     }
 }
 
@@ -437,6 +479,7 @@ void TMainDisplay::DrawWorld(QPainter& painter){
         DrawBullets(painter, playerPos, widgetCenter);
         DrawObjects(painter, playerPos, widgetCenter);
         DrawRespPoints(painter, playerPos, widgetCenter);
+        DrawStats(painter);
 
         // Minimap drawing
         painter.drawImage(10, 30, miniMapImg);

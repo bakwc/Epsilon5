@@ -36,6 +36,9 @@ TApplication::TApplication(int& argc, char *argv[])
 
     connect(WeaponPacks, SIGNAL(SpawnBullet(TBullet*)),
             World, SLOT(SpawnBullet(TBullet*)));
+
+    connect(World, SIGNAL(PlayerKilled(size_t)),
+            Server, SIGNAL(PlayerKilled(size_t)));
 }
 
 void TApplication::Init() {

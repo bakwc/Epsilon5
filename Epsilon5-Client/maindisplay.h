@@ -19,10 +19,17 @@ enum ETeam {
     T_Neutral
 };
 
-struct RespPoint {
+struct TRespPoint {
     int X;
     int Y;
     ETeam Team;
+};
+
+struct TPlayerStat {
+    size_t Id;
+    size_t Score;
+    size_t Deaths;
+    size_t Kills;
 };
 
 class TMainDisplay : public QGLWidget, public utils::UFullscreenWrapper
@@ -56,6 +63,7 @@ private:
     void DrawBullets(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
     void DrawObjects(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
     void DrawRespPoints(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawStats(QPainter& painter);
 
     void SetMovementKeysState(bool state, const QKeyEvent* event);
 
@@ -69,7 +77,9 @@ private:
     bool IsFullScreenWindowed;
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
-    QVector<RespPoint> RespPoints;
+    QVector<TRespPoint> RespPoints;
+    QVector<TPlayerStat> Stats;
+    bool ShowStats;
     int Ping;
     TMenu Menu;
 };

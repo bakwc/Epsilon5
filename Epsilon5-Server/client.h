@@ -27,12 +27,28 @@ public:
     inline QString GetNick() {
         return NickName;
     }
-
+    inline size_t GetScore() {
+        return Score;
+    }
+    inline size_t GetKills() {
+        return Kills;
+    }
+    inline size_t GetDeaths() {
+        return Deaths;
+    }
 public slots:
     void OnDataReceived(const QByteArray &data);
     void Kill() {
+        Deaths++;
         PlayerStatus = PS_Dead;
     }
+    void Killed(size_t killerId) {
+        if (killerId == Id) {
+            Kills++;
+            Score++;
+        }
+    }
+
 signals:
     void ControlReceived(const Epsilon5::Control &control);
     void SpawnPlayer(size_t id, ETeam team);
@@ -49,4 +65,5 @@ private:
     EPlayerStatus PlayerStatus;
     QString NickName;
     ETeam Team;
+    size_t Score, Deaths, Kills;
 };

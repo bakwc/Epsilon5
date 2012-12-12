@@ -116,10 +116,11 @@ void TPlayer::SetNickname(const QString& nickName) {
     NickName = nickName;
 }
 
-void TPlayer::Hit() {
+void TPlayer::Hit(size_t playerId) {
     if (HP > HP_LOST) {
         HP -= HP_LOST;
     } else {
+        emit Killed(playerId);
         emit Death(Id);
     }
 }

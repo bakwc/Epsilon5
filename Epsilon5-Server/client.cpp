@@ -14,6 +14,9 @@ TClient::TClient(const QHostAddress& addr,
     , Port(port)
     , Id(id)
     , PlayerStatus(PS_AuthWait)
+    , Score(0)
+    , Deaths(0)
+    , Kills(0)
 {
 }
 

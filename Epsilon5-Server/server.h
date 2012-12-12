@@ -18,9 +18,11 @@ public:
     void Send(const QHostAddress &ip, quint16 port, const QByteArray &data, EPacketType packetType);
     TApplication* Application();
     void RespawnDeadClients();
+    void SerialiseStats(Epsilon5::World& world);
 signals:
     void NewPlayer(size_t id, ETeam);
     void PlayerDisconnected(size_t id);
+    void PlayerKilled(size_t playerId);
 private slots:
     void DataReceived();
 private:

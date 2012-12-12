@@ -55,12 +55,20 @@ message RespPoint {
     required bool is_main = 4;
 }
 
+message PlayerStat {
+    required int32 id = 1;
+    required int32 score = 2;
+    required int32 kills = 3;
+    required int32 deaths = 4;
+}
+
 message World {
     repeated Player players = 1;
     repeated Bullet bullets = 2;
     repeated Object objects = 3;
     repeated RespPoint resp_points = 4;
     required uint32 packet_number = 5;
+    repeated PlayerStat players_stat = 6;
 }
 
 message Control {

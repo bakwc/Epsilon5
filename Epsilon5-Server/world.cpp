@@ -103,6 +103,7 @@ QByteArray TWorld::Serialize() {
 
     if (needFullPacket) {
         Application()->GetMaps()->SerialiseRespPoints(world);
+        Application()->GetServer()->SerialiseStats(world);
     }
 
     world.set_packet_number(CurrentPacketNumber++);
@@ -123,6 +124,7 @@ void TWorld::Start() {
 void TWorld::PlayerSpawn(size_t id, ETeam team) {
     TPlayer* player = new TPlayer(id, team, Application()->GetMaps(), this);
     connect(player, SIGNAL(Death(size_t)), SLOT(PlayerKill(size_t)));
+    connect(player, SIGNAL(Killed(size_t)), SIGNAL(PlayerKilled(size_t)));
     connect(player, SIGNAL(Fire(TFireInfo&)),
             Application()->GetWeaponPacks(), SLOT(ActivateWeapon(TFireInfo&)));
     Players.insert(id, player);
@@ -285,9 +287,9 @@ void TWorld::BeginContact(b2Contact* contact) {
 
     if ((player1 && bullet2) || (player2 && bullet1)) {
         if (player1) {
-            player1->Hit();
+            player1->Hit(bullet2->GetPlayerId());
         } else {
-            player2->Hit();
+            player2->Hit(bullet1->GetPlayerId());
         }
     }
 

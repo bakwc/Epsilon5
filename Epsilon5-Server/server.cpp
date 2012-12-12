@@ -67,6 +67,7 @@ void TServer::DataReceived() {
         TClient* client = new TClient(sender, senderPort, id, this);
         connect(client, SIGNAL(SpawnPlayer(size_t, ETeam)), this, SIGNAL(NewPlayer(size_t, ETeam)));
         connect(client, SIGNAL(PlayerConnected()), Application()->GetWorld(), SLOT(NeedFullPacket()));
+        connect(this, SIGNAL(PlayerKilled(size_t)), client, SLOT(Killed(size_t)));
         clientIt = Clients.insert(id, client);
     }
 
@@ -132,4 +133,15 @@ void TServer::RespawnDeadClients() {
     for (auto i = Clients.begin(); i != Clients.end(); i++) {
         i.value()->ReSpawn();
     }
+}
+
+void TServer::SerialiseStats(Epsilon5::World& world) {
+    for (auto i = Clients.begin(); i != Clients.end(); i++) {
+        auto stat = world.add_players_stat();
+        stat->set_score((*i)->GetScore());
+        stat->set_kills((*i)->GetKills());
+        stat->set_deaths((*i)->GetDeaths());
+        stat->set_id((*i)->GetId());
+    }
+
 }

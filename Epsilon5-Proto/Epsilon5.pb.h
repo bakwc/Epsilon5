@@ -36,6 +36,7 @@ class Player;
 class Bullet;
 class Object;
 class RespPoint;
+class PlayerStat;
 class World;
 class Control;
 class Control_KeyStatus;
@@ -631,6 +632,118 @@ class RespPoint : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class PlayerStat : public ::google::protobuf::Message {
+ public:
+  PlayerStat();
+  virtual ~PlayerStat();
+  
+  PlayerStat(const PlayerStat& from);
+  
+  inline PlayerStat& operator=(const PlayerStat& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerStat& default_instance();
+  
+  void Swap(PlayerStat* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PlayerStat* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PlayerStat& from);
+  void MergeFrom(const PlayerStat& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+  
+  // required int32 score = 2;
+  inline bool has_score() const;
+  inline void clear_score();
+  static const int kScoreFieldNumber = 2;
+  inline ::google::protobuf::int32 score() const;
+  inline void set_score(::google::protobuf::int32 value);
+  
+  // required int32 kills = 3;
+  inline bool has_kills() const;
+  inline void clear_kills();
+  static const int kKillsFieldNumber = 3;
+  inline ::google::protobuf::int32 kills() const;
+  inline void set_kills(::google::protobuf::int32 value);
+  
+  // required int32 deaths = 4;
+  inline bool has_deaths() const;
+  inline void clear_deaths();
+  static const int kDeathsFieldNumber = 4;
+  inline ::google::protobuf::int32 deaths() const;
+  inline void set_deaths(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:Epsilon5.PlayerStat)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_score();
+  inline void clear_has_score();
+  inline void set_has_kills();
+  inline void clear_has_kills();
+  inline void set_has_deaths();
+  inline void clear_has_deaths();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 score_;
+  ::google::protobuf::int32 kills_;
+  ::google::protobuf::int32 deaths_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_Epsilon5_2eproto();
+  friend void protobuf_AssignDesc_Epsilon5_2eproto();
+  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PlayerStat* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class World : public ::google::protobuf::Message {
  public:
   World();
@@ -740,6 +853,18 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 packet_number() const;
   inline void set_packet_number(::google::protobuf::uint32 value);
   
+  // repeated .Epsilon5.PlayerStat players_stat = 6;
+  inline int players_stat_size() const;
+  inline void clear_players_stat();
+  static const int kPlayersStatFieldNumber = 6;
+  inline const ::Epsilon5::PlayerStat& players_stat(int index) const;
+  inline ::Epsilon5::PlayerStat* mutable_players_stat(int index);
+  inline ::Epsilon5::PlayerStat* add_players_stat();
+  inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >&
+      players_stat() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >*
+      mutable_players_stat();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
   inline void set_has_packet_number();
@@ -751,10 +876,11 @@ class World : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_points_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat > players_stat_;
   ::google::protobuf::uint32 packet_number_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1756,6 +1882,98 @@ inline void RespPoint::set_is_main(bool value) {
 
 // -------------------------------------------------------------------
 
+// PlayerStat
+
+// required int32 id = 1;
+inline bool PlayerStat::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PlayerStat::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PlayerStat::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PlayerStat::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 PlayerStat::id() const {
+  return id_;
+}
+inline void PlayerStat::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// required int32 score = 2;
+inline bool PlayerStat::has_score() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PlayerStat::set_has_score() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PlayerStat::clear_has_score() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PlayerStat::clear_score() {
+  score_ = 0;
+  clear_has_score();
+}
+inline ::google::protobuf::int32 PlayerStat::score() const {
+  return score_;
+}
+inline void PlayerStat::set_score(::google::protobuf::int32 value) {
+  set_has_score();
+  score_ = value;
+}
+
+// required int32 kills = 3;
+inline bool PlayerStat::has_kills() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PlayerStat::set_has_kills() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PlayerStat::clear_has_kills() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PlayerStat::clear_kills() {
+  kills_ = 0;
+  clear_has_kills();
+}
+inline ::google::protobuf::int32 PlayerStat::kills() const {
+  return kills_;
+}
+inline void PlayerStat::set_kills(::google::protobuf::int32 value) {
+  set_has_kills();
+  kills_ = value;
+}
+
+// required int32 deaths = 4;
+inline bool PlayerStat::has_deaths() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PlayerStat::set_has_deaths() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PlayerStat::clear_has_deaths() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PlayerStat::clear_deaths() {
+  deaths_ = 0;
+  clear_has_deaths();
+}
+inline ::google::protobuf::int32 PlayerStat::deaths() const {
+  return deaths_;
+}
+inline void PlayerStat::set_deaths(::google::protobuf::int32 value) {
+  set_has_deaths();
+  deaths_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // World
 
 // repeated .Epsilon5.Player players = 1;
@@ -1878,6 +2096,31 @@ inline ::google::protobuf::uint32 World::packet_number() const {
 inline void World::set_packet_number(::google::protobuf::uint32 value) {
   set_has_packet_number();
   packet_number_ = value;
+}
+
+// repeated .Epsilon5.PlayerStat players_stat = 6;
+inline int World::players_stat_size() const {
+  return players_stat_.size();
+}
+inline void World::clear_players_stat() {
+  players_stat_.Clear();
+}
+inline const ::Epsilon5::PlayerStat& World::players_stat(int index) const {
+  return players_stat_.Get(index);
+}
+inline ::Epsilon5::PlayerStat* World::mutable_players_stat(int index) {
+  return players_stat_.Mutable(index);
+}
+inline ::Epsilon5::PlayerStat* World::add_players_stat() {
+  return players_stat_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >&
+World::players_stat() const {
+  return players_stat_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >*
+World::mutable_players_stat() {
+  return &players_stat_;
 }
 
 // -------------------------------------------------------------------

@@ -21,7 +21,7 @@ public:
     TPlayer(size_t id, ETeam team, TMaps* maps, QObject *parent = 0);
     inline size_t GetId() { return Id; }
     inline size_t GetHP() { return HP; }
-    void Hit();
+    void Hit(size_t playerId);
     void ApplyCustomPhysics();
     void SetNickname(const QString& nickName);
     inline QString GetNickname() {
@@ -42,6 +42,7 @@ public:
 
 signals:
     void Death(size_t id);
+    void Killed(size_t playerId);
     void Fire(TFireInfo& fireInfo);
 public slots:
     void ApplyControl(const Epsilon5::Control &control);

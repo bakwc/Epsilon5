@@ -1,9 +1,10 @@
 #include "bullet.h"
 
 TBullet::TBullet(double x, double y, double vx, double vy,
-                 Epsilon5::Bullet_Type bulletType, QObject *parent)
+                 Epsilon5::Bullet_Type bulletType, size_t playerId, QObject *parent)
     : TDynamicObject(x, y, vx, vy, 0, parent)
     , BulletType(bulletType)
+    , PlayerId(playerId)
 {
     b2FixtureDef fixtureDef;
     b2CircleShape circle;

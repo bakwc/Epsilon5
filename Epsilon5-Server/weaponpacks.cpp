@@ -41,6 +41,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
             shootInfo.PistolAmmoInClip--;
             shootInfo.Time.restart();
             TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_ARBUZ,
+                                          fireInfo.PlayerId,
                                           ((TApplication*)(parent()))->GetWorld());
             emit SpawnBullet(bullet);
         }
@@ -49,8 +50,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
         TShootInfo& shootInfo = LastShoots[key];
 
         //Check weapon clips
-        if (shootInfo.MachineGunClips == 0)
-        {
+        if (shootInfo.MachineGunClips == 0) {
             break;
         }
 
@@ -71,6 +71,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
             shootInfo.MachineGunAmmoInClip--;
             shootInfo.Time.restart();
             TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_LITTLE_BULLET,
+                                          fireInfo.PlayerId,
                                           ((TApplication*)(parent()))->GetWorld());
             emit SpawnBullet(bullet);
         }
@@ -79,8 +80,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
 
         TShootInfo& shootInfo = LastShoots[key];
 
-        if (shootInfo.ShotGunClips == 0)
-        {
+        if (shootInfo.ShotGunClips == 0) {
             break;
         }
 
@@ -92,14 +92,16 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
 
         if (shootInfo.Time.elapsed() > 900 && shootInfo.ShotGunAmmoInClip >= 1) {
             double x, y, vx, vy;
-            vx = 78 * sin(fireInfo.Angle + M_PI / 2);
-            vy = 78 * cos(fireInfo.Angle + M_PI / 2);
+            vx = 98 * sin(fireInfo.Angle + M_PI / 2);
+            vy = 98 * cos(fireInfo.Angle + M_PI / 2);
             x = fireInfo.X + vx / 25;
             y = fireInfo.Y + vy / 25;
             shootInfo.ShotGunAmmoInClip--;
             shootInfo.Time.restart();
             for (size_t i = 0; i < 5; i++) {
-                TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10, Epsilon5::Bullet_Type_LITTLE_BULLET,
+                TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10,
+                                              Epsilon5::Bullet_Type_LITTLE_BULLET,
+                                              fireInfo.PlayerId,
                                               ((TApplication*)(parent()))->GetWorld());
                 emit SpawnBullet(bullet);
             }

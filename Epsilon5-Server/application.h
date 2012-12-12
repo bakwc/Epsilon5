@@ -26,6 +26,9 @@ public:
     inline TWeaponPacks* GetWeaponPacks() {
         return WeaponPacks;
     }
+    inline TServer* GetServer() {
+        return Server;
+    }
 
 private:
     TWorld* World;

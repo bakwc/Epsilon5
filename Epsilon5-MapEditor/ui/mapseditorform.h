@@ -59,6 +59,7 @@ private slots:
     void showMapListContentMenu(QPoint point);
     void showObjectsContentMenu(QPoint point);
     void showListViewContentMenu(QPoint point);
+
     void updateScene();
     void updateMapSettings();
     void updateObjectSettings();
@@ -68,11 +69,15 @@ private slots:
     void updateSObjectsView();
     void updateListView();
     void updateSettings();
+
+    void newMapListAction();
     void saveMapListAction();
     void refreshMapListAction();
-    void loadMapListAction();
-    void newMapListAction();
-    void deleteMapListAction();
+    void openMapListAction();
+
+    void addNewMapAction();
+    void removeMapAction();
+
 
     void refreshObjectsListAction();
     void loadSObjectsListAction();

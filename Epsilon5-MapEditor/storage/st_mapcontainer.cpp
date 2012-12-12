@@ -86,16 +86,34 @@ void TMapContainer::loadMapByName(const QString& mapName,
 }
 //------------------------------------------------------------------------------
 //void TMapContainer::saveMapByName(const QString& mapName,
-void TMapContainer::saveMap(const TMapItem& map,
-        const QDir& baseDirectory)
+void TMapContainer::saveMap(const TMapItem& map, const QDir& baseDirectory)
 {
-    QDir mapDir(baseDirectory);
+    QString mapDirWithName = baseDirectory.absolutePath()
+            .append("/").append(map.name());
+    QDir mapDir(map.resourceFile());
+    if( map.resourceFile().isEmpty() ) {
+        mapDir.setPath(mapDirWithName);
+    }
+
+    qDebug() << mapDirWithName;
+    qDebug() << "map objects:" << map.objects().count();
 
     // Create folder for map files
     if (!mapDir.exists()) {
-        mapDir.mkdir(baseDirectory.absolutePath());
-        mapDir.setPath(baseDirectory.absolutePath());
+        mapDir.mkdir(mapDirWithName);
+        mapDir.setPath(mapDirWithName);
     }
+
+    // Copy background
+    QString mapBackground = mapDir.absolutePath()
+            .append("/").append(DEFAULT_MAP_BACKGROUND_FILE);
+    if(map.background() != mapBackground) {
+        if( QFile::exists(mapBackground) ) {
+            QFile::remove(mapBackground);
+        }
+        QFile::copy(map.background(), mapBackground);
+    }
+
     // Save objects
     if (map.objects().count() > 0) {
         try {
@@ -106,6 +124,7 @@ void TMapContainer::saveMap(const TMapItem& map,
             return;
         }
     }
+
     // Save respawns
     if (map.respawns().count() > 0) {
         try {
@@ -116,6 +135,7 @@ void TMapContainer::saveMap(const TMapItem& map,
             return;
         }
     }
+
     // Save config
     try {
         mapInfoToFile(QString(mapDir.absolutePath())
@@ -135,7 +155,6 @@ void TMapContainer::saveMapList(const QString& listFileName,
                 .append(":: open file error: '%1'").arg(listFileName));
     }
 
-    QDir mapDir(baseDirectory);
     QTextStream stream(&file);
     auto it = constBegin();
     for (; it != constEnd(); ++it) {
@@ -145,9 +164,11 @@ void TMapContainer::saveMapList(const QString& listFileName,
             continue;
         }
 
-        mapDir.setPath(map.resourceFile());
-        saveMap(map, mapDir);
-        stream << map.resourceFile() << "\n";
+        saveMap(map, baseDirectory);
+        if( map.resourceFile().isEmpty() )
+            stream << map.name() << "\n";
+        else
+            stream << QDir(map.resourceFile()).dirName() << "\n";
     }
     file.close();
 }
@@ -195,10 +216,10 @@ void TMapContainer::loadMap(const TMapItem& map)
     loadMapByName(map.name(), map.resourceFile());
 }
 //------------------------------------------------------------------------------
-void TMapContainer::saveMap(const TMapItem& map)
-{
-    saveMap(map, map.resourceFile());
-}
+//void TMapContainer::saveMap(const TMapItem& map)
+//{
+//    saveMap(map, map.resourceFile());
+//}
 //------------------------------------------------------------------------------
 void TMapContainer::deleteMap(const TMapItem& mapItem)
 {

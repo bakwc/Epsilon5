@@ -345,6 +345,8 @@ void TMapsEditorForm::newMapListAction()
     mCurrentRespawn = 0;
     mMaps->clearItems();
     mScene->clear();
+    mMapsViewModel->clear();
+    mListViewModel->clear();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::addNewMapAction()

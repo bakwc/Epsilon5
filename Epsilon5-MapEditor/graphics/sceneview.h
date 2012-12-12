@@ -13,9 +13,19 @@ public:
 protected:
     void drawBackground(QPainter* painter, const QRectF& rect);
     void paintEvent(QPaintEvent* event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void resizeEvent(QResizeEvent* event);
+
+    void setCenter(const QPointF& centerPoint);
+    QPointF center();
 
 private:
     QPoint mFixedPoint;
+    QPointF mCenterPoint;
     QPixmap* mPx;
+    Qt::MouseButton mButton;
 };
 //------------------------------------------------------------------------------

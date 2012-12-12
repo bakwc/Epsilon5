@@ -19,7 +19,7 @@ public:
     void loadMapByName(const QString& mapName,
             const QDir& baseDirectory = QDir::currentPath());
     void saveMap(const TMapItem& map,
-                 const QDir& baseDirectory);
+            const QDir& baseDirectory = QDir::currentPath());
     void loadMapList(const QString& listFileName,
             const QDir& baseDirectory = QDir::currentPath());
     void saveMapList(const QString& listFileName,

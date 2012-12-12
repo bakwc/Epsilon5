@@ -51,7 +51,6 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
             setTransformOriginPoint(objectCenter);
             setRotation(angle);
-//            setAngle(angle);
             return;
         }
 
@@ -61,7 +60,6 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
                    event->pos().x() - objectCenter.x(),
                    event->pos().y() - objectCenter.y()));
         setTransformOriginPoint(objectCenter);
-
     }
 }
 //------------------------------------------------------------------------------

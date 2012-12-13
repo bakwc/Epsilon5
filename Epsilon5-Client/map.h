@@ -14,6 +14,7 @@ public:
     size_t GetWidth();
     size_t GetHeight();
     QSize GetMinimapSize(quint8 maxMinimapSize);
+    QPoint GetObjectPosOnMinimap(int objectPosX, int objectPosY, quint8 maxMinimapSize);
     QPoint GetObjectPosOnMinimap(QPoint objectPos, quint8 maxMinimapSize);
 
     // Draw background at correct position

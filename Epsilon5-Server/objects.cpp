@@ -15,7 +15,7 @@ TObjects::TObjects(QObject *parent) :
 void TObjects::LoadObjects(const QString &fileName) {
     QFile file(fileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw UException("Error opening file " + fileName);
+        throw UException("Error opening file " + file.fileName());
     }
     QTextStream in(&file);
     QString line = "";

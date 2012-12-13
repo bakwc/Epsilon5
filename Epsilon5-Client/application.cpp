@@ -13,6 +13,6 @@ TApplication::TApplication(int& argc, char* argv[])
 bool TApplication::Init() {
     MainDisplay.Init();
     MainDisplay.show();
-    MainDisplay.toggleFullscreen();
+//    MainDisplay.toggleFullscreen();
     return true; // TODO: normal initialisation
 }

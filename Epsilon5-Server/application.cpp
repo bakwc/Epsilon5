@@ -44,7 +44,8 @@ TApplication::TApplication(int& argc, char *argv[])
 void TApplication::Init() {
     srand(time(0));
     Objects->LoadObjects("objects/objects.txt");
-    Maps->LoadMaplist("maplist.txt");
+//    Maps->LoadMaplist("maplist.txt");
+    Maps->LoadMaps();
     Maps->LoadNextMap();
     Server->Start();
     World->Start();

@@ -7,6 +7,7 @@
 #include "objects.h"
 #include "maps.h"
 #include "weaponpacks.h"
+#include "settings.h"
 
 class TApplication : public QCoreApplication
 {
@@ -14,6 +15,9 @@ class TApplication : public QCoreApplication
 public:
     TApplication(int& argc, char *argv[]);
     void Init();
+    inline TSettings* GetSettings() {
+        return Settings;
+    }
     inline TWorld* GetWorld() {
         return World;
     }
@@ -31,6 +35,7 @@ public:
     }
 
 private:
+    TSettings* Settings;
     TWorld* World;
     TServer* Server;
     TObjects* Objects;

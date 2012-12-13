@@ -30,7 +30,8 @@ SOURCES += main.cpp \
     objects.cpp \
     staticobject.cpp \
     ../utils/ucast.cpp \
-    weaponpacks.cpp
+    weaponpacks.cpp \
+    settings.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -49,7 +50,8 @@ HEADERS += \
     staticobject.h \
     ../utils/ucast.h \
     defines.h \
-    weaponpacks.h
+    weaponpacks.h \
+    settings.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 

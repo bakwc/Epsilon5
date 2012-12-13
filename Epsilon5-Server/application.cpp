@@ -4,6 +4,7 @@
 
 TApplication::TApplication(int& argc, char *argv[])
     : QCoreApplication(argc, argv)
+    , Settings(new TSettings(this))
     , World(new TWorld(this))
     , Server(new TServer(this))
     , Objects(new TObjects(this))

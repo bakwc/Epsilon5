@@ -52,7 +52,6 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
-    , IsFullScreenWindowed(false)
     , CurrentWorld(NULL)
     , ShowStats(false)
     , Menu(Images)
@@ -84,6 +83,7 @@ void TMainDisplay::Init() {
 
 TMainDisplay::~TMainDisplay() {
     CurrentWorld = NULL;
+    Application->GetSettings()->SetWindowFullscreen(isFullScreen());
 }
 
 void TMainDisplay::RedrawWorld() {

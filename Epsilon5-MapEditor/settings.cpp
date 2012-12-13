@@ -23,7 +23,7 @@ TSettings::TSettings(QObject* parent)
     parameters["data.path"] = "";
     parameters["maps.path"] = "";
     parameters["objects.path"] = "";
-    mSettings->LoadDefaults(parameters);
+    mSettings->DefineParams(parameters);
     Load();
 }
 //------------------------------------------------------------------------------

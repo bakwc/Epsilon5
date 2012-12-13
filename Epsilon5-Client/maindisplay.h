@@ -74,7 +74,6 @@ private:
     Epsilon5::Control Control;
     TMap* Map;
     TObjects* Objects;
-    bool IsFullScreenWindowed;
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
     QVector<TRespPoint> RespPoints;

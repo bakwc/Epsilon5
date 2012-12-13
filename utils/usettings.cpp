@@ -38,7 +38,8 @@ void USettings::Load(const QString& fname, const QStringList& required) {
 
 UFromStringFormat USettings::GetParameter(const QString& parameter) {
     if (Parameters.find(parameter) == Parameters.end()) {
-        throw UException("Parameter not found in config");
+        throw UException(QString("Parameter '%1'not found in config")
+                .arg(parameter));
     }
     return FromString(Parameters[parameter]);
 }
@@ -54,7 +55,7 @@ void USettings::SetParameter(const QString &parameter, const QString &value)
     Parameters[parameter] = value;
 }
 
-void USettings::LoadDefaults(const TParametersHash &paramsList) {
+void USettings::DefineParams(const TParametersHash &paramsList) {
     Parameters = paramsList;
 }
 

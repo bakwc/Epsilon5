@@ -19,6 +19,7 @@
 
 const quint16 BASE_WINDOW_WIDTH = 800;
 const quint16 BASE_WINDOW_HEIGHT = 600;
+const quint8 MAX_MINIMAP_SIZE = 200;    // max points of width or height
 
 QPoint GetCorrect(QPoint playerPos, QPoint objectPos) {
     return objectPos - playerPos;
@@ -247,7 +248,8 @@ void TMainDisplay::DrawPing(QPainter& painter)
     DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping), 10);
 }
 
-void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos, const QString& text, int FONT_SIZE_PT = 10)
+void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos,
+                            const QString& text, int FONT_SIZE_PT = 10)
 {
     // Helvetica font present on all Systems
     painter.setFont(QFont("Helvetica", FONT_SIZE_PT));
@@ -323,7 +325,8 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
             miniMap.setPen(Qt::black);
         }
 
-        miniMap.drawEllipse(50 + player.x() / 40, 50 + player.y() / 40, 2, 2);
+        miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
+                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 2, 2);
 
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
@@ -470,14 +473,16 @@ void TMainDisplay::DrawWorld(QPainter& painter){
         Map->DrawBackground(playerPos, size(), painter);
 
         // Prepare minimap painter
-        QImage miniMapImg(100, 100, QImage::Format_ARGB32);
+        // TODO: minimap image creation should be moved into new class
+        //       and inited on map loading process (not every frame)
+        QImage miniMapImg(Map->GetMinimapSize(MAX_MINIMAP_SIZE), QImage::Format_ARGB32);
         miniMapImg.fill(qRgba(255, 255, 255, 100));
         QPainter miniMap(&miniMapImg);
 
         // Drawing staff
-        DrawPlayers(painter, miniMap, playerPos, widgetCenter);
         DrawBullets(painter, playerPos, widgetCenter);
         DrawObjects(painter, playerPos, widgetCenter);
+        DrawPlayers(painter, miniMap, playerPos, widgetCenter);
         DrawRespPoints(painter, playerPos, widgetCenter);
         DrawStats(painter);
 

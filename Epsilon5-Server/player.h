@@ -12,6 +12,7 @@ struct TFireInfo {
     Epsilon5::Weapon Weapon;
     bool PrimaryAttack;
     size_t PlayerId;
+    ETeam Team;
 };
 
 class TPlayer : public TDynamicObject

@@ -75,6 +75,7 @@ QByteArray TWorld::Serialize() {
             bullet->set_vx((*i)->GetVx() * OBJECT_SCALE_UP);
             bullet->set_vy((*i)->GetVy() * OBJECT_SCALE_UP);
         }
+        bullet->set_team((*i)->GetTeamBool());
     }
 
     for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
@@ -287,9 +288,13 @@ void TWorld::BeginContact(b2Contact* contact) {
 
     if ((player1 && bullet2) || (player2 && bullet1)) {
         if (player1) {
-            player1->Hit(bullet2->GetPlayerId());
+            if (player1->GetTeam() != bullet2->GetTeam()) {
+                player1->Hit(bullet2->GetPlayerId());
+            }
         } else {
-            player2->Hit(bullet1->GetPlayerId());
+            if (player2->GetTeam() != bullet1->GetTeam()) {
+                player2->Hit(bullet1->GetPlayerId());
+            }
         }
     }
 

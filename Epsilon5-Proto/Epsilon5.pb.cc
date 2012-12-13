@@ -84,12 +84,13 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Player));
   Bullet_descriptor_ = file->message_type(1);
-  static const int Bullet_offsets_[5] = {
+  static const int Bullet_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Bullet, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Bullet, y_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Bullet, vx_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Bullet, vy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Bullet, bullet_type_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Bullet, team_),
   };
   Bullet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -317,30 +318,31 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\n\n\002vx\030\004 "
     "\001(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007"
     " \001(\t\022\n\n\002hp\030\010 \002(\r\022\014\n\004team\030\t \002(\010\022\014\n\004ping\030\n"
-    " \001(\r\"\233\001\n\006Bullet\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n"
+    " \001(\r\"\251\001\n\006Bullet\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n"
     "\002vx\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\0221\n\013bullet_type\030\005 \001"
-    "(\0162\025.Epsilon5.Bullet.Type:\005ARBUZ\"0\n\004Type"
-    "\022\t\n\005ARBUZ\020\000\022\021\n\rLITTLE_BULLET\020\001\022\n\n\006ROCKET"
-    "\020\002\"9\n\006Object\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y"
-    "\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"@\n\tRespPoint\022\t\n\001x\030"
-    "\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003 \002(\005\022\017\n\007is_mai"
-    "n\030\004 \002(\010\"F\n\nPlayerStat\022\n\n\002id\030\001 \002(\005\022\r\n\005sco"
-    "re\030\002 \002(\005\022\r\n\005kills\030\003 \002(\005\022\016\n\006deaths\030\004 \002(\005\""
-    "\335\001\n\005World\022!\n\007players\030\001 \003(\0132\020.Epsilon5.Pl"
-    "ayer\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\022"
-    "!\n\007objects\030\003 \003(\0132\020.Epsilon5.Object\022(\n\013re"
-    "sp_points\030\004 \003(\0132\023.Epsilon5.RespPoint\022\025\n\r"
-    "packet_number\030\005 \002(\r\022*\n\014players_stat\030\006 \003("
-    "\0132\024.Epsilon5.PlayerStat\"\371\001\n\007Control\022.\n\tk"
-    "eyStatus\030\001 \002(\0132\033.Epsilon5.Control.KeySta"
-    "tus\022\r\n\005angle\030\002 \002(\001\022 \n\006weapon\030\003 \002(\0162\020.Eps"
-    "ilon5.Weapon\022\025\n\rpacket_number\030\004 \002(\r\032v\n\tK"
-    "eyStatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010"
-    "\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nk"
-    "eyAttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"\024\n\004A"
-    "uth\022\014\n\004name\030\001 \002(\t\"%\n\nPlayerInfo\022\n\n\002id\030\001 "
-    "\002(\005\022\013\n\003map\030\002 \002(\t*1\n\006Weapon\022\n\n\006Pistol\020\000\022\016"
-    "\n\nMachinegun\020\001\022\013\n\007Shotgun\020\002", 1107);
+    "(\0162\025.Epsilon5.Bullet.Type:\005ARBUZ\022\014\n\004team"
+    "\030\006 \002(\010\"0\n\004Type\022\t\n\005ARBUZ\020\000\022\021\n\rLITTLE_BULL"
+    "ET\020\001\022\n\n\006ROCKET\020\002\"9\n\006Object\022\n\n\002id\030\001 \002(\005\022\t"
+    "\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"@\n\tR"
+    "espPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003"
+    " \002(\005\022\017\n\007is_main\030\004 \002(\010\"F\n\nPlayerStat\022\n\n\002i"
+    "d\030\001 \002(\005\022\r\n\005score\030\002 \002(\005\022\r\n\005kills\030\003 \002(\005\022\016\n"
+    "\006deaths\030\004 \002(\005\"\335\001\n\005World\022!\n\007players\030\001 \003(\013"
+    "2\020.Epsilon5.Player\022!\n\007bullets\030\002 \003(\0132\020.Ep"
+    "silon5.Bullet\022!\n\007objects\030\003 \003(\0132\020.Epsilon"
+    "5.Object\022(\n\013resp_points\030\004 \003(\0132\023.Epsilon5"
+    ".RespPoint\022\025\n\rpacket_number\030\005 \002(\r\022*\n\014pla"
+    "yers_stat\030\006 \003(\0132\024.Epsilon5.PlayerStat\"\371\001"
+    "\n\007Control\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5."
+    "Control.KeyStatus\022\r\n\005angle\030\002 \002(\001\022 \n\006weap"
+    "on\030\003 \002(\0162\020.Epsilon5.Weapon\022\025\n\rpacket_num"
+    "ber\030\004 \002(\r\032v\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n"
+    "\007keyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010keyRi"
+    "ght\030\004 \002(\010\022\022\n\nkeyAttack1\030\005 \002(\010\022\022\n\nkeyAtta"
+    "ck2\030\006 \002(\010\"\024\n\004Auth\022\014\n\004name\030\001 \002(\t\"%\n\nPlaye"
+    "rInfo\022\n\n\002id\030\001 \002(\005\022\013\n\003map\030\002 \002(\t*1\n\006Weapon"
+    "\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007Shotgun\020"
+    "\002", 1121);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -1003,6 +1005,7 @@ const int Bullet::kYFieldNumber;
 const int Bullet::kVxFieldNumber;
 const int Bullet::kVyFieldNumber;
 const int Bullet::kBulletTypeFieldNumber;
+const int Bullet::kTeamFieldNumber;
 #endif  // !_MSC_VER
 
 Bullet::Bullet()
@@ -1026,6 +1029,7 @@ void Bullet::SharedCtor() {
   vx_ = 0;
   vy_ = 0;
   bullet_type_ = 0;
+  team_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1065,6 +1069,7 @@ void Bullet::Clear() {
     vx_ = 0;
     vy_ = 0;
     bullet_type_ = 0;
+    team_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -1156,6 +1161,22 @@ bool Bullet::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(48)) goto parse_team;
+        break;
+      }
+      
+      // required bool team = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_team:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &team_)));
+          set_has_team();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -1204,6 +1225,11 @@ void Bullet::SerializeWithCachedSizes(
       5, this->bullet_type(), output);
   }
   
+  // required bool team = 6;
+  if (has_team()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->team(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1236,6 +1262,11 @@ void Bullet::SerializeWithCachedSizes(
   if (has_bullet_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       5, this->bullet_type(), target);
+  }
+  
+  // required bool team = 6;
+  if (has_team()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->team(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1277,6 +1308,11 @@ int Bullet::ByteSize() const {
     if (has_bullet_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->bullet_type());
+    }
+    
+    // required bool team = 6;
+    if (has_team()) {
+      total_size += 1 + 1;
     }
     
   }
@@ -1321,6 +1357,9 @@ void Bullet::MergeFrom(const Bullet& from) {
     if (from.has_bullet_type()) {
       set_bullet_type(from.bullet_type());
     }
+    if (from.has_team()) {
+      set_team(from.team());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1338,7 +1377,7 @@ void Bullet::CopyFrom(const Bullet& from) {
 }
 
 bool Bullet::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000023) != 0x00000023) return false;
   
   return true;
 }
@@ -1350,6 +1389,7 @@ void Bullet::Swap(Bullet* other) {
     std::swap(vx_, other->vx_);
     std::swap(vy_, other->vy_);
     std::swap(bullet_type_, other->bullet_type_);
+    std::swap(team_, other->team_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

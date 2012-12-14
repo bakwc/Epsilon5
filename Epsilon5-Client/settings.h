@@ -1,17 +1,24 @@
 #pragma once
 
 #include <QObject>
-#include <QString>
-#include <QHash>
-
 #include "../utils/usettings.h"
 
-class TSettings: public USettings {
+class TSettings: public QObject {
     Q_OBJECT
 public:
-    TSettings(QObject* parent);
-    void CheckIniFile();
+    explicit TSettings(QObject* parent);
+    ~TSettings();
+
     QString GetNickname();
     QString GetServerAddr();
     quint16 GetServerPort();
+    bool GetWindowFullscreen();
+
+    void SetWindowFullscreen(bool value = true);
+
+    void Save(bool keepOrigin = true);
+    void Load();
+
+private:
+    USettings* Settings;
 };

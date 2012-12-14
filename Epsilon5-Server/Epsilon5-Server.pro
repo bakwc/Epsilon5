@@ -31,7 +31,7 @@ SOURCES += main.cpp \
     staticobject.cpp \
     ../utils/ucast.cpp \
     weaponpacks.cpp \
-    ../utils/ufullscreenwrapper.cpp
+    settings.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -51,7 +51,7 @@ HEADERS += \
     ../utils/ucast.h \
     defines.h \
     weaponpacks.h \
-    ../utils/ufullscreenwrapper.h
+    settings.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 

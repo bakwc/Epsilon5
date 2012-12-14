@@ -18,10 +18,11 @@ public:
     USettings(QObject* parent = 0);
     virtual ~USettings() {}
     void Load(const QString& fname, const QStringList& required = QStringList());
-    void LoadDefaults(const TParametersHash& paramsList);
     void Save(const QString& fname, bool keepOrigin = false);
     UFromStringFormat GetParameter(const QString& parameter);
     void SetParameter(const QString& parameter, const QString& value);
+    void DefineParams(const TParametersHash& paramsList);
+
 private:
     TParametersHash Parameters;
 };

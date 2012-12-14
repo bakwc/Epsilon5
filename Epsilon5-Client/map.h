@@ -11,6 +11,11 @@ class TMap : public QObject {
 public:
     TMap(QObject* parent = 0);
     ~TMap();
+    size_t GetWidth();
+    size_t GetHeight();
+    QSize GetMinimapSize(quint8 maxMinimapSize);
+    QPoint GetObjectPosOnMinimap(int objectPosX, int objectPosY, quint8 maxMinimapSize);
+    QPoint GetObjectPosOnMinimap(QPoint objectPos, quint8 maxMinimapSize);
 
     // Draw background at correct position
     void DrawBackground(const QPoint& playerPos, const QSize& frameSize, QPainter &painter);
@@ -22,4 +27,5 @@ private:
     QImage* Background;
     QColor Color;
     bool Loaded;
+    QPointF WHRatio;
 };

@@ -16,13 +16,9 @@ message Player {
     optional double vy = 5;
 
     optional double angle = 6;
-
     optional string name = 7;
-
     required uint32 hp = 8;
-
     required bool team = 9;
-
     optional uint32 ping = 10;
 }
 
@@ -38,6 +34,7 @@ message Bullet {
         ROCKET = 2;
     }
     optional Type bullet_type = 5 [default = ARBUZ];
+    required bool team = 6;
 }
 
 message Object {

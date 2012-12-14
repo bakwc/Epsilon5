@@ -181,7 +181,7 @@ TMapInfo TMapContainer::mapInfoFromFile(const QString& fileName)
     params["width"] = "";
     params["height"] = "";
     try {
-        settings.LoadDefaults(params);
+        settings.DefineParams(params);
         settings.Load(fileName, QStringList() << "name" << "width" << "height");
     } catch (USettings& ex) {
         throw UException(QString(Q_FUNC_INFO)
@@ -203,7 +203,7 @@ void TMapContainer::mapInfoToFile(const QString& fileName, const TMapInfo& info)
     params["width"] = QString().number(info.width);
     params["height"] = QString().number(info.height);
     try {
-        settings.LoadDefaults(params);
+        settings.DefineParams(params);
         settings.Save(fileName);
     } catch (USettings& ex) {
         throw UException(QString(Q_FUNC_INFO)

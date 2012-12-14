@@ -19,6 +19,7 @@
 
 const quint16 BASE_WINDOW_WIDTH = 800;
 const quint16 BASE_WINDOW_HEIGHT = 600;
+const quint8 MAX_MINIMAP_SIZE = 200;    // max points of width or height
 
 QPoint GetCorrect(QPoint playerPos, QPoint objectPos) {
     return objectPos - playerPos;
@@ -51,7 +52,6 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
-    , IsFullScreenWindowed(false)
     , CurrentWorld(NULL)
     , ShowStats(false)
     , Menu(Images)
@@ -83,6 +83,7 @@ void TMainDisplay::Init() {
 
 TMainDisplay::~TMainDisplay() {
     CurrentWorld = NULL;
+    Application->GetSettings()->SetWindowFullscreen(isFullScreen());
 }
 
 void TMainDisplay::RedrawWorld() {
@@ -247,7 +248,8 @@ void TMainDisplay::DrawPing(QPainter& painter)
     DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping), 10);
 }
 
-void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos, const QString& text, int FONT_SIZE_PT = 10)
+void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos,
+                            const QString& text, int FONT_SIZE_PT = 10)
 {
     // Helvetica font present on all Systems
     painter.setFont(QFont("Helvetica", FONT_SIZE_PT));
@@ -323,7 +325,8 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
             miniMap.setPen(Qt::black);
         }
 
-        miniMap.drawEllipse(50 + player.x() / 40, 50 + player.y() / 40, 2, 2);
+        miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
+                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 2, 2);
 
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
@@ -368,8 +371,8 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
     }
 }
 
-void TMainDisplay::DrawObjects(QPainter& painter, const QPoint& playerPos,
-                               const QPoint& widgetCenter)
+void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
+        const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     for (int i = 0; i != CurrentWorld->objects_size(); i++) {
@@ -389,11 +392,16 @@ void TMainDisplay::DrawObjects(QPainter& painter, const QPoint& playerPos,
 
         painter.drawImage(widgetCenter.x() + pos.x() - rimg.width() / 2,
                           widgetCenter.y() + pos.y() - rimg.height() / 2, rimg);
+
+        QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
+                currentObjectPos, MAX_MINIMAP_SIZE));
+        miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y(),
+                rimg.scaledToHeight(4));
     }
 }
 
-void TMainDisplay::DrawRespPoints(QPainter& painter, const QPoint& playerPos,
-                                  const QPoint& widgetCenter)
+void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
+        const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     if (CurrentWorld->resp_points_size() > 0) {
@@ -419,6 +427,10 @@ void TMainDisplay::DrawRespPoints(QPainter& painter, const QPoint& playerPos,
         QPoint pos = GetCorrect(playerPos, currentRespPos);
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
+        QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
+                currentRespPos, MAX_MINIMAP_SIZE));
+        miniMap.drawImage(posOnMinimap.x(), posOnMinimap.y() - 10,
+                (*img).scaled(10, 10));
     }
 }
 
@@ -470,15 +482,18 @@ void TMainDisplay::DrawWorld(QPainter& painter){
         Map->DrawBackground(playerPos, size(), painter);
 
         // Prepare minimap painter
-        QImage miniMapImg(100, 100, QImage::Format_ARGB32);
+        // TODO: minimap image creation should be moved into new class
+        //       and inited on map loading process (not every frame)
+        QImage miniMapImg(Map->GetMinimapSize(MAX_MINIMAP_SIZE), QImage::Format_ARGB32);
         miniMapImg.fill(qRgba(255, 255, 255, 100));
         QPainter miniMap(&miniMapImg);
+        miniMap.drawRect(0, 0, miniMapImg.width() - 1, miniMapImg.height() - 1);
 
         // Drawing staff
-        DrawPlayers(painter, miniMap, playerPos, widgetCenter);
         DrawBullets(painter, playerPos, widgetCenter);
-        DrawObjects(painter, playerPos, widgetCenter);
-        DrawRespPoints(painter, playerPos, widgetCenter);
+        DrawObjects(painter, miniMap, playerPos, widgetCenter);
+        DrawPlayers(painter, miniMap, playerPos, widgetCenter);
+        DrawRespPoints(painter, miniMap, playerPos, widgetCenter);
         DrawStats(painter);
 
         // Minimap drawing

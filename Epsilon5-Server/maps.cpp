@@ -4,6 +4,7 @@
 #include "../utils/usettings.h"
 #include "../utils/ucast.h"
 #include "maps.h"
+#include <QDir>
 
 #include <QDebug>
 
@@ -11,6 +12,18 @@ TMaps::TMaps(QObject *parent)
     : QObject(parent)
     , MapStatus(MS_NoMap)
 {
+}
+
+void TMaps::LoadMaps()
+{
+    QDir dir("maps");
+    QStringList entryList = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
+
+    if (entryList.isEmpty())
+        throw UException("Cannot find maps files in " + dir.canonicalPath());
+
+    qDebug() << Q_FUNC_INFO << entryList;
+    MapFiles << entryList;
 }
 
 void TMaps::LoadMaplist(const QString& fileName) {

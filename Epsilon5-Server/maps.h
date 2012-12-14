@@ -46,6 +46,9 @@ public:
     inline QVector<TRespPoint>& GetRespPoints() {
         return RespPoints;
     }
+
+    void LoadMaps();
+
     QPoint GetSpawnPosition(ETeam team);
 signals:
     void SpawnObject(size_t id, int x, int y, double angle);

@@ -55,14 +55,19 @@ private:
     void mouseReleaseEvent(QMouseEvent* event);
 
     QPoint GetPlayerCoordinatesAndPing();
-    void DrawText(QPainter& painter, const QPoint& pos, const QString& text, int FONT_SIZE_PT);
+    void DrawText(QPainter& painter, const QPoint& pos,
+            const QString& text, int FONT_SIZE_PT);
     void DrawFps(QPainter& painter);
     void DrawPing(QPainter& painter);
     void DrawWorld(QPainter& painter);
-    void DrawPlayers(QPainter& painter, QPainter& miniMap, const QPoint& playerPos, const QPoint& widgetCenter);
-    void DrawBullets(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
-    void DrawObjects(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
-    void DrawRespPoints(QPainter& painter, const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawPlayers(QPainter& painter, QPainter& miniMap,
+            const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawBullets(QPainter& painter, const QPoint& playerPos,
+            const QPoint& widgetCenter);
+    void DrawObjects(QPainter& painter, QPainter& miniMap,
+            const QPoint& playerPos, const QPoint& widgetCenter);
+    void DrawRespPoints(QPainter& painter, QPainter& miniMap,
+            const QPoint& playerPos, const QPoint& widgetCenter);
     void DrawStats(QPainter& painter);
 
     void SetMovementKeysState(bool state, const QKeyEvent* event);
@@ -74,7 +79,6 @@ private:
     Epsilon5::Control Control;
     TMap* Map;
     TObjects* Objects;
-    bool IsFullScreenWindowed;
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
     QVector<TRespPoint> RespPoints;

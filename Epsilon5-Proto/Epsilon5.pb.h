@@ -375,6 +375,13 @@ class Bullet : public ::google::protobuf::Message {
   inline ::Epsilon5::Bullet_Type bullet_type() const;
   inline void set_bullet_type(::Epsilon5::Bullet_Type value);
   
+  // required bool team = 6;
+  inline bool has_team() const;
+  inline void clear_team();
+  static const int kTeamFieldNumber = 6;
+  inline bool team() const;
+  inline void set_team(bool value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Bullet)
  private:
   inline void set_has_x();
@@ -387,6 +394,8 @@ class Bullet : public ::google::protobuf::Message {
   inline void clear_has_vy();
   inline void set_has_bullet_type();
   inline void clear_has_bullet_type();
+  inline void set_has_team();
+  inline void clear_has_team();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -395,9 +404,10 @@ class Bullet : public ::google::protobuf::Message {
   double vx_;
   double vy_;
   int bullet_type_;
+  bool team_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1694,6 +1704,28 @@ inline void Bullet::set_bullet_type(::Epsilon5::Bullet_Type value) {
   GOOGLE_DCHECK(::Epsilon5::Bullet_Type_IsValid(value));
   set_has_bullet_type();
   bullet_type_ = value;
+}
+
+// required bool team = 6;
+inline bool Bullet::has_team() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Bullet::set_has_team() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Bullet::clear_has_team() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Bullet::clear_team() {
+  team_ = false;
+  clear_has_team();
+}
+inline bool Bullet::team() const {
+  return team_;
+}
+inline void Bullet::set_team(bool value) {
+  set_has_team();
+  team_ = value;
 }
 
 // -------------------------------------------------------------------

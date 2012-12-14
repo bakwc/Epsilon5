@@ -41,7 +41,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
             shootInfo.PistolAmmoInClip--;
             shootInfo.Time.restart();
             TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_ARBUZ,
-                                          fireInfo.PlayerId,
+                                          fireInfo.PlayerId, fireInfo.Team,
                                           ((TApplication*)(parent()))->GetWorld());
             emit SpawnBullet(bullet);
         }
@@ -71,7 +71,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
             shootInfo.MachineGunAmmoInClip--;
             shootInfo.Time.restart();
             TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          fireInfo.PlayerId,
+                                          fireInfo.PlayerId, fireInfo.Team,
                                           ((TApplication*)(parent()))->GetWorld());
             emit SpawnBullet(bullet);
         }
@@ -101,7 +101,7 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
             for (size_t i = 0; i < 5; i++) {
                 TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10,
                                               Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                              fireInfo.PlayerId,
+                                              fireInfo.PlayerId, fireInfo.Team,
                                               ((TApplication*)(parent()))->GetWorld());
                 emit SpawnBullet(bullet);
             }

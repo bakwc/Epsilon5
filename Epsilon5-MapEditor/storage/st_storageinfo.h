@@ -1,5 +1,6 @@
 #pragma once
 #include <QtCore>
+#include <QColor>
 //------------------------------------------------------------------------------
 namespace containers
 {
@@ -15,6 +16,7 @@ struct TMapInfo {
     QString name;
     quint32 width;
     quint32 height;
+    QColor color;
 };
 //------------------------------------------------------------------------------
 struct TObjectInfo {

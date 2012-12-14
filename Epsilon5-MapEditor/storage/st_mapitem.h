@@ -20,10 +20,12 @@ public:
     QSize size() const;
     quint32 width() const;
     quint32 height() const;
+    QColor color() const;
 
     void setName(const QString& name);
     void setSize(quint32 width, quint32 height);
     void setSize(const QSize& size);
+    void setColor(const QColor& color);
 
     bool validate();
 

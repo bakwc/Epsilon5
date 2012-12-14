@@ -1,5 +1,6 @@
 // mapseditorform.cpp
 #include <QMenu>
+#include <QColorDialog>
 #include <QResizeEvent>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -41,9 +42,9 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     ui->browserGroupBox->setLayout(ui->horizontalLayout);
     ui->sceneGroupBox->setLayout(ui->sceneLayout);
     ui->sceneLayout->addWidget(mSceneView);
-    ui->pageSettings->setLayout(ui->pageSettingsLayout);
-    ui->pageObjects->setLayout(ui->pageObjectsLayout);
-    ui->pageRespawns->setLayout(ui->gridLayout);
+    ui->pageSettings->setLayout(ui->verticalLayout_6);
+    ui->pageObjects->setLayout(ui->verticalLayout_5);
+    ui->pageRespawns->setLayout(ui->verticalLayout_4);
     ui->toolBox->setCurrentWidget(ui->pageObjects);
     ui->teamButton->setText("");
 
@@ -219,6 +220,7 @@ void TMapsEditorForm::updateMapSettings()
     mCurrentMap->setName(ui->mapNameEdit->text().trimmed());
     mCurrentMap->setSize(
         QSize(ui->mapWidthBox->value(), ui->mapHeightBox->value()));
+    mCurrentMap->setColor(mColor);
     updateMapView();
     updateScene();
 }
@@ -430,6 +432,21 @@ void TMapsEditorForm::on_objectsView_doubleClicked(QModelIndex index)
     mCurrentMap->objects().addItem(object);
     updateListView();
     updateScene();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::on_colorButton_clicked()
+{
+    if( !mCurrentMap )
+        return;
+
+    QColorDialog colorDlg(this);
+    mColor = colorDlg.getColor(mCurrentMap->color());
+    QPixmap pm(32, 32);
+    QPainter pt(&pm);
+    pt.fillRect(pm.rect(), mColor);
+    ui->colorButton->setIcon(QIcon(pm));
+
+    updateMapSettings();
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::toggleBrowserBox()

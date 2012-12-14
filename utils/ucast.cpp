@@ -1,3 +1,5 @@
+#include <QColor>
+#include <QVariant>
 #include "ucast.h"
 
 template< >
@@ -86,4 +88,9 @@ QByteArray FromString<QByteArray>(const QString& str){
        throw UException("Cast error");
     }
     return res;
+}
+
+template< >
+QColor FromString<QColor>(const QString& str){
+    return QColor(str);
 }

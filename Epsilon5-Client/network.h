@@ -2,8 +2,12 @@
 
 #include <QObject>
 #include <QtNetwork/QUdpSocket>
+#include <QTime>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "../Epsilon5-Proto/defines.h"
+
+const quint16 DEFAULT_SERVER_TIMEOUT_MESSAGE = 500; // 500 ms for showing message
+const quint16 DEFAULT_SERVER_TIMEOUT = 4000; // 4 sec for auto-disconnect
 
 class TApplication;
 
@@ -12,8 +16,12 @@ class TNetwork : public QObject {
 public:
     explicit TNetwork(QObject* parent = 0);
     const Epsilon5::World& GetWorld() const;
-    inline size_t GetId() { return Id; }
-    inline bool IsServerAlive() { return IsAlive; }
+    inline size_t GetId() {
+        return Id;
+    }
+    inline bool IsServerAlive() {
+        return LastPacketReceived.elapsed() < DEFAULT_SERVER_TIMEOUT_MESSAGE;
+    }
 public slots:
     void Start();
     void Stop();
@@ -37,5 +45,5 @@ private:
     Epsilon5::World World;
     size_t Id;
     EPlayerStatus Status;
-    bool IsAlive;
+    QTime LastPacketReceived;
 };

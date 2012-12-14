@@ -5,20 +5,18 @@
 #include "application.h"
 #include "network.h"
 
-const quint16 DEFAULT_SERVER_TIMEOUT = 5*1000; // 5 sec for timeout
-
 TNetwork::TNetwork(QObject* parent)
     : QObject(parent)
     , Socket(new QUdpSocket(this))
     , Id(0)
-    , IsAlive(false)
 {
     connect(Socket, SIGNAL(readyRead()), SLOT(OnDataReceived()));
     connect(Socket, SIGNAL(error(QAbstractSocket::SocketError)),
             SLOT(OnError(QAbstractSocket::SocketError)));
     connect(Socket, SIGNAL(connected()), SLOT(OnConnected()));
     Status = PS_NotConnected;
-    startTimer(DEFAULT_SERVER_TIMEOUT);
+    startTimer(500);
+    LastPacketReceived.start();
 }
 
 const Epsilon5::World& TNetwork::GetWorld() const {
@@ -26,7 +24,7 @@ const Epsilon5::World& TNetwork::GetWorld() const {
 }
 
 void TNetwork::OnDataReceived() {
-    IsAlive = true;
+    LastPacketReceived.restart();
     QByteArray receivedPacket = Socket->readAll();
     EPacketType packetType;
     quint16 packedDataSize;
@@ -64,7 +62,6 @@ void TNetwork::OnDataReceived() {
                     QString map = info.map().c_str();
                     emit LoadMap(map);
                     Status = PS_Spawned;
-                    //SendControls();
                 } else {
                     throw UException("Error parsing player info");
                 }
@@ -113,11 +110,12 @@ void TNetwork::Start() {
     Application()->SetState(ST_Connecting);
     Socket->connectToHost(QHostAddress(
                 Application()->GetSettings()->GetServerAddr()),
-                          Application()->GetSettings()->GetServerPort());
+                Application()->GetSettings()->GetServerPort());
 }
 
 void TNetwork::Stop() {
     Socket->disconnectFromHost();
+    emit Disconnected();
 }
 
 void TNetwork::SendControls(size_t packetnumber) {
@@ -157,17 +155,7 @@ void TNetwork::Send(const QByteArray& originData, EPacketType packetType) {
 void TNetwork::timerEvent(QTimerEvent *event){
     Q_UNUSED(event);
 
-    if (IsAlive) {
-        IsAlive = false;
-        return;
-    }
-    emit Disconnected();
-
-    if (Socket->state() == QUdpSocket::UnconnectedState && Application()->GetState() == ST_InGame ) {
-        Start();
-        return;
-    }
-    if (Socket->state() == QUdpSocket::ConnectedState) {
-        SendPlayerAuth();
+    if (LastPacketReceived.elapsed() > DEFAULT_SERVER_TIMEOUT) {
+        Stop();
     }
 }

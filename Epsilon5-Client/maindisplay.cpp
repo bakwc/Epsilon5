@@ -113,7 +113,7 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
         DrawPing(painter);
 
         if( !Application->GetNetwork()->IsServerAlive() )
-            DrawText(painter, QPoint(0, height() - 5), tr("Not connected"),28);
+            DrawText(painter, QPoint(width() / 2 - 50, height() / 2 - 5), tr("Connection lost..."), 28);
         break;
     }
 }
@@ -201,7 +201,6 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent* event)
         toggleFullscreen();
         break;
     case Qt::Key_Escape:
-        Application->SetState(ST_MainMenu);
         Application->GetNetwork()->Stop();
         break;
     case Qt::Key_Tab:

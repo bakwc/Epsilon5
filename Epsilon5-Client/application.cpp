@@ -8,6 +8,7 @@ TApplication::TApplication(int& argc, char* argv[])
     , State(ST_MainMenu)
 {
     connect(Network, SIGNAL(WorldReceived()), &MainDisplay, SLOT(RedrawWorld()));
+    connect(Network, SIGNAL(Disconnected()), SLOT(Disconnected()));
 }
 
 bool TApplication::Init() {

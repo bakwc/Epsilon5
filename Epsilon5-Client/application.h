@@ -35,6 +35,10 @@ public:
     inline void SetState(EState state) {
         State = state;
     }
+public slots:
+    inline void Disconnected() {
+        State = ST_MainMenu;
+    }
 private:
     TMainDisplay MainDisplay;
     TNetwork* Network;

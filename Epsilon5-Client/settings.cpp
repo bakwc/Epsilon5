@@ -3,6 +3,9 @@
 #include <QTextStream>
 #include <QStringList>
 #include "settings.h"
+#include <windows.h>
+#include <winsock2.h>
+
 
 const char* SETTINGS_FILENAME = "settings.ini";
 const char* DEFAULT_PLAYER_NAME = "player";
@@ -34,7 +37,34 @@ QString TSettings::GetNickname() {
 }
 
 QString TSettings::GetServerAddr() {
-    return Settings->GetParameter("server.address");
+    QString serverAddr = Settings->GetParameter("server.address");
+#ifdef Q_OS_WIN32
+    WSADATA wsaData;
+    int iResult;
+    int i = 0;
+    QString v4addr;
+    struct hostent *remoteHost;
+    struct in_addr addr;
+
+    iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != 0) {
+        qDebug() << "WSA Start up failed";
+    }
+
+    remoteHost = gethostbyname("google.ru");
+
+    if (remoteHost->h_addrtype == AF_INET)
+    {
+        while (remoteHost->h_addr_list[i] != 0)
+        { //we take last ip addr in list
+            addr.s_addr = *(u_long *) remoteHost->h_addr_list[i++];
+            v4addr = inet_ntoa(addr);
+            qDebug() << v4addr;
+        }
+    }
+    return v4addr;
+#endif
+
 }
 
 quint16 TSettings::GetServerPort() {

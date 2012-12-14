@@ -113,7 +113,11 @@ void TNetwork::Start() {
     Application()->SetState(ST_Connecting);
     Socket->connectToHost(QHostAddress(
                 Application()->GetSettings()->GetServerAddr()),
-            Application()->GetSettings()->GetServerPort());
+                          Application()->GetSettings()->GetServerPort());
+}
+
+void TNetwork::Stop() {
+    Socket->disconnectFromHost();
 }
 
 void TNetwork::SendControls(size_t packetnumber) {

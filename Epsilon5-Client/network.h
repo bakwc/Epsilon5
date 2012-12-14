@@ -16,6 +16,7 @@ public:
     inline bool IsServerAlive() { return IsAlive; }
 public slots:
     void Start();
+    void Stop();
 signals:
     void WorldReceived();
     void LoadMap(QString map);

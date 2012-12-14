@@ -200,8 +200,9 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent* event)
     case Qt::Key_F11:
         toggleFullscreen();
         break;
-    case Qt::Key_F12:
-        close();
+    case Qt::Key_Escape:
+        Application->SetState(ST_MainMenu);
+        Application->GetNetwork()->Stop();
         break;
     case Qt::Key_Tab:
         ShowStats = false;

@@ -200,6 +200,11 @@ void TMainDisplay::keyReleaseEvent(QKeyEvent* event)
     case Qt::Key_F11:
         toggleFullscreen();
         break;
+#ifdef QT_DEBUG
+    case Qt::Key_F12:
+        Application->GetNetwork()->Stop();
+        close();
+#endif
     case Qt::Key_Escape:
         Application->GetNetwork()->Stop();
         break;

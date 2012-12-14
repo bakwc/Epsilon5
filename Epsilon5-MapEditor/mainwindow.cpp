@@ -64,7 +64,7 @@ TMainWindow::TMainWindow(QWidget* parent)
     menuBar->addMenu(viewMenu);
     this->setMenuBar(menuBar);
 
-    setMinimumSize(600, 400);
+    setMinimumSize(1024, 900);
     QWidget* widget = new QWidget(this);
     setCentralWidget(widget);
     QVBoxLayout* vbox = new QVBoxLayout(widget);

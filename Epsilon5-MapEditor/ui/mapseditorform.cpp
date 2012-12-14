@@ -460,22 +460,6 @@ void TMapsEditorForm::toggleBrowserBox()
         ui->label->show();
         ui->toolBox->show();
         ui->objectsView->show();
-        ui->browserGroupBox->setMaximumWidth(400);
-        ui->browserGroupBox->setMinimumWidth(600);
-        mBrowserState = E_BrowserHalf;
-        return;
-    }
-    if (mBrowserState == E_BrowserHalf) {
-        ui->browserGroupBox->show();
-        ui->mapsView->hide();
-        ui->line->hide();
-        ui->line_2->hide();
-        ui->labelMapsList->hide();
-        ui->label->hide();
-        ui->toolBox->hide();
-        ui->objectsView->hide();
-        ui->browserGroupBox->setMaximumWidth(300);
-        ui->browserGroupBox->setMinimumWidth(200);
         mBrowserState = E_BrowserNone;
         return;
     }

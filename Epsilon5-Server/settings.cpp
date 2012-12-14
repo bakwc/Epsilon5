@@ -2,7 +2,7 @@
 #include "../utils/uexception.h"
 #include "settings.h"
 
-const char* DEFAULT_SERVER_ADDRESS = "127.0.0.1";
+const char* DEFAULT_SERVER_ADDRESS = "0.0.0.0";
 const quint16 DEFAULT_SERVER_PORT = 14567;
 const bool DEFAULT_GAMEPLAY_FRIENDLYFIRE = false;
 const char* SETTINGS_FILENAME = "settings.ini";

@@ -76,8 +76,8 @@ QSize TMap::GetMinimapSize(quint8 maxMinimapSize)
 QPoint TMap::GetObjectPosOnMinimap(int objectPosX, int objectPosY, quint8 maxMinimapSize)
 {
     return QPoint(
-        ((qreal)objectPosX / Width + 0.55) * maxMinimapSize * WHRatio.x(),
-        ((qreal)objectPosY / Height + 0.55) * maxMinimapSize * WHRatio.y());
+        ((qreal)objectPosX / Width + 0.5) * maxMinimapSize * WHRatio.x(),
+        ((qreal)objectPosY / Height + 0.5) * maxMinimapSize * WHRatio.y());
 }
 
 QPoint TMap::GetObjectPosOnMinimap(QPoint objectPos, quint8 maxMinimapSize)

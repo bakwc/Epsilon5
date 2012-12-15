@@ -637,7 +637,7 @@ void TMapsEditorForm::updateScene()
     mScene->sceneRect().setSize(mCurrentMap->size());
     mSceneView->setBackground(QPixmap(mCurrentMap->background()),
             mCurrentMap->size());
-    mSceneView->updateSceneRect(mSceneView->rect());
+    mSceneView->viewport()->repaint();
 
     auto it = mCurrentMap->objects().constBegin();
     for (; it != mCurrentMap->objects().constEnd(); ++it) {
@@ -661,5 +661,35 @@ void TMapsEditorForm::updateSettings()
 void TMapsEditorForm::resetZoom()
 {
     mSceneView->resetZoom();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::toggleGridAction()
+{
+    mSceneView->setGridVisible(!mSceneView->isGridVisible());
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setDarkGrid()
+{
+    mSceneView->setGridColor(Qt::black);
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setLightGrid()
+{
+    mSceneView->setGridColor(Qt::gray);
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setBidGrid()
+{
+    mSceneView->setGridSize(100);
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setSmallGrid()
+{
+    mSceneView->setGridSize(10);
+    mSceneView->viewport()->repaint();
 }
 //------------------------------------------------------------------------------

@@ -82,6 +82,12 @@ private slots:
 
     void resetZoom();
 
+    void toggleGridAction();
+    void setDarkGrid();
+    void setLightGrid();
+    void setBidGrid();
+    void setSmallGrid();
+
     void refreshObjectsListAction();
     void loadSObjectsListAction();
 

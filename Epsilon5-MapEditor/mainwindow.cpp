@@ -56,6 +56,21 @@ TMainWindow::TMainWindow(QWidget* parent)
     sObjectsList->addSeparator();
     sObjectsList->addAction(tr("Clear list"));
 
+    // Grid menu
+    QMenu* gridMenu = new QMenu(tr("Grid"), menuBar);
+    gridMenu->addAction(tr("Toggle grid"), mMapsEditorWidget,
+            SLOT(toggleGridAction()), QKeySequence("F2"));
+    gridMenu->addSeparator();
+    gridMenu->addAction(tr("Set dark color"), mMapsEditorWidget,
+            SLOT(setDarkGrid()));
+    gridMenu->addAction(tr("Set light color"), mMapsEditorWidget,
+            SLOT(setLightGrid()));
+    gridMenu->addSeparator();
+    gridMenu->addAction(tr("Set small size"), mMapsEditorWidget,
+            SLOT(setSmallGrid()));
+    gridMenu->addAction(tr("Set big size"), mMapsEditorWidget,
+            SLOT(setBidGrid()));
+
     // View menu
     QMenu* viewMenu = new QMenu(tr("View"), menuBar);
     viewMenu->addAction(tr("Fullscreen"), this,
@@ -64,6 +79,7 @@ TMainWindow::TMainWindow(QWidget* parent)
             SLOT(toggleBrowserBox()), QKeySequence("F1"));
     viewMenu->addAction(tr("Reset zoom"), mMapsEditorWidget,
             SLOT(resetZoom()));
+    viewMenu->addMenu(gridMenu);
 
     menuBar->addMenu(appMenu);
     menuBar->addMenu(maplistMenu);

@@ -16,8 +16,10 @@ TMainWindow::TMainWindow(QWidget* parent)
     // Relocate window
     resize(Global::Settings()->GetWindowSize());
     move(Global::Settings()->GetWindowPos());
-    QMenuBar* menuBar = new QMenuBar(this);
+    if( Global::Settings()->GetWindowFullscreen() )
+        fullscreenAction();
 
+    QMenuBar* menuBar = new QMenuBar(this);
     // Tools menu
     QMenu* toolsMenu = new QMenu(tr("Tools"), menuBar);
     toolsMenu->addSeparator();
@@ -36,9 +38,6 @@ TMainWindow::TMainWindow(QWidget* parent)
     QMenu* maplistMenu = new QMenu(tr("Maps"), menuBar);
     maplistMenu->addAction(tr("Open map folder..."),
             mMapsEditorWidget, SLOT(openMapFolderAction()));
-//    maplistMenu->addAction(tr("Save") );
-//    maplistMenu->addAction(tr("Save as..."), mMapsEditorWidget,
-//            SLOT(saveMapListAction()));
     maplistMenu->addSeparator();
     maplistMenu->addAction(tr("Clear list"), mMapsEditorWidget,
             SLOT(clearMapListAction()));
@@ -97,6 +96,7 @@ TMainWindow::TMainWindow(QWidget* parent)
 //------------------------------------------------------------------------------
 TMainWindow::~TMainWindow()
 {
+    Global::Settings()->SetWindowFullscreen(isFullScreen());
     if (!isFullScreen()) {
         Global::Settings()->SetWindowSize(size());
         Global::Settings()->SetWindowPos(pos());

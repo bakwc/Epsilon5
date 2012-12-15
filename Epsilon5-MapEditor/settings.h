@@ -21,6 +21,8 @@ public:
     void SetMapsPath(const QString& path);
     QString GetObjectsPath() const;
     void SetObjectsPath(const QString& path);
+    bool GetWindowFullscreen() const;
+    void SetWindowFullscreen(bool value = true);
     void Save();
     void Load();
 

@@ -468,9 +468,12 @@ void TMapsEditorForm::on_objectsView_doubleClicked(QModelIndex index)
         mSObjects, mSObjectsViewModel, index);
     containers::TSObjectItem* sObject = mSObjects.item(soId);
 
+    QPoint viewportCenter(mSceneView->viewport()->size().width() / 2,
+            mSceneView->viewport()->size().height() / 2);
     containers::TObjectItem object;
     object.setObjectId(sObject->objectId());
     object.setResourceFile(sObject->resourceFile());
+    object.setPos(mSceneView->mapToScene(viewportCenter).toPoint());
     mCurrentMap->objects().addItem(object);
     updateListView();
     updateScene();
@@ -634,7 +637,7 @@ void TMapsEditorForm::updateScene()
     mScene->sceneRect().setSize(mCurrentMap->size());
     mSceneView->setBackground(QPixmap(mCurrentMap->background()),
             mCurrentMap->size());
-    mSceneView->updateSceneRect(mSceneView->rect());
+    mSceneView->viewport()->repaint();
 
     auto it = mCurrentMap->objects().constBegin();
     for (; it != mCurrentMap->objects().constEnd(); ++it) {
@@ -653,5 +656,40 @@ void TMapsEditorForm::updateSettings()
     updateObjectSettings();
     updateRespawnSettings();
     updateMapSettings();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::resetZoom()
+{
+    mSceneView->resetZoom();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::toggleGridAction()
+{
+    mSceneView->setGridVisible(!mSceneView->isGridVisible());
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setDarkGrid()
+{
+    mSceneView->setGridColor(Qt::black);
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setLightGrid()
+{
+    mSceneView->setGridColor(Qt::gray);
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setBidGrid()
+{
+    mSceneView->setGridSize(100);
+    mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::setSmallGrid()
+{
+    mSceneView->setGridSize(10);
+    mSceneView->viewport()->repaint();
 }
 //------------------------------------------------------------------------------

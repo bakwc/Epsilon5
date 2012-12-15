@@ -10,7 +10,7 @@ public:
 
     QString GetServerAddress();
     quint16 GetServerPort();
-    bool GetGameplayFriendlyFire();
+    quint8 GetGameplayFriendlyFire();
 
     void Load();
 

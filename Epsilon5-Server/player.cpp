@@ -1,5 +1,6 @@
 #include <qmath.h>
 #include <QDebug>
+#include <QRect>
 #include "player.h"
 #include "bullet.h"
 #include "defines.h"
@@ -82,31 +83,37 @@ void TPlayer::ApplyCustomPhysics()
 
     b2Vec2 pos = Body->GetPosition();
     b2Vec2 speed = Body->GetLinearVelocity();
+    const quint8 PLAYGROUND_BORDER_SIZE = 100;
+    QRectF playgroundBorders = QRectF(
+            -mapSize.width() / 2 + PLAYGROUND_BORDER_SIZE,
+            -mapSize.height() / 2 + PLAYGROUND_BORDER_SIZE,
+            mapSize.width() - 2 * PLAYGROUND_BORDER_SIZE,
+            mapSize.height() - 2 * PLAYGROUND_BORDER_SIZE);
 
-    if (pos(0) * 10 > mapSize.width()/2 - 400) {
+    if (pos(0) * 10 > playgroundBorders.right()) {
         speed(0) = 0;
-        pos(0) = 0.1 * (mapSize.width()/2 - 401);
+        pos(0) = 0.1 * (playgroundBorders.right() - 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(1) * 10 > mapSize.height()/2 - 300) {
+    if (pos(1) * 10 > playgroundBorders.bottom()) {
         speed(1) = 0;
-        pos(1) = 0.1 * (mapSize.height()/2 - 301);
+        pos(1) = 0.1 * (playgroundBorders.bottom() - 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(0) * 10 < - mapSize.width()/2 + 400) {
+    if (pos(0) * 10 < playgroundBorders.left()) {
         speed(0) = 0;
-        pos(0) = 0.1 * (- mapSize.width()/2 + 401);
+        pos(0) = 0.1 * (playgroundBorders.left() + 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(1) * 10 < - mapSize.height()/2 + 300) {
+    if (pos(1) * 10 < playgroundBorders.top()) {
         speed(1) = 0;
-        pos(1) = 0.1 * (- mapSize.height()/2 + 301);
+        pos(1) = 0.1 * (playgroundBorders.top() + 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }

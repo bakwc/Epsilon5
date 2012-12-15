@@ -17,7 +17,7 @@ message Player {
 
     optional double angle = 6;
     optional string name = 7;
-    required uint32 hp = 8;
+    optional uint32 hp = 8;
     required bool team = 9;
     optional uint32 ping = 10;
 }
@@ -59,6 +59,14 @@ message PlayerStat {
     required int32 deaths = 4;
 }
 
+message PlayerInfo {
+    optional int32 id = 1;
+    optional string map = 2;
+    optional int32 weapon = 3;
+    optional int32 bullets = 4;
+    optional int32 cage = 5;
+}
+
 message World {
     repeated Player players = 1;
     repeated Bullet bullets = 2;
@@ -66,6 +74,7 @@ message World {
     repeated RespPoint resp_points = 4;
     required uint32 packet_number = 5;
     repeated PlayerStat players_stat = 6;
+    optional PlayerInfo player_info = 7;
 }
 
 message Control {
@@ -83,13 +92,10 @@ message Control {
     required double angle = 2;
     required Weapon weapon = 3;
     required uint32 packet_number = 4;
+    optional bool need_full = 5;
 }
 
 message Auth {
     required string name = 1;
-}
-
-message PlayerInfo {
-    required int32 id = 1;
-    required string map = 2;
+    optional string password = 2;
 }

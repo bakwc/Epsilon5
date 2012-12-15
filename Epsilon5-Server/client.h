@@ -36,8 +36,18 @@ public:
     inline size_t GetDeaths() {
         return Deaths;
     }
+    inline bool NeedFullWorld() {
+        if (FullWorldNeeded) {
+            FullWorldNeeded = false;
+            return true;
+        }
+        return false;
+    }
 public slots:
     void OnDataReceived(const QByteArray &data);
+    inline void SetFullWorldNeeded() {
+        FullWorldNeeded = true;
+    }
     void Kill() {
         Deaths++;
         PlayerStatus = PS_Dead;
@@ -55,8 +65,8 @@ signals:
     void PlayerConnected();
 private:
     TServer* Server();
-    void SendPlayerInfo();
     void Send(const QByteArray& data, EPacketType packetType);
+    void SendPlayerInfo();
 private:
     QHostAddress Addr;
     quint16 Port;
@@ -66,4 +76,5 @@ private:
     QString NickName;
     ETeam Team;
     size_t Score, Deaths, Kills;
+    bool FullWorldNeeded;
 };

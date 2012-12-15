@@ -64,6 +64,11 @@ void TClient::OnDataReceived(const QByteArray &data)
 
                 if (control.ParseFromArray(content.data(), content.size())) {
                     size_t currentPacket = control.packet_number();
+                    if (control.has_need_full()) {
+                        if (control.need_full()) {
+                            Server()->NeedFullPacket(Id);
+                        }
+                    }
                     Server()->Application()->GetWorld()->SetPingForPlayer(Id, currentPacket);
                     SetSeen();
                     emit ControlReceived(control);
@@ -115,10 +120,8 @@ void TClient::OnDataReceived(const QByteArray &data)
     }
 }
 
-void TClient::SendWorld(const QByteArray& world) {
-    if (PlayerStatus == PS_Spawned) {
-        Send(world, PT_World);
-    }
+void TClient::SendWorld(const QByteArray &world) {
+    Send(world, PT_World);
 }
 
 void TClient::Send(const QByteArray& data, EPacketType packetType)
@@ -129,16 +132,6 @@ void TClient::Send(const QByteArray& data, EPacketType packetType)
 TServer* TClient::Server()
 {
     return qobject_cast<TServer*>(parent());
-}
-
-void TClient::SetSeen()
-{
-    LastSeen = 0;
-}
-
-void TClient::EnlargeSeen()
-{
-    LastSeen++;
 }
 
 void TClient::SendPlayerInfo() {
@@ -152,6 +145,16 @@ void TClient::SendPlayerInfo() {
     Send(data, PT_PlayerInfo);
 }
 
+void TClient::SetSeen()
+{
+    LastSeen = 0;
+}
+
+void TClient::EnlargeSeen()
+{
+    LastSeen++;
+}
+
 void TClient::ReSpawn(bool newConnected) {
     if (PlayerStatus == PS_Dead || newConnected) {
         emit SpawnPlayer(Id, Team);
@@ -162,5 +165,6 @@ void TClient::ReSpawn(bool newConnected) {
         connect(player, SIGNAL(Death(size_t)),
                 this, SLOT(Kill()));
         PlayerStatus = PS_Spawned;
+        ((TApplication*)qApp)->GetServer()->NeedFullPacket();
     }
 }

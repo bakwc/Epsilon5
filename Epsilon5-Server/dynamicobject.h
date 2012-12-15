@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QDebug>
+#include <QPointF>
 #include <Box2D/Box2D.h>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
@@ -67,6 +68,12 @@ public:
     }
     inline size_t GetId() {
         return Id;
+    }
+    inline QPointF GetPosition() {
+        QPointF pos;
+        pos.setX(Body->GetPosition()(0));
+        pos.setY(Body->GetPosition()(1));
+        return pos;
     }
 protected:
     b2World* B2World();

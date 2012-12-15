@@ -18,6 +18,7 @@ MapEditor controls:
 
 * **F1** -- toggle browser panel on/off
 * **F2** -- toggle scene grid on/off
+* **F5** -- save current map
 * **F11** -- toggle fullscreen
 * **DoubleLMB** *(on objects list)* -- add selected object to map
 * **DoubleLMB** *(on current objects list)* -- remove selected object from map

@@ -45,9 +45,9 @@ TMainWindow::TMainWindow(QWidget* parent)
     maplistMenu->addAction(tr("Add new map"), mMapsEditorWidget,
             SLOT(addNewMapAction()));
     maplistMenu->addAction(tr("Save current map"), mMapsEditorWidget,
-            SLOT(saveMapAction()));
+    SLOT(saveMapAction()), QKeySequence("F5"));
     maplistMenu->addAction(tr("Save all maps"), mMapsEditorWidget,
-            SLOT(saveMapListAction()));
+            SLOT(saveMapListAction()), QKeySequence("Shift+F5"));
 
     // Source objects list menu
     QMenu* sObjectsList = new QMenu(tr("Source objects"), menuBar);

@@ -71,14 +71,14 @@ private slots:
     void updateListView();
     void updateSettings();
 
-    void newMapListAction();
+    void clearMapListAction();
     void saveMapListAction();
     void refreshMapListAction();
-    void openMapListAction();
+    void openMapFolderAction();
 
     void addNewMapAction();
     void removeMapAction();
-
+    void saveMapAction();
 
     void refreshObjectsListAction();
     void loadSObjectsListAction();

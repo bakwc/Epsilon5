@@ -119,9 +119,14 @@ QPointF TSceneView::center()
     return mCenterPoint;
 }
 //------------------------------------------------------------------------------
-void TSceneView::resizeEvent(QResizeEvent* event)  {
+void TSceneView::resizeEvent(QResizeEvent* event) {
     QRectF visibleArea = mapToScene(rect()).boundingRect();
     setCenter(visibleArea.center());
     QGraphicsView::resizeEvent(event);
+}
+//------------------------------------------------------------------------------
+void TSceneView::clear()
+{
+    setBackground(QPixmap());
 }
 //------------------------------------------------------------------------------

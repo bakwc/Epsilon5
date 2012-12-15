@@ -30,7 +30,7 @@ public:
     }
 
     QPixmap& GetPix() {
-        Frames[Ind];
+        return Frames[Ind];
     }
 private:
     QVector<QPixmap>    Frames;

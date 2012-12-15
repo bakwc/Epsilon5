@@ -1,5 +1,7 @@
-#include <QColor>
-#include <QVariant>
+#ifndef EPSILON_SERVER
+#include <QtGui/QColor>
+#endif
+
 #include "ucast.h"
 
 template< >
@@ -90,7 +92,9 @@ QByteArray FromString<QByteArray>(const QString& str){
     return res;
 }
 
+#ifndef EPSILON_SERVER
 template< >
 QColor FromString<QColor>(const QString& str){
     return QColor(str);
 }
+#endif

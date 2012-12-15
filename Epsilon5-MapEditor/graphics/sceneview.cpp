@@ -151,11 +151,11 @@ void TSceneView::wheelEvent(QWheelEvent *event)
 //------------------------------------------------------------------------------
 void TSceneView::setCenter(const QPointF &centerPoint)
 {
-    QRectF visibleArea = mapToScene(rect()).boundingRect();
+    QRectF visibleArea = mapToScene(viewport()->rect()).boundingRect();
     QRectF sceneBounds = sceneRect();
 
-    qreal boundX = visibleArea.width() / 2.0;
-    qreal boundY = visibleArea.height() / 2.0;
+    qreal boundX = 0;
+    qreal boundY = 0;
     qreal boundWidth = sceneBounds.width() - visibleArea.width();
     qreal boundHeight = sceneBounds.height() - visibleArea.height();
     QRectF bounds(boundX, boundY, boundWidth, boundHeight);
@@ -168,13 +168,13 @@ void TSceneView::setCenter(const QPointF &centerPoint)
         } else {
             if(centerPoint.x() > bounds.x() + bounds.width() / 2)
                 mCenterPoint.setX(bounds.x() + bounds.width() / 2);
-            else if(centerPoint.x() < bounds.x() - bounds.width())
-                mCenterPoint.setX(bounds.x() - bounds.width() );
+            else if(centerPoint.x() < bounds.x() - bounds.width() / 2)
+                mCenterPoint.setX(bounds.x() - bounds.width() / 2 );
 
             if(centerPoint.y() > bounds.y() + bounds.height() / 2)
                 mCenterPoint.setY(bounds.y() + bounds.height() / 2);
-            else if(centerPoint.y() < bounds.y() - bounds.height())
-                mCenterPoint.setY(bounds.y() - bounds.height());
+            else if(centerPoint.y() < bounds.y() - bounds.height() / 2)
+                mCenterPoint.setY(bounds.y() - bounds.height() / 2);
         }
     }
     centerOn(mCenterPoint);

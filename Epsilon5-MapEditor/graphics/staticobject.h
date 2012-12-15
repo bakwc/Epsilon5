@@ -13,6 +13,9 @@ public:
     void setAngle(qreal rad);
     void setAngle(int grad);
     qreal angleRad();
+    void setPos(qreal x, qreal y);
+    void setPos(const QPointF& point);
+    QPointF pos() const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
@@ -21,6 +24,7 @@ protected:
 
 private:
     void rotateAtCenter(int angle);
+    QPointF centerPoint() const;
 
 private:
     QPointF mCursorPosition;

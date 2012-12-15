@@ -471,6 +471,8 @@ void TMapsEditorForm::on_objectsView_doubleClicked(QModelIndex index)
     containers::TObjectItem object;
     object.setObjectId(sObject->objectId());
     object.setResourceFile(sObject->resourceFile());
+    object.setPos(mSceneView->mapToScene(mSceneView->size().width() / 2,
+            mSceneView->size().height() / 2).toPoint());
     mCurrentMap->objects().addItem(object);
     updateListView();
     updateScene();

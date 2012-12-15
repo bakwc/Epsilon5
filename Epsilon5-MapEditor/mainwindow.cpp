@@ -33,18 +33,22 @@ TMainWindow::TMainWindow(QWidget* parent)
     appMenu->addAction(tr("Quit"), this, SLOT(close()), QKeySequence("F12"));
 
     // Maplist menu
-    QMenu* maplistMenu = new QMenu(tr("Maplist"), menuBar);
-    maplistMenu->addAction(tr("New"), mMapsEditorWidget, SLOT(newMapListAction()));
-    maplistMenu->addAction(tr("Open maplist file..."),
-            mMapsEditorWidget, SLOT(openMapListAction()));
-//    maplistMenu->addAction(tr("Save"));
-    maplistMenu->addAction(tr("Save as..."), mMapsEditorWidget,
-            SLOT(saveMapListAction()));
+    QMenu* maplistMenu = new QMenu(tr("Maps"), menuBar);
+    maplistMenu->addAction(tr("Open map folder..."),
+            mMapsEditorWidget, SLOT(openMapFolderAction()));
+//    maplistMenu->addAction(tr("Save") );
+//    maplistMenu->addAction(tr("Save as..."), mMapsEditorWidget,
+//            SLOT(saveMapListAction()));
     maplistMenu->addSeparator();
-    maplistMenu->addAction(tr("Clear list"));
+    maplistMenu->addAction(tr("Clear list"), mMapsEditorWidget,
+            SLOT(clearMapListAction()));
     maplistMenu->addSeparator();
     maplistMenu->addAction(tr("Add new map"), mMapsEditorWidget,
             SLOT(addNewMapAction()));
+    maplistMenu->addAction(tr("Save current map"), mMapsEditorWidget,
+            SLOT(saveMapAction()));
+    maplistMenu->addAction(tr("Save all maps"), mMapsEditorWidget,
+            SLOT(saveMapListAction()));
 
     // Source objects list menu
     QMenu* sObjectsList = new QMenu(tr("Source objects"), menuBar);
@@ -64,7 +68,7 @@ TMainWindow::TMainWindow(QWidget* parent)
     menuBar->addMenu(viewMenu);
     this->setMenuBar(menuBar);
 
-    setMinimumSize(600, 400);
+    setMinimumSize(1024, 900);
     QWidget* widget = new QWidget(this);
     setCentralWidget(widget);
     QVBoxLayout* vbox = new QVBoxLayout(widget);
@@ -81,28 +85,10 @@ TMainWindow::~TMainWindow()
     }
 }
 //------------------------------------------------------------------------------
-void TMainWindow::newAction()
-{
-}
-//------------------------------------------------------------------------------
-void TMainWindow::openAction()
-{
-}
-//------------------------------------------------------------------------------
-void TMainWindow::connectMapCreator()
-{
-}
-//------------------------------------------------------------------------------
 void TMainWindow::optionsAction()
 {
     TConfigurationDialog configDialog(this);
     configDialog.exec();
-}
-//------------------------------------------------------------------------------
-void TMainWindow::objectsEditorAction()
-{
-    mMapsEditorWidget->hide();
-    mMapsEditorAction->setChecked(false);
 }
 //------------------------------------------------------------------------------
 void TMainWindow::mapsEditorAction()

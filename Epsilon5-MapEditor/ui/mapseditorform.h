@@ -53,6 +53,7 @@ private slots:
     void on_teamButton_clicked();
     void on_backgroundButton_clicked();
     void on_objectsView_doubleClicked(QModelIndex index);
+    void on_colorButton_clicked();
 
     void onItemMove(quint32 id, QPointF position, qreal angle);
     void toggleBrowserBox();
@@ -70,14 +71,14 @@ private slots:
     void updateListView();
     void updateSettings();
 
-    void newMapListAction();
+    void clearMapListAction();
     void saveMapListAction();
     void refreshMapListAction();
-    void openMapListAction();
+    void openMapFolderAction();
 
     void addNewMapAction();
     void removeMapAction();
-
+    void saveMapAction();
 
     void refreshObjectsListAction();
     void loadSObjectsListAction();
@@ -103,5 +104,6 @@ private:
     QStandardItemModel* mMapsViewModel;
     QStandardItemModel* mListViewModel;
     QStandardItemModel* mSObjectsViewModel;
+    QColor mColor;
 };
 //------------------------------------------------------------------------------

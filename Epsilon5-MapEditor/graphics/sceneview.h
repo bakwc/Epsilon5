@@ -10,6 +10,9 @@ public:
     void setBackground(const QPixmap& pixmap);
     void setBackground(const QPixmap& pixmap, const QSize& sceneSize);
 
+public slots:
+    void clear();
+
 protected:
     void drawBackground(QPainter* painter, const QRectF& rect);
     void paintEvent(QPaintEvent* event);

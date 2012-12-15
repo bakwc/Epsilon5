@@ -14,6 +14,8 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+DEFINES += EPSILON_SERVER
+
 
 SOURCES += main.cpp \
     ../Epsilon5-Proto/Epsilon5.pb.cc \

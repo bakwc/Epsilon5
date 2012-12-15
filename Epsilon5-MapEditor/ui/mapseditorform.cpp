@@ -1,5 +1,6 @@
 // mapseditorform.cpp
 #include <QMenu>
+#include <QColorDialog>
 #include <QResizeEvent>
 #include <QGraphicsScene>
 #include <QGraphicsView>
@@ -41,9 +42,9 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     ui->browserGroupBox->setLayout(ui->horizontalLayout);
     ui->sceneGroupBox->setLayout(ui->sceneLayout);
     ui->sceneLayout->addWidget(mSceneView);
-    ui->pageSettings->setLayout(ui->pageSettingsLayout);
-    ui->pageObjects->setLayout(ui->pageObjectsLayout);
-    ui->pageRespawns->setLayout(ui->gridLayout);
+    ui->pageSettings->setLayout(ui->verticalLayout_6);
+    ui->pageObjects->setLayout(ui->verticalLayout_5);
+    ui->pageRespawns->setLayout(ui->verticalLayout_4);
     ui->toolBox->setCurrentWidget(ui->pageObjects);
     ui->teamButton->setText("");
 
@@ -142,6 +143,12 @@ void TMapsEditorForm::on_mapsView_clicked(QModelIndex index)
     ui->mapWidthBox->setValue(mCurrentMap->width());
     ui->mapHeightBox->setValue(mCurrentMap->height());
 
+    QPixmap pm(32, 32);
+    QPainter pt(&pm);
+    mColor = mCurrentMap->color();
+    pt.fillRect(pm.rect(), mColor);
+    ui->colorButton->setIcon(QIcon(pm));
+
     if (ui->toolBox->currentWidget() == ui->pageObjects) {
         mListViewMode = E_ObjectsMode;
     } else if (ui->toolBox->currentWidget() == ui->pageRespawns) {
@@ -216,9 +223,15 @@ void TMapsEditorForm::updateMapSettings()
         return;
     }
 
+    QPixmap pm(32, 32);
+    QPainter pt(&pm);
+    pt.fillRect(pm.rect(), mColor);
+    ui->colorButton->setIcon(QIcon(pm));
+
     mCurrentMap->setName(ui->mapNameEdit->text().trimmed());
     mCurrentMap->setSize(
         QSize(ui->mapWidthBox->value(), ui->mapHeightBox->value()));
+    mCurrentMap->setColor(mColor);
     updateMapView();
     updateScene();
 }
@@ -262,10 +275,11 @@ void TMapsEditorForm::updateRespawnSettings()
 void TMapsEditorForm::showMapListContentMenu(QPoint point)
 {
     QMenu menu;
-    menu.addAction(tr("Load maplist..."), this, SLOT(openMapListAction()));
-    menu.addAction(tr("Save maplist..."), this, SLOT(saveMapListAction()));
+    menu.addAction(tr("Open map folder..."), this, SLOT(openMapFolderAction()));
+    menu.addAction(tr("Save all maps..."), this, SLOT(saveMapListAction()));
     menu.addSeparator();
     menu.addAction(tr("Add new map"), this, SLOT(addNewMapAction()));
+    menu.addAction(tr("Save current map"), this, SLOT(saveMapAction()));
     if (ui->mapsView->currentIndex().isValid()) {
         menu.addAction(tr("Remove map"), this, SLOT(removeMapAction()));
     }
@@ -289,20 +303,32 @@ void TMapsEditorForm::showListViewContentMenu(QPoint point)
     Q_UNUSED(point);
 }
 //------------------------------------------------------------------------------
-void TMapsEditorForm::openMapListAction()
+void TMapsEditorForm::openMapFolderAction()
 {
-    QString maplistFile = QFileDialog::getOpenFileName(this, tr("Open maplist file"),
-        Global::Settings()->GetMapsPath(), tr("Maplist files (*.txt)"));
-    if( maplistFile.isEmpty() || !QFile::exists(maplistFile) ) {
+    QString mapFolderName = QFileDialog::getExistingDirectory(this,
+            tr("Open maps folder"), Global::Settings()->GetMapsPath());
+    if( mapFolderName.isEmpty() )
         return;
+
+    mScene->clear();
+    mMaps->clearItems();
+    QDir mapFolder(mapFolderName);
+    const QStringList& list = mapFolder.entryList();
+    auto it = list.constBegin();
+    for( ; it != list.constEnd(); ++it )
+    {
+        if( !QFileInfo(mapFolder, (*it).trimmed()).isDir()
+                || *it == "." || *it == "..") {
+            continue;
+        }
+
+        try {
+            mMaps->loadMapByName((*it).trimmed(), mapFolder);
+        } catch (const UException& ex) {
+            qDebug("%s", ex.what());
+        }
     }
 
-    mMaps->clearItems();
-    try {
-        mMaps->loadMapList(maplistFile, Global::Settings()->GetMapsPath());
-    } catch (const UException& ex) {
-        qDebug("%s", ex.what());
-    }
     updateMapView();
 }
 //------------------------------------------------------------------------------
@@ -323,14 +349,9 @@ void TMapsEditorForm::saveMapListAction()
         for( ; it3 != map.respawns().end(); ++it3 ) {
             (*it3).validate();
         }
+
+        mMaps->saveMap(map, Global::Settings()->GetMapsPath());
     }
-
-    QString maplistFile = QFileDialog::getSaveFileName(this, tr("Save maplist as..."),
-            Global::Settings()->GetMapsPath(), tr("Maplist files (*.txt)"));
-    if( maplistFile.isEmpty() )
-        return;
-
-    mMaps->saveMapList(maplistFile, Global::Settings()->GetMapsPath());
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::refreshMapListAction()
@@ -338,13 +359,14 @@ void TMapsEditorForm::refreshMapListAction()
     updateMapView();
 }
 //------------------------------------------------------------------------------
-void TMapsEditorForm::newMapListAction()
+void TMapsEditorForm::clearMapListAction()
 {
     mCurrentMap = 0;
     mCurrentObject = 0;
     mCurrentRespawn = 0;
     mMaps->clearItems();
     mScene->clear();
+    mSceneView->clear();
     mMapsViewModel->clear();
     mListViewModel->clear();
 }
@@ -361,6 +383,28 @@ void TMapsEditorForm::removeMapAction()
     mMaps->removeItem(TMapHelper::itemIdFromModelIndex(*mMaps, mMapsViewModel,
             ui->mapsView->currentIndex()));
     updateMapView();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::saveMapAction()
+{
+    if( !mCurrentMap ) {
+        return;
+    }
+
+    mCurrentMap->validate();
+    containers::TObjectContainer& objects = mCurrentMap->objects();
+    containers::TRespawnContainer& respawns = mCurrentMap->respawns();
+    auto it2 = objects.begin();
+    for( ; it2 != objects.end(); ++it2 ) {
+        (*it2).validate();
+    }
+
+    auto it3 = respawns.begin();
+    for( ; it3 != respawns.end(); ++it3 ) {
+        (*it3).validate();
+    }
+
+    mMaps->saveMap(*mCurrentMap, Global::Settings()->GetMapsPath());
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::on_listView_clicked(QModelIndex index)
@@ -432,6 +476,20 @@ void TMapsEditorForm::on_objectsView_doubleClicked(QModelIndex index)
     updateScene();
 }
 //------------------------------------------------------------------------------
+void TMapsEditorForm::on_colorButton_clicked()
+{
+    if( !mCurrentMap )
+        return;
+
+    QColorDialog colorDlg(this);
+    QColor color = colorDlg.getColor(mCurrentMap->color());
+    if( !color.isValid() )
+        return;
+
+    mColor = color;
+    updateMapSettings();
+}
+//------------------------------------------------------------------------------
 void TMapsEditorForm::toggleBrowserBox()
 {
     if (mBrowserState == E_BrowserFull) {
@@ -443,22 +501,6 @@ void TMapsEditorForm::toggleBrowserBox()
         ui->label->show();
         ui->toolBox->show();
         ui->objectsView->show();
-        ui->browserGroupBox->setMaximumWidth(400);
-        ui->browserGroupBox->setMinimumWidth(600);
-        mBrowserState = E_BrowserHalf;
-        return;
-    }
-    if (mBrowserState == E_BrowserHalf) {
-        ui->browserGroupBox->show();
-        ui->mapsView->hide();
-        ui->line->hide();
-        ui->line_2->hide();
-        ui->labelMapsList->hide();
-        ui->label->hide();
-        ui->toolBox->hide();
-        ui->objectsView->hide();
-        ui->browserGroupBox->setMaximumWidth(300);
-        ui->browserGroupBox->setMinimumWidth(200);
         mBrowserState = E_BrowserNone;
         return;
     }
@@ -592,6 +634,7 @@ void TMapsEditorForm::updateScene()
     mScene->sceneRect().setSize(mCurrentMap->size());
     mSceneView->setBackground(QPixmap(mCurrentMap->background()),
             mCurrentMap->size());
+    mSceneView->updateSceneRect(mSceneView->rect());
 
     auto it = mCurrentMap->objects().constBegin();
     for (; it != mCurrentMap->objects().constEnd(); ++it) {

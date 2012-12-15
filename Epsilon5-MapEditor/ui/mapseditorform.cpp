@@ -468,11 +468,12 @@ void TMapsEditorForm::on_objectsView_doubleClicked(QModelIndex index)
         mSObjects, mSObjectsViewModel, index);
     containers::TSObjectItem* sObject = mSObjects.item(soId);
 
+    QPoint viewportCenter(mSceneView->viewport()->size().width() / 2,
+            mSceneView->viewport()->size().height() / 2);
     containers::TObjectItem object;
     object.setObjectId(sObject->objectId());
     object.setResourceFile(sObject->resourceFile());
-    object.setPos(mSceneView->mapToScene(mSceneView->size().width() / 2,
-            mSceneView->size().height() / 2).toPoint());
+    object.setPos(mSceneView->mapToScene(viewportCenter).toPoint());
     mCurrentMap->objects().addItem(object);
     updateListView();
     updateScene();

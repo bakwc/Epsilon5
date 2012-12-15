@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <qmath.h>
@@ -32,9 +33,7 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         return;
     }
 
-    QPointF objectCenter(pixmap().width() / 2, pixmap().height() / 2);
     bool fixedAngle = event->modifiers() == Qt::ControlModifier;
-
     if (mButton == Qt::LeftButton) {
         // Rotate object
         if (event->modifiers() == Qt::ShiftModifier || fixedAngle) {
@@ -49,17 +48,17 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
                 angle = (int) angle / 45 * 45;
             }
 
-            setTransformOriginPoint(objectCenter);
+            setTransformOriginPoint(centerPoint());
             setRotation(angle);
             return;
         }
 
         // Move object
         setTransformOriginPoint(0, 0);
-        setPos(mapToScene(
-                   event->pos().x() - objectCenter.x(),
-                   event->pos().y() - objectCenter.y()));
-        setTransformOriginPoint(objectCenter);
+        QGraphicsItem::setPos(mapToScene(
+                event->pos().x() - centerPoint().x(),
+                event->pos().y() - centerPoint().y()));
+        setTransformOriginPoint(centerPoint());
     }
 }
 //------------------------------------------------------------------------------
@@ -105,11 +104,31 @@ void TStaticObject::setAngle(qreal rad)
     rotateAtCenter(rad * 180 / M_PI);
 }
 //------------------------------------------------------------------------------
-void TStaticObject::rotateAtCenter(int angle)
+void TStaticObject::setPos(qreal x, qreal y)
 {
-    QPointF originPoint = transformOriginPoint();
-    setTransformOriginPoint(QPointF(pixmap().width() / 2, pixmap().height() / 2));
-    setRotation(angle);
-    setTransformOriginPoint(originPoint);
+    setTransformOriginPoint(0, 0);
+    QGraphicsItem::setPos(x - centerPoint().x(), y - centerPoint().y());
+    setTransformOriginPoint(centerPoint());
 }
 //------------------------------------------------------------------------------
+void TStaticObject::setPos(const QPointF &point)
+{
+    setPos(point.x(), point.y());
+}
+//------------------------------------------------------------------------------
+void TStaticObject::rotateAtCenter(int angle)
+{
+    setTransformOriginPoint(centerPoint());
+    setRotation(angle);
+}
+//------------------------------------------------------------------------------
+QPointF TStaticObject::pos() const
+{
+    return QGraphicsItem::pos()
+        + QPointF(pixmap().width() / 2, pixmap().height() / 2);
+}
+//------------------------------------------------------------------------------
+QPointF TStaticObject::centerPoint() const
+{
+    return QPointF(pixmap().width() / 2, pixmap().height() / 2);
+}

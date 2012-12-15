@@ -80,6 +80,8 @@ private slots:
     void removeMapAction();
     void saveMapAction();
 
+    void resetZoom();
+
     void refreshObjectsListAction();
     void loadSObjectsListAction();
 

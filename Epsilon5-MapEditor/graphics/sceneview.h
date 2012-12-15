@@ -12,6 +12,7 @@ public:
 
 public slots:
     void clear();
+    void resetZoom();
 
 protected:
     void drawBackground(QPainter* painter, const QRectF& rect);
@@ -30,5 +31,6 @@ private:
     QPointF mCenterPoint;
     QPixmap* mPx;
     Qt::MouseButton mButton;
+    qint8 mZoomTimes;
 };
 //------------------------------------------------------------------------------

@@ -655,3 +655,8 @@ void TMapsEditorForm::updateSettings()
     updateMapSettings();
 }
 //------------------------------------------------------------------------------
+void TMapsEditorForm::resetZoom()
+{
+    mSceneView->resetZoom();
+}
+//------------------------------------------------------------------------------

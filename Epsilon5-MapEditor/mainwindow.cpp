@@ -62,6 +62,8 @@ TMainWindow::TMainWindow(QWidget* parent)
             SLOT(fullscreenAction()), QKeySequence("F11"));
     viewMenu->addAction(tr("Toggle panel mode"), mMapsEditorWidget,
             SLOT(toggleBrowserBox()), QKeySequence("F1"));
+    viewMenu->addAction(tr("Reset zoom"), mMapsEditorWidget,
+            SLOT(resetZoom()));
 
     menuBar->addMenu(appMenu);
     menuBar->addMenu(maplistMenu);

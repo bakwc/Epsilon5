@@ -3,10 +3,14 @@
 #include <QGraphicsSceneMouseEvent>
 #include "sceneview.h"
 //------------------------------------------------------------------------------
+const qint8 MAX_ZOOM_TIMES = 8;
+const qreal SCALE_FACTOR = 1.2;
+//------------------------------------------------------------------------------
 TSceneView::TSceneView(TScene* scene, QWidget* parent)
     : QGraphicsView(scene, parent)
     , mFixedPoint(QPoint())
     , mPx(new QPixmap())
+    , mZoomTimes(0)    // -MAX_ZOOM_TIMES <= mZoomTimes <= MAX_ZOOM_TIMES
 {
 }
 //------------------------------------------------------------------------------
@@ -68,14 +72,23 @@ void TSceneView::mouseMoveEvent(QMouseEvent *event)
 //------------------------------------------------------------------------------
 void TSceneView::wheelEvent(QWheelEvent *event)
 {
+    if( event->modifiers() == Qt::ControlModifier) {
+        resetZoom();
+        return;
+    }
+
     QPointF pointBeforeScale(mapToScene(event->pos()));
     QPointF visibleCenter = center();
 
-    double scaleFactor = 1.2;
-    if(event->delta() > 0 )
-        scale(scaleFactor, scaleFactor);
-    else
-        scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    if(event->delta() > 0) {
+        if( mZoomTimes <= MAX_ZOOM_TIMES ) {
+            scale(SCALE_FACTOR, SCALE_FACTOR);
+            ++mZoomTimes;
+        }
+    } else if (mZoomTimes >= -MAX_ZOOM_TIMES) {
+        scale(1.0 / SCALE_FACTOR, 1.0 / SCALE_FACTOR);
+        --mZoomTimes;
+    }
 
     QPointF pointAfterScale(mapToScene(event->pos()));
     QPointF offset = pointBeforeScale - pointAfterScale;
@@ -128,5 +141,20 @@ void TSceneView::resizeEvent(QResizeEvent* event) {
 void TSceneView::clear()
 {
     setBackground(QPixmap());
+}
+//------------------------------------------------------------------------------
+void TSceneView::resetZoom()
+{
+    if( !mZoomTimes )
+        return;
+
+    QPointF visibleCenter = center();
+    double scaleFactor = mZoomTimes < 0 ? SCALE_FACTOR : 1 / SCALE_FACTOR;
+    for( int i = 0; i < abs(mZoomTimes); ++i) {
+        scale(scaleFactor, scaleFactor);
+    }
+
+    mZoomTimes = 0;
+    setCenter(visibleCenter);
 }
 //------------------------------------------------------------------------------

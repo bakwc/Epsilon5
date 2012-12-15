@@ -286,18 +286,18 @@ void TWorld::BeginContact(b2Contact* contact) {
         }
     }
 
-    if (player1 && bullet2 && player1->GetId() != bullet2->GetPlayerId()) {
-        if (Application()->GetSettings()->GetGameplayFriendlyFire()
-                || player1->GetTeam() != bullet2->GetTeam()) {
-            player1->Hit(bullet2->GetPlayerId());
-        }
+    if (player1 && bullet2 && player1->GetId() != bullet2->GetPlayerId() ) {
+        player1->Hit(bullet2->GetPlayerId(),
+            (player1->GetTeam() != bullet2->GetTeam())
+                ? 100
+                : Application()->GetSettings()->GetGameplayFriendlyFire());
     }
 
     if (player2 && bullet1 && player2->GetId() != bullet1->GetPlayerId()) {
-        if (Application()->GetSettings()->GetGameplayFriendlyFire()
-                || player2->GetTeam() != bullet1->GetTeam()) {
-            player2->Hit(bullet1->GetPlayerId());
-        }
+        player2->Hit(bullet1->GetPlayerId(),
+            (player2->GetTeam() != bullet1->GetTeam())
+                ? 100
+                : Application()->GetSettings()->GetGameplayFriendlyFire());
     }
 
     if ((bullet1 && !bullet2) || (bullet2 && !bullet1)) {

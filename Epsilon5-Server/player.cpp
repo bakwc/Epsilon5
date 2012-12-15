@@ -110,18 +110,18 @@ void TPlayer::ApplyCustomPhysics()
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
-
 }
 
 void TPlayer::SetNickname(const QString& nickName) {
     NickName = nickName;
 }
 
-void TPlayer::Hit(size_t playerId) {
-    if (HP > HP_LOST) {
-        HP -= HP_LOST;
-    } else {
+void TPlayer::Hit(size_t playerId, quint8 ffMode) {
+    size_t hpDelta = HP_LOST * (ffMode > 100 ? 1 : ffMode*0.01);
+    if (HP <= hpDelta) {
         emit Killed(playerId);
         emit Death(Id);
+        return;
     }
+    HP -= hpDelta;
 }

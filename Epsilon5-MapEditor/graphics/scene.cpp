@@ -19,7 +19,7 @@ void TScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
     if (mButton == Qt::LeftButton) {
         mLastObject = (TStaticObject*)(itemAt(
                 QPoint(mouseEvent->lastScenePos().x(),
-                       mouseEvent->lastScenePos().y())));
+                mouseEvent->lastScenePos().y()), QTransform()));
     }
 }
 //------------------------------------------------------------------------------

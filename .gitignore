@@ -31,3 +31,5 @@ ui_*.h
 
 Epsilon5-MapEditor/settings.ini
 Epsilon5-Client/settings.ini
+
+*.autosave

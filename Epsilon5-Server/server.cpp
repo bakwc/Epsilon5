@@ -145,3 +145,20 @@ void TServer::SerialiseStats(Epsilon5::World& world) {
     }
 
 }
+
+ETeam TServer::AutoBalance() {
+    qint32 OnePlayers = 0;
+    qint32 SecondPlayers = 0;
+    for (auto q = Clients.begin(); q != Clients.end(); q++)
+        if (q.value()->GetTeam() == T_One)
+            OnePlayers++;
+        else if (q.value()->GetTeam() == T_Second)
+            SecondPlayers++;
+    if (OnePlayers - SecondPlayers>1) {
+        return T_Second;
+    }
+    else if (SecondPlayers-OnePlayers>1) {
+        return T_One;
+    }
+    return T_Neutral;
+}

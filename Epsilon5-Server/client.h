@@ -36,6 +36,10 @@ public:
     inline size_t GetDeaths() {
         return Deaths;
     }
+    inline ETeam GetTeam() {
+        return Team;
+    }
+
 public slots:
     void OnDataReceived(const QByteArray &data);
     void Kill() {

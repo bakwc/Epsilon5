@@ -32,7 +32,6 @@ void TClient::OnDataReceived(const QByteArray &data)
     quint16 originDataSize;
     QByteArray content;
     QByteArray receivedPacket = data;
-
     const int midSize = sizeof(quint16);
     const int posOrigin = sizeof(char);
     const int posPacked = posOrigin + midSize;
@@ -90,8 +89,6 @@ void TClient::OnDataReceived(const QByteArray &data)
 
                     qDebug() << "Player " << NickName << "("
                              << Addr.toString() << ") connected";
-
-                    Team = rand()%2 == 1 ? T_One : T_Second; // throw to random team
 
                     emit PlayerConnected();
                     ReSpawn(true);
@@ -153,7 +150,15 @@ void TClient::SendPlayerInfo() {
 }
 
 void TClient::ReSpawn(bool newConnected) {
+
     if (PlayerStatus == PS_Dead || newConnected) {
+        ETeam NewTeam = Server()->AutoBalance();
+        if (NewTeam == T_Neutral && newConnected){
+            Team = rand() % 2 == 1 ? T_One : T_Second; // throw to random team
+        }
+        else if (NewTeam != T_Neutral){
+            Team = NewTeam;
+        }
         emit SpawnPlayer(Id, Team);
         TPlayer* player = Server()->Application()->GetWorld()->GetPlayer(Id);
         player->SetNickname(NickName);

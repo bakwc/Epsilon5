@@ -19,6 +19,7 @@ public:
     TApplication* Application();
     void RespawnDeadClients();
     void SerialiseStats(Epsilon5::World& world);
+    ETeam AutoBalance();
 signals:
     void NewPlayer(size_t id, ETeam);
     void PlayerDisconnected(size_t id);

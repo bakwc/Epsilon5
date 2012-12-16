@@ -332,11 +332,9 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
             // Get team image
             if (player.team()) {
                 img = &Images->GetImage("peka_t2");
-                miniMap.setPen(Qt::blue);
                 miniMap.setBrush(Qt::blue);
             } else {
                 img = &Images->GetImage("peka_t1");
-                miniMap.setPen(Qt::yellow);
                 miniMap.setBrush(Qt::yellow);
             }
         }
@@ -347,7 +345,6 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
 
         // Draw player name
-        painter.setPen(miniMap.pen());
         painter.setFont(nickFont);
         QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,
                         widgetCenter.y() + pos.y() - img->height()/2
@@ -467,14 +464,14 @@ void TMainDisplay::DrawStats(QPainter& painter) {
 
 
         QFont font("Helvetica", 18);
-        QImage statsImg(400, Stats.size() * font.weight()/2, QImage::Format_ARGB32);
+        QImage statsImg(400, Stats.size() * font.weight() / 2 + font.weight() / 2, QImage::Format_ARGB32);
         statsImg.fill(qRgba(255, 255, 255, 100));
-        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() - Stats.size() * font.weight(), statsImg);
+        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() / 2 , statsImg);
 
         painter.setFont(font);
         painter.setPen(Qt::black);
 
-        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() - Stats.size() * font.weight() + font.weight() / 2);
+        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() / 2);
 
         for (auto i = 0; i < Stats.size(); i++) {
             QString statStr = QString("%1\t%2 - %3 - %4")
@@ -482,7 +479,7 @@ void TMainDisplay::DrawStats(QPainter& painter) {
                     .arg(Stats[i].Score)
                     .arg(Stats[i].Kills)
                     .arg(Stats[i].Deaths);
-            painter.drawText(startPos.x(), startPos.y() + i * font.weight() / 2, statStr);
+            painter.drawText(startPos.x(), startPos.y() + (i + 1) * font.weight() / 2 + 10, statStr);
         }
     }
 }

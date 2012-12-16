@@ -20,6 +20,7 @@ public:
     void RespawnDeadClients();
     void SerialiseStats(Epsilon5::World& world);
     ETeam AutoBalance();
+    void NeedFullPacket(size_t id = -1);
 signals:
     void NewPlayer(size_t id, ETeam);
     void PlayerDisconnected(size_t id);
@@ -36,4 +37,5 @@ private:
     QHash<QHostAddress, size_t> Ips;
     QUdpSocket* Server;
     size_t CurrentId;
+    size_t LastFullSended;
 };

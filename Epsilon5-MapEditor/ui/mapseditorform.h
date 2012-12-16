@@ -80,6 +80,14 @@ private slots:
     void removeMapAction();
     void saveMapAction();
 
+    void resetZoom();
+
+    void toggleGridAction();
+    void setDarkGrid();
+    void setLightGrid();
+    void setBidGrid();
+    void setSmallGrid();
+
     void refreshObjectsListAction();
     void loadSObjectsListAction();
 

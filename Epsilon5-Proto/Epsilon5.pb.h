@@ -37,11 +37,11 @@ class Bullet;
 class Object;
 class RespPoint;
 class PlayerStat;
+class PlayerInfo;
 class World;
 class Control;
 class Control_KeyStatus;
 class Auth;
-class PlayerInfo;
 
 enum Bullet_Type {
   Bullet_Type_ARBUZ = 0,
@@ -192,7 +192,7 @@ class Player : public ::google::protobuf::Message {
   inline ::std::string* mutable_name();
   inline ::std::string* release_name();
   
-  // required uint32 hp = 8;
+  // optional uint32 hp = 8;
   inline bool has_hp() const;
   inline void clear_hp();
   static const int kHpFieldNumber = 8;
@@ -754,6 +754,132 @@ class PlayerStat : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class PlayerInfo : public ::google::protobuf::Message {
+ public:
+  PlayerInfo();
+  virtual ~PlayerInfo();
+  
+  PlayerInfo(const PlayerInfo& from);
+  
+  inline PlayerInfo& operator=(const PlayerInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PlayerInfo& default_instance();
+  
+  void Swap(PlayerInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PlayerInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PlayerInfo& from);
+  void MergeFrom(const PlayerInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+  
+  // optional string map = 2;
+  inline bool has_map() const;
+  inline void clear_map();
+  static const int kMapFieldNumber = 2;
+  inline const ::std::string& map() const;
+  inline void set_map(const ::std::string& value);
+  inline void set_map(const char* value);
+  inline void set_map(const char* value, size_t size);
+  inline ::std::string* mutable_map();
+  inline ::std::string* release_map();
+  
+  // optional int32 weapon = 3;
+  inline bool has_weapon() const;
+  inline void clear_weapon();
+  static const int kWeaponFieldNumber = 3;
+  inline ::google::protobuf::int32 weapon() const;
+  inline void set_weapon(::google::protobuf::int32 value);
+  
+  // optional int32 bullets = 4;
+  inline bool has_bullets() const;
+  inline void clear_bullets();
+  static const int kBulletsFieldNumber = 4;
+  inline ::google::protobuf::int32 bullets() const;
+  inline void set_bullets(::google::protobuf::int32 value);
+  
+  // optional int32 cage = 5;
+  inline bool has_cage() const;
+  inline void clear_cage();
+  static const int kCageFieldNumber = 5;
+  inline ::google::protobuf::int32 cage() const;
+  inline void set_cage(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:Epsilon5.PlayerInfo)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_map();
+  inline void clear_has_map();
+  inline void set_has_weapon();
+  inline void clear_has_weapon();
+  inline void set_has_bullets();
+  inline void clear_has_bullets();
+  inline void set_has_cage();
+  inline void clear_has_cage();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* map_;
+  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 weapon_;
+  ::google::protobuf::int32 bullets_;
+  ::google::protobuf::int32 cage_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_Epsilon5_2eproto();
+  friend void protobuf_AssignDesc_Epsilon5_2eproto();
+  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PlayerInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class World : public ::google::protobuf::Message {
  public:
   World();
@@ -875,10 +1001,20 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >*
       mutable_players_stat();
   
+  // optional .Epsilon5.PlayerInfo player_info = 7;
+  inline bool has_player_info() const;
+  inline void clear_player_info();
+  static const int kPlayerInfoFieldNumber = 7;
+  inline const ::Epsilon5::PlayerInfo& player_info() const;
+  inline ::Epsilon5::PlayerInfo* mutable_player_info();
+  inline ::Epsilon5::PlayerInfo* release_player_info();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.World)
  private:
   inline void set_has_packet_number();
   inline void clear_has_packet_number();
+  inline void set_has_player_info();
+  inline void clear_has_player_info();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -887,10 +1023,11 @@ class World : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_points_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat > players_stat_;
+  ::Epsilon5::PlayerInfo* player_info_;
   ::google::protobuf::uint32 packet_number_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1118,6 +1255,13 @@ class Control : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 packet_number() const;
   inline void set_packet_number(::google::protobuf::uint32 value);
   
+  // optional bool need_full = 5;
+  inline bool has_need_full() const;
+  inline void clear_need_full();
+  static const int kNeedFullFieldNumber = 5;
+  inline bool need_full() const;
+  inline void set_need_full(bool value);
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Control)
  private:
   inline void set_has_keystatus();
@@ -1128,6 +1272,8 @@ class Control : public ::google::protobuf::Message {
   inline void clear_has_weapon();
   inline void set_has_packet_number();
   inline void clear_has_packet_number();
+  inline void set_has_need_full();
+  inline void clear_has_need_full();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -1135,9 +1281,10 @@ class Control : public ::google::protobuf::Message {
   double angle_;
   int weapon_;
   ::google::protobuf::uint32 packet_number_;
+  bool need_full_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1213,110 +1360,28 @@ class Auth : public ::google::protobuf::Message {
   inline ::std::string* mutable_name();
   inline ::std::string* release_name();
   
+  // optional string password = 2;
+  inline bool has_password() const;
+  inline void clear_password();
+  static const int kPasswordFieldNumber = 2;
+  inline const ::std::string& password() const;
+  inline void set_password(const ::std::string& value);
+  inline void set_password(const char* value);
+  inline void set_password(const char* value, size_t size);
+  inline ::std::string* mutable_password();
+  inline ::std::string* release_password();
+  
   // @@protoc_insertion_point(class_scope:Epsilon5.Auth)
  private:
   inline void set_has_name();
   inline void clear_has_name();
+  inline void set_has_password();
+  inline void clear_has_password();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* name_;
-  
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
-  
-  friend void  protobuf_AddDesc_Epsilon5_2eproto();
-  friend void protobuf_AssignDesc_Epsilon5_2eproto();
-  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
-  
-  void InitAsDefaultInstance();
-  static Auth* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class PlayerInfo : public ::google::protobuf::Message {
- public:
-  PlayerInfo();
-  virtual ~PlayerInfo();
-  
-  PlayerInfo(const PlayerInfo& from);
-  
-  inline PlayerInfo& operator=(const PlayerInfo& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const PlayerInfo& default_instance();
-  
-  void Swap(PlayerInfo* other);
-  
-  // implements Message ----------------------------------------------
-  
-  PlayerInfo* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PlayerInfo& from);
-  void MergeFrom(const PlayerInfo& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // required int32 id = 1;
-  inline bool has_id() const;
-  inline void clear_id();
-  static const int kIdFieldNumber = 1;
-  inline ::google::protobuf::int32 id() const;
-  inline void set_id(::google::protobuf::int32 value);
-  
-  // required string map = 2;
-  inline bool has_map() const;
-  inline void clear_map();
-  static const int kMapFieldNumber = 2;
-  inline const ::std::string& map() const;
-  inline void set_map(const ::std::string& value);
-  inline void set_map(const char* value);
-  inline void set_map(const char* value, size_t size);
-  inline ::std::string* mutable_map();
-  inline ::std::string* release_map();
-  
-  // @@protoc_insertion_point(class_scope:Epsilon5.PlayerInfo)
- private:
-  inline void set_has_id();
-  inline void clear_has_id();
-  inline void set_has_map();
-  inline void clear_has_map();
-  
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  
-  ::std::string* map_;
-  ::google::protobuf::int32 id_;
+  ::std::string* password_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
@@ -1326,7 +1391,7 @@ class PlayerInfo : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_Epsilon5_2eproto();
   
   void InitAsDefaultInstance();
-  static PlayerInfo* default_instance_;
+  static Auth* default_instance_;
 };
 // ===================================================================
 
@@ -1525,7 +1590,7 @@ inline ::std::string* Player::release_name() {
   }
 }
 
-// required uint32 hp = 8;
+// optional uint32 hp = 8;
 inline bool Player::has_hp() const {
   return (_has_bits_[0] & 0x00000080u) != 0;
 }
@@ -2006,6 +2071,156 @@ inline void PlayerStat::set_deaths(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
+// PlayerInfo
+
+// optional int32 id = 1;
+inline bool PlayerInfo::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PlayerInfo::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PlayerInfo::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PlayerInfo::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 PlayerInfo::id() const {
+  return id_;
+}
+inline void PlayerInfo::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// optional string map = 2;
+inline bool PlayerInfo::has_map() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PlayerInfo::set_has_map() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PlayerInfo::clear_has_map() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PlayerInfo::clear_map() {
+  if (map_ != &::google::protobuf::internal::kEmptyString) {
+    map_->clear();
+  }
+  clear_has_map();
+}
+inline const ::std::string& PlayerInfo::map() const {
+  return *map_;
+}
+inline void PlayerInfo::set_map(const ::std::string& value) {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  map_->assign(value);
+}
+inline void PlayerInfo::set_map(const char* value) {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  map_->assign(value);
+}
+inline void PlayerInfo::set_map(const char* value, size_t size) {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  map_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PlayerInfo::mutable_map() {
+  set_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    map_ = new ::std::string;
+  }
+  return map_;
+}
+inline ::std::string* PlayerInfo::release_map() {
+  clear_has_map();
+  if (map_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = map_;
+    map_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional int32 weapon = 3;
+inline bool PlayerInfo::has_weapon() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PlayerInfo::set_has_weapon() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PlayerInfo::clear_has_weapon() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PlayerInfo::clear_weapon() {
+  weapon_ = 0;
+  clear_has_weapon();
+}
+inline ::google::protobuf::int32 PlayerInfo::weapon() const {
+  return weapon_;
+}
+inline void PlayerInfo::set_weapon(::google::protobuf::int32 value) {
+  set_has_weapon();
+  weapon_ = value;
+}
+
+// optional int32 bullets = 4;
+inline bool PlayerInfo::has_bullets() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PlayerInfo::set_has_bullets() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PlayerInfo::clear_has_bullets() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PlayerInfo::clear_bullets() {
+  bullets_ = 0;
+  clear_has_bullets();
+}
+inline ::google::protobuf::int32 PlayerInfo::bullets() const {
+  return bullets_;
+}
+inline void PlayerInfo::set_bullets(::google::protobuf::int32 value) {
+  set_has_bullets();
+  bullets_ = value;
+}
+
+// optional int32 cage = 5;
+inline bool PlayerInfo::has_cage() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PlayerInfo::set_has_cage() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PlayerInfo::clear_has_cage() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void PlayerInfo::clear_cage() {
+  cage_ = 0;
+  clear_has_cage();
+}
+inline ::google::protobuf::int32 PlayerInfo::cage() const {
+  return cage_;
+}
+inline void PlayerInfo::set_cage(::google::protobuf::int32 value) {
+  set_has_cage();
+  cage_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // World
 
 // repeated .Epsilon5.Player players = 1;
@@ -2153,6 +2368,35 @@ World::players_stat() const {
 inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >*
 World::mutable_players_stat() {
   return &players_stat_;
+}
+
+// optional .Epsilon5.PlayerInfo player_info = 7;
+inline bool World::has_player_info() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void World::set_has_player_info() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void World::clear_has_player_info() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void World::clear_player_info() {
+  if (player_info_ != NULL) player_info_->::Epsilon5::PlayerInfo::Clear();
+  clear_has_player_info();
+}
+inline const ::Epsilon5::PlayerInfo& World::player_info() const {
+  return player_info_ != NULL ? *player_info_ : *default_instance_->player_info_;
+}
+inline ::Epsilon5::PlayerInfo* World::mutable_player_info() {
+  set_has_player_info();
+  if (player_info_ == NULL) player_info_ = new ::Epsilon5::PlayerInfo;
+  return player_info_;
+}
+inline ::Epsilon5::PlayerInfo* World::release_player_info() {
+  clear_has_player_info();
+  ::Epsilon5::PlayerInfo* temp = player_info_;
+  player_info_ = NULL;
+  return temp;
 }
 
 // -------------------------------------------------------------------
@@ -2391,6 +2635,28 @@ inline void Control::set_packet_number(::google::protobuf::uint32 value) {
   packet_number_ = value;
 }
 
+// optional bool need_full = 5;
+inline bool Control::has_need_full() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Control::set_has_need_full() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Control::clear_has_need_full() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Control::clear_need_full() {
+  need_full_ = false;
+  clear_has_need_full();
+}
+inline bool Control::need_full() const {
+  return need_full_;
+}
+inline void Control::set_need_full(bool value) {
+  set_has_need_full();
+  need_full_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // Auth
@@ -2453,86 +2719,60 @@ inline ::std::string* Auth::release_name() {
   }
 }
 
-// -------------------------------------------------------------------
-
-// PlayerInfo
-
-// required int32 id = 1;
-inline bool PlayerInfo::has_id() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void PlayerInfo::set_has_id() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void PlayerInfo::clear_has_id() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void PlayerInfo::clear_id() {
-  id_ = 0;
-  clear_has_id();
-}
-inline ::google::protobuf::int32 PlayerInfo::id() const {
-  return id_;
-}
-inline void PlayerInfo::set_id(::google::protobuf::int32 value) {
-  set_has_id();
-  id_ = value;
-}
-
-// required string map = 2;
-inline bool PlayerInfo::has_map() const {
+// optional string password = 2;
+inline bool Auth::has_password() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void PlayerInfo::set_has_map() {
+inline void Auth::set_has_password() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void PlayerInfo::clear_has_map() {
+inline void Auth::clear_has_password() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void PlayerInfo::clear_map() {
-  if (map_ != &::google::protobuf::internal::kEmptyString) {
-    map_->clear();
+inline void Auth::clear_password() {
+  if (password_ != &::google::protobuf::internal::kEmptyString) {
+    password_->clear();
   }
-  clear_has_map();
+  clear_has_password();
 }
-inline const ::std::string& PlayerInfo::map() const {
-  return *map_;
+inline const ::std::string& Auth::password() const {
+  return *password_;
 }
-inline void PlayerInfo::set_map(const ::std::string& value) {
-  set_has_map();
-  if (map_ == &::google::protobuf::internal::kEmptyString) {
-    map_ = new ::std::string;
+inline void Auth::set_password(const ::std::string& value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
   }
-  map_->assign(value);
+  password_->assign(value);
 }
-inline void PlayerInfo::set_map(const char* value) {
-  set_has_map();
-  if (map_ == &::google::protobuf::internal::kEmptyString) {
-    map_ = new ::std::string;
+inline void Auth::set_password(const char* value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
   }
-  map_->assign(value);
+  password_->assign(value);
 }
-inline void PlayerInfo::set_map(const char* value, size_t size) {
-  set_has_map();
-  if (map_ == &::google::protobuf::internal::kEmptyString) {
-    map_ = new ::std::string;
+inline void Auth::set_password(const char* value, size_t size) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
   }
-  map_->assign(reinterpret_cast<const char*>(value), size);
+  password_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PlayerInfo::mutable_map() {
-  set_has_map();
-  if (map_ == &::google::protobuf::internal::kEmptyString) {
-    map_ = new ::std::string;
+inline ::std::string* Auth::mutable_password() {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
   }
-  return map_;
+  return password_;
 }
-inline ::std::string* PlayerInfo::release_map() {
-  clear_has_map();
-  if (map_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* Auth::release_password() {
+  clear_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = map_;
-    map_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = password_;
+    password_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }

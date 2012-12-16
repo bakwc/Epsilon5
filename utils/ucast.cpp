@@ -5,6 +5,16 @@
 #include "ucast.h"
 
 template< >
+quint8 FromString<quint8>(const QString& str){
+    bool ok = false;
+    int res = str.toUInt(&ok);
+    if (!ok) {
+       throw UException("Cast error");
+    }
+    return res;
+}
+
+template< >
 int FromString<int>(const QString& str){
     bool ok = false;
     int res = str.toInt(&ok);

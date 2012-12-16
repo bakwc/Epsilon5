@@ -313,6 +313,13 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
                 nickName = PlayerNames[player.id()];
             }
         }
+
+        if (nickName.isEmpty()) {
+            Control.set_need_full(true);
+        } else {
+            Control.set_need_full(false);
+        }
+
         size_t hp = player.hp();
 
         // Set player or enemy image

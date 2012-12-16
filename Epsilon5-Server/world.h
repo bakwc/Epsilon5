@@ -33,7 +33,7 @@ public:
         return B2World;
     }
     TPlayer* GetPlayer(size_t id);
-    QByteArray Serialize();
+    QByteArray Serialize(size_t playerId, bool needFullPacket = false);
     void SetPingForPlayer(size_t id, size_t packetNumber);
 signals:
     void PlayerKilled(size_t killerId); // When a player killed, id of a killer
@@ -45,10 +45,7 @@ public slots:
     void SpawnBorders(const QSize &mapSize);
     void ClearObjects();
     void ClearBorders();
-    inline void NeedFullPacket() {
-        FullPacketResendTtl = 0;
-    }
-
+    void NeedFullPacket();
 
 private:
     void timerEvent(QTimerEvent *);
@@ -59,6 +56,7 @@ private:
             double x, double y, double vx, double vy,
             const QSizeF& size, double angle = 0.0);
     void BeginContact(b2Contact* contact);
+    QPointF GetPlayerPos(size_t playerId);
 private:
     b2World* B2World;
     TPlayersHash Players;
@@ -66,7 +64,6 @@ private:
     TStaticObjectsList StaticObjects;
     TDynamicObjectsList DynamicObjects;
     TStaticObjectsList WorldBorders;
-    size_t FullPacketResendTtl;
     size_t CurrentPacketNumber;
     QHash<size_t, QTime> Times;
 };

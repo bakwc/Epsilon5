@@ -9,6 +9,7 @@ TServer::TServer(QObject *parent)
     : QObject(parent)
     , Server(new QUdpSocket(this))
     , CurrentId(1)
+    , LastFullSended(0)
 {
     connect(Server, SIGNAL(readyRead()), SLOT(DataReceived()));
 }
@@ -77,6 +78,11 @@ void TServer::DataReceived() {
 void TServer::timerEvent(QTimerEvent*) {
     DisconnectInactive();
     RespawnDeadClients();
+    LastFullSended++;
+    if (LastFullSended > 80) {
+        NeedFullPacket();
+        LastFullSended = 0;
+    }
     SendWorld();
 }
 
@@ -103,9 +109,11 @@ void TServer::DisconnectInactive() {
 
 void TServer::SendWorld()
 {
-    QByteArray data=Application()->GetWorld()->Serialize();
     for (auto i = Clients.begin(); i != Clients.end(); i++) {
-        i.value()->SendWorld(data);
+        size_t id = i.value()->GetId();
+        bool needFullPacket = i.value()->NeedFullWorld();
+        QByteArray world = Application()->GetWorld()->Serialize(id, needFullPacket);
+        i.value()->SendWorld(world);
     }
 }
 
@@ -161,4 +169,19 @@ ETeam TServer::AutoBalance() {
         return T_One;
     }
     return T_Neutral;
+}
+
+void TServer::NeedFullPacket(size_t id) {
+    if (id == (size_t)-1) {
+        for (auto i = Clients.begin(); i != Clients.end(); i++) {
+            i.value()->SetFullWorldNeeded();
+        }
+    } else {
+        auto i = Clients.find(id);
+        if (i != Clients.end()) {
+            i.value()->SetFullWorldNeeded();
+        } else {
+            throw UException("TServer::NeedFullPacket(): Client not found");
+        }
+    }
 }

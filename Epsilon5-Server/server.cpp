@@ -60,7 +60,7 @@ void TServer::DataReceived() {
             ipIt = Ips.insert(sender, 0);
         }
 
-        if (ipIt.value() >= 2) {
+        if (ipIt.value() >= 5) {
             return;
         }
         ipIt.value()++;

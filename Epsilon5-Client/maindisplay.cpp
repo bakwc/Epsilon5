@@ -410,7 +410,7 @@ void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
 
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
                 currentObjectPos, MAX_MINIMAP_SIZE));
-        miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y(),
+        miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y() - 4,
                 rimg.scaledToHeight(4));
     }
 }
@@ -466,14 +466,15 @@ void TMainDisplay::DrawStats(QPainter& painter) {
         QPoint widgetCenter(width() / 2, height() / 2);
 
 
-        QImage statsImg(400, Stats.size() * 20 + 40, QImage::Format_ARGB32);
+        QFont font("Helvetica", 18);
+        QImage statsImg(400, Stats.size() * font.weight()/2, QImage::Format_ARGB32);
         statsImg.fill(qRgba(255, 255, 255, 100));
-        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() - Stats.size() * 20 - 20, statsImg);
+        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() - Stats.size() * font.weight(), statsImg);
 
-        painter.setFont(QFont("Helvetica", 18));
+        painter.setFont(font);
         painter.setPen(Qt::black);
 
-        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() - Stats.size() / 2 * 20);
+        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() - Stats.size() * font.weight() + font.weight() / 2);
 
         for (auto i = 0; i < Stats.size(); i++) {
             QString statStr = QString("%1\t%2 - %3 - %4")
@@ -481,7 +482,7 @@ void TMainDisplay::DrawStats(QPainter& painter) {
                     .arg(Stats[i].Score)
                     .arg(Stats[i].Kills)
                     .arg(Stats[i].Deaths);
-            painter.drawText(startPos.x(), startPos.y() + i * 20, statStr);
+            painter.drawText(startPos.x(), startPos.y() + i * font.weight() / 2, statStr);
         }
     }
 }

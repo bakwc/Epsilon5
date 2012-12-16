@@ -11,6 +11,7 @@
 #include "network.h"
 #include "maindisplay.h"
 #include "application.h"
+#include <QtOpenGL>
 
 
 #ifdef Q_OS_UNIX
@@ -46,7 +47,7 @@ static double getAngle(const QPoint& point)
 }
 
 TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
-    : QGLWidget(parent)
+    : QGLWidget(QGLFormat(QGL::SampleBuffers),parent)
     , UFullscreenWrapper(this)
     , Application(application)
     , Images(new TImageStorage(this))
@@ -58,7 +59,14 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
-
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_LINE_SMOOTH);
+    QGLFormat f = QGLFormat::defaultFormat();
+    f.setSampleBuffers(true);
+    f.setStencilBufferSize(8);
+    f.setSamples(4);
+    f.setVersion(QGLFormat::OpenGL_Version_4_0, QGLFormat::OpenGL_Version_4_0);
+    QGLFormat::setDefaultFormat(f);
     Control.set_angle(0);
     Control.mutable_keystatus()->set_keyattack1(false);
     Control.mutable_keystatus()->set_keyattack2(false);
@@ -95,8 +103,14 @@ void TMainDisplay::timerEvent(QTimerEvent*) {
 }
 
 void TMainDisplay::paintEvent(QPaintEvent*) {
+
     EState state = Application->GetState();
-    QPainter painter(this);
+    QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::TextAntialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
     switch (state) {
     case ST_Connecting : {
         painter.fillRect(0, 0, width(), height(), Qt::black);
@@ -116,6 +130,7 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
             DrawText(painter, QPoint(width() / 2 - 50, height() / 2 - 5), tr("Connection lost..."), 28);
         break;
     }
+            painter.end();
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent* event) {

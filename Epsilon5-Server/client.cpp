@@ -95,6 +95,12 @@ void TClient::OnDataReceived(const QByteArray &data)
                     qDebug() << "Player " << NickName << "("
                              << Addr.toString() << ") connected";
 
+                    Team = rand() % 2 == 1 ? T_One : T_Second; // throw to random team
+                    ETeam NewTeam = Server()->AutoBalance();
+                    if (NewTeam != T_Neutral) {
+                        Team = NewTeam;
+                    }
+
                     emit PlayerConnected();
                     ReSpawn(true);
 
@@ -156,10 +162,7 @@ void TClient::ReSpawn(bool newConnected) {
 
     if (PlayerStatus == PS_Dead || newConnected) {
         ETeam NewTeam = Server()->AutoBalance();
-        if (NewTeam == T_Neutral && newConnected){
-            Team = rand() % 2 == 1 ? T_One : T_Second; // throw to random team
-        }
-        else if (NewTeam != T_Neutral){
+        if (NewTeam != T_Neutral) {
             Team = NewTeam;
         }
         emit SpawnPlayer(Id, Team);

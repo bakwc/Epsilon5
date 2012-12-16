@@ -326,30 +326,33 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
         if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
             img = &Images->GetImage("player");
             miniMap.setPen(Qt::red);
+            miniMap.setBrush(Qt::red);
             nickName += " - " + QString::number(hp) + "%";
         } else {
             // Get team image
-            if (player.team())
+            if (player.team()) {
                 img = &Images->GetImage("peka_t2");
-            else
+                miniMap.setPen(Qt::blue);
+                miniMap.setBrush(Qt::blue);
+            } else {
                 img = &Images->GetImage("peka_t1");
-
-            miniMap.setPen(Qt::black);
+                miniMap.setPen(Qt::yellow);
+                miniMap.setBrush(Qt::yellow);
+            }
         }
-
         miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
-                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 2, 2);
+                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
 
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
 
         // Draw player name
-        painter.setPen(Qt::yellow);
+        painter.setPen(miniMap.pen());
         painter.setFont(nickFont);
         QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,
                         widgetCenter.y() + pos.y() - img->height()/2
-                               - painter.fontInfo().pixelSize(),
-                        nickMaxWidth, painter.fontInfo().pixelSize());
+                               - painter.fontInfo().pixelSize()-5,
+                        nickMaxWidth, painter.fontInfo().pixelSize() + 2);
 
         painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
         painter.setPen(oldPen);

@@ -162,10 +162,10 @@ ETeam TServer::AutoBalance() {
             OnePlayers++;
         else if (q.value()->GetTeam() == T_Second)
             SecondPlayers++;
-    if (OnePlayers - SecondPlayers>1) {
+    if (OnePlayers - SecondPlayers > 1) {
         return T_Second;
     }
-    else if (SecondPlayers-OnePlayers>1) {
+    else if (SecondPlayers - OnePlayers > 1) {
         return T_One;
     }
     return T_Neutral;

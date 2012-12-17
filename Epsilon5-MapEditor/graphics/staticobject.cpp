@@ -56,8 +56,8 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         // Move object
         setTransformOriginPoint(0, 0);
         QGraphicsItem::setPos(mapToScene(
-                event->pos().x() - centerPoint().x(),
-                event->pos().y() - centerPoint().y()));
+                event->pos().x() - mCursorPosition.x(),
+                event->pos().y() - mCursorPosition.y()));
         setTransformOriginPoint(centerPoint());
     }
 }

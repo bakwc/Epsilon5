@@ -16,6 +16,8 @@ public:
     void setPos(qreal x, qreal y);
     void setPos(const QPointF& point);
     QPointF pos() const;
+    void setRespawn(bool value);
+    bool isRespawn() const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
@@ -31,5 +33,6 @@ private:
     Qt::MouseButton mButton;
     bool mFixed;
     quint32 mObjectId;
+    bool mRespawn;
 };
 //------------------------------------------------------------------------------

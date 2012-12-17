@@ -8,6 +8,7 @@ TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
+    , mRespawn(false)
 {
     setPixmap(QPixmap(32, 32));
     setFlags(ItemIsSelectable | ItemIsMovable);
@@ -17,6 +18,7 @@ TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
+    , mRespawn(false)
 {
     setPixmap(pixmap);
     setFlags(ItemIsSelectable | ItemIsMovable);
@@ -132,3 +134,14 @@ QPointF TStaticObject::centerPoint() const
 {
     return QPointF(pixmap().width() / 2, pixmap().height() / 2);
 }
+//------------------------------------------------------------------------------
+void TStaticObject::setRespawn(bool value)
+{
+    mRespawn = value;
+}
+//------------------------------------------------------------------------------
+bool TStaticObject::isRespawn() const
+{
+    return mRespawn;
+}
+//------------------------------------------------------------------------------

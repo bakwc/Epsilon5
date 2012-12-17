@@ -14,7 +14,7 @@
 #include "itemmodel_t.h"
 #include "ui_mapseditorform.h"
 
-#define ON_THE_FLY_APPLY 0
+#define ON_THE_FLY_APPLY 1
 //------------------------------------------------------------------------------
 TMapsEditorForm::TMapsEditorForm(QWidget* parent)
     : QWidget(parent)
@@ -99,8 +99,8 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
             this, SLOT(updateSettings()));
     connect(ui->applyButton3, SIGNAL(clicked()),
             this, SLOT(updateSettings()));
-    connect(mScene, SIGNAL(moveItem(quint32, QPointF, qreal)),
-            this, SLOT(onItemMove(quint32, QPointF, qreal)));
+    connect(mScene, SIGNAL(moveItem(quint32, QPointF, qreal, bool)),
+            this, SLOT(onItemMove(quint32, QPointF, qreal, bool)));
 
     mSceneView->setFocus();
 
@@ -257,7 +257,6 @@ void TMapsEditorForm::updateRespawnSettings()
     if (!mCurrentMap || !mCurrentRespawnsList || !mCurrentRespawn) {
         return;
     }
-    return;
 
     containers::TRespawnItem* respawn = mCurrentRespawn;
 
@@ -300,7 +299,12 @@ void TMapsEditorForm::showObjectsContentMenu(QPoint point)
 //------------------------------------------------------------------------------
 void TMapsEditorForm::showListViewContentMenu(QPoint point)
 {
-    Q_UNUSED(point);
+    if (ui->toolBox->currentWidget() != ui->pageRespawns)
+        return;
+
+    QMenu menu;
+    menu.addAction(tr("Add new respawn"), this, SLOT(addNewRespawn()));
+    menu.exec(ui->listView->mapToGlobal(point));
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::openMapFolderAction()
@@ -470,11 +474,22 @@ void TMapsEditorForm::on_objectsView_doubleClicked(QModelIndex index)
 
     QPoint viewportCenter(mSceneView->viewport()->size().width() / 2,
             mSceneView->viewport()->size().height() / 2);
-    containers::TObjectItem object;
-    object.setObjectId(sObject->objectId());
-    object.setResourceFile(sObject->resourceFile());
-    object.setPos(mSceneView->mapToScene(viewportCenter).toPoint());
-    mCurrentMap->objects().addItem(object);
+    // TODO: remove "respawn" text in future
+    if( sObject->resourceName() == "respawn" )
+        mListViewMode = E_RespawnsMode;
+
+    if( mListViewMode == E_ObjectsMode) {
+        containers::TObjectItem object;
+        object.setObjectId(sObject->objectId());
+        object.setResourceFile(sObject->resourceFile());
+        object.setPos(mSceneView->mapToScene(viewportCenter).toPoint());
+        mCurrentMap->objects().addItem(object);
+    } else if ( mListViewMode == E_RespawnsMode) {
+        containers::TRespawnItem respawn;
+        respawn.setResourceFile(sObject->resourceFile());
+        respawn.setPos(mSceneView->mapToScene(viewportCenter).toPoint());
+        mCurrentMap->respawns().addItem(respawn);
+    }
     updateListView();
     updateScene();
 }
@@ -536,10 +551,16 @@ void TMapsEditorForm::loadSObjectsListAction()
     }
 
     for (auto resIt = mSObjects.begin(); resIt != mSObjects.end(); ++resIt) {
-        qDebug() << (*resIt).resourceFile() << (*resIt).width()
-                 << (*resIt).height() << (*resIt).itemId() << (*resIt).objectId();
         TSObjectHelper::addItemToModel(*resIt, mSObjectsViewModel,
                 QIcon(QPixmap((*resIt).resourceFile())));
+
+        if( (*resIt).resourceName() == "respawn" ) {
+            containers::TRespawnContainer& respawn = mCurrentMap->respawns();
+            for (auto objIt = respawn.begin(); objIt != respawn.end(); ++objIt) {
+                (*objIt).setResourceFile((*resIt).resourceFile());
+            }
+            continue;
+        }
 
         containers::TObjectContainer& objects = mCurrentMap->objects();
         for (auto objIt = objects.begin(); objIt != objects.end(); ++objIt) {
@@ -567,15 +588,24 @@ void TMapsEditorForm::timerEvent(QTimerEvent*)
     mSceneView->centerOn(ppp);
 }
 //------------------------------------------------------------------------------
-void TMapsEditorForm::onItemMove(quint32 id, QPointF position, qreal angle)
+void TMapsEditorForm::onItemMove(quint32 id, QPointF position, qreal angle, bool isRespawn)
 {
     if (!mCurrentMap) {
         return;
     }
 
-    containers::TObjectItem* object = mCurrentMap->objects().item(id);
-    object->setPos(position.toPoint());
-    object->setAngle(angle);
+//    if( mListViewMode == E_ObjectsMode) {
+    if( !isRespawn ) {
+        mListViewMode = E_ObjectsMode;
+        containers::TObjectItem* object = mCurrentMap->objects().item(id);
+        object->setPos(position.toPoint());
+        object->setAngle(angle);
+    } else {
+//    } else if (mListViewMode == E_RespawnsMode) {
+        mListViewMode = E_RespawnsMode;
+        containers::TRespawnItem* respawn = mCurrentMap->respawns().item(id);
+        respawn->setPos(position.toPoint());
+    }
 
     updateListView();
 }
@@ -584,9 +614,8 @@ void TMapsEditorForm::updateMapView()
 {
     mMapsViewModel->clear();
     for (auto it = mMaps->begin(); it != mMaps->end(); ++it) {
-        qDebug() << "MapInfo:\n" << "name:" << (*it).name()
-                 << ":" << (*it).width() << "x" << (*it).height();
-
+//        qDebug() << "MapInfo:\n" << "name:" << (*it).name()
+//                 << ":" << (*it).width() << "x" << (*it).height();
         TMapHelper::addItemToModel((*it), mMapsViewModel,
                 QIcon(QPixmap((*it).resourceFile())));
     }
@@ -641,12 +670,23 @@ void TMapsEditorForm::updateScene()
 
     auto it = mCurrentMap->objects().constBegin();
     for (; it != mCurrentMap->objects().constEnd(); ++it) {
-        const containers::TObjectItem object = *it;
+        const containers::TObjectItem& object = *it;
         TStaticObject* mapObject = new TStaticObject(
-            QPixmap(object.resourceFile()));
+                QPixmap(object.resourceFile()));
         mapObject->setPos(object.pos());
         mapObject->setObjectId(object.itemId());
         mapObject->setAngle(object.angle());
+        mScene->addItem(mapObject);
+    }
+
+    auto it2 = mCurrentMap->respawns().constBegin();
+    for (; it2 != mCurrentMap->respawns().constEnd(); ++it2) {
+        const containers::TRespawnItem& respawn = *it2;
+        TStaticObject* mapObject = new TStaticObject(
+                QPixmap(respawn.resourceFile()));
+        mapObject->setPos(respawn.pos());
+        mapObject->setObjectId(respawn.itemId());
+        mapObject->setRespawn(true);
         mScene->addItem(mapObject);
     }
 }
@@ -691,5 +731,12 @@ void TMapsEditorForm::setSmallGrid()
 {
     mSceneView->setGridSize(10);
     mSceneView->viewport()->repaint();
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::addNewRespawn()
+{
+    containers::TRespawnItem respawn;
+    mCurrentRespawnsList->addItem(respawn);
+    updateListView();
 }
 //------------------------------------------------------------------------------

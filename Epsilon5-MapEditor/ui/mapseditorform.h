@@ -55,7 +55,7 @@ private slots:
     void on_objectsView_doubleClicked(QModelIndex index);
     void on_colorButton_clicked();
 
-    void onItemMove(quint32 id, QPointF position, qreal angle);
+    void onItemMove(quint32 id, QPointF position, qreal angle, bool isRespawn);
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);
     void showObjectsContentMenu(QPoint point);
@@ -79,6 +79,8 @@ private slots:
     void addNewMapAction();
     void removeMapAction();
     void saveMapAction();
+
+    void addNewRespawn();
 
     void resetZoom();
 

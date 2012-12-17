@@ -184,7 +184,7 @@ void TWorld::timerEvent(QTimerEvent *) {
         i = Bullets.erase(i++);
     }
 
-    float step = 1.0f / 100.0f;
+    float step = 1.0f / 50.0f;
     qint32 velocityIterations = 5;
     qint32 positionIterations = 2;
     B2World->Step(step, velocityIterations, positionIterations);

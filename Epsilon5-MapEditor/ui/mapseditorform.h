@@ -58,7 +58,7 @@ private slots:
     void onItemMove(quint32 id, QPointF position, qreal angle, bool isRespawn);
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);
-    void showObjectsContentMenu(QPoint point);
+    void showSObjectsContentMenu(QPoint point);
     void showListViewContentMenu(QPoint point);
 
     void updateScene();
@@ -105,8 +105,6 @@ private:
     containers::TMapItem* mCurrentMap;
     containers::TObjectItem* mCurrentObject;
     containers::TRespawnItem* mCurrentRespawn;
-    containers::TObjectContainer* mCurrentObjectList;
-    containers::TRespawnContainer* mCurrentRespawnsList;
     containers::TSObjectContainer mSObjects;
     QModelIndex mLastModelIndex;
     TScene* mScene;

@@ -10,8 +10,8 @@
 
 TMaps::TMaps(QObject *parent)
     : QObject(parent)
-    , MapStatus(MS_NoMap)
     , CurrentMap(-1)
+    , MapStatus(MS_NoMap)
 {
 }
 

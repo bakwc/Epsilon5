@@ -100,6 +100,8 @@ TMapsEditorForm::TMapsEditorForm(QWidget* parent)
             this, SLOT(updateSettings()));
     connect(mScene, SIGNAL(moveItem(quint32, QPointF, qreal, bool)),
             this, SLOT(onItemMove(quint32, QPointF, qreal, bool)));
+    connect(mScene, SIGNAL(clickItem(quint32,bool)),
+            this, SLOT(onClickItem(quint32,bool)));
 
     mSceneView->setFocus();
 
@@ -577,6 +579,18 @@ void TMapsEditorForm::timerEvent(QTimerEvent*)
         dx = -dx;
     }
     mSceneView->centerOn(ppp);
+}
+//------------------------------------------------------------------------------
+void TMapsEditorForm::onClickItem(quint32 id, bool isRespawn)
+{
+    Q_UNUSED(id);
+    if( isRespawn ) {
+        mListViewMode = E_RespawnsMode;
+        ui->toolBox->setCurrentWidget(ui->pageRespawns);
+    } else {
+        mListViewMode = E_ObjectsMode;
+        ui->toolBox->setCurrentWidget(ui->pageObjects);
+    }
 }
 //------------------------------------------------------------------------------
 void TMapsEditorForm::onItemMove(quint32 id, QPointF position,

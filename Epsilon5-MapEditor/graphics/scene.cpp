@@ -20,6 +20,8 @@ void TScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
         mLastObject = (TStaticObject*)(itemAt(
                 QPoint(mouseEvent->lastScenePos().x(),
                 mouseEvent->lastScenePos().y()), QTransform()));
+        if( mLastObject )
+            emit clickItem(mLastObject->objectId(), mLastObject->isRespawn());
     }
 }
 //------------------------------------------------------------------------------

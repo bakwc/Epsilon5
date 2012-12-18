@@ -10,6 +10,7 @@ public:
     void init();
 
 signals:
+    void clickItem(quint32 id, bool isRespawn);
     void moveItem(quint32 id, QPointF position, qreal angle, bool isRespawn);
 
 protected:

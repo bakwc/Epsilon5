@@ -55,6 +55,7 @@ private slots:
     void on_objectsView_doubleClicked(QModelIndex index);
     void on_colorButton_clicked();
 
+    void onClickItem(quint32 id, bool isRespawn);
     void onItemMove(quint32 id, QPointF position, qreal angle, bool isRespawn);
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);

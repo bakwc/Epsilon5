@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <QObject>
 #include <QHash>
 #include <QByteArray>
@@ -17,6 +18,8 @@
 class QRect;
 class TApplication;
 
+using namespace std;
+
 class TWorld : public QObject, public b2ContactListener
 {
     Q_OBJECT
@@ -30,7 +33,7 @@ public:
     ~TWorld();
     void Start();
     inline b2World* GetB2World() {
-        return B2World;
+        return B2World.get();
     }
     TPlayer* GetPlayer(size_t id);
     QByteArray Serialize(size_t playerId, bool needFullPacket = false);
@@ -58,12 +61,12 @@ private:
     void BeginContact(b2Contact* contact);
     QPointF GetPlayerPos(size_t playerId);
 private:
-    b2World* B2World;
+    unique_ptr<b2World> B2World;
     TPlayersHash Players;
     TBulletsList Bullets;
     TStaticObjectsList StaticObjects;
     TDynamicObjectsList DynamicObjects;
     TStaticObjectsList WorldBorders;
-    size_t CurrentPacketNumber;
+    size_t CurrentPacketNumber = 0;
     QHash<size_t, QTime> Times;
 };

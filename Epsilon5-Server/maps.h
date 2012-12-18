@@ -35,7 +35,6 @@ class TMaps : public QObject
     Q_OBJECT
 public:
     explicit TMaps(QObject *parent = 0);
-    void LoadMaplist(const QString& fileName);
     void LoadNextMap();
     inline EMapStatus GetStatus() {
         return MapStatus;
@@ -62,8 +61,8 @@ private:
     void LoadRespPoints(const QString& fileName);
 private:
     QStringList MapFiles;
-    int CurrentMap;
+    int CurrentMap = -1;
     QSize MapSize;
-    EMapStatus MapStatus;
+    EMapStatus MapStatus = MS_NoMap;
     QVector<TRespPoint> RespPoints;
 };

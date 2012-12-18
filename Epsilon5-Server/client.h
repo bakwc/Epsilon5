@@ -75,9 +75,11 @@ private:
     quint16 Port;
     size_t Id;
     quint64 LastSeen;
-    EPlayerStatus PlayerStatus;
+    EPlayerStatus PlayerStatus = PS_AuthWait;
     QString NickName;
     ETeam Team;
-    size_t Score, Deaths, Kills;
+    size_t Score = 0;
+    size_t Deaths = 0;
+    size_t Kills = 0;
     bool FullWorldNeeded;
 };

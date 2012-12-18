@@ -9,7 +9,6 @@
 TWorld::TWorld(QObject *parent)
     : QObject(parent)
     , B2World(new b2World(b2Vec2(0, 0)))
-    , CurrentPacketNumber(0)
 {
     B2World->ClearForces();
     B2World->SetContactListener(this);
@@ -17,11 +16,6 @@ TWorld::TWorld(QObject *parent)
 
 TWorld::~TWorld()
 {
-    if( B2World )
-    {
-        delete B2World;
-        B2World = NULL;
-    }
 }
 
 TPlayer* TWorld::GetPlayer(size_t id) {
@@ -45,30 +39,28 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
 
     QPointF playerPos = GetPlayerPos(playerId);
 
-    for (auto i = Players.begin(); i != Players.end(); i++)
-    {
+    for (auto& p: Players) {
         auto player = world.add_players();
-        player->set_id(i.key());
-        player->set_x(i.value()->GetX() * OBJECT_SCALE_UP);
-        player->set_y(i.value()->GetY() * OBJECT_SCALE_UP);
+        player->set_id(p->GetId());
+        player->set_x(p->GetX() * OBJECT_SCALE_UP);
+        player->set_y(p->GetY() * OBJECT_SCALE_UP);
 
         if (needFullPacket) {
-            player->set_vx(i.value()->GetVx() * OBJECT_SCALE_UP);
-            player->set_vy(i.value()->GetVy() * OBJECT_SCALE_UP);
-            player->set_angle(i.value()->GetAngle());
-            QByteArray playerName = i.value()->GetNickname().toLocal8Bit();
+            player->set_vx(p->GetVx() * OBJECT_SCALE_UP);
+            player->set_vy(p->GetVy() * OBJECT_SCALE_UP);
+            player->set_angle(p->GetAngle());
+            QByteArray playerName = p->GetNickname().toLocal8Bit();
             player->set_name(playerName.data(), playerName.size());
-            player->set_ping(i.value()->GetPing());
+            player->set_ping(p->GetPing());
         }
-        player->set_hp(i.value()->GetHP());
-        player->set_team(i.value()->GetTeamBool());
+        player->set_hp(p->GetHP());
+        player->set_team(p->GetTeamBool());
     }
 
-    for (auto i = Bullets.begin(); i != Bullets.end();i++)
-    {
+    for (auto& b: Bullets) {
         // Filtering bullets on large distances
-        if (!SendDistance((*i)->GetX() * OBJECT_SCALE_UP,
-                (*i)->GetY() * OBJECT_SCALE_UP,
+        if (!SendDistance(b->GetX() * OBJECT_SCALE_UP,
+                b->GetY() * OBJECT_SCALE_UP,
                 playerPos.x() * OBJECT_SCALE_UP,
                 playerPos.y() * OBJECT_SCALE_UP))
         {
@@ -76,28 +68,28 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         }
 
         auto bullet=world.add_bullets();
-        bullet->set_x((*i)->GetX() * OBJECT_SCALE_UP);
-        bullet->set_y((*i)->GetY() * OBJECT_SCALE_UP);
-        bullet->set_bullet_type((*i)->GetType());
+        bullet->set_x(b->GetX() * OBJECT_SCALE_UP);
+        bullet->set_y(b->GetY() * OBJECT_SCALE_UP);
+        bullet->set_bullet_type(b->GetType());
         if (needFullPacket) {
-            bullet->set_vx((*i)->GetVx() * OBJECT_SCALE_UP);
-            bullet->set_vy((*i)->GetVy() * OBJECT_SCALE_UP);
+            bullet->set_vx(b->GetVx() * OBJECT_SCALE_UP);
+            bullet->set_vy(b->GetVy() * OBJECT_SCALE_UP);
         }
-        bullet->set_team((*i)->GetTeamBool());
+        bullet->set_team(b->GetTeamBool());
     }
 
-    for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
+    for (auto& o: StaticObjects) {
         auto object = world.add_objects();
-        object->set_x((*i)->GetX() * OBJECT_SCALE_UP);
-        object->set_y((*i)->GetY() * OBJECT_SCALE_UP);
-        object->set_angle((*i)->GetAngle());
-        object->set_id((*i)->GetId());
+        object->set_x(o->GetX() * OBJECT_SCALE_UP);
+        object->set_y(o->GetY() * OBJECT_SCALE_UP);
+        object->set_angle(o->GetAngle());
+        object->set_id(o->GetId());
     }
 
-    for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
+    for (auto& o: DynamicObjects) {
         // Filtering DynamicObjects on large distances
-        if (!SendDistance((*i)->GetX() * OBJECT_SCALE_UP,
-                (*i)->GetY() * OBJECT_SCALE_UP,
+        if (!SendDistance(o->GetX() * OBJECT_SCALE_UP,
+                o->GetY() * OBJECT_SCALE_UP,
                 playerPos.x() * OBJECT_SCALE_UP,
                 playerPos.y() * OBJECT_SCALE_UP))
         {
@@ -105,18 +97,18 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         }
 
         auto object = world.add_objects();
-        object->set_x((*i)->GetX() * OBJECT_SCALE_UP);
-        object->set_y((*i)->GetY() * OBJECT_SCALE_UP);
-        object->set_angle((*i)->GetAngle());
-        object->set_id((*i)->GetId());
+        object->set_x(o->GetX() * OBJECT_SCALE_UP);
+        object->set_y(o->GetY() * OBJECT_SCALE_UP);
+        object->set_angle(o->GetAngle());
+        object->set_id(o->GetId());
     }
 
-    for (auto i = WorldBorders.begin(); i != WorldBorders.end(); i++) {
+    for (auto& b: WorldBorders) {
         auto object = world.add_objects();
-        object->set_x((*i)->GetX() * OBJECT_SCALE_UP);
-        object->set_y((*i)->GetY() * OBJECT_SCALE_UP);
-        object->set_angle((*i)->GetAngle());
-        object->set_id((*i)->GetId());
+        object->set_x(b->GetX() * OBJECT_SCALE_UP);
+        object->set_y(b->GetY() * OBJECT_SCALE_UP);
+        object->set_angle(b->GetAngle());
+        object->set_id(b->GetId());
     }
 
     if (needFullPacket) {
@@ -168,21 +160,21 @@ void TWorld::PlayerKill(size_t id) {
 }
 
 void TWorld::timerEvent(QTimerEvent *) {
-    for (auto i = Players.begin(); i != Players.end(); i++) {
-        i.value()->ApplyCustomPhysics();
+
+    for (auto& p: Players) {
+        p->ApplyCustomPhysics();
     }
 
-    auto i = Bullets.begin();
-    while (i != Bullets.end())
-    {
-        (*i)->ApplyCustomPhysics();
-        if ((*i)->GetTtl() > 0) {
-            ++i;
-            continue;
+    for (auto b: Bullets) {
+        if (b->GetTtl() <= 0) {
+            b->deleteLater();
         }
-        (*i)->deleteLater();
-        i = Bullets.erase(i++);
     }
+
+    Bullets.erase(remove_if(Bullets.begin(), Bullets.end(),
+                    [](TBullet* b) {
+        return b->GetTtl() <= 0;
+    }), Bullets.end());
 
     float step = 1.0f / 50.0f;
     qint32 velocityIterations = 5;
@@ -207,20 +199,20 @@ void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
 }
 
 void TWorld::ClearObjects() {
-    for (auto i = StaticObjects.begin(); i != StaticObjects.end(); i++) {
-        (*i)->deleteLater();
+    for (auto i: StaticObjects) {
+        i->deleteLater();
     }
     StaticObjects.clear();
 
-    for (auto i = DynamicObjects.begin(); i != DynamicObjects.end(); i++) {
-        (*i)->deleteLater();
+    for (auto i: DynamicObjects) {
+        i->deleteLater();
     }
     DynamicObjects.clear();
 }
 
 void TWorld::ClearBorders() {
-    for (auto i = WorldBorders.begin(); i != WorldBorders.end(); i++) {
-        (*i)->deleteLater();
+    for (auto i: WorldBorders) {
+        i->deleteLater();
     }
     WorldBorders.clear();
 }

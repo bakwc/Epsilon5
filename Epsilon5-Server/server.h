@@ -35,7 +35,7 @@ private:
     QHash<QString, size_t> Ids;
     QHash<size_t, TClient*> Clients;
     QHash<QHostAddress, size_t> Ips;
-    QUdpSocket* Server;
-    size_t CurrentId;
-    size_t LastFullSended;
+    QUdpSocket* Server = new QUdpSocket(this);
+    size_t CurrentId = 1;
+    size_t LastFullSended = 0;
 };

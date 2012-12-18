@@ -7,9 +7,6 @@
 
 TServer::TServer(QObject *parent)
     : QObject(parent)
-    , Server(new QUdpSocket(this))
-    , CurrentId(1)
-    , LastFullSended(0)
 {
     connect(Server, SIGNAL(readyRead()), SLOT(DataReceived()));
 }
@@ -138,18 +135,18 @@ void TServer::Send(const QHostAddress &ip, quint16 port,
 }
 
 void TServer::RespawnDeadClients() {
-    for (auto i = Clients.begin(); i != Clients.end(); i++) {
-        i.value()->ReSpawn();
+    for (auto i: Clients) {
+        i->ReSpawn();
     }
 }
 
 void TServer::SerialiseStats(Epsilon5::World& world) {
-    for (auto i = Clients.begin(); i != Clients.end(); i++) {
+    for (auto i: Clients) {
         auto stat = world.add_players_stat();
-        stat->set_score((*i)->GetScore());
-        stat->set_kills((*i)->GetKills());
-        stat->set_deaths((*i)->GetDeaths());
-        stat->set_id((*i)->GetId());
+        stat->set_score(i->GetScore());
+        stat->set_kills(i->GetKills());
+        stat->set_deaths(i->GetDeaths());
+        stat->set_id(i->GetId());
     }
 
 }

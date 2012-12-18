@@ -79,5 +79,5 @@ protected:
     b2World* B2World();
 protected:
     b2Body* Body;
-    size_t Id;
+    size_t Id = 0;
 };

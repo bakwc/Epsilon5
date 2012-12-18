@@ -17,6 +17,10 @@ TStaticObject::TStaticObject(double x, double y, double angle, QObject *parent)
     Body = B2World()->CreateBody(&bodyDef);
 }
 
+TStaticObject::~TStaticObject() {
+    B2World()->DestroyBody(Body);
+}
+
 b2World* TStaticObject::B2World() {
     return ((TWorld*)(parent()))->GetB2World();
 }

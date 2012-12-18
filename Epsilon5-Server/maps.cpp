@@ -10,8 +10,6 @@
 
 TMaps::TMaps(QObject *parent)
     : QObject(parent)
-    , CurrentMap(-1)
-    , MapStatus(MS_NoMap)
 {
 }
 
@@ -23,26 +21,7 @@ void TMaps::LoadMaps()
     if (entryList.isEmpty())
         throw UException("Cannot find maps files in " + dir.canonicalPath());
 
-    qDebug() << Q_FUNC_INFO << entryList;
     MapFiles << entryList;
-}
-
-void TMaps::LoadMaplist(const QString& fileName) {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw UException("Error opening file " + fileName);
-    }
-    QTextStream in(&file);
-    QString line = "";
-    while (!line.isNull()) {
-        line = in.readLine();
-        if (line.isEmpty() || line[0] == '#') {
-            continue;
-        }
-        MapFiles.push_back(line);
-    }
-    CurrentMap = -1;
-    MapStatus = MS_NoMap;
 }
 
 void TMaps::LoadNextMap() {

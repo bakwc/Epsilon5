@@ -4,12 +4,6 @@
 
 TApplication::TApplication(int& argc, char *argv[])
     : QCoreApplication(argc, argv)
-    , Settings(new TSettings(this))
-    , World(new TWorld(this))
-    , Server(new TServer(this))
-    , Objects(new TObjects(this))
-    , Maps(new TMaps(this))
-    , WeaponPacks(new TWeaponPacks(this))
 {
     connect(Server, SIGNAL(NewPlayer(size_t, ETeam)),
             World, SLOT(PlayerSpawn(size_t, ETeam)));
@@ -45,7 +39,6 @@ TApplication::TApplication(int& argc, char *argv[])
 void TApplication::Init() {
     srand(time(0));
     Objects->LoadObjects("objects/objects.txt");
-//    Maps->LoadMaplist("maplist.txt");
     Maps->LoadMaps();
     Maps->LoadNextMap();
     Server->Start();

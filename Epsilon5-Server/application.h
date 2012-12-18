@@ -33,12 +33,11 @@ public:
     inline TServer* GetServer() {
         return Server;
     }
-
 private:
-    TSettings* Settings;
-    TWorld* World;
-    TServer* Server;
-    TObjects* Objects;
-    TMaps* Maps;
-    TWeaponPacks* WeaponPacks;
+    TSettings* Settings = new TSettings(this);
+    TWorld* World = new TWorld(this);
+    TServer* Server = new TServer(this);
+    TObjects* Objects = new TObjects(this);
+    TMaps* Maps = new TMaps(this);
+    TWeaponPacks* WeaponPacks = new TWeaponPacks(this);
 };

@@ -7,7 +7,6 @@
 TDynamicObject::TDynamicObject(double x, double y, double vx,
                                double vy, double angle, QObject *parent)
     : QObject(parent)
-    , Id(0)
 {
     if (std::isnan(x) || std::isnan(y)
             || std::isnan(vx) || std::isnan(vy) || std::isnan(angle))

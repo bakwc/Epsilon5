@@ -158,7 +158,7 @@ QPoint TMaps::GetSpawnPosition(ETeam team) {
     sr = matchPoints[n]->SpawnRadius;
 
     QPoint res;
-    res.setX(x - sr / 2 + rand() % sr);
-    res.setY(y - sr / 2 + rand() % sr);
+    res.setX(x - sr / 2 + rand() % (sr + 1));
+    res.setY(y - sr / 2 + rand() % (sr + 1));
     return res;
 }

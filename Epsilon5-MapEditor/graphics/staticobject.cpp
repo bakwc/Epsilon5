@@ -4,7 +4,7 @@
 #include <qmath.h>
 #include "graphics/staticobject.h"
 //------------------------------------------------------------------------------
-TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
+TStaticObject::TStaticObject(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
@@ -14,7 +14,7 @@ TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
+TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
@@ -24,7 +24,7 @@ TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-QRectF TStaticObject::boundingRect()
+QRectF TStaticObject::boundingRect() const
 {
     return QRectF(0, 0, pixmap().width(), pixmap().height());
 }

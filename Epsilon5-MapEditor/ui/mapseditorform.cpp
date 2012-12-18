@@ -10,6 +10,7 @@
 #include "graphics/scene.h"
 #include "graphics/sceneview.h"
 #include "graphics/staticobject.h"
+#include "graphics/respawnobject.h"
 #include "mapseditorform.h"
 #include "itemmodel_t.h"
 #include "ui_mapseditorform.h"
@@ -664,11 +665,11 @@ void TMapsEditorForm::updateScene()
     auto it2 = mCurrentMap->respawns().constBegin();
     for (; it2 != mCurrentMap->respawns().constEnd(); ++it2) {
         const containers::TRespawnItem& respawn = *it2;
-        TStaticObject* mapObject = new TStaticObject(
+        TRespawnObject* mapObject = new TRespawnObject(
                 QPixmap(respawn.resourceFile()));
         mapObject->setPos(respawn.pos());
         mapObject->setObjectId(respawn.itemId());
-        mapObject->setRespawn(true);
+        mapObject->setSpawnRadius(respawn.spawnRadius());
         mScene->addItem(mapObject);
     }
 }

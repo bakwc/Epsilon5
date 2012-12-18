@@ -4,10 +4,10 @@
 class TStaticObject : public QGraphicsPixmapItem
 {
 public:
-    explicit TStaticObject(QGraphicsPixmapItem* parent = 0);
-    TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent = 0);
+    explicit TStaticObject(QGraphicsItem* parent = 0);
+    TStaticObject(const QPixmap& pixmap, QGraphicsItem* parent = 0);
     void setFixed(bool value = true);
-    QRectF boundingRect();
+    QRectF boundingRect() const;
     quint32 objectId();
     void setObjectId(quint32 id);
     void setAngle(qreal rad);

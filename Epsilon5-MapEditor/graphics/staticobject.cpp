@@ -4,25 +4,27 @@
 #include <qmath.h>
 #include "graphics/staticobject.h"
 //------------------------------------------------------------------------------
-TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
+TStaticObject::TStaticObject(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
+    , mRespawn(false)
 {
     setPixmap(QPixmap(32, 32));
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
+TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
+    , mRespawn(false)
 {
     setPixmap(pixmap);
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-QRectF TStaticObject::boundingRect()
+QRectF TStaticObject::boundingRect() const
 {
     return QRectF(0, 0, pixmap().width(), pixmap().height());
 }
@@ -56,8 +58,8 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         // Move object
         setTransformOriginPoint(0, 0);
         QGraphicsItem::setPos(mapToScene(
-                event->pos().x() - centerPoint().x(),
-                event->pos().y() - centerPoint().y()));
+                event->pos().x() - mCursorPosition.x(),
+                event->pos().y() - mCursorPosition.y()));
         setTransformOriginPoint(centerPoint());
     }
 }
@@ -132,3 +134,14 @@ QPointF TStaticObject::centerPoint() const
 {
     return QPointF(pixmap().width() / 2, pixmap().height() / 2);
 }
+//------------------------------------------------------------------------------
+void TStaticObject::setRespawn(bool value)
+{
+    mRespawn = value;
+}
+//------------------------------------------------------------------------------
+bool TStaticObject::isRespawn() const
+{
+    return mRespawn;
+}
+//------------------------------------------------------------------------------

@@ -28,7 +28,8 @@ SOURCES += \
     storage/st_container_t.cpp \
     storage/st_item_t.cpp \
     storage/st_sourceobjectitem.cpp \
-    storage/st_sourceobjectcontainer.cpp
+    storage/st_sourceobjectcontainer.cpp \
+    graphics/respawnobject.cpp
 
 
 HEADERS += \
@@ -56,7 +57,8 @@ HEADERS += \
     storage/st_item_t.h \
     storage/st_sourceobjectitem.h \
     storage/st_sourceobjectcontainer.h \
-    itemmodel_t.h
+    itemmodel_t.h \
+    graphics/respawnobject.h
 
 FORMS += \
     ui/configurationdialog.ui \

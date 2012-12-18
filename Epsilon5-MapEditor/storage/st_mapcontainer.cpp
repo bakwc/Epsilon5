@@ -86,7 +86,6 @@ void TMapContainer::loadMapByName(const QString& mapName,
     addItem(map);
 }
 //------------------------------------------------------------------------------
-//void TMapContainer::saveMapByName(const QString& mapName,
 void TMapContainer::saveMap(const TMapItem& map, const QDir& baseDirectory)
 {
     QString mapDirWithName = baseDirectory.absolutePath()
@@ -98,6 +97,7 @@ void TMapContainer::saveMap(const TMapItem& map, const QDir& baseDirectory)
 
     qDebug() << mapDirWithName;
     qDebug() << "map objects:" << map.objects().count();
+    qDebug() << "map respawns:" << map.respawns().count();
 
     // Create folder for map files
     if (!mapDir.exists()) {
@@ -220,11 +220,6 @@ void TMapContainer::loadMap(const TMapItem& map)
 {
     loadMapByName(map.name(), map.resourceFile());
 }
-//------------------------------------------------------------------------------
-//void TMapContainer::saveMap(const TMapItem& map)
-//{
-//    saveMap(map, map.resourceFile());
-//}
 //------------------------------------------------------------------------------
 void TMapContainer::deleteMap(const TMapItem& mapItem)
 {

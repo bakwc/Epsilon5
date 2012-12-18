@@ -10,7 +10,8 @@ public:
     void init();
 
 signals:
-    void moveItem(quint32 id, QPointF position, qreal angle);
+    void clickItem(quint32 id, bool isRespawn);
+    void moveItem(quint32 id, QPointF position, qreal angle, bool isRespawn);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);

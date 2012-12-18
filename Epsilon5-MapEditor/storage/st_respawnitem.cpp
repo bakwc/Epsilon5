@@ -76,6 +76,7 @@ void TRespawnItem::setY(quint32 y)
 void TRespawnItem::setPos(const QPoint& pos)
 {
     info().x = pos.x();
+    info().y = pos.y();
 }
 //------------------------------------------------------------------------------
 void TRespawnItem::setCaptureRadius(quint32 radius)

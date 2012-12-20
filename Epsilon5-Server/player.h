@@ -6,13 +6,20 @@
 #include "maps.h"
 
 class TBullet;
+class TApplication;
+
+struct TWeaponInfo {
+    Epsilon5::Weapon WeaponType;
+    size_t BulletsLeft;
+    size_t CagesLeft;
+    QTime LastShoot;
+};
 
 struct TFireInfo {
     double X, Y, Vx, Vy, Angle;
-    Epsilon5::Weapon Weapon;
-    bool PrimaryAttack;
     size_t PlayerId;
     ETeam Team;
+    TWeaponInfo* WeaponInfo = 0;
 };
 
 class TPlayer : public TDynamicObject
@@ -48,14 +55,17 @@ signals:
 
 public slots:
     void ApplyControl(const Epsilon5::Control &control);
-
+private:
+    TApplication* Application();
 private:
     b2Vec2 Force;
     size_t Id;
     QString NickName;
     TMaps* Maps;
-    size_t HP;
+    size_t HP = 100;
     TObjectInfo CollisionInfo;
     ETeam Team;
     int Ping;
+    QHash<size_t, TWeaponInfo> WeaponPack;
+    size_t SelectedWeapon = 0;
 };

@@ -40,14 +40,14 @@ typedef struct
     DWORD			dwReserved;
 } SYSTEM_TIME_INFORMATION;
 
-static double GetCPUUsages()
+double GetCPUUsages()
 {
     SYSTEM_BASIC_INFORMATION		SysBaseInfo;
     SYSTEM_TIME_INFORMATION			SysTimeInfo;
     SYSTEM_PERFORMANCE_INFORMATION	SysPerfInfo;
     LONG							status = NO_ERROR;
-    LARGE_INTEGER					liOldIdleTime = {0, 0};
-    LARGE_INTEGER					liOldSystemTime = {0, 0};
+    LARGE_INTEGER					liOldIdleTime = {{0, 0}};
+    LARGE_INTEGER					liOldSystemTime = {{0, 0}};
     double							dbIdleTime;
     double							dbSystemTime;
     PROCNTQSI						NtQuerySystemInformation;

@@ -13,7 +13,7 @@
 #include "menu.h"
 
 class TApplication;
-static double GetCPUUsages();
+double GetCPUUsages();
 
 class TCPUThread : public QThread {
 public:
@@ -96,7 +96,7 @@ private:
     QVector<TRespPoint> RespPoints;
     QVector<TPlayerStat> Stats;
     bool ShowStats;
-    int Ping;
     TMenu Menu;
+    int Ping;
     TCPUThread Thread;
 };

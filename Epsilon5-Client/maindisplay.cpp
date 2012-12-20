@@ -27,10 +27,8 @@
                                             // to the buffer
  );*/
 
-
 #define Li2Double(x)	((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
 #define SystemTimeInformation		3
-
 typedef LONG (WINAPI *PROCNTQSI) (UINT, PVOID, ULONG, PULONG);
 
 typedef struct
@@ -68,13 +66,13 @@ static double GetCPUUsages()
     // get system time
     status = NtQuerySystemInformation(SystemTimeInformation, &SysTimeInfo, sizeof(SysTimeInfo), NULL);
     if (status != NO_ERROR)
-       return 0;
+        return 0;
 
 
     // get system idle time
     status = NtQuerySystemInformation(SystemPerformanceInformation, &SysPerfInfo, sizeof(SysPerfInfo), NULL);
     if (status != NO_ERROR)
-       return 0;
+        return 0;
 
 
     liOldIdleTime = SysPerfInfo.IdleTime;
@@ -106,6 +104,16 @@ static double GetCPUUsages()
 
     return dbIdleTime;
 }
+#endif
+
+#ifdef Q_OS_LINUX
+
+static double GetCPUUsages()
+{
+    return 0;
+}
+
+
 #endif
 
 
@@ -229,7 +237,7 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
             DrawText(painter, QPoint(width() / 2 - 50, height() / 2 - 5), tr("Connection lost..."), 28);
         break;
     }
-            painter.end();
+    painter.end();
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent* event) {
@@ -463,7 +471,7 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
             }
         }
         miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
-                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
+                                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
 
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
@@ -471,9 +479,9 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
         // Draw player name
         painter.setFont(nickFont);
         QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,
-                        widgetCenter.y() + pos.y() - img->height()/2
+                               widgetCenter.y() + pos.y() - img->height()/2
                                - painter.fontInfo().pixelSize()-5,
-                        nickMaxWidth, painter.fontInfo().pixelSize() + 2);
+                               nickMaxWidth, painter.fontInfo().pixelSize() + 2);
 
         painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
         painter.setPen(oldPen);
@@ -508,7 +516,7 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
 }
 
 void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
-        const QPoint& playerPos, const QPoint& widgetCenter)
+                               const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     for (int i = 0; i != CurrentWorld->objects_size(); i++) {
@@ -530,14 +538,14 @@ void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
                           widgetCenter.y() + pos.y() - rimg.height() / 2, rimg);
 
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
-                currentObjectPos, MAX_MINIMAP_SIZE));
+                                currentObjectPos, MAX_MINIMAP_SIZE));
         miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y() - 4,
-                rimg.scaledToHeight(4));
+                          rimg.scaledToHeight(4));
     }
 }
 
 void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
-        const QPoint& playerPos, const QPoint& widgetCenter)
+                                  const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     if (CurrentWorld->resp_points_size() > 0) {
@@ -564,9 +572,9 @@ void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
-                currentRespPos, MAX_MINIMAP_SIZE));
+                                currentRespPos, MAX_MINIMAP_SIZE));
         miniMap.drawImage(posOnMinimap.x(), posOnMinimap.y() - 10,
-                (*img).scaled(10, 10));
+                          (*img).scaled(10, 10));
     }
 }
 

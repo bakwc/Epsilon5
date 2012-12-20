@@ -13,6 +13,102 @@
 #include "application.h"
 #include <QtOpenGL>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <hidpi.h>
+#include <Winternl.h>
+
+/*NTSYSAPI NTSTATUS NTAPI NtQuerySystemInformation(
+        IN UINT SystemInformationClass,		// information type
+        OUT PVOID SystemInformation,		// pointer to buffer
+        IN ULONG SystemInformationLength,	// buffer size in bytes
+        OUT PULONG ReturnLength OPTIONAL	// pointer to a 32 bit variable that
+                                            // receives the number of bytes written
+                                            // to the buffer
+ );*/
+
+
+#define Li2Double(x)	((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
+#define SystemTimeInformation		3
+
+typedef LONG (WINAPI *PROCNTQSI) (UINT, PVOID, ULONG, PULONG);
+
+typedef struct
+{
+    LARGE_INTEGER	liKeBootTime;
+    LARGE_INTEGER	liKeSystemTime;
+    LARGE_INTEGER	liExpTimeZoneBias;
+    ULONG			uCurrentTimeZoneID;
+    DWORD			dwReserved;
+} SYSTEM_TIME_INFORMATION;
+
+static double GetCPUUsages()
+{
+    SYSTEM_BASIC_INFORMATION		SysBaseInfo;
+    SYSTEM_TIME_INFORMATION			SysTimeInfo;
+    SYSTEM_PERFORMANCE_INFORMATION	SysPerfInfo;
+    LONG							status = NO_ERROR;
+    LARGE_INTEGER					liOldIdleTime = {0, 0};
+    LARGE_INTEGER					liOldSystemTime = {0, 0};
+    double							dbIdleTime;
+    double							dbSystemTime;
+    PROCNTQSI						NtQuerySystemInformation;
+
+    HMODULE hDLL = GetModuleHandle(TEXT("ntdll.dll"));
+
+    NtQuerySystemInformation = (PROCNTQSI)GetProcAddress(hDLL, "NtQuerySystemInformation");
+    if (!NtQuerySystemInformation)
+        return 0;
+
+    status = NtQuerySystemInformation(SystemBasicInformation, &SysBaseInfo, sizeof(SysBaseInfo), NULL);
+    if (status != NO_ERROR)
+        return 0;
+
+
+    // get system time
+    status = NtQuerySystemInformation(SystemTimeInformation, &SysTimeInfo, sizeof(SysTimeInfo), NULL);
+    if (status != NO_ERROR)
+       return 0;
+
+
+    // get system idle time
+    status = NtQuerySystemInformation(SystemPerformanceInformation, &SysPerfInfo, sizeof(SysPerfInfo), NULL);
+    if (status != NO_ERROR)
+       return 0;
+
+
+    liOldIdleTime = SysPerfInfo.IdleTime;
+    liOldSystemTime = SysTimeInfo.liKeSystemTime;
+
+    // wait one second
+    Sleep(1000);
+
+    // get new System time
+    status = NtQuerySystemInformation(SystemTimeInformation, &SysTimeInfo, sizeof(SysTimeInfo), NULL);
+
+    if (status != NO_ERROR)
+        return 0;
+
+    // get new system idle time
+    status = NtQuerySystemInformation(SystemPerformanceInformation, &SysPerfInfo, sizeof(SysPerfInfo), NULL);
+
+    if (status != NO_ERROR)
+        return 0;
+    // current value = new value - old value
+    dbIdleTime = Li2Double(SysPerfInfo.IdleTime) - Li2Double(liOldIdleTime);
+    dbSystemTime = Li2Double(SysTimeInfo.liKeSystemTime) - Li2Double(liOldSystemTime);
+
+    // currentCpuIdle = IdleTime / SystemTime;
+    dbIdleTime = dbIdleTime / dbSystemTime;
+
+    // currentCpuUsage% = 100 - (CurrentCpuIdle * 100) / NumberOfProcessors
+    dbIdleTime = 100.0 - dbIdleTime * 100.0 / (double)SysBaseInfo.NumberOfProcessors + 0.5;
+
+    return dbIdleTime;
+}
+#endif
+
+
 
 #ifdef Q_OS_UNIX
 #include <linux/input.h>
@@ -56,6 +152,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , CurrentWorld(NULL)
     , ShowStats(false)
     , Menu(Images)
+    , Ping(0)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
@@ -75,6 +172,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
     Control.set_weapon(Epsilon5::Pistol);
+    Thread.start();
 
     startTimer(20);
 }
@@ -125,6 +223,7 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
         DrawWorld(painter);
         DrawFps(painter);
         DrawPing(painter);
+        DrawCpu(painter);
 
         if( !Application->GetNetwork()->IsServerAlive() )
             DrawText(painter, QPoint(width() / 2 - 50, height() / 2 - 5), tr("Connection lost..."), 28);
@@ -262,10 +361,20 @@ void TMainDisplay::DrawFps(QPainter& painter)
     ++frames;
 }
 
+
 void TMainDisplay::DrawPing(QPainter& painter)
 {
-    if(Ping != 2686572)
     DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping), 10);
+}
+
+
+void TMainDisplay::DrawCpu(QPainter& painter)
+{
+#ifdef Q_OS_WIN
+    DrawText(painter, QPoint(0, 38), "Cpu:" + QString::number(Thread.time,'g', 3), 10);
+    if( Thread.isFinished() )
+        Thread.start();
+#endif
 }
 
 void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos,
@@ -525,7 +634,7 @@ void TMainDisplay::DrawWorld(QPainter& painter){
         DrawStats(painter);
 
         // Minimap drawing
-        painter.drawImage(10, 30, miniMapImg);
+        painter.drawImage(10, 45, miniMapImg);
 
         if (Application->GetState() == ST_SelectingResp) {
             // TODO - Draw resp menu

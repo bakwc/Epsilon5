@@ -1,6 +1,7 @@
 #pragma once
 #include <QGLWidget>
 #include <QImage>
+#include <QThread>
 #include <QQueue>
 #include <QHash>
 #include <QVector>
@@ -12,6 +13,16 @@
 #include "menu.h"
 
 class TApplication;
+static double GetCPUUsages();
+
+class TCPUThread : public QThread {
+public:
+    void run() {
+        time = GetCPUUsages();
+    }
+
+    double time;
+};
 
 enum ETeam {
     T_One,
@@ -59,6 +70,7 @@ private:
             const QString& text, int FONT_SIZE_PT);
     void DrawFps(QPainter& painter);
     void DrawPing(QPainter& painter);
+    void DrawCpu(QPainter &painter);
     void DrawWorld(QPainter& painter);
     void DrawPlayers(QPainter& painter, QPainter& miniMap,
             const QPoint& playerPos, const QPoint& widgetCenter);
@@ -86,4 +98,5 @@ private:
     bool ShowStats;
     int Ping;
     TMenu Menu;
+    TCPUThread Thread;
 };

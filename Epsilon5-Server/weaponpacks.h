@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <QObject>
 #include <QHash>
 #include <QTime>
@@ -12,34 +13,63 @@
 class TWorld;
 class TBullet;
 
-struct TTimeKey {
-    size_t PlayerId;
-    Epsilon5::Weapon WeaponType;
-    operator QString() {
-        return ToString(PlayerId) + ":" + ToString((size_t)(WeaponType));
+class TWeaponBase : public QObject {
+    Q_OBJECT
+public:
+    TWeaponBase(size_t rechargeTime, size_t bulletsCount,
+                size_t cagesCount, size_t timeBetweenShots,
+                Epsilon5::Weapon weaponType, QObject* parent);
+    inline size_t GetRechargeTime() {
+        return RechargeTime;
     }
+    inline size_t GetBulletsCount() {
+        return BulletsCount;
+    }
+    inline size_t GetCagesCount() {
+        return CagesCount;
+    }
+    inline size_t GetTimeBetweenShots() {
+        return TimeBetweenShots;
+    }
+    inline TWeaponInfo GetDefault() {
+        TWeaponInfo info;
+        info.BulletsLeft = BulletsCount;
+        info.CagesLeft = CagesCount;
+        info.WeaponType = WeaponType;
+        info.LastShoot.start();
+        return info;
+    }
+
+    virtual void MakeShot(const TFireInfo& fireInfo) = 0;
+signals:
+    void SpawnBullet(TBullet* bullet);
+private:
+    size_t RechargeTime;
+    size_t BulletsCount;
+    size_t CagesCount;
+    size_t TimeBetweenShots;
+    Epsilon5::Weapon WeaponType;
 };
 
-struct TShootInfo {
-    TShootInfo() {
-        MachineGunAmmoInClip = 30;
-        MachineGunClips = 4;
+class TPistolWeapon : public TWeaponBase {
+    Q_OBJECT
+public:
+    TPistolWeapon(QObject* parent);
+    void MakeShot(const TFireInfo& fireInfo);
+};
 
-        ShotGunAmmoInClip = 8;
-        ShotGunClips = 3;
+class TMachineGunWeapon : public TWeaponBase {
+    Q_OBJECT
+public:
+    TMachineGunWeapon(QObject* parent);
+    void MakeShot(const TFireInfo& fireInfo);
+};
 
-        PistolAmmoInClip = 12; //usp 45
-        PistolClips = 5;
-        Time.start();
-    }
-
-    QTime Time;
-    int MachineGunAmmoInClip;
-    int MachineGunClips;
-    int ShotGunAmmoInClip;
-    int ShotGunClips;
-    int PistolAmmoInClip;
-    int PistolClips;
+class TShotGunWeapon : public TWeaponBase {
+    Q_OBJECT
+public:
+    TShotGunWeapon(QObject* parent);
+    void MakeShot(const TFireInfo& fireInfo);
 };
 
 class TWeaponPacks : public QObject
@@ -47,13 +77,11 @@ class TWeaponPacks : public QObject
     Q_OBJECT
 public:
     TWeaponPacks(QObject *parent = 0);
+    QHash<size_t, TWeaponInfo> GetPack(size_t packId);
 public slots:
     void ActivateWeapon(TFireInfo& fireInfo);
 signals:
-    void SpawnBullet(TBullet *bullet);
+    void SpawnBullet(TBullet* bullet);
 private:
-    QHash<QString, TShootInfo> LastShoots;
-    static const int shotgunReloadTime = 3500;
-    static const int machinegunReloadTime = 2000;
-    static const int pistolReloadTime = 800;
+    QHash<Epsilon5::Weapon, TWeaponBase*> Weapons;
 };

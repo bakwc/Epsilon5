@@ -4,6 +4,7 @@
 #include "player.h"
 #include "bullet.h"
 #include "defines.h"
+#include "application.h"
 
 const size_t HP_LOST = 45;
 
@@ -11,7 +12,6 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
     : TDynamicObject(0, 0, 0, 0, 0, parent)
     , Id(id)
     , Maps(maps)
-    , HP(100)
     , Team(team)
 {
     b2Vec2 pos;
@@ -37,6 +37,8 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
 
     Force(0) = 0;
     Force(1) = 0;
+
+    WeaponPack = Application()->GetWeaponPacks()->GetPack(0); // TODO: pack number should be passed
 }
 
 void TPlayer::ApplyControl(const Epsilon5::Control &control) {
@@ -60,23 +62,27 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
             fireInfo.Vx = GetVx();
             fireInfo.Vy = GetVy();
             fireInfo.Angle = angle;
-            fireInfo.Weapon = control.weapon();
+
+            size_t weaponId = control.weapon();
+
+            if (WeaponPack.find(weaponId) != WeaponPack.end()) {
+                SelectedWeapon = weaponId;
+            }
+
             fireInfo.PlayerId = Id;
-            fireInfo.PrimaryAttack = control.keystatus().keyattack1();
+            // Secondary attack depricated
+            //fireInfo.PrimaryAttack = control.keystatus().keyattack1();
             fireInfo.Team = GetTeam();
+            fireInfo.WeaponInfo = &WeaponPack[SelectedWeapon];
             emit Fire(fireInfo);
         }
     } catch (const std::exception& e) {
         qDebug() << "TPlayer::ApplyControl(): " << e.what();
     }
-
-    //setAngle(control.angle());
 }
 
 void TPlayer::ApplyCustomPhysics()
 {
-    //ApplyFractionForce();
-    //Body->ApplyForceToCenter(Force);
     Body->ApplyLinearImpulse(Force, Body->GetPosition());
 
     QSize mapSize = Maps->GetMapSize();
@@ -131,4 +137,8 @@ void TPlayer::Hit(size_t playerId, quint8 ffMode) {
         return;
     }
     HP -= hpDelta;
+}
+
+TApplication* TPlayer::Application() {
+    return (TApplication*)qApp;
 }

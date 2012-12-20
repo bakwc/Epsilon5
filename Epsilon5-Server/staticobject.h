@@ -9,7 +9,7 @@ class TStaticObject : public QObject
     Q_OBJECT
 public:
     explicit TStaticObject(double x, double y, double angle,QObject *parent = 0);
-    virtual ~TStaticObject() {}
+    virtual ~TStaticObject();
     void SetRectSize(double width, double height);
     inline double GetX() {
         return Body->GetPosition()(0);

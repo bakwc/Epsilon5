@@ -2,9 +2,9 @@
 #include "../utils/uexception.h"
 #include "settings.h"
 
-const char* DEFAULT_SERVER_ADDRESS = "127.0.0.1";
+const char* DEFAULT_SERVER_ADDRESS = "0.0.0.0";
 const quint16 DEFAULT_SERVER_PORT = 14567;
-const bool DEFAULT_GAMEPLAY_FRIENDLYFIRE = false;
+const quint8 DEFAULT_GAMEPLAY_FRIENDLYFIRE = 50;
 const char* SETTINGS_FILENAME = "settings.ini";
 
 TSettings::TSettings(QObject* parent)
@@ -30,7 +30,7 @@ quint16 TSettings::GetServerPort()
     return Settings->GetParameter("server.port");
 }
 
-bool TSettings::GetGameplayFriendlyFire()
+quint8 TSettings::GetGameplayFriendlyFire()
 {
     return Settings->GetParameter("gameplay.friendlyfire");
 }

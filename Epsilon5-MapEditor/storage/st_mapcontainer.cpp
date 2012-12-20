@@ -1,3 +1,4 @@
+#include "../utils/ucast.h"
 #include "../utils/uexception.h"
 #include "../utils/usettings.h"
 #include "storage/st_mapcontainer.h"
@@ -85,7 +86,6 @@ void TMapContainer::loadMapByName(const QString& mapName,
     addItem(map);
 }
 //------------------------------------------------------------------------------
-//void TMapContainer::saveMapByName(const QString& mapName,
 void TMapContainer::saveMap(const TMapItem& map, const QDir& baseDirectory)
 {
     QString mapDirWithName = baseDirectory.absolutePath()
@@ -97,6 +97,7 @@ void TMapContainer::saveMap(const TMapItem& map, const QDir& baseDirectory)
 
     qDebug() << mapDirWithName;
     qDebug() << "map objects:" << map.objects().count();
+    qDebug() << "map respawns:" << map.respawns().count();
 
     // Create folder for map files
     if (!mapDir.exists()) {
@@ -180,9 +181,11 @@ TMapInfo TMapContainer::mapInfoFromFile(const QString& fileName)
     params["name"] = "";
     params["width"] = "";
     params["height"] = "";
+    params["color"] = "";
     try {
         settings.DefineParams(params);
-        settings.Load(fileName, QStringList() << "name" << "width" << "height");
+        settings.Load(fileName,
+            QStringList() << "name" << "width" << "height" << "color");
     } catch (USettings& ex) {
         throw UException(QString(Q_FUNC_INFO)
                 .append(":: illegal map config detected in '%1'").arg(fileName));
@@ -192,6 +195,7 @@ TMapInfo TMapContainer::mapInfoFromFile(const QString& fileName)
     info.name = name;
     info.width = settings.GetParameter("width");
     info.height = settings.GetParameter("height");
+    info.color = (const QColor&)settings.GetParameter("color");
     return info;
 }
 //------------------------------------------------------------------------------
@@ -202,6 +206,7 @@ void TMapContainer::mapInfoToFile(const QString& fileName, const TMapInfo& info)
     params["name"] = info.name;
     params["width"] = QString().number(info.width);
     params["height"] = QString().number(info.height);
+    params["color"] = QVariant(info.color).toString();
     try {
         settings.DefineParams(params);
         settings.Save(fileName);
@@ -215,11 +220,6 @@ void TMapContainer::loadMap(const TMapItem& map)
 {
     loadMapByName(map.name(), map.resourceFile());
 }
-//------------------------------------------------------------------------------
-//void TMapContainer::saveMap(const TMapItem& map)
-//{
-//    saveMap(map, map.resourceFile());
-//}
 //------------------------------------------------------------------------------
 void TMapContainer::deleteMap(const TMapItem& mapItem)
 {

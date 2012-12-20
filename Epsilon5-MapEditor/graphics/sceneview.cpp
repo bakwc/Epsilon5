@@ -3,10 +3,17 @@
 #include <QGraphicsSceneMouseEvent>
 #include "sceneview.h"
 //------------------------------------------------------------------------------
+const qint8 MAX_ZOOM_TIMES = 8;
+const qreal SCALE_FACTOR = 1.2;
+//------------------------------------------------------------------------------
 TSceneView::TSceneView(TScene* scene, QWidget* parent)
     : QGraphicsView(scene, parent)
     , mFixedPoint(QPoint())
     , mPx(new QPixmap())
+    , mZoomTimes(0)    // -MAX_ZOOM_TIMES <= mZoomTimes <= MAX_ZOOM_TIMES
+    , mGridSize(10)
+    , mGridVisible(false)
+    , mGridColor(Qt::black)
 {
 }
 //------------------------------------------------------------------------------
@@ -37,6 +44,56 @@ void TSceneView::drawBackground(QPainter* painter, const QRectF& rect)
     painter->setPen(QPen(QBrush(Qt::black), SCENE_BORDER_SIZE));
     painter->drawRect(backgroundRect);
     painter->setPen(oldPen);
+
+    if( mPx->isNull() )
+        return;
+
+    if( mGridVisible ) {
+        // Draw grid
+        drawGrid(painter, mGridSize, mGridColor);
+
+        // Draw center point
+        QPen origPen = painter->pen();
+        painter->setPen(QPen(Qt::red, 10));
+        painter->drawRect(0, 0, 1, 1);
+        painter->setPen(origPen);
+    }
+}
+//------------------------------------------------------------------------------
+void TSceneView::drawGrid(QPainter *painter, quint16 gridSize, const QColor& color)
+{
+    QPointF centerPoint = QPointF(mPx->size().width() / 2, mPx->size().height() / 2);
+    quint16 numRows = centerPoint.y() * 2 / gridSize;
+    quint16 numCols = centerPoint.x() * 2 / gridSize;
+    QPointF delta = centerPoint - QPointF(numCols / 2.0 * gridSize,
+            numRows / 2.0 * gridSize);
+    QVector<QPoint> points;
+    QRectF drawingRect = QRectF(-centerPoint.x(), -centerPoint.y(),
+            centerPoint.x(), centerPoint.y());
+
+    // Make num* be always even
+    numRows += numRows % 2;
+    numCols += numCols % 2;
+
+    for( int i = 0; i <= numCols; ++i )
+    {
+        points.append(QPoint(i*gridSize + drawingRect.topLeft().x() + delta.x(),
+                drawingRect.top()));
+        points.append(QPoint(i*gridSize + drawingRect.topLeft().x() + delta.x(),
+                drawingRect.height()));
+    }
+
+    for( int i = 0; i <= numRows; ++i ) {
+        points.append(QPoint(drawingRect.left(),
+                i*gridSize + drawingRect.topLeft().y() + delta.y()));
+        points.append(QPoint(drawingRect.width(),
+                i*gridSize + drawingRect.topLeft().y() + delta.y()));
+    }
+
+    QPen origPen = painter->pen();
+    painter->setPen(QPen(color));
+    painter->drawLines(points);
+    painter->setPen(origPen);
 }
 //------------------------------------------------------------------------------
 void TSceneView::mousePressEvent(QMouseEvent *event)
@@ -68,14 +125,23 @@ void TSceneView::mouseMoveEvent(QMouseEvent *event)
 //------------------------------------------------------------------------------
 void TSceneView::wheelEvent(QWheelEvent *event)
 {
+    if( event->modifiers() == Qt::ControlModifier) {
+        resetZoom();
+        return;
+    }
+
     QPointF pointBeforeScale(mapToScene(event->pos()));
     QPointF visibleCenter = center();
 
-    double scaleFactor = 1.2;
-    if(event->delta() > 0 )
-        scale(scaleFactor, scaleFactor);
-    else
-        scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    if(event->delta() > 0) {
+        if( mZoomTimes <= MAX_ZOOM_TIMES ) {
+            scale(SCALE_FACTOR, SCALE_FACTOR);
+            ++mZoomTimes;
+        }
+    } else if (mZoomTimes >= -MAX_ZOOM_TIMES) {
+        scale(1.0 / SCALE_FACTOR, 1.0 / SCALE_FACTOR);
+        --mZoomTimes;
+    }
 
     QPointF pointAfterScale(mapToScene(event->pos()));
     QPointF offset = pointBeforeScale - pointAfterScale;
@@ -85,11 +151,11 @@ void TSceneView::wheelEvent(QWheelEvent *event)
 //------------------------------------------------------------------------------
 void TSceneView::setCenter(const QPointF &centerPoint)
 {
-    QRectF visibleArea = mapToScene(rect()).boundingRect();
+    QRectF visibleArea = mapToScene(viewport()->rect()).boundingRect();
     QRectF sceneBounds = sceneRect();
 
-    qreal boundX = visibleArea.width() / 2.0;
-    qreal boundY = visibleArea.height() / 2.0;
+    qreal boundX = 0;
+    qreal boundY = 0;
     qreal boundWidth = sceneBounds.width() - visibleArea.width();
     qreal boundHeight = sceneBounds.height() - visibleArea.height();
     QRectF bounds(boundX, boundY, boundWidth, boundHeight);
@@ -102,13 +168,13 @@ void TSceneView::setCenter(const QPointF &centerPoint)
         } else {
             if(centerPoint.x() > bounds.x() + bounds.width() / 2)
                 mCenterPoint.setX(bounds.x() + bounds.width() / 2);
-            else if(centerPoint.x() < bounds.x() - bounds.width())
-                mCenterPoint.setX(bounds.x() - bounds.width() );
+            else if(centerPoint.x() < bounds.x() - bounds.width() / 2)
+                mCenterPoint.setX(bounds.x() - bounds.width() / 2 );
 
             if(centerPoint.y() > bounds.y() + bounds.height() / 2)
                 mCenterPoint.setY(bounds.y() + bounds.height() / 2);
-            else if(centerPoint.y() < bounds.y() - bounds.height())
-                mCenterPoint.setY(bounds.y() - bounds.height());
+            else if(centerPoint.y() < bounds.y() - bounds.height() / 2)
+                mCenterPoint.setY(bounds.y() - bounds.height() / 2);
         }
     }
     centerOn(mCenterPoint);
@@ -119,9 +185,53 @@ QPointF TSceneView::center()
     return mCenterPoint;
 }
 //------------------------------------------------------------------------------
-void TSceneView::resizeEvent(QResizeEvent* event)  {
+void TSceneView::resizeEvent(QResizeEvent* event) {
     QRectF visibleArea = mapToScene(rect()).boundingRect();
     setCenter(visibleArea.center());
     QGraphicsView::resizeEvent(event);
+}
+//------------------------------------------------------------------------------
+void TSceneView::clear()
+{
+    setBackground(QPixmap());
+}
+//------------------------------------------------------------------------------
+void TSceneView::resetZoom()
+{
+    if( !mZoomTimes )
+        return;
+
+    QPointF visibleCenter = center();
+    double scaleFactor = mZoomTimes < 0 ? SCALE_FACTOR : 1 / SCALE_FACTOR;
+    for( int i = 0; i < abs(mZoomTimes); ++i) {
+        scale(scaleFactor, scaleFactor);
+    }
+
+    mZoomTimes = 0;
+    setCenter(visibleCenter);
+}
+//------------------------------------------------------------------------------
+void TSceneView::setGridSize(quint16 size) {
+    mGridSize = size;
+}
+//------------------------------------------------------------------------------
+void TSceneView::setGridColor(const QColor& color) {
+    mGridColor = color;
+}
+//------------------------------------------------------------------------------
+void TSceneView::setGridVisible(bool value) {
+    mGridVisible = value;
+}
+//------------------------------------------------------------------------------
+quint16 TSceneView::gridSize() const {
+    return mGridSize;
+}
+//------------------------------------------------------------------------------
+QColor TSceneView::gridColor() const {
+    return mGridColor;
+}
+//------------------------------------------------------------------------------
+bool TSceneView::isGridVisible() const {
+    return mGridVisible;
 }
 //------------------------------------------------------------------------------

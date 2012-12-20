@@ -19,7 +19,9 @@ void TScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent)
     if (mButton == Qt::LeftButton) {
         mLastObject = (TStaticObject*)(itemAt(
                 QPoint(mouseEvent->lastScenePos().x(),
-                       mouseEvent->lastScenePos().y())));
+                mouseEvent->lastScenePos().y()), QTransform()));
+        if( mLastObject )
+            emit clickItem(mLastObject->objectId(), mLastObject->isRespawn());
     }
 }
 //------------------------------------------------------------------------------
@@ -28,7 +30,7 @@ void TScene::mouseMoveEvent(QGraphicsSceneMouseEvent* mouseEvent)
     QGraphicsScene::mouseMoveEvent(mouseEvent);
     if (mLastObject) {
         emit moveItem(mLastObject->objectId(), mLastObject->pos(),
-                      mLastObject->angleRad());
+                      mLastObject->angleRad(), mLastObject->isRespawn());
     }
 }
 //------------------------------------------------------------------------------

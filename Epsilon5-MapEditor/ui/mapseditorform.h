@@ -53,11 +53,13 @@ private slots:
     void on_teamButton_clicked();
     void on_backgroundButton_clicked();
     void on_objectsView_doubleClicked(QModelIndex index);
+    void on_colorButton_clicked();
 
-    void onItemMove(quint32 id, QPointF position, qreal angle);
+    void onClickItem(quint32 id, bool isRespawn);
+    void onItemMove(quint32 id, QPointF position, qreal angle, bool isRespawn);
     void toggleBrowserBox();
     void showMapListContentMenu(QPoint point);
-    void showObjectsContentMenu(QPoint point);
+    void showSObjectsContentMenu(QPoint point);
     void showListViewContentMenu(QPoint point);
 
     void updateScene();
@@ -70,14 +72,24 @@ private slots:
     void updateListView();
     void updateSettings();
 
-    void newMapListAction();
+    void clearMapListAction();
     void saveMapListAction();
     void refreshMapListAction();
-    void openMapListAction();
+    void openMapFolderAction();
 
     void addNewMapAction();
     void removeMapAction();
+    void saveMapAction();
 
+    void addNewRespawn();
+
+    void resetZoom();
+
+    void toggleGridAction();
+    void setDarkGrid();
+    void setLightGrid();
+    void setBidGrid();
+    void setSmallGrid();
 
     void refreshObjectsListAction();
     void loadSObjectsListAction();
@@ -94,8 +106,6 @@ private:
     containers::TMapItem* mCurrentMap;
     containers::TObjectItem* mCurrentObject;
     containers::TRespawnItem* mCurrentRespawn;
-    containers::TObjectContainer* mCurrentObjectList;
-    containers::TRespawnContainer* mCurrentRespawnsList;
     containers::TSObjectContainer mSObjects;
     QModelIndex mLastModelIndex;
     TScene* mScene;
@@ -103,5 +113,6 @@ private:
     QStandardItemModel* mMapsViewModel;
     QStandardItemModel* mListViewModel;
     QStandardItemModel* mSObjectsViewModel;
+    QColor mColor;
 };
 //------------------------------------------------------------------------------

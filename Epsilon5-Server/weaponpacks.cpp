@@ -1,116 +1,129 @@
 #include <qmath.h>
 #include <QDebug>
+#include <QPointer>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "weaponpacks.h"
 #include "application.h"
 
-TWeaponPacks::TWeaponPacks(QObject *parent)
+TWeaponBase::TWeaponBase(size_t rechargeTime,
+                         size_t bulletsCount,
+                         size_t cagesCount,
+                         size_t timeBetweenShots,
+                         Epsilon5::Weapon weaponType,
+                         QObject* parent)
     : QObject(parent)
+    , RechargeTime(rechargeTime)
+    , BulletsCount(bulletsCount)
+    , CagesCount(cagesCount)
+    , TimeBetweenShots(timeBetweenShots)
+    , WeaponType(weaponType)
+{
+    TWeaponPacks* p = (TWeaponPacks*)parent;
+    connect(this, SIGNAL(SpawnBullet(TBullet*)), p, SIGNAL(SpawnBullet(TBullet*)));
+}
+
+TPistolWeapon::TPistolWeapon(QObject *parent)
+    : TWeaponBase(800, 12, 5, 400, Epsilon5::Pistol, parent)
 {
 }
 
+void TPistolWeapon::MakeShot(const TFireInfo& fireInfo) {
+    double x, y, vx, vy;
+    vx = 62 * sin(fireInfo.Angle + M_PI / 2);
+    vy = 62 * cos(fireInfo.Angle + M_PI / 2);
+    x = fireInfo.X + vx / 25;
+    y = fireInfo.Y + vy / 25;
+    TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_ARBUZ,
+                                  fireInfo.PlayerId, fireInfo.Team,
+                                  ((TApplication*)(qApp))->GetWorld());
+    emit SpawnBullet(bullet);
+}
+
+TMachineGunWeapon::TMachineGunWeapon(QObject* parent)
+    : TWeaponBase(2000, 30, 4, 220, Epsilon5::Machinegun, parent)
+{
+}
+
+void TMachineGunWeapon::MakeShot(const TFireInfo& fireInfo) {
+    double x, y, vx, vy;
+    vx = 78 * sin(fireInfo.Angle + M_PI / 2);
+    vy = 78 * cos(fireInfo.Angle + M_PI / 2);
+    x = fireInfo.X + vx / 25;
+    y = fireInfo.Y + vy / 25;
+    TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_LITTLE_BULLET,
+                                  fireInfo.PlayerId, fireInfo.Team,
+                                  ((TApplication*)(qApp))->GetWorld());
+    emit SpawnBullet(bullet);
+}
+
+TShotGunWeapon::TShotGunWeapon(QObject* parent)
+    : TWeaponBase(3500, 8, 4, 900, Epsilon5::Shotgun, parent)
+{
+}
+
+void TShotGunWeapon::MakeShot(const TFireInfo& fireInfo) {
+    double x, y, vx, vy;
+    vx = 98 * sin(fireInfo.Angle + M_PI / 2);
+    vy = 98 * cos(fireInfo.Angle + M_PI / 2);
+    x = fireInfo.X + vx / 25;
+    y = fireInfo.Y + vy / 25;
+    for (size_t i = 0; i < 5; i++) {
+        TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10,
+                                      Epsilon5::Bullet_Type_LITTLE_BULLET,
+                                      fireInfo.PlayerId, fireInfo.Team,
+                                      ((TApplication*)(qApp))->GetWorld());
+        emit SpawnBullet(bullet);
+    }
+}
+
+
+TWeaponPacks::TWeaponPacks(QObject *parent)
+    : QObject(parent)
+{
+    Weapons.insert(Epsilon5::Pistol, new TPistolWeapon(this));
+    Weapons.insert(Epsilon5::Machinegun, new TMachineGunWeapon(this));
+    Weapons.insert(Epsilon5::Shotgun, new TShotGunWeapon(this));
+}
+
+QHash<size_t, TWeaponInfo> TWeaponPacks::GetPack(size_t packId) {
+    Q_UNUSED(packId); // TODO: we need several different packs here
+    QHash<size_t, TWeaponInfo> pack;
+    pack.insert(0, Weapons[Epsilon5::Pistol]->GetDefault());
+    pack.insert(1, Weapons[Epsilon5::Machinegun]->GetDefault());
+    pack.insert(2, Weapons[Epsilon5::Shotgun]->GetDefault());
+    return pack;
+}
+
 void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
-    Epsilon5::Weapon weaponType = fireInfo.PrimaryAttack ? fireInfo.Weapon : Epsilon5::Pistol;
+    Epsilon5::Weapon weaponType = fireInfo.WeaponInfo->WeaponType;
+    size_t& bulletsLeft = fireInfo.WeaponInfo->BulletsLeft;
+    size_t& cagesLeft = fireInfo.WeaponInfo->CagesLeft;
+    QTime& shotTime = fireInfo.WeaponInfo->LastShoot;
 
-    TTimeKey key;
-    key.PlayerId = fireInfo.PlayerId;
-    key.WeaponType = weaponType;
-
-    switch (weaponType) {
-    case Epsilon5::Pistol: {
-        TShootInfo& shootInfo = LastShoots[key];
-
-        if (shootInfo.PistolClips == 0)
-        {
-            break;
+    if (bulletsLeft == 0) {
+        if (cagesLeft == 0) {
+            // No amo - no shots
+            return;
         }
-
-        if (shootInfo.PistolAmmoInClip == 0 && shootInfo.Time.elapsed() > pistolReloadTime) {
-            shootInfo.PistolAmmoInClip = 12;
-            shootInfo.PistolClips--;
-            shootInfo.Time.restart();
+        if (shotTime.elapsed() > (int)Weapons[weaponType]->GetRechargeTime()) {
+            cagesLeft--;
+            bulletsLeft = Weapons[weaponType]->GetBulletsCount();
+        } else {
+            // Not recharged yet
+            return;
         }
-
-        if (shootInfo.Time.elapsed() > 400 && shootInfo.PistolAmmoInClip>= 1) {
-            shootInfo.Time.restart();
-            double x, y, vx, vy;
-            vx = 62 * sin(fireInfo.Angle + M_PI / 2);
-            vy = 62 * cos(fireInfo.Angle + M_PI / 2);
-            x = fireInfo.X + vx / 25;
-            y = fireInfo.Y + vy / 25;
-            shootInfo.PistolAmmoInClip--;
-            shootInfo.Time.restart();
-            TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_ARBUZ,
-                                          fireInfo.PlayerId, fireInfo.Team,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
-        }
-    } break;
-    case Epsilon5::Machinegun: {
-        TShootInfo& shootInfo = LastShoots[key];
-
-        //Check weapon clips
-        if (shootInfo.MachineGunClips == 0) {
-            break;
-        }
-
-        //Control our bullets and clips
-        if (shootInfo.MachineGunAmmoInClip == 0 && shootInfo.Time.elapsed() > machinegunReloadTime) {
-            shootInfo.MachineGunAmmoInClip = 30;
-            shootInfo.MachineGunClips--;
-            shootInfo.Time.restart();
-        }
-
-        //Per shot delay
-        if (shootInfo.Time.elapsed() > 100 && shootInfo.MachineGunAmmoInClip >= 1) {
-            double x, y, vx, vy;
-            vx = 78 * sin(fireInfo.Angle + M_PI / 2);
-            vy = 78 * cos(fireInfo.Angle + M_PI / 2);
-            x = fireInfo.X + vx / 25;
-            y = fireInfo.Y + vy / 25;
-            shootInfo.MachineGunAmmoInClip--;
-            shootInfo.Time.restart();
-            TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                          fireInfo.PlayerId, fireInfo.Team,
-                                          ((TApplication*)(parent()))->GetWorld());
-            emit SpawnBullet(bullet);
-        }
-    } break;
-    case Epsilon5::Shotgun: {
-
-        TShootInfo& shootInfo = LastShoots[key];
-
-        if (shootInfo.ShotGunClips == 0) {
-            break;
-        }
-
-        if (shootInfo.ShotGunAmmoInClip == 0 && shootInfo.Time.elapsed() > shotgunReloadTime) {
-            shootInfo.ShotGunAmmoInClip = 8;
-            shootInfo.ShotGunClips--;
-            shootInfo.Time.restart();
-        }
-
-        if (shootInfo.Time.elapsed() > 900 && shootInfo.ShotGunAmmoInClip >= 1) {
-            double x, y, vx, vy;
-            vx = 98 * sin(fireInfo.Angle + M_PI / 2);
-            vy = 98 * cos(fireInfo.Angle + M_PI / 2);
-            x = fireInfo.X + vx / 25;
-            y = fireInfo.Y + vy / 25;
-            shootInfo.ShotGunAmmoInClip--;
-            shootInfo.Time.restart();
-            for (size_t i = 0; i < 5; i++) {
-                TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10,
-                                              Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                              fireInfo.PlayerId, fireInfo.Team,
-                                              ((TApplication*)(parent()))->GetWorld());
-                emit SpawnBullet(bullet);
-            }
-        }
-    } break;
-    default:
-        break;
     }
 
+    Q_ASSERT(bulletsLeft > 0 && "something wrong with bullets number");
+
+    if (shotTime.elapsed() <= (int)Weapons[weaponType]->GetTimeBetweenShots()) {
+        // Still waiting
+        return;
+    }
+
+    Weapons[weaponType]->MakeShot(fireInfo);
+    bulletsLeft--;
+    shotTime.restart();
 }
 
 

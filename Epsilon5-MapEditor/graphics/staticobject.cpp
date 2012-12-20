@@ -1,27 +1,30 @@
+#include <QDebug>
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <qmath.h>
 #include "graphics/staticobject.h"
 //------------------------------------------------------------------------------
-TStaticObject::TStaticObject(QGraphicsPixmapItem* parent)
+TStaticObject::TStaticObject(QGraphicsItem* parent)
     : QGraphicsPixmapItem(parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
+    , mRespawn(false)
 {
     setPixmap(QPixmap(32, 32));
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsPixmapItem* parent)
+TStaticObject::TStaticObject(const QPixmap& pixmap, QGraphicsItem* parent)
     : QGraphicsPixmapItem(pixmap, parent)
     , mCursorPosition(QPointF())
     , mFixed(false)
+    , mRespawn(false)
 {
     setPixmap(pixmap);
     setFlags(ItemIsSelectable | ItemIsMovable);
 }
 //------------------------------------------------------------------------------
-QRectF TStaticObject::boundingRect()
+QRectF TStaticObject::boundingRect() const
 {
     return QRectF(0, 0, pixmap().width(), pixmap().height());
 }
@@ -32,9 +35,7 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
         return;
     }
 
-    QPointF objectCenter(pixmap().width() / 2, pixmap().height() / 2);
     bool fixedAngle = event->modifiers() == Qt::ControlModifier;
-
     if (mButton == Qt::LeftButton) {
         // Rotate object
         if (event->modifiers() == Qt::ShiftModifier || fixedAngle) {
@@ -49,17 +50,17 @@ void TStaticObject::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
                 angle = (int) angle / 45 * 45;
             }
 
-            setTransformOriginPoint(objectCenter);
+            setTransformOriginPoint(centerPoint());
             setRotation(angle);
             return;
         }
 
         // Move object
         setTransformOriginPoint(0, 0);
-        setPos(mapToScene(
-                   event->pos().x() - objectCenter.x(),
-                   event->pos().y() - objectCenter.y()));
-        setTransformOriginPoint(objectCenter);
+        QGraphicsItem::setPos(mapToScene(
+                event->pos().x() - mCursorPosition.x(),
+                event->pos().y() - mCursorPosition.y()));
+        setTransformOriginPoint(centerPoint());
     }
 }
 //------------------------------------------------------------------------------
@@ -105,11 +106,42 @@ void TStaticObject::setAngle(qreal rad)
     rotateAtCenter(rad * 180 / M_PI);
 }
 //------------------------------------------------------------------------------
+void TStaticObject::setPos(qreal x, qreal y)
+{
+    setTransformOriginPoint(0, 0);
+    QGraphicsItem::setPos(x - centerPoint().x(), y - centerPoint().y());
+    setTransformOriginPoint(centerPoint());
+}
+//------------------------------------------------------------------------------
+void TStaticObject::setPos(const QPointF &point)
+{
+    setPos(point.x(), point.y());
+}
+//------------------------------------------------------------------------------
 void TStaticObject::rotateAtCenter(int angle)
 {
-    QPointF originPoint = transformOriginPoint();
-    setTransformOriginPoint(QPointF(pixmap().width() / 2, pixmap().height() / 2));
+    setTransformOriginPoint(centerPoint());
     setRotation(angle);
-    setTransformOriginPoint(originPoint);
+}
+//------------------------------------------------------------------------------
+QPointF TStaticObject::pos() const
+{
+    return QGraphicsItem::pos()
+        + QPointF(pixmap().width() / 2, pixmap().height() / 2);
+}
+//------------------------------------------------------------------------------
+QPointF TStaticObject::centerPoint() const
+{
+    return QPointF(pixmap().width() / 2, pixmap().height() / 2);
+}
+//------------------------------------------------------------------------------
+void TStaticObject::setRespawn(bool value)
+{
+    mRespawn = value;
+}
+//------------------------------------------------------------------------------
+bool TStaticObject::isRespawn() const
+{
+    return mRespawn;
 }
 //------------------------------------------------------------------------------

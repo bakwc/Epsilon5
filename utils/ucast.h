@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QString>
-
 #include "uexception.h"
 
 template<typename T>

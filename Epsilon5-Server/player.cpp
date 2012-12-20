@@ -1,8 +1,10 @@
 #include <qmath.h>
 #include <QDebug>
+#include <QRect>
 #include "player.h"
 #include "bullet.h"
 #include "defines.h"
+#include "application.h"
 
 const size_t HP_LOST = 45;
 
@@ -10,7 +12,6 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
     : TDynamicObject(0, 0, 0, 0, 0, parent)
     , Id(id)
     , Maps(maps)
-    , HP(100)
     , Team(team)
 {
     b2Vec2 pos;
@@ -36,6 +37,8 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
 
     Force(0) = 0;
     Force(1) = 0;
+
+    WeaponPack = Application()->GetWeaponPacks()->GetPack(0); // TODO: pack number should be passed
 }
 
 void TPlayer::ApplyControl(const Epsilon5::Control &control) {
@@ -59,69 +62,83 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
             fireInfo.Vx = GetVx();
             fireInfo.Vy = GetVy();
             fireInfo.Angle = angle;
-            fireInfo.Weapon = control.weapon();
+
+            size_t weaponId = control.weapon();
+
+            if (WeaponPack.find(weaponId) != WeaponPack.end()) {
+                SelectedWeapon = weaponId;
+            }
+
             fireInfo.PlayerId = Id;
-            fireInfo.PrimaryAttack = control.keystatus().keyattack1();
+            // Secondary attack depricated
+            //fireInfo.PrimaryAttack = control.keystatus().keyattack1();
             fireInfo.Team = GetTeam();
+            fireInfo.WeaponInfo = &WeaponPack[SelectedWeapon];
             emit Fire(fireInfo);
         }
     } catch (const std::exception& e) {
         qDebug() << "TPlayer::ApplyControl(): " << e.what();
     }
-
-    //setAngle(control.angle());
 }
 
 void TPlayer::ApplyCustomPhysics()
 {
-    //ApplyFractionForce();
-    //Body->ApplyForceToCenter(Force);
     Body->ApplyLinearImpulse(Force, Body->GetPosition());
 
     QSize mapSize = Maps->GetMapSize();
 
     b2Vec2 pos = Body->GetPosition();
     b2Vec2 speed = Body->GetLinearVelocity();
+    const quint8 PLAYGROUND_BORDER_SIZE = 100;
+    QRectF playgroundBorders = QRectF(
+            -mapSize.width() / 2 + PLAYGROUND_BORDER_SIZE,
+            -mapSize.height() / 2 + PLAYGROUND_BORDER_SIZE,
+            mapSize.width() - 2 * PLAYGROUND_BORDER_SIZE,
+            mapSize.height() - 2 * PLAYGROUND_BORDER_SIZE);
 
-    if (pos(0) * 10 > mapSize.width()/2 - 400) {
+    if (pos(0) * 10 > playgroundBorders.right()) {
         speed(0) = 0;
-        pos(0) = 0.1 * (mapSize.width()/2 - 401);
+        pos(0) = 0.1 * (playgroundBorders.right() - 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(1) * 10 > mapSize.height()/2 - 300) {
+    if (pos(1) * 10 > playgroundBorders.bottom()) {
         speed(1) = 0;
-        pos(1) = 0.1 * (mapSize.height()/2 - 301);
+        pos(1) = 0.1 * (playgroundBorders.bottom() - 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(0) * 10 < - mapSize.width()/2 + 400) {
+    if (pos(0) * 10 < playgroundBorders.left()) {
         speed(0) = 0;
-        pos(0) = 0.1 * (- mapSize.width()/2 + 401);
+        pos(0) = 0.1 * (playgroundBorders.left() + 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
 
-    if (pos(1) * 10 < - mapSize.height()/2 + 300) {
+    if (pos(1) * 10 < playgroundBorders.top()) {
         speed(1) = 0;
-        pos(1) = 0.1 * (- mapSize.height()/2 + 301);
+        pos(1) = 0.1 * (playgroundBorders.top() + 1);
         Body->SetTransform(pos, Body->GetAngle());
         Body->SetLinearVelocity(speed);
     }
-
 }
 
 void TPlayer::SetNickname(const QString& nickName) {
     NickName = nickName;
 }
 
-void TPlayer::Hit(size_t playerId) {
-    if (HP > HP_LOST) {
-        HP -= HP_LOST;
-    } else {
+void TPlayer::Hit(size_t playerId, quint8 ffMode) {
+    size_t hpDelta = HP_LOST * (ffMode > 100 ? 1 : ffMode*0.01);
+    if (HP <= hpDelta) {
         emit Killed(playerId);
         emit Death(Id);
+        return;
     }
+    HP -= hpDelta;
+}
+
+TApplication* TPlayer::Application() {
+    return (TApplication*)qApp;
 }

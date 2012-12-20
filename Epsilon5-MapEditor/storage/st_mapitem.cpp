@@ -24,6 +24,7 @@ TMapItem& TMapItem::operator =(const TMapItem& map)
     TTItem::operator =(map);
     mObjects = map.mObjects;
     mRespawns = map.mRespawns;
+    mBackgroundFile = map.mBackgroundFile;
     return *this;
 }
 //------------------------------------------------------------------------------
@@ -47,6 +48,11 @@ quint32 TMapItem::height() const
     return info().height;
 }
 //------------------------------------------------------------------------------
+QColor TMapItem::color() const
+{
+    return info().color;
+}
+//------------------------------------------------------------------------------
 void TMapItem::setName(const QString& name)
 {
     info().name = name;
@@ -64,9 +70,14 @@ void TMapItem::setSize(const QSize& size)
     info().height = size.height();
 }
 //------------------------------------------------------------------------------
+void TMapItem::setColor(const QColor &color)
+{
+    info().color = color;
+}
+//------------------------------------------------------------------------------
 bool TMapItem::validate()
 {
-    mValid = !(info().name.trimmed()).isEmpty();
+    mValid = !(info().name.trimmed()).isEmpty() && info().color.isValid();
     return mValid;
 }
 //------------------------------------------------------------------------------

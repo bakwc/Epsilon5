@@ -11,6 +11,111 @@
 #include "network.h"
 #include "maindisplay.h"
 #include "application.h"
+#include <QtOpenGL>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <hidpi.h>
+#include <Winternl.h>
+
+/*NTSYSAPI NTSTATUS NTAPI NtQuerySystemInformation(
+        IN UINT SystemInformationClass,		// information type
+        OUT PVOID SystemInformation,		// pointer to buffer
+        IN ULONG SystemInformationLength,	// buffer size in bytes
+        OUT PULONG ReturnLength OPTIONAL	// pointer to a 32 bit variable that
+                                            // receives the number of bytes written
+                                            // to the buffer
+ );*/
+
+#define Li2Double(x)	((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
+#define SystemTimeInformation		3
+typedef LONG (WINAPI *PROCNTQSI) (UINT, PVOID, ULONG, PULONG);
+
+typedef struct
+{
+    LARGE_INTEGER	liKeBootTime;
+    LARGE_INTEGER	liKeSystemTime;
+    LARGE_INTEGER	liExpTimeZoneBias;
+    ULONG			uCurrentTimeZoneID;
+    DWORD			dwReserved;
+} SYSTEM_TIME_INFORMATION;
+
+static double GetCPUUsages()
+{
+    SYSTEM_BASIC_INFORMATION		SysBaseInfo;
+    SYSTEM_TIME_INFORMATION			SysTimeInfo;
+    SYSTEM_PERFORMANCE_INFORMATION	SysPerfInfo;
+    LONG							status = NO_ERROR;
+    LARGE_INTEGER					liOldIdleTime = {0, 0};
+    LARGE_INTEGER					liOldSystemTime = {0, 0};
+    double							dbIdleTime;
+    double							dbSystemTime;
+    PROCNTQSI						NtQuerySystemInformation;
+
+    HMODULE hDLL = GetModuleHandle(TEXT("ntdll.dll"));
+
+    NtQuerySystemInformation = (PROCNTQSI)GetProcAddress(hDLL, "NtQuerySystemInformation");
+    if (!NtQuerySystemInformation)
+        return 0;
+
+    status = NtQuerySystemInformation(SystemBasicInformation, &SysBaseInfo, sizeof(SysBaseInfo), NULL);
+    if (status != NO_ERROR)
+        return 0;
+
+
+    // get system time
+    status = NtQuerySystemInformation(SystemTimeInformation, &SysTimeInfo, sizeof(SysTimeInfo), NULL);
+    if (status != NO_ERROR)
+        return 0;
+
+
+    // get system idle time
+    status = NtQuerySystemInformation(SystemPerformanceInformation, &SysPerfInfo, sizeof(SysPerfInfo), NULL);
+    if (status != NO_ERROR)
+        return 0;
+
+
+    liOldIdleTime = SysPerfInfo.IdleTime;
+    liOldSystemTime = SysTimeInfo.liKeSystemTime;
+
+    // wait one second
+    Sleep(1000);
+
+    // get new System time
+    status = NtQuerySystemInformation(SystemTimeInformation, &SysTimeInfo, sizeof(SysTimeInfo), NULL);
+
+    if (status != NO_ERROR)
+        return 0;
+
+    // get new system idle time
+    status = NtQuerySystemInformation(SystemPerformanceInformation, &SysPerfInfo, sizeof(SysPerfInfo), NULL);
+
+    if (status != NO_ERROR)
+        return 0;
+    // current value = new value - old value
+    dbIdleTime = Li2Double(SysPerfInfo.IdleTime) - Li2Double(liOldIdleTime);
+    dbSystemTime = Li2Double(SysTimeInfo.liKeSystemTime) - Li2Double(liOldSystemTime);
+
+    // currentCpuIdle = IdleTime / SystemTime;
+    dbIdleTime = dbIdleTime / dbSystemTime;
+
+    // currentCpuUsage% = 100 - (CurrentCpuIdle * 100) / NumberOfProcessors
+    dbIdleTime = 100.0 - dbIdleTime * 100.0 / (double)SysBaseInfo.NumberOfProcessors + 0.5;
+
+    return dbIdleTime;
+}
+#endif
+
+#ifdef Q_OS_LINUX
+
+static double GetCPUUsages()
+{
+    return 0;
+}
+
+
+#endif
+
 
 
 #ifdef Q_OS_UNIX
@@ -46,7 +151,7 @@ static double getAngle(const QPoint& point)
 }
 
 TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
-    : QGLWidget(parent)
+    : QGLWidget(QGLFormat(QGL::SampleBuffers),parent)
     , UFullscreenWrapper(this)
     , Application(application)
     , Images(new TImageStorage(this))
@@ -55,10 +160,18 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , CurrentWorld(NULL)
     , ShowStats(false)
     , Menu(Images)
+    , Ping(0)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
-
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_LINE_SMOOTH);
+    QGLFormat f = QGLFormat::defaultFormat();
+    f.setSampleBuffers(true);
+    f.setStencilBufferSize(8);
+    f.setSamples(4);
+    f.setVersion(QGLFormat::OpenGL_Version_4_0, QGLFormat::OpenGL_Version_4_0);
+    QGLFormat::setDefaultFormat(f);
     Control.set_angle(0);
     Control.mutable_keystatus()->set_keyattack1(false);
     Control.mutable_keystatus()->set_keyattack2(false);
@@ -67,6 +180,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
     Control.set_weapon(Epsilon5::Pistol);
+    Thread.start();
 
     startTimer(20);
 }
@@ -95,8 +209,14 @@ void TMainDisplay::timerEvent(QTimerEvent*) {
 }
 
 void TMainDisplay::paintEvent(QPaintEvent*) {
+
     EState state = Application->GetState();
-    QPainter painter(this);
+    QPainter painter;
+    painter.begin(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::TextAntialiasing, true);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+
     switch (state) {
     case ST_Connecting : {
         painter.fillRect(0, 0, width(), height(), Qt::black);
@@ -111,11 +231,13 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
         DrawWorld(painter);
         DrawFps(painter);
         DrawPing(painter);
+        DrawCpu(painter);
 
         if( !Application->GetNetwork()->IsServerAlive() )
             DrawText(painter, QPoint(width() / 2 - 50, height() / 2 - 5), tr("Connection lost..."), 28);
         break;
     }
+    painter.end();
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent* event) {
@@ -247,10 +369,20 @@ void TMainDisplay::DrawFps(QPainter& painter)
     ++frames;
 }
 
+
 void TMainDisplay::DrawPing(QPainter& painter)
 {
-    if(Ping != 2686572)
     DrawText(painter, QPoint(0, 24), QString("Ping: %1").arg(Ping), 10);
+}
+
+
+void TMainDisplay::DrawCpu(QPainter& painter)
+{
+#ifdef Q_OS_WIN
+    DrawText(painter, QPoint(0, 38), "Cpu:" + QString::number(Thread.time,'g', 3), 10);
+    if( Thread.isFinished() )
+        Thread.start();
+#endif
 }
 
 void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos,
@@ -313,36 +445,43 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
                 nickName = PlayerNames[player.id()];
             }
         }
+
+        if (nickName.isEmpty()) {
+            Control.set_need_full(true);
+        } else {
+            Control.set_need_full(false);
+        }
+
         size_t hp = player.hp();
 
         // Set player or enemy image
         if ((size_t)player.id() == Application->GetNetwork()->GetId()) {
             img = &Images->GetImage("player");
             miniMap.setPen(Qt::red);
+            miniMap.setBrush(Qt::red);
             nickName += " - " + QString::number(hp) + "%";
         } else {
             // Get team image
-            if (player.team())
+            if (player.team()) {
                 img = &Images->GetImage("peka_t2");
-            else
+                miniMap.setBrush(Qt::blue);
+            } else {
                 img = &Images->GetImage("peka_t1");
-
-            miniMap.setPen(Qt::black);
+                miniMap.setBrush(Qt::yellow);
+            }
         }
-
         miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
-                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 2, 2);
+                                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
 
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
 
         // Draw player name
-        painter.setPen(Qt::yellow);
         painter.setFont(nickFont);
         QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,
-                        widgetCenter.y() + pos.y() - img->height()/2
-                               - painter.fontInfo().pixelSize(),
-                        nickMaxWidth, painter.fontInfo().pixelSize());
+                               widgetCenter.y() + pos.y() - img->height()/2
+                               - painter.fontInfo().pixelSize()-5,
+                               nickMaxWidth, painter.fontInfo().pixelSize() + 2);
 
         painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
         painter.setPen(oldPen);
@@ -377,7 +516,7 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
 }
 
 void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
-        const QPoint& playerPos, const QPoint& widgetCenter)
+                               const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     for (int i = 0; i != CurrentWorld->objects_size(); i++) {
@@ -399,14 +538,14 @@ void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
                           widgetCenter.y() + pos.y() - rimg.height() / 2, rimg);
 
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
-                currentObjectPos, MAX_MINIMAP_SIZE));
-        miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y(),
-                rimg.scaledToHeight(4));
+                                currentObjectPos, MAX_MINIMAP_SIZE));
+        miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y() - 4,
+                          rimg.scaledToHeight(4));
     }
 }
 
 void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
-        const QPoint& playerPos, const QPoint& widgetCenter)
+                                  const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     if (CurrentWorld->resp_points_size() > 0) {
@@ -433,9 +572,9 @@ void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
-                currentRespPos, MAX_MINIMAP_SIZE));
+                                currentRespPos, MAX_MINIMAP_SIZE));
         miniMap.drawImage(posOnMinimap.x(), posOnMinimap.y() - 10,
-                (*img).scaled(10, 10));
+                          (*img).scaled(10, 10));
     }
 }
 
@@ -456,14 +595,15 @@ void TMainDisplay::DrawStats(QPainter& painter) {
         QPoint widgetCenter(width() / 2, height() / 2);
 
 
-        QImage statsImg(400, Stats.size() * 20 + 40, QImage::Format_ARGB32);
+        QFont font("Helvetica", 18);
+        QImage statsImg(400, Stats.size() * font.weight() / 2 + font.weight() / 2, QImage::Format_ARGB32);
         statsImg.fill(qRgba(255, 255, 255, 100));
-        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() - Stats.size() * 20 - 20, statsImg);
+        painter.drawImage(widgetCenter.x() - 200, widgetCenter.y() / 2 , statsImg);
 
-        painter.setFont(QFont("Helvetica", 18));
+        painter.setFont(font);
         painter.setPen(Qt::black);
 
-        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() - Stats.size() / 2 * 20);
+        QPoint startPos(widgetCenter.x() - 150, widgetCenter.y() / 2);
 
         for (auto i = 0; i < Stats.size(); i++) {
             QString statStr = QString("%1\t%2 - %3 - %4")
@@ -471,7 +611,7 @@ void TMainDisplay::DrawStats(QPainter& painter) {
                     .arg(Stats[i].Score)
                     .arg(Stats[i].Kills)
                     .arg(Stats[i].Deaths);
-            painter.drawText(startPos.x(), startPos.y() + i * 20, statStr);
+            painter.drawText(startPos.x(), startPos.y() + (i + 1) * font.weight() / 2 + 10, statStr);
         }
     }
 }
@@ -502,7 +642,7 @@ void TMainDisplay::DrawWorld(QPainter& painter){
         DrawStats(painter);
 
         // Minimap drawing
-        painter.drawImage(10, 30, miniMapImg);
+        painter.drawImage(10, 45, miniMapImg);
 
         if (Application->GetState() == ST_SelectingResp) {
             // TODO - Draw resp menu

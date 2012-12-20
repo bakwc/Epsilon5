@@ -1,4 +1,18 @@
+#ifndef EPSILON_SERVER
+#include <QtGui/QColor>
+#endif
+
 #include "ucast.h"
+
+template< >
+quint8 FromString<quint8>(const QString& str){
+    bool ok = false;
+    int res = str.toUInt(&ok);
+    if (!ok) {
+       throw UException("Cast error");
+    }
+    return res;
+}
 
 template< >
 int FromString<int>(const QString& str){
@@ -61,6 +75,16 @@ ulong FromString<unsigned long>(const QString& str){
 }
 
 template< >
+unsigned long long FromString<unsigned long long>(const QString& str){
+    bool ok = false;
+    unsigned long long res = str.toULongLong(&ok);
+    if (!ok) {
+       throw UException("Cast error");
+    }
+    return res;
+}
+
+template< >
 bool FromString<bool>(const QString& str){
     bool res = false;
     if (str == "1" || str == "true") {
@@ -87,3 +111,10 @@ QByteArray FromString<QByteArray>(const QString& str){
     }
     return res;
 }
+
+#ifndef EPSILON_SERVER
+template< >
+QColor FromString<QColor>(const QString& str){
+    return QColor(str);
+}
+#endif

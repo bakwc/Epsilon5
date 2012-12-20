@@ -8,6 +8,7 @@ const quint32 DEFAULT_WINDOW_WIDTH = 800;
 const quint32 DEFAULT_WINDOW_HEIGHT = 600;
 const qint32 DEFAULT_WINDOW_POSX = 100;
 const qint32 DEFAULT_WINDOW_POSY = 50;
+const bool DEFAULT_WINDOW_FULLSCREEN = false;
 const char* SETTINGS_FILENAME = "settings.ini";
 //------------------------------------------------------------------------------
 TSettings::TSettings(QObject* parent)
@@ -20,6 +21,7 @@ TSettings::TSettings(QObject* parent)
     parameters["window.height"] = QString().number(DEFAULT_WINDOW_HEIGHT);
     parameters["window.posx"] = QString().number(DEFAULT_WINDOW_POSX);
     parameters["window.posy"] = QString().number(DEFAULT_WINDOW_POSY);
+    parameters["window.fullscreen"] = QString().number(DEFAULT_WINDOW_FULLSCREEN);
     parameters["data.path"] = "";
     parameters["maps.path"] = "";
     parameters["objects.path"] = "";
@@ -84,6 +86,16 @@ QString TSettings::GetObjectsPath() const
 void TSettings::SetObjectsPath(const QString& path)
 {
     mSettings->SetParameter("objects.path", path);
+}
+//------------------------------------------------------------------------------
+bool TSettings::GetWindowFullscreen() const
+{
+    return mSettings->GetParameter("window.fullscreen");
+}
+//------------------------------------------------------------------------------
+void TSettings::SetWindowFullscreen(bool value)
+{
+    mSettings->SetParameter("window.fullscreen", QString().number(value));
 }
 //------------------------------------------------------------------------------
 void TSettings::Load()

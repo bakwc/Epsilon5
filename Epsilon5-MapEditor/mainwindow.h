@@ -15,10 +15,7 @@ public:
     ~TMainWindow();
 
 public slots:
-    void newAction();
-    void openAction();
     void optionsAction();
-    void objectsEditorAction();
     void mapsEditorAction();
     void fullscreenAction();
 
@@ -26,7 +23,6 @@ signals:
     void resized();
 
 private:
-    void connectMapCreator();
     void resizeEvent(QResizeEvent*);
 
 private:

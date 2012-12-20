@@ -7,8 +7,6 @@
 
 TServer::TServer(QObject *parent)
     : QObject(parent)
-    , Server(new QUdpSocket(this))
-    , CurrentId(1)
 {
     connect(Server, SIGNAL(readyRead()), SLOT(DataReceived()));
 }
@@ -59,7 +57,7 @@ void TServer::DataReceived() {
             ipIt = Ips.insert(sender, 0);
         }
 
-        if (ipIt.value() >= 2) {
+        if (ipIt.value() >= 5) {
             return;
         }
         ipIt.value()++;
@@ -77,6 +75,11 @@ void TServer::DataReceived() {
 void TServer::timerEvent(QTimerEvent*) {
     DisconnectInactive();
     RespawnDeadClients();
+    LastFullSended++;
+    if (LastFullSended > 80) {
+        NeedFullPacket();
+        LastFullSended = 0;
+    }
     SendWorld();
 }
 
@@ -103,9 +106,11 @@ void TServer::DisconnectInactive() {
 
 void TServer::SendWorld()
 {
-    QByteArray data=Application()->GetWorld()->Serialize();
     for (auto i = Clients.begin(); i != Clients.end(); i++) {
-        i.value()->SendWorld(data);
+        size_t id = i.value()->GetId();
+        bool needFullPacket = i.value()->NeedFullWorld();
+        QByteArray world = Application()->GetWorld()->Serialize(id, needFullPacket);
+        i.value()->SendWorld(world);
     }
 }
 
@@ -130,18 +135,50 @@ void TServer::Send(const QHostAddress &ip, quint16 port,
 }
 
 void TServer::RespawnDeadClients() {
-    for (auto i = Clients.begin(); i != Clients.end(); i++) {
-        i.value()->ReSpawn();
+    for (auto i: Clients) {
+        i->ReSpawn();
     }
 }
 
 void TServer::SerialiseStats(Epsilon5::World& world) {
-    for (auto i = Clients.begin(); i != Clients.end(); i++) {
+    for (auto i: Clients) {
         auto stat = world.add_players_stat();
-        stat->set_score((*i)->GetScore());
-        stat->set_kills((*i)->GetKills());
-        stat->set_deaths((*i)->GetDeaths());
-        stat->set_id((*i)->GetId());
+        stat->set_score(i->GetScore());
+        stat->set_kills(i->GetKills());
+        stat->set_deaths(i->GetDeaths());
+        stat->set_id(i->GetId());
     }
 
+}
+
+ETeam TServer::AutoBalance() {
+    qint32 OnePlayers = 0;
+    qint32 SecondPlayers = 0;
+    for (auto q = Clients.begin(); q != Clients.end(); q++)
+        if (q.value()->GetTeam() == T_One)
+            OnePlayers++;
+        else if (q.value()->GetTeam() == T_Second)
+            SecondPlayers++;
+    if (OnePlayers - SecondPlayers > 1) {
+        return T_Second;
+    }
+    else if (SecondPlayers - OnePlayers > 1) {
+        return T_One;
+    }
+    return T_Neutral;
+}
+
+void TServer::NeedFullPacket(size_t id) {
+    if (id == (size_t)-1) {
+        for (auto i = Clients.begin(); i != Clients.end(); i++) {
+            i.value()->SetFullWorldNeeded();
+        }
+    } else {
+        auto i = Clients.find(id);
+        if (i != Clients.end()) {
+            i.value()->SetFullWorldNeeded();
+        } else {
+            throw UException("TServer::NeedFullPacket(): Client not found");
+        }
+    }
 }

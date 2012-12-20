@@ -14,6 +14,8 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+DEFINES += EPSILON_SERVER
+
 
 SOURCES += main.cpp \
     ../Epsilon5-Proto/Epsilon5.pb.cc \
@@ -31,7 +33,8 @@ SOURCES += main.cpp \
     staticobject.cpp \
     ../utils/ucast.cpp \
     weaponpacks.cpp \
-    settings.cpp
+    settings.cpp \
+    redisclient.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -51,7 +54,8 @@ HEADERS += \
     ../utils/ucast.h \
     defines.h \
     weaponpacks.h \
-    settings.h
+    settings.h \
+    redisclient.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 

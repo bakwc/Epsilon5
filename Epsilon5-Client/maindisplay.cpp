@@ -27,10 +27,8 @@
                                             // to the buffer
  );*/
 
-
 #define Li2Double(x)	((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
 #define SystemTimeInformation		3
-
 typedef LONG (WINAPI *PROCNTQSI) (UINT, PVOID, ULONG, PULONG);
 
 typedef struct
@@ -42,14 +40,14 @@ typedef struct
     DWORD			dwReserved;
 } SYSTEM_TIME_INFORMATION;
 
-static double GetCPUUsages()
+double GetCPUUsages()
 {
     SYSTEM_BASIC_INFORMATION		SysBaseInfo;
     SYSTEM_TIME_INFORMATION			SysTimeInfo;
     SYSTEM_PERFORMANCE_INFORMATION	SysPerfInfo;
     LONG							status = NO_ERROR;
-    LARGE_INTEGER					liOldIdleTime = {0, 0};
-    LARGE_INTEGER					liOldSystemTime = {0, 0};
+    LARGE_INTEGER					liOldIdleTime = {{0, 0}};
+    LARGE_INTEGER					liOldSystemTime = {{0, 0}};
     double							dbIdleTime;
     double							dbSystemTime;
     PROCNTQSI						NtQuerySystemInformation;
@@ -68,13 +66,13 @@ static double GetCPUUsages()
     // get system time
     status = NtQuerySystemInformation(SystemTimeInformation, &SysTimeInfo, sizeof(SysTimeInfo), NULL);
     if (status != NO_ERROR)
-       return 0;
+        return 0;
 
 
     // get system idle time
     status = NtQuerySystemInformation(SystemPerformanceInformation, &SysPerfInfo, sizeof(SysPerfInfo), NULL);
     if (status != NO_ERROR)
-       return 0;
+        return 0;
 
 
     liOldIdleTime = SysPerfInfo.IdleTime;
@@ -105,6 +103,61 @@ static double GetCPUUsages()
     dbIdleTime = 100.0 - dbIdleTime * 100.0 / (double)SysBaseInfo.NumberOfProcessors + 0.5;
 
     return dbIdleTime;
+}
+#endif
+
+#ifdef Q_OS_LINUX
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+static unsigned long long lastTotalUser, lastTotalUserLow, lastTotalSys, lastTotalIdle;
+
+
+void init()
+{
+    FILE* file = fopen("/proc/stat", "r");
+    fscanf(file, "cpu %Ld %Ld %Ld %Ld", &lastTotalUser, &lastTotalUserLow,
+           &lastTotalSys, &lastTotalIdle);
+    fclose(file);
+}
+
+static double GetCPUUsages()
+{
+
+    sleep(1);
+    double percent;
+    FILE* file;
+    unsigned long long totalUser, totalUserLow, totalSys, totalIdle, total;
+
+
+    file = fopen("/proc/stat", "r");
+    fscanf(file, "cpu %Ld %Ld %Ld %Ld", &totalUser, &totalUserLow,
+           &totalSys, &totalIdle);
+    fclose(file);
+
+
+    if (totalUser < lastTotalUser || totalUserLow < lastTotalUserLow ||
+            totalSys < lastTotalSys || totalIdle < lastTotalIdle){
+        //Overflow detection.
+        percent = -1.0;
+    }
+    else{
+        total = (totalUser - lastTotalUser) + (totalUserLow - lastTotalUserLow) +
+                (totalSys - lastTotalSys);
+        percent = total;
+        total += (totalIdle - lastTotalIdle);
+        percent /= total;
+        percent *= 100;
+    }
+
+
+    lastTotalUser = totalUser;
+    lastTotalUserLow = totalUserLow;
+    lastTotalSys = totalSys;
+    lastTotalIdle = totalIdle;
+
+    return percent;
 }
 #endif
 
@@ -173,7 +226,9 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     Control.mutable_keystatus()->set_keydown(false);
     Control.set_weapon(Epsilon5::Pistol);
     Thread.start();
-
+#ifdef Q_OS_LINUX
+    init();
+#endif
     startTimer(20);
 }
 
@@ -229,7 +284,7 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
             DrawText(painter, QPoint(width() / 2 - 50, height() / 2 - 5), tr("Connection lost..."), 28);
         break;
     }
-            painter.end();
+    painter.end();
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent* event) {
@@ -370,11 +425,10 @@ void TMainDisplay::DrawPing(QPainter& painter)
 
 void TMainDisplay::DrawCpu(QPainter& painter)
 {
-#ifdef Q_OS_WIN
     DrawText(painter, QPoint(0, 38), "Cpu:" + QString::number(Thread.time,'g', 3), 10);
     if( Thread.isFinished() )
         Thread.start();
-#endif
+
 }
 
 void TMainDisplay::DrawText(QPainter& painter, const QPoint& pos,
@@ -463,7 +517,7 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
             }
         }
         miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
-                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
+                                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
 
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
@@ -471,9 +525,9 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
         // Draw player name
         painter.setFont(nickFont);
         QRect nickRect = QRect(widgetCenter.x() + pos.x() - nickMaxWidth/2,
-                        widgetCenter.y() + pos.y() - img->height()/2
+                               widgetCenter.y() + pos.y() - img->height()/2
                                - painter.fontInfo().pixelSize()-5,
-                        nickMaxWidth, painter.fontInfo().pixelSize() + 2);
+                               nickMaxWidth, painter.fontInfo().pixelSize() + 2);
 
         painter.drawText(nickRect, Qt::AlignTop | Qt::AlignHCenter, nickName);
         painter.setPen(oldPen);
@@ -508,7 +562,7 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
 }
 
 void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
-        const QPoint& playerPos, const QPoint& widgetCenter)
+                               const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     for (int i = 0; i != CurrentWorld->objects_size(); i++) {
@@ -530,14 +584,14 @@ void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
                           widgetCenter.y() + pos.y() - rimg.height() / 2, rimg);
 
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
-                currentObjectPos, MAX_MINIMAP_SIZE));
+                                currentObjectPos, MAX_MINIMAP_SIZE));
         miniMap.drawImage(posOnMinimap.x() - 4, posOnMinimap.y() - 4,
-                rimg.scaledToHeight(4));
+                          rimg.scaledToHeight(4));
     }
 }
 
 void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
-        const QPoint& playerPos, const QPoint& widgetCenter)
+                                  const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
     if (CurrentWorld->resp_points_size() > 0) {
@@ -564,9 +618,9 @@ void TMainDisplay::DrawRespPoints(QPainter& painter, QPainter& miniMap,
         painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
                           widgetCenter.y() + pos.y() - img->height() / 2, *img);
         QPoint posOnMinimap(Map->GetObjectPosOnMinimap(
-                currentRespPos, MAX_MINIMAP_SIZE));
+                                currentRespPos, MAX_MINIMAP_SIZE));
         miniMap.drawImage(posOnMinimap.x(), posOnMinimap.y() - 10,
-                (*img).scaled(10, 10));
+                          (*img).scaled(10, 10));
     }
 }
 

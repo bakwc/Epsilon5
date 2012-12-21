@@ -61,7 +61,7 @@ unix {
     }
 }
 win32 {
-    LIBS += -luser32
+    LIBS += -luser32 -lws2_32
 }
 
 OTHER_FILES += \

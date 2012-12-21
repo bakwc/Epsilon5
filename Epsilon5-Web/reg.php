@@ -2,7 +2,7 @@
 include 'Credis.php';
 if(isset($_POST['nick'])){
 $username = $_POST['nick'];
-if (preg_match('/^[a-z\d_]{5,20}$/i', $username)) {
+if (preg_match('/^[a-z\d_]{2,20}$/i', $username)) {
    $redis = new Credis_Client();
    $redis->hSet('player_'.$username, 'password', md5($_POST['pass']));
 } else {
@@ -17,3 +17,4 @@ if (preg_match('/^[a-z\d_]{5,20}$/i', $username)) {
 <input type="password" name="pass"/>
 <input type="submit" name="go"/>
 </form>
+<a href=".">home</a>

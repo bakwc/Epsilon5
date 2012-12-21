@@ -18,3 +18,4 @@ if(isset($_POST['nick'])){
 <input type="password" name="pass">
 <input type="submit" value="Проверить">
 </form>
+<a href="reg.php">reg.php</a> <a href="stat.php">stat.php</a>

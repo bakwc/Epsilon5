@@ -36,7 +36,7 @@ QPointF TWeaponBase::GetPosition(const QPointF& speed, const QPointF& pos) {
     return res;
 }
 
-QPointF GetRanomizedSpeed(const QPointF& speed) {
+QPointF TWeaponBase::GetRanomizedSpeed(const QPointF& speed) {
     return QPointF(speed.x() + rand()%10, speed.y() + rand()%10);
 }
 

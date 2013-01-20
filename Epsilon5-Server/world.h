@@ -14,6 +14,7 @@
 #include "bullet.h"
 #include "staticobject.h"
 #include "dynamicobject.h"
+#include "vehicle.h"
 
 class QRect;
 class TApplication;
@@ -28,6 +29,7 @@ public:
     typedef QList<TStaticObject*> TStaticObjectsList;
     typedef QList<TDynamicObject*> TDynamicObjectsList;
     typedef QHash<size_t, TPlayer*> TPlayersHash;
+    typedef QHash<size_t, TVehicleBase*> TVehiclesHash;
 public:
     TWorld(QObject *parent = 0);
     ~TWorld();
@@ -45,6 +47,7 @@ public slots:
     void PlayerKill(size_t id); // When a player killed, id of dead player
     void SpawnBullet(TBullet *bullet);
     void SpawnObject(size_t id, int x, int y, double angle);
+    //void SpawnVehicle(size_t id);
     void SpawnBorders(const QSize &mapSize);
     void ClearObjects();
     void ClearBorders();
@@ -56,7 +59,7 @@ private:
     void spawnStaticObject(TStaticObjectsList &container, size_t id,
             double x, double y, const QSizeF& size, double angle = 0.0);
     void spawnDynamicObject(TDynamicObjectsList &container, size_t id,
-            double x, double y, double vx, double vy,
+            QPointF pos, QPointF speed,
             const QSizeF& size, double angle = 0.0);
     void BeginContact(b2Contact* contact);
     QPointF GetPlayerPos(size_t playerId);
@@ -66,6 +69,7 @@ private:
     TBulletsList Bullets;
     TStaticObjectsList StaticObjects;
     TDynamicObjectsList DynamicObjects;
+    TVehiclesHash Vehicles;
     TStaticObjectsList WorldBorders;
     size_t CurrentPacketNumber = 0;
     QHash<size_t, QTime> Times;

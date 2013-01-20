@@ -23,6 +23,7 @@ public:
     explicit TDynamicObject(QPointF pos, QPointF speed, double angle, QObject *parent = 0);
     virtual ~TDynamicObject();
     void SetRectSize(double width, double height);
+    // GetX, GetY, GetVx, GetVy now depricated; use GetPosition, GetSpeed
     inline double GetX() {
         return Body->GetPosition()(0);
     }
@@ -72,6 +73,12 @@ public:
         QPointF pos;
         pos.setX(Body->GetPosition()(0));
         pos.setY(Body->GetPosition()(1));
+        return pos;
+    }
+    inline QPointF GetSpeed() {
+        QPointF pos;
+        pos.setX(Body->GetLinearVelocity()(0));
+        pos.setY(Body->GetLinearVelocity()(1));
         return pos;
     }
 protected:

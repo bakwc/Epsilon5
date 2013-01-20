@@ -8,7 +8,7 @@ T FromString(const QString& str);
 
 class UFromStringFormat {
 public:
-    UFromStringFormat(const QString& str)
+    UFromStringFormat(const QString& str = QString())
         : Str(str)
     {
     }
@@ -17,7 +17,7 @@ public:
         return FromString<T>(Str);
     }
 private:
-    const QString& Str;
+    QString Str;
 };
 
 inline UFromStringFormat FromString(const QString& str) {

@@ -34,7 +34,9 @@ SOURCES += main.cpp \
     ../utils/ucast.cpp \
     weaponpacks.cpp \
     settings.cpp \
-    redisclient.cpp
+    redisclient.cpp \
+    vehicle.cpp \
+    ../utils/ucolonsep.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -55,7 +57,9 @@ HEADERS += \
     defines.h \
     weaponpacks.h \
     settings.h \
-    redisclient.h
+    redisclient.h \
+    vehicle.h \
+    ../utils/ucolonsep.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 

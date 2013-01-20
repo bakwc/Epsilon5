@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include "../utils/uexception.h"
 #include "../utils/ucast.h"
+#include "../utils/ucolonsep.h"
 #include "objects.h"
 
 #include <QDebug>
@@ -13,38 +14,21 @@ TObjects::TObjects(QObject *parent) :
 }
 
 void TObjects::LoadObjects(const QString &fileName) {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw UException("Error opening file " + file.fileName());
-    }
-    QTextStream in(&file);
-    QString line = "";
-    while (!line.isNull()) {
-        line = in.readLine();
-        if (line.isEmpty() || line[0] == '#') {
-            continue;
-        }
-        QStringList objParams = line.split(":");
-        if (objParams.size() != 5) {
-            throw UException("Error loading objects from " + fileName);
-        }
-        bool ok = true;
-        size_t id = objParams[0].toInt(&ok);
-        if (!ok) {
-            throw UException("Error loading objects from " + fileName);
-        }
+    UColonSep sep;
+    sep.Load(fileName);
+
+    for (size_t i = 0; i < sep.Rows(); i++) {
+        try {
+        size_t id = sep.Get(i, 0);
         QPoint pos;
-        pos.setX(objParams[1].toInt(&ok));
-        if (!ok) {
-            throw UException("Error loading objects from " + fileName);
-        }
-        pos.setY(objParams[2].toInt(&ok));
-        if (!ok) {
-            throw UException("Error loading objects from " + fileName);
-        }
-        bool isDynamic = objParams[3] == "1" ? true : false;
+        pos.setX(sep.Get(i, 1));
+        pos.setY(sep.Get(i, 2));
+        bool isDynamic = sep.Get(i, 3);
         Objects.insert(id, pos);
         ObjectsIsDyn.insert(id, isDynamic);
+        } catch (const UException& e) {
+            qDebug() << "Problems with loading file: " << fileName;
+        }
     }
 }
 

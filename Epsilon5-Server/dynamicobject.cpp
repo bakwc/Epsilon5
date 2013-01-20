@@ -8,8 +8,9 @@ TDynamicObject::TDynamicObject(QPointF pos, QPointF speed,
                                double angle, QObject *parent)
     : QObject(parent)
 {
-    if (std::isnan(x) || std::isnan(y)
-            || std::isnan(vx) || std::isnan(vy) || std::isnan(angle))
+    if (std::isnan(pos.x()) || std::isnan(pos.y())
+            || std::isnan(speed.x()) || std::isnan(speed.y())
+            || std::isnan(angle))
     {
         throw UException(QString(Q_FUNC_INFO) + ": Value is NaN");
     }

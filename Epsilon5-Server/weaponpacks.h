@@ -41,7 +41,7 @@ public:
     }
 
     virtual void MakeShot(const TFireInfo& fireInfo) = 0;
-private:
+protected:
     QPointF GetRanomizedSpeed(const QPointF& speed);
     QPointF GetSpeed(size_t speed, double angle);
     QPointF GetPosition(const QPointF& speed, const QPointF& pos);

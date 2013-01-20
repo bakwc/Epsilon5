@@ -190,8 +190,11 @@ void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
     bool dynamic = Application()->GetObjects()->IsDynamicObject(id);
     QPoint size = Application()->GetObjects()->GetObjectSize(id);
     if (dynamic) {
-        spawnDynamicObject(DynamicObjects, id, x, y, 0, 0,
-            QSizeF(size.x(), size.y()), angle);
+        spawnDynamicObject(DynamicObjects, id,
+                            QPointF(x, y),
+                            QPointF(0, 0),
+                            QSizeF(size.x(), size.y()),
+                            angle);
         return;
     }
 
@@ -265,12 +268,13 @@ void TWorld::spawnStaticObject(TStaticObjectsList &container, size_t id,
 // Spawn dynamic object at (rect.x;rect.y).
 // Center of the object will be in the same position.
 void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
-    size_t id, double x, double y, double vx, double vy,
+    size_t id, QPointF pos, QPointF speed,
     const QSizeF& size, double angle)
 {
-    TDynamicObject* object = new TDynamicObject(OBJECT_SCALE_DOWN * x,
-                                           OBJECT_SCALE_DOWN * y, vx,
-                                           vy, angle, this);
+    pos.setX(OBJECT_SCALE_DOWN * pos.x());
+    pos.setY(OBJECT_SCALE_DOWN * pos.y());
+
+    TDynamicObject* object = new TDynamicObject(pos, speed, angle, this);
     object->SetRectSize(OBJECT_SCALE_DOWN * size.width(),
                         OBJECT_SCALE_DOWN * size.height());
     object->SetId(id);

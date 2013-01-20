@@ -9,7 +9,7 @@
 const size_t HP_LOST = 45;
 
 TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
-    : TDynamicObject(0, 0, 0, 0, 0, parent)
+    : TDynamicObject(QPointF(0, 0), QPointF(0, 0), 0, parent)
     , Id(id)
     , Maps(maps)
     , Team(team)
@@ -57,10 +57,8 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
                 control.keystatus().keyattack2())
         {
             TFireInfo fireInfo;
-            fireInfo.X = GetX();
-            fireInfo.Y = GetY();
-            fireInfo.Vx = GetVx();
-            fireInfo.Vy = GetVy();
+            fireInfo.Pos = GetPosition();
+            fireInfo.Speed = GetSpeed();
             fireInfo.Angle = angle;
 
             size_t weaponId = control.weapon();

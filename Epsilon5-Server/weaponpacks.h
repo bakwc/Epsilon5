@@ -41,6 +41,12 @@ public:
     }
 
     virtual void MakeShot(const TFireInfo& fireInfo) = 0;
+private:
+    QPointF GetRanomizedSpeed(const QPointF& speed);
+    QPointF GetSpeed(size_t speed, double angle);
+    QPointF GetPosition(const QPointF& speed, const QPointF& pos);
+    void EmitShoot(const QPointF& position, const QPointF& speed,
+                   const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType);
 signals:
     void SpawnBullet(TBullet* bullet);
 private:

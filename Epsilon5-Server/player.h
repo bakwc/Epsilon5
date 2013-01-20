@@ -16,7 +16,8 @@ struct TWeaponInfo {
 };
 
 struct TFireInfo {
-    double X, Y, Vx, Vy, Angle;
+    QPointF Pos, Speed;
+    double Angle;
     size_t PlayerId;
     ETeam Team;
     TWeaponInfo* WeaponInfo = 0;

@@ -22,21 +22,41 @@ TWeaponBase::TWeaponBase(size_t rechargeTime,
     connect(this, SIGNAL(SpawnBullet(TBullet*)), p, SIGNAL(SpawnBullet(TBullet*)));
 }
 
+QPointF TWeaponBase::GetSpeed(size_t speed, double angle) {
+    QPointF res;
+    res.setX(speed * sin(angle + M_PI / 2));
+    res.setY(speed * cos(angle + M_PI / 2));
+    return res;
+}
+
+QPointF TWeaponBase::GetPosition(const QPointF& speed, const QPointF& pos) {
+    QPointF res;
+    res.setX(pos.x() + speed.x() / 25);
+    res.setY(pos.y() + speed.y() / 25);
+    return res;
+}
+
+QPointF GetRanomizedSpeed(const QPointF& speed) {
+    return QPointF(speed.x() + rand()%10, speed.y() + rand()%10);
+}
+
+void TWeaponBase::EmitShoot(const QPointF& position, const QPointF& speed,
+                            const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType) {
+    TBullet* bullet = new TBullet(position, speed, bulletType,
+                                  fireInfo.PlayerId, fireInfo.Team,
+                                  ((TApplication*)(qApp))->GetWorld());
+    emit SpawnBullet(bullet);
+}
+
 TPistolWeapon::TPistolWeapon(QObject *parent)
     : TWeaponBase(800, 12, 5, 400, Epsilon5::Pistol, parent)
 {
 }
 
 void TPistolWeapon::MakeShot(const TFireInfo& fireInfo) {
-    double x, y, vx, vy;
-    vx = 62 * sin(fireInfo.Angle + M_PI / 2);
-    vy = 62 * cos(fireInfo.Angle + M_PI / 2);
-    x = fireInfo.X + vx / 25;
-    y = fireInfo.Y + vy / 25;
-    TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_ARBUZ,
-                                  fireInfo.PlayerId, fireInfo.Team,
-                                  ((TApplication*)(qApp))->GetWorld());
-    emit SpawnBullet(bullet);
+    QPointF speed = GetSpeed(62, fireInfo.Angle);
+    QPointF position = GetPosition(speed, fireInfo.Pos);
+    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_ARBUZ);
 }
 
 TMachineGunWeapon::TMachineGunWeapon(QObject* parent)
@@ -45,15 +65,9 @@ TMachineGunWeapon::TMachineGunWeapon(QObject* parent)
 }
 
 void TMachineGunWeapon::MakeShot(const TFireInfo& fireInfo) {
-    double x, y, vx, vy;
-    vx = 78 * sin(fireInfo.Angle + M_PI / 2);
-    vy = 78 * cos(fireInfo.Angle + M_PI / 2);
-    x = fireInfo.X + vx / 25;
-    y = fireInfo.Y + vy / 25;
-    TBullet* bullet = new TBullet(x, y, vx, vy, Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                  fireInfo.PlayerId, fireInfo.Team,
-                                  ((TApplication*)(qApp))->GetWorld());
-    emit SpawnBullet(bullet);
+    QPointF speed = GetSpeed(78, fireInfo.Angle);
+    QPointF position = GetPosition(speed, fireInfo.Pos);
+    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_LITTLE_BULLET);
 }
 
 TShotGunWeapon::TShotGunWeapon(QObject* parent)
@@ -62,17 +76,10 @@ TShotGunWeapon::TShotGunWeapon(QObject* parent)
 }
 
 void TShotGunWeapon::MakeShot(const TFireInfo& fireInfo) {
-    double x, y, vx, vy;
-    vx = 98 * sin(fireInfo.Angle + M_PI / 2);
-    vy = 98 * cos(fireInfo.Angle + M_PI / 2);
-    x = fireInfo.X + vx / 25;
-    y = fireInfo.Y + vy / 25;
+    QPointF speed = GetSpeed(98, fireInfo.Angle);
+    QPointF position = GetPosition(speed, fireInfo.Pos);
     for (size_t i = 0; i < 5; i++) {
-        TBullet* bullet = new TBullet(x, y, vx + rand()%10, vy + rand()%10,
-                                      Epsilon5::Bullet_Type_LITTLE_BULLET,
-                                      fireInfo.PlayerId, fireInfo.Team,
-                                      ((TApplication*)(qApp))->GetWorld());
-        emit SpawnBullet(bullet);
+        EmitShoot(position, GetRanomizedSpeed(speed), fireInfo, Epsilon5::Bullet_Type_LITTLE_BULLET);
     }
 }
 

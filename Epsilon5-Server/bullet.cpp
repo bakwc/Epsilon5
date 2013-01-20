@@ -1,9 +1,9 @@
 #include "bullet.h"
 
-TBullet::TBullet(double x, double y, double vx, double vy,
-                 Epsilon5::Bullet_Type bulletType, size_t playerId,
-                 ETeam team, QObject *parent)
-    : TDynamicObject(x, y, vx, vy, 0, parent)
+TBullet::TBullet(QPointF pos, QPointF speed,
+                 Epsilon5::Bullet_Type bulletType,
+                 size_t playerId, ETeam team, QObject *parent)
+    : TDynamicObject(pos, speed, 0, parent)
     , BulletType(bulletType)
     , PlayerId(playerId)
     , Team(team)

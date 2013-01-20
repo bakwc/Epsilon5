@@ -4,8 +4,8 @@
 #include "dynamicobject.h"
 #include "world.h"
 
-TDynamicObject::TDynamicObject(double x, double y, double vx,
-                               double vy, double angle, QObject *parent)
+TDynamicObject::TDynamicObject(QPointF pos, QPointF speed,
+                               double angle, QObject *parent)
     : QObject(parent)
 {
     if (std::isnan(x) || std::isnan(y)
@@ -15,8 +15,8 @@ TDynamicObject::TDynamicObject(double x, double y, double vx,
     }
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(x, y);
-    bodyDef.linearVelocity.Set(vx, vy);
+    bodyDef.position.Set(pos.x(), pos.y());
+    bodyDef.linearVelocity.Set(speed.x(), speed.y());
     bodyDef.angle = angle;
     Body = B2World()->CreateBody(&bodyDef);
     Body->SetLinearDamping(5.0);

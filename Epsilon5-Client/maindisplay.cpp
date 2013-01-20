@@ -15,30 +15,6 @@
 
 #ifdef Q_OS_WIN
 #include <windows.h>
-#include <hidpi.h>
-#include <Winternl.h>
-
-/*NTSYSAPI NTSTATUS NTAPI NtQuerySystemInformation(
-        IN UINT SystemInformationClass,		// information type
-        OUT PVOID SystemInformation,		// pointer to buffer
-        IN ULONG SystemInformationLength,	// buffer size in bytes
-        OUT PULONG ReturnLength OPTIONAL	// pointer to a 32 bit variable that
-                                            // receives the number of bytes written
-                                            // to the buffer
- );*/
-
-#define Li2Double(x)	((double)((x).HighPart) * 4.294967296E9 + (double)((x).LowPart))
-#define SystemTimeInformation		3
-typedef LONG (WINAPI *PROCNTQSI) (UINT, PVOID, ULONG, PULONG);
-
-typedef struct
-{
-    LARGE_INTEGER	liKeBootTime;
-    LARGE_INTEGER	liKeSystemTime;
-    LARGE_INTEGER	liExpTimeZoneBias;
-    ULONG			uCurrentTimeZoneID;
-    DWORD			dwReserved;
-} SYSTEM_TIME_INFORMATION;
 
 double GetCPUUsages()
 {

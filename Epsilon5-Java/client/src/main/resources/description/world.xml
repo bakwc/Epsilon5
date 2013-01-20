@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<world xmlns="http://client.epsilon5.com/world"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://client.epsilon5.com/world ../schemas/world.xsd">
+
+    <sprites>
+        <sprite id="100">
+            <texture>background</texture>
+            <width>4096</width>
+            <height>4096</height>
+            <paddingBottom>1024</paddingBottom>
+        </sprite>
+        <sprite id="101">
+            <texture>peka_t1</texture>
+            <width>30</width>
+            <height>30</height>
+        </sprite>
+        <sprite id="102">
+            <texture>peka_t2</texture>
+            <width>30</width>
+            <height>30</height>
+        </sprite>
+        <sprite id="103">
+            <texture>hero</texture>
+            <width>30</width>
+            <height>30</height>
+        </sprite>
+        <sprite id="104">
+            <texture>watermelon</texture>
+            <width>10</width>
+            <height>10</height>
+        </sprite>
+    </sprites>
+</world>

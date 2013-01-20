@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://client.epsilon5.com/settings"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://client.epsilon5.com/settings ../schemas/settings.xsd">
+
+    <player>
+        <name>Marvel</name>
+        <password>123</password>
+    </player>
+
+    <window>
+        <title>PekaShooter</title>
+        <width>320</width>
+        <height>240</height>
+        <fullScreen>false</fullScreen>
+        <fps>100</fps>
+    </window>
+
+    <network>
+        <host>193.169.33.254</host>
+        <port>14567</port>
+    </network>
+</settings>

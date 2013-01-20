@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://client.epsilon5.com/world"
+        xmlns:tns="http://client.epsilon5.com/world"
+        elementFormDefault="qualified">
+
+    <element name="world">
+        <complexType>
+            <all>
+                <element name="sprites" type="tns:sprites"/>
+            </all>
+        </complexType>
+    </element>
+
+    <complexType name="sprites">
+        <sequence minOccurs="0" maxOccurs="unbounded">
+            <element name="sprite" type="tns:sprite"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="sprite">
+        <all>
+            <element name="texture" type="string"/>
+            <element name="width" type="int"/>
+            <element name="height" type="int"/>
+            <element name="paddingBottom" type="int" minOccurs="0"/>
+            <element name="paddingRight" type="int" minOccurs="0"/>
+        </all>
+        <attribute name="id" type="int" use="required"/>
+    </complexType>
+
+</schema>

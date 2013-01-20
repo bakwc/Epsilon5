@@ -1,0 +1,10 @@
+#version 330
+uniform mat4 mgl_PMVMatrix[2];
+in vec3 mgl_Vertex;
+in vec2 mgl_MultiTexCoord;
+out vec2 mgl_TexCoord;
+void main()
+{
+	gl_Position = mgl_PMVMatrix[0] * mgl_PMVMatrix[1] * vec4(mgl_Vertex, 1.0);
+	mgl_TexCoord = mgl_MultiTexCoord;
+}

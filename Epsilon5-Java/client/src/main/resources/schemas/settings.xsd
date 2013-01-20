@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://client.epsilon5.com/settings"
+        xmlns:tns="http://client.epsilon5.com/settings"
+        elementFormDefault="qualified">
+
+    <element name="settings">
+        <complexType>
+            <all>
+                <element name="window" type="tns:windowSettings"/>
+                <element name="network" type="tns:networkSettings"/>
+                <element name="player" type="tns:playerSettings"/>
+            </all>
+        </complexType>
+    </element>
+
+    <complexType name="windowSettings">
+        <all>
+            <element name="title" type="string"/>
+            <element name="width" type="int"/>
+            <element name="height" type="int"/>
+            <element name="fullScreen" type="boolean"/>
+            <element name="fps" type="int"/>
+        </all>
+    </complexType>
+
+    <complexType name="networkSettings">
+        <all>
+            <element name="host" type="string"/>
+            <element name="port" type="int"/>
+        </all>
+    </complexType>
+
+    <complexType name="playerSettings">
+        <all>
+            <element name="name" type="string"/>
+            <element name="password" type="string"/>
+        </all>
+    </complexType>
+
+</schema>

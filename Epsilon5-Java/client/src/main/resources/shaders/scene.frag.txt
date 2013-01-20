@@ -1,0 +1,8 @@
+#version 330
+uniform sampler2D colMap;
+in vec2 mgl_TexCoord;
+out vec4 mgl_FragColor;
+void main()
+{
+	mgl_FragColor = texture(colMap, mgl_TexCoord);
+}

@@ -1,4 +1,6 @@
 package Epsilon5;
+option java_outer_classname = "Protocol";
+option java_package = "com.epsilon5.client.network";
 
 enum Weapon {
     Pistol = 0;

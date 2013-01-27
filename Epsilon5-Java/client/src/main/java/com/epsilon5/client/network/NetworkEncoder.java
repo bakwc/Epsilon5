@@ -29,15 +29,12 @@ class NetworkEncoder extends OneToOneEncoder {
         buffer.writeShort(0);
         buffer.writeInt(0);
 
-        try (OutputStream stream = new DeflaterOutputStream(
-                new ChannelBufferOutputStream(buffer))) {
-
+        try (OutputStream stream = new DeflaterOutputStream(new ChannelBufferOutputStream(buffer))) {
             stream.write(data);
         }
 
-
-        buffer.setShort(3, buffer.capacity() - HEADER_SIZE);
-        buffer.setInt(5, buffer.capacity() - HEADER_SIZE - 4);
+        buffer.setShort(3, buffer.readableBytes() - HEADER_SIZE + 4);
+        buffer.setInt(5, buffer.readableBytes() - HEADER_SIZE);
 
         return buffer;
     }

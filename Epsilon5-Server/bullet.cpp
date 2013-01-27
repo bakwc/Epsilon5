@@ -33,6 +33,8 @@ TBullet::TBullet(QPointF pos, QPointF speed,
     fixtureDef.filter.groupIndex = 1;
     Body->CreateFixture(&fixtureDef);
 
+    Body->SetBullet(true);
+
     Body->SetLinearDamping(0.0);
     Body->SetAngularDamping(0.3);
 

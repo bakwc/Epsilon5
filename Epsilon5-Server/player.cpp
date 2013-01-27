@@ -32,6 +32,7 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
     Body->CreateFixture(&fixtureDef);
 
     Body->SetUserData(&CollisionInfo);
+
     CollisionInfo.ObjType = TObjectInfo::OT_Player;
     CollisionInfo.Object = this;
 
@@ -43,12 +44,12 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
 
 void TPlayer::ApplyControl(const Epsilon5::Control &control) {
     try {
-        if (control.keystatus().keydown()) Force(1) = 5.5;
-        else if (control.keystatus().keyup()) Force(1) = -5.5;
+        if (control.keystatus().keydown()) Force(1) = 10;
+        else if (control.keystatus().keyup()) Force(1) = -10;
         else Force(1) = 0;
 
-        if (control.keystatus().keyleft()) Force(0) = -5.5;
-        else if (control.keystatus().keyright()) Force(0) = 5.5;
+        if (control.keystatus().keyleft()) Force(0) = -10;
+        else if (control.keystatus().keyright()) Force(0) = 10;
         else Force(0)=0;
 
         double angle = control.angle();

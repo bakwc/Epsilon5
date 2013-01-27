@@ -52,6 +52,8 @@ QMAKE_CXXFLAGS += -std=c++0x
 
 LIBS += -lprotobuf
 
+INCLUDEPATH += 'C:\Qt\qt5-dist\include'
+
 unix {
     VAR=$$(USE_XRANDR)
     !isEmpty(VAR) {

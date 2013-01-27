@@ -31,8 +31,8 @@ QPointF TWeaponBase::GetSpeed(size_t speed, double angle) {
 
 QPointF TWeaponBase::GetPosition(const QPointF& speed, const QPointF& pos) {
     QPointF res;
-    res.setX(pos.x() + speed.x() / 25);
-    res.setY(pos.y() + speed.y() / 25);
+    res.setX(pos.x() + 1.6*speed.x()/qAbs(speed.x()));
+    res.setY(pos.y() + 1.6*speed.y()/qAbs(speed.y()));
     return res;
 }
 
@@ -54,7 +54,7 @@ TPistolWeapon::TPistolWeapon(QObject *parent)
 }
 
 void TPistolWeapon::MakeShot(const TFireInfo& fireInfo) {
-    QPointF speed = GetSpeed(62, fireInfo.Angle);
+    QPointF speed = GetSpeed(200, fireInfo.Angle);
     QPointF position = GetPosition(speed, fireInfo.Pos);
     EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_ARBUZ);
 }
@@ -65,7 +65,7 @@ TMachineGunWeapon::TMachineGunWeapon(QObject* parent)
 }
 
 void TMachineGunWeapon::MakeShot(const TFireInfo& fireInfo) {
-    QPointF speed = GetSpeed(78, fireInfo.Angle);
+    QPointF speed = GetSpeed(200, fireInfo.Angle);
     QPointF position = GetPosition(speed, fireInfo.Pos);
     EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_LITTLE_BULLET);
 }
@@ -76,7 +76,7 @@ TShotGunWeapon::TShotGunWeapon(QObject* parent)
 }
 
 void TShotGunWeapon::MakeShot(const TFireInfo& fireInfo) {
-    QPointF speed = GetSpeed(98, fireInfo.Angle);
+    QPointF speed = GetSpeed(200, fireInfo.Angle);
     QPointF position = GetPosition(speed, fireInfo.Pos);
     for (size_t i = 0; i < 5; i++) {
         EmitShoot(position, GetRanomizedSpeed(speed), fireInfo, Epsilon5::Bullet_Type_LITTLE_BULLET);

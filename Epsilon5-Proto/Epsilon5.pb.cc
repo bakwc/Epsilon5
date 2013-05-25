@@ -354,7 +354,8 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "\nkeyAttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"&\n"
     "\004Auth\022\014\n\004name\030\001 \002(\t\022\020\n\010password\030\002 \001(\t*1\n"
     "\006Weapon\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007S"
-    "hotgun\020\002", 1248);
+    "hotgun\020\002B\'\n\033com.epsilon5.client.networkB"
+    "\010Protocol", 1289);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();

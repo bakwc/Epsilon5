@@ -30,6 +30,9 @@ const ::google::protobuf::EnumDescriptor* Bullet_Type_descriptor_ = NULL;
 const ::google::protobuf::Descriptor* Object_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Object_reflection_ = NULL;
+const ::google::protobuf::Descriptor* Vehicle_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Vehicle_reflection_ = NULL;
 const ::google::protobuf::Descriptor* RespPoint_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RespPoint_reflection_ = NULL;
@@ -125,7 +128,26 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Object));
-  RespPoint_descriptor_ = file->message_type(3);
+  Vehicle_descriptor_ = file->message_type(3);
+  static const int Vehicle_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, x_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, angle_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, playerid_),
+  };
+  Vehicle_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Vehicle_descriptor_,
+      Vehicle::default_instance_,
+      Vehicle_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Vehicle, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Vehicle));
+  RespPoint_descriptor_ = file->message_type(4);
   static const int RespPoint_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RespPoint, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RespPoint, y_),
@@ -143,7 +165,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RespPoint));
-  PlayerStat_descriptor_ = file->message_type(4);
+  PlayerStat_descriptor_ = file->message_type(5);
   static const int PlayerStat_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerStat, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerStat, score_),
@@ -161,7 +183,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerStat));
-  PlayerInfo_descriptor_ = file->message_type(5);
+  PlayerInfo_descriptor_ = file->message_type(6);
   static const int PlayerInfo_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PlayerInfo, map_),
@@ -180,11 +202,12 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PlayerInfo));
-  World_descriptor_ = file->message_type(6);
-  static const int World_offsets_[7] = {
+  World_descriptor_ = file->message_type(7);
+  static const int World_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, players_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, bullets_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, objects_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, vehicles_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, resp_points_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, packet_number_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(World, players_stat_),
@@ -201,7 +224,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(World));
-  Control_descriptor_ = file->message_type(7);
+  Control_descriptor_ = file->message_type(8);
   static const int Control_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, keystatus_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control, angle_),
@@ -240,7 +263,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Control_KeyStatus));
-  Auth_descriptor_ = file->message_type(8);
+  Auth_descriptor_ = file->message_type(9);
   static const int Auth_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Auth, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Auth, password_),
@@ -276,6 +299,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Object_descriptor_, &Object::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Vehicle_descriptor_, &Vehicle::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RespPoint_descriptor_, &RespPoint::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PlayerStat_descriptor_, &PlayerStat::default_instance());
@@ -300,6 +325,8 @@ void protobuf_ShutdownFile_Epsilon5_2eproto() {
   delete Bullet_reflection_;
   delete Object::default_instance_;
   delete Object_reflection_;
+  delete Vehicle::default_instance_;
+  delete Vehicle_reflection_;
   delete RespPoint::default_instance_;
   delete RespPoint_reflection_;
   delete PlayerStat::default_instance_;
@@ -332,35 +359,39 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "(\0162\025.Epsilon5.Bullet.Type:\005ARBUZ\022\014\n\004team"
     "\030\006 \002(\010\"0\n\004Type\022\t\n\005ARBUZ\020\000\022\021\n\rLITTLE_BULL"
     "ET\020\001\022\n\n\006ROCKET\020\002\"9\n\006Object\022\n\n\002id\030\001 \002(\005\022\t"
-    "\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"@\n\tR"
-    "espPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003"
-    " \002(\005\022\017\n\007is_main\030\004 \002(\010\"F\n\nPlayerStat\022\n\n\002i"
-    "d\030\001 \002(\005\022\r\n\005score\030\002 \002(\005\022\r\n\005kills\030\003 \002(\005\022\016\n"
-    "\006deaths\030\004 \002(\005\"T\n\nPlayerInfo\022\n\n\002id\030\001 \001(\005\022"
-    "\013\n\003map\030\002 \001(\t\022\016\n\006weapon\030\003 \001(\005\022\017\n\007bullets\030"
-    "\004 \001(\005\022\014\n\004cage\030\005 \001(\005\"\210\002\n\005World\022!\n\007players"
-    "\030\001 \003(\0132\020.Epsilon5.Player\022!\n\007bullets\030\002 \003("
-    "\0132\020.Epsilon5.Bullet\022!\n\007objects\030\003 \003(\0132\020.E"
-    "psilon5.Object\022(\n\013resp_points\030\004 \003(\0132\023.Ep"
-    "silon5.RespPoint\022\025\n\rpacket_number\030\005 \002(\r\022"
-    "*\n\014players_stat\030\006 \003(\0132\024.Epsilon5.PlayerS"
-    "tat\022)\n\013player_info\030\007 \001(\0132\024.Epsilon5.Play"
-    "erInfo\"\214\002\n\007Control\022.\n\tkeyStatus\030\001 \002(\0132\033."
-    "Epsilon5.Control.KeyStatus\022\r\n\005angle\030\002 \002("
-    "\001\022 \n\006weapon\030\003 \002(\0162\020.Epsilon5.Weapon\022\025\n\rp"
-    "acket_number\030\004 \002(\r\022\021\n\tneed_full\030\005 \001(\010\032v\n"
-    "\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002"
-    "(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n"
-    "\nkeyAttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"&\n"
-    "\004Auth\022\014\n\004name\030\001 \002(\t\022\020\n\010password\030\002 \001(\t*1\n"
-    "\006Weapon\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007S"
-    "hotgun\020\002B\'\n\033com.epsilon5.client.networkB"
-    "\010Protocol", 1289);
+    "\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"L\n\007V"
+    "ehicle\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005"
+    "\022\r\n\005angle\030\004 \002(\001\022\020\n\010playerId\030\005 \001(\005\"@\n\tRes"
+    "pPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003 \002"
+    "(\005\022\017\n\007is_main\030\004 \002(\010\"F\n\nPlayerStat\022\n\n\002id\030"
+    "\001 \002(\005\022\r\n\005score\030\002 \002(\005\022\r\n\005kills\030\003 \002(\005\022\016\n\006d"
+    "eaths\030\004 \002(\005\"T\n\nPlayerInfo\022\n\n\002id\030\001 \001(\005\022\013\n"
+    "\003map\030\002 \001(\t\022\016\n\006weapon\030\003 \001(\005\022\017\n\007bullets\030\004 "
+    "\001(\005\022\014\n\004cage\030\005 \001(\005\"\255\002\n\005World\022!\n\007players\030\001"
+    " \003(\0132\020.Epsilon5.Player\022!\n\007bullets\030\002 \003(\0132"
+    "\020.Epsilon5.Bullet\022!\n\007objects\030\003 \003(\0132\020.Eps"
+    "ilon5.Object\022#\n\010vehicles\030\004 \003(\0132\021.Epsilon"
+    "5.Vehicle\022(\n\013resp_points\030\005 \003(\0132\023.Epsilon"
+    "5.RespPoint\022\025\n\rpacket_number\030\006 \002(\r\022*\n\014pl"
+    "ayers_stat\030\007 \003(\0132\024.Epsilon5.PlayerStat\022)"
+    "\n\013player_info\030\010 \001(\0132\024.Epsilon5.PlayerInf"
+    "o\"\214\002\n\007Control\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsil"
+    "on5.Control.KeyStatus\022\r\n\005angle\030\002 \002(\001\022 \n\006"
+    "weapon\030\003 \002(\0162\020.Epsilon5.Weapon\022\025\n\rpacket"
+    "_number\030\004 \002(\r\022\021\n\tneed_full\030\005 \001(\010\032v\n\tKeyS"
+    "tatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n"
+    "\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyA"
+    "ttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"&\n\004Auth"
+    "\022\014\n\004name\030\001 \002(\t\022\020\n\010password\030\002 \001(\t*1\n\006Weap"
+    "on\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007Shotgu"
+    "n\020\002B\'\n\033com.epsilon5.client.networkB\010Prot"
+    "ocol", 1404);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
   Bullet::default_instance_ = new Bullet();
   Object::default_instance_ = new Object();
+  Vehicle::default_instance_ = new Vehicle();
   RespPoint::default_instance_ = new RespPoint();
   PlayerStat::default_instance_ = new PlayerStat();
   PlayerInfo::default_instance_ = new PlayerInfo();
@@ -371,6 +402,7 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
   Player::default_instance_->InitAsDefaultInstance();
   Bullet::default_instance_->InitAsDefaultInstance();
   Object::default_instance_->InitAsDefaultInstance();
+  Vehicle::default_instance_->InitAsDefaultInstance();
   RespPoint::default_instance_->InitAsDefaultInstance();
   PlayerStat::default_instance_->InitAsDefaultInstance();
   PlayerInfo::default_instance_->InitAsDefaultInstance();
@@ -1749,6 +1781,373 @@ void Object::Swap(Object* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int Vehicle::kIdFieldNumber;
+const int Vehicle::kXFieldNumber;
+const int Vehicle::kYFieldNumber;
+const int Vehicle::kAngleFieldNumber;
+const int Vehicle::kPlayerIdFieldNumber;
+#endif  // !_MSC_VER
+
+Vehicle::Vehicle()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Vehicle::InitAsDefaultInstance() {
+}
+
+Vehicle::Vehicle(const Vehicle& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Vehicle::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = 0;
+  x_ = 0;
+  y_ = 0;
+  angle_ = 0;
+  playerid_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Vehicle::~Vehicle() {
+  SharedDtor();
+}
+
+void Vehicle::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Vehicle::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Vehicle::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Vehicle_descriptor_;
+}
+
+const Vehicle& Vehicle::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_Epsilon5_2eproto();
+  return *default_instance_;
+}
+
+Vehicle* Vehicle::default_instance_ = NULL;
+
+Vehicle* Vehicle::New() const {
+  return new Vehicle;
+}
+
+void Vehicle::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    id_ = 0;
+    x_ = 0;
+    y_ = 0;
+    angle_ = 0;
+    playerid_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Vehicle::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &id_)));
+          set_has_id();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_x;
+        break;
+      }
+
+      // required int32 x = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_x:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &x_)));
+          set_has_x();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_y;
+        break;
+      }
+
+      // required int32 y = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_y:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &y_)));
+          set_has_y();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(33)) goto parse_angle;
+        break;
+      }
+
+      // required double angle = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_angle:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &angle_)));
+          set_has_angle();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_playerId;
+        break;
+      }
+
+      // optional int32 playerId = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_playerId:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &playerid_)));
+          set_has_playerid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void Vehicle::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required int32 id = 1;
+  if (has_id()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->id(), output);
+  }
+
+  // required int32 x = 2;
+  if (has_x()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->x(), output);
+  }
+
+  // required int32 y = 3;
+  if (has_y()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->y(), output);
+  }
+
+  // required double angle = 4;
+  if (has_angle()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->angle(), output);
+  }
+
+  // optional int32 playerId = 5;
+  if (has_playerid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->playerid(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Vehicle::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required int32 id = 1;
+  if (has_id()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->id(), target);
+  }
+
+  // required int32 x = 2;
+  if (has_x()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->x(), target);
+  }
+
+  // required int32 y = 3;
+  if (has_y()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->y(), target);
+  }
+
+  // required double angle = 4;
+  if (has_angle()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->angle(), target);
+  }
+
+  // optional int32 playerId = 5;
+  if (has_playerid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->playerid(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Vehicle::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->id());
+    }
+
+    // required int32 x = 2;
+    if (has_x()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->x());
+    }
+
+    // required int32 y = 3;
+    if (has_y()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->y());
+    }
+
+    // required double angle = 4;
+    if (has_angle()) {
+      total_size += 1 + 8;
+    }
+
+    // optional int32 playerId = 5;
+    if (has_playerid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->playerid());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Vehicle::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Vehicle* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Vehicle*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Vehicle::MergeFrom(const Vehicle& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_id()) {
+      set_id(from.id());
+    }
+    if (from.has_x()) {
+      set_x(from.x());
+    }
+    if (from.has_y()) {
+      set_y(from.y());
+    }
+    if (from.has_angle()) {
+      set_angle(from.angle());
+    }
+    if (from.has_playerid()) {
+      set_playerid(from.playerid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Vehicle::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Vehicle::CopyFrom(const Vehicle& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Vehicle::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+
+  return true;
+}
+
+void Vehicle::Swap(Vehicle* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(x_, other->x_);
+    std::swap(y_, other->y_);
+    std::swap(angle_, other->angle_);
+    std::swap(playerid_, other->playerid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Vehicle::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Vehicle_descriptor_;
+  metadata.reflection = Vehicle_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int RespPoint::kXFieldNumber;
 const int RespPoint::kYFieldNumber;
 const int RespPoint::kTeamFieldNumber;
@@ -2793,6 +3192,7 @@ void PlayerInfo::Swap(PlayerInfo* other) {
 const int World::kPlayersFieldNumber;
 const int World::kBulletsFieldNumber;
 const int World::kObjectsFieldNumber;
+const int World::kVehiclesFieldNumber;
 const int World::kRespPointsFieldNumber;
 const int World::kPacketNumberFieldNumber;
 const int World::kPlayersStatFieldNumber;
@@ -2853,7 +3253,7 @@ World* World::New() const {
 }
 
 void World::Clear() {
-  if (_has_bits_[4 / 32] & (0xffu << (4 % 32))) {
+  if (_has_bits_[5 / 32] & (0xffu << (5 % 32))) {
     packet_number_ = 0u;
     if (has_player_info()) {
       if (player_info_ != NULL) player_info_->::Epsilon5::PlayerInfo::Clear();
@@ -2862,6 +3262,7 @@ void World::Clear() {
   players_.Clear();
   bullets_.Clear();
   objects_.Clear();
+  vehicles_.Clear();
   resp_points_.Clear();
   players_stat_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -2915,12 +3316,27 @@ bool World::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(26)) goto parse_objects;
-        if (input->ExpectTag(34)) goto parse_resp_points;
+        if (input->ExpectTag(34)) goto parse_vehicles;
         break;
       }
 
-      // repeated .Epsilon5.RespPoint resp_points = 4;
+      // repeated .Epsilon5.Vehicle vehicles = 4;
       case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_vehicles:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_vehicles()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_vehicles;
+        if (input->ExpectTag(42)) goto parse_resp_points;
+        break;
+      }
+
+      // repeated .Epsilon5.RespPoint resp_points = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_resp_points:
@@ -2929,13 +3345,13 @@ bool World::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_resp_points;
-        if (input->ExpectTag(40)) goto parse_packet_number;
+        if (input->ExpectTag(42)) goto parse_resp_points;
+        if (input->ExpectTag(48)) goto parse_packet_number;
         break;
       }
 
-      // required uint32 packet_number = 5;
-      case 5: {
+      // required uint32 packet_number = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_packet_number:
@@ -2946,12 +3362,12 @@ bool World::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_players_stat;
+        if (input->ExpectTag(58)) goto parse_players_stat;
         break;
       }
 
-      // repeated .Epsilon5.PlayerStat players_stat = 6;
-      case 6: {
+      // repeated .Epsilon5.PlayerStat players_stat = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_players_stat:
@@ -2960,13 +3376,13 @@ bool World::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_players_stat;
-        if (input->ExpectTag(58)) goto parse_player_info;
+        if (input->ExpectTag(58)) goto parse_players_stat;
+        if (input->ExpectTag(66)) goto parse_player_info;
         break;
       }
 
-      // optional .Epsilon5.PlayerInfo player_info = 7;
-      case 7: {
+      // optional .Epsilon5.PlayerInfo player_info = 8;
+      case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_player_info:
@@ -3015,27 +3431,33 @@ void World::SerializeWithCachedSizes(
       3, this->objects(i), output);
   }
 
-  // repeated .Epsilon5.RespPoint resp_points = 4;
+  // repeated .Epsilon5.Vehicle vehicles = 4;
+  for (int i = 0; i < this->vehicles_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->vehicles(i), output);
+  }
+
+  // repeated .Epsilon5.RespPoint resp_points = 5;
   for (int i = 0; i < this->resp_points_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      4, this->resp_points(i), output);
+      5, this->resp_points(i), output);
   }
 
-  // required uint32 packet_number = 5;
+  // required uint32 packet_number = 6;
   if (has_packet_number()) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->packet_number(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(6, this->packet_number(), output);
   }
 
-  // repeated .Epsilon5.PlayerStat players_stat = 6;
+  // repeated .Epsilon5.PlayerStat players_stat = 7;
   for (int i = 0; i < this->players_stat_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->players_stat(i), output);
+      7, this->players_stat(i), output);
   }
 
-  // optional .Epsilon5.PlayerInfo player_info = 7;
+  // optional .Epsilon5.PlayerInfo player_info = 8;
   if (has_player_info()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, this->player_info(), output);
+      8, this->player_info(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -3067,30 +3489,37 @@ void World::SerializeWithCachedSizes(
         3, this->objects(i), target);
   }
 
-  // repeated .Epsilon5.RespPoint resp_points = 4;
+  // repeated .Epsilon5.Vehicle vehicles = 4;
+  for (int i = 0; i < this->vehicles_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        4, this->vehicles(i), target);
+  }
+
+  // repeated .Epsilon5.RespPoint resp_points = 5;
   for (int i = 0; i < this->resp_points_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        4, this->resp_points(i), target);
+        5, this->resp_points(i), target);
   }
 
-  // required uint32 packet_number = 5;
+  // required uint32 packet_number = 6;
   if (has_packet_number()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->packet_number(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(6, this->packet_number(), target);
   }
 
-  // repeated .Epsilon5.PlayerStat players_stat = 6;
+  // repeated .Epsilon5.PlayerStat players_stat = 7;
   for (int i = 0; i < this->players_stat_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->players_stat(i), target);
+        7, this->players_stat(i), target);
   }
 
-  // optional .Epsilon5.PlayerInfo player_info = 7;
+  // optional .Epsilon5.PlayerInfo player_info = 8;
   if (has_player_info()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        7, this->player_info(), target);
+        8, this->player_info(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -3103,15 +3532,15 @@ void World::SerializeWithCachedSizes(
 int World::ByteSize() const {
   int total_size = 0;
 
-  if (_has_bits_[4 / 32] & (0xffu << (4 % 32))) {
-    // required uint32 packet_number = 5;
+  if (_has_bits_[5 / 32] & (0xffu << (5 % 32))) {
+    // required uint32 packet_number = 6;
     if (has_packet_number()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->packet_number());
     }
 
-    // optional .Epsilon5.PlayerInfo player_info = 7;
+    // optional .Epsilon5.PlayerInfo player_info = 8;
     if (has_player_info()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -3143,7 +3572,15 @@ int World::ByteSize() const {
         this->objects(i));
   }
 
-  // repeated .Epsilon5.RespPoint resp_points = 4;
+  // repeated .Epsilon5.Vehicle vehicles = 4;
+  total_size += 1 * this->vehicles_size();
+  for (int i = 0; i < this->vehicles_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->vehicles(i));
+  }
+
+  // repeated .Epsilon5.RespPoint resp_points = 5;
   total_size += 1 * this->resp_points_size();
   for (int i = 0; i < this->resp_points_size(); i++) {
     total_size +=
@@ -3151,7 +3588,7 @@ int World::ByteSize() const {
         this->resp_points(i));
   }
 
-  // repeated .Epsilon5.PlayerStat players_stat = 6;
+  // repeated .Epsilon5.PlayerStat players_stat = 7;
   total_size += 1 * this->players_stat_size();
   for (int i = 0; i < this->players_stat_size(); i++) {
     total_size +=
@@ -3187,9 +3624,10 @@ void World::MergeFrom(const World& from) {
   players_.MergeFrom(from.players_);
   bullets_.MergeFrom(from.bullets_);
   objects_.MergeFrom(from.objects_);
+  vehicles_.MergeFrom(from.vehicles_);
   resp_points_.MergeFrom(from.resp_points_);
   players_stat_.MergeFrom(from.players_stat_);
-  if (from._has_bits_[4 / 32] & (0xffu << (4 % 32))) {
+  if (from._has_bits_[5 / 32] & (0xffu << (5 % 32))) {
     if (from.has_packet_number()) {
       set_packet_number(from.packet_number());
     }
@@ -3213,7 +3651,7 @@ void World::CopyFrom(const World& from) {
 }
 
 bool World::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000010) != 0x00000010) return false;
+  if ((_has_bits_[0] & 0x00000020) != 0x00000020) return false;
 
   for (int i = 0; i < players_size(); i++) {
     if (!this->players(i).IsInitialized()) return false;
@@ -3223,6 +3661,9 @@ bool World::IsInitialized() const {
   }
   for (int i = 0; i < objects_size(); i++) {
     if (!this->objects(i).IsInitialized()) return false;
+  }
+  for (int i = 0; i < vehicles_size(); i++) {
+    if (!this->vehicles(i).IsInitialized()) return false;
   }
   for (int i = 0; i < resp_points_size(); i++) {
     if (!this->resp_points(i).IsInitialized()) return false;
@@ -3238,6 +3679,7 @@ void World::Swap(World* other) {
     players_.Swap(&other->players_);
     bullets_.Swap(&other->bullets_);
     objects_.Swap(&other->objects_);
+    vehicles_.Swap(&other->vehicles_);
     resp_points_.Swap(&other->resp_points_);
     std::swap(packet_number_, other->packet_number_);
     players_stat_.Swap(&other->players_stat_);

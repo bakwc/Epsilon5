@@ -37,6 +37,7 @@ void protobuf_ShutdownFile_Epsilon5_2eproto();
 class Player;
 class Bullet;
 class Object;
+class Vehicle;
 class RespPoint;
 class PlayerStat;
 class PlayerInfo;
@@ -533,6 +534,128 @@ class Object : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class Vehicle : public ::google::protobuf::Message {
+ public:
+  Vehicle();
+  virtual ~Vehicle();
+
+  Vehicle(const Vehicle& from);
+
+  inline Vehicle& operator=(const Vehicle& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Vehicle& default_instance();
+
+  void Swap(Vehicle* other);
+
+  // implements Message ----------------------------------------------
+
+  Vehicle* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Vehicle& from);
+  void MergeFrom(const Vehicle& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline ::google::protobuf::int32 id() const;
+  inline void set_id(::google::protobuf::int32 value);
+
+  // required int32 x = 2;
+  inline bool has_x() const;
+  inline void clear_x();
+  static const int kXFieldNumber = 2;
+  inline ::google::protobuf::int32 x() const;
+  inline void set_x(::google::protobuf::int32 value);
+
+  // required int32 y = 3;
+  inline bool has_y() const;
+  inline void clear_y();
+  static const int kYFieldNumber = 3;
+  inline ::google::protobuf::int32 y() const;
+  inline void set_y(::google::protobuf::int32 value);
+
+  // required double angle = 4;
+  inline bool has_angle() const;
+  inline void clear_angle();
+  static const int kAngleFieldNumber = 4;
+  inline double angle() const;
+  inline void set_angle(double value);
+
+  // optional int32 playerId = 5;
+  inline bool has_playerid() const;
+  inline void clear_playerid();
+  static const int kPlayerIdFieldNumber = 5;
+  inline ::google::protobuf::int32 playerid() const;
+  inline void set_playerid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:Epsilon5.Vehicle)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_x();
+  inline void clear_has_x();
+  inline void set_has_y();
+  inline void clear_has_y();
+  inline void set_has_angle();
+  inline void clear_has_angle();
+  inline void set_has_playerid();
+  inline void clear_has_playerid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int32 id_;
+  ::google::protobuf::int32 x_;
+  double angle_;
+  ::google::protobuf::int32 y_;
+  ::google::protobuf::int32 playerid_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+
+  friend void  protobuf_AddDesc_Epsilon5_2eproto();
+  friend void protobuf_AssignDesc_Epsilon5_2eproto();
+  friend void protobuf_ShutdownFile_Epsilon5_2eproto();
+
+  void InitAsDefaultInstance();
+  static Vehicle* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class RespPoint : public ::google::protobuf::Message {
  public:
   RespPoint();
@@ -974,10 +1097,22 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object >*
       mutable_objects();
 
-  // repeated .Epsilon5.RespPoint resp_points = 4;
+  // repeated .Epsilon5.Vehicle vehicles = 4;
+  inline int vehicles_size() const;
+  inline void clear_vehicles();
+  static const int kVehiclesFieldNumber = 4;
+  inline const ::Epsilon5::Vehicle& vehicles(int index) const;
+  inline ::Epsilon5::Vehicle* mutable_vehicles(int index);
+  inline ::Epsilon5::Vehicle* add_vehicles();
+  inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Vehicle >&
+      vehicles() const;
+  inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Vehicle >*
+      mutable_vehicles();
+
+  // repeated .Epsilon5.RespPoint resp_points = 5;
   inline int resp_points_size() const;
   inline void clear_resp_points();
-  static const int kRespPointsFieldNumber = 4;
+  static const int kRespPointsFieldNumber = 5;
   inline const ::Epsilon5::RespPoint& resp_points(int index) const;
   inline ::Epsilon5::RespPoint* mutable_resp_points(int index);
   inline ::Epsilon5::RespPoint* add_resp_points();
@@ -986,17 +1121,17 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint >*
       mutable_resp_points();
 
-  // required uint32 packet_number = 5;
+  // required uint32 packet_number = 6;
   inline bool has_packet_number() const;
   inline void clear_packet_number();
-  static const int kPacketNumberFieldNumber = 5;
+  static const int kPacketNumberFieldNumber = 6;
   inline ::google::protobuf::uint32 packet_number() const;
   inline void set_packet_number(::google::protobuf::uint32 value);
 
-  // repeated .Epsilon5.PlayerStat players_stat = 6;
+  // repeated .Epsilon5.PlayerStat players_stat = 7;
   inline int players_stat_size() const;
   inline void clear_players_stat();
-  static const int kPlayersStatFieldNumber = 6;
+  static const int kPlayersStatFieldNumber = 7;
   inline const ::Epsilon5::PlayerStat& players_stat(int index) const;
   inline ::Epsilon5::PlayerStat* mutable_players_stat(int index);
   inline ::Epsilon5::PlayerStat* add_players_stat();
@@ -1005,10 +1140,10 @@ class World : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat >*
       mutable_players_stat();
 
-  // optional .Epsilon5.PlayerInfo player_info = 7;
+  // optional .Epsilon5.PlayerInfo player_info = 8;
   inline bool has_player_info() const;
   inline void clear_player_info();
-  static const int kPlayerInfoFieldNumber = 7;
+  static const int kPlayerInfoFieldNumber = 8;
   inline const ::Epsilon5::PlayerInfo& player_info() const;
   inline ::Epsilon5::PlayerInfo* mutable_player_info();
   inline ::Epsilon5::PlayerInfo* release_player_info();
@@ -1026,13 +1161,14 @@ class World : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Player > players_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Bullet > bullets_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::Object > objects_;
+  ::google::protobuf::RepeatedPtrField< ::Epsilon5::Vehicle > vehicles_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::RespPoint > resp_points_;
   ::google::protobuf::RepeatedPtrField< ::Epsilon5::PlayerStat > players_stat_;
   ::Epsilon5::PlayerInfo* player_info_;
   ::google::protobuf::uint32 packet_number_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
 
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1907,6 +2043,120 @@ inline void Object::set_angle(double value) {
 
 // -------------------------------------------------------------------
 
+// Vehicle
+
+// required int32 id = 1;
+inline bool Vehicle::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Vehicle::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Vehicle::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Vehicle::clear_id() {
+  id_ = 0;
+  clear_has_id();
+}
+inline ::google::protobuf::int32 Vehicle::id() const {
+  return id_;
+}
+inline void Vehicle::set_id(::google::protobuf::int32 value) {
+  set_has_id();
+  id_ = value;
+}
+
+// required int32 x = 2;
+inline bool Vehicle::has_x() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Vehicle::set_has_x() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Vehicle::clear_has_x() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Vehicle::clear_x() {
+  x_ = 0;
+  clear_has_x();
+}
+inline ::google::protobuf::int32 Vehicle::x() const {
+  return x_;
+}
+inline void Vehicle::set_x(::google::protobuf::int32 value) {
+  set_has_x();
+  x_ = value;
+}
+
+// required int32 y = 3;
+inline bool Vehicle::has_y() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Vehicle::set_has_y() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Vehicle::clear_has_y() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Vehicle::clear_y() {
+  y_ = 0;
+  clear_has_y();
+}
+inline ::google::protobuf::int32 Vehicle::y() const {
+  return y_;
+}
+inline void Vehicle::set_y(::google::protobuf::int32 value) {
+  set_has_y();
+  y_ = value;
+}
+
+// required double angle = 4;
+inline bool Vehicle::has_angle() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Vehicle::set_has_angle() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Vehicle::clear_has_angle() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Vehicle::clear_angle() {
+  angle_ = 0;
+  clear_has_angle();
+}
+inline double Vehicle::angle() const {
+  return angle_;
+}
+inline void Vehicle::set_angle(double value) {
+  set_has_angle();
+  angle_ = value;
+}
+
+// optional int32 playerId = 5;
+inline bool Vehicle::has_playerid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Vehicle::set_has_playerid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Vehicle::clear_has_playerid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Vehicle::clear_playerid() {
+  playerid_ = 0;
+  clear_has_playerid();
+}
+inline ::google::protobuf::int32 Vehicle::playerid() const {
+  return playerid_;
+}
+inline void Vehicle::set_playerid(::google::protobuf::int32 value) {
+  set_has_playerid();
+  playerid_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // RespPoint
 
 // required int32 x = 1;
@@ -2330,7 +2580,32 @@ World::mutable_objects() {
   return &objects_;
 }
 
-// repeated .Epsilon5.RespPoint resp_points = 4;
+// repeated .Epsilon5.Vehicle vehicles = 4;
+inline int World::vehicles_size() const {
+  return vehicles_.size();
+}
+inline void World::clear_vehicles() {
+  vehicles_.Clear();
+}
+inline const ::Epsilon5::Vehicle& World::vehicles(int index) const {
+  return vehicles_.Get(index);
+}
+inline ::Epsilon5::Vehicle* World::mutable_vehicles(int index) {
+  return vehicles_.Mutable(index);
+}
+inline ::Epsilon5::Vehicle* World::add_vehicles() {
+  return vehicles_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::Epsilon5::Vehicle >&
+World::vehicles() const {
+  return vehicles_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::Epsilon5::Vehicle >*
+World::mutable_vehicles() {
+  return &vehicles_;
+}
+
+// repeated .Epsilon5.RespPoint resp_points = 5;
 inline int World::resp_points_size() const {
   return resp_points_.size();
 }
@@ -2355,15 +2630,15 @@ World::mutable_resp_points() {
   return &resp_points_;
 }
 
-// required uint32 packet_number = 5;
+// required uint32 packet_number = 6;
 inline bool World::has_packet_number() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void World::set_has_packet_number() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void World::clear_has_packet_number() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void World::clear_packet_number() {
   packet_number_ = 0u;
@@ -2377,7 +2652,7 @@ inline void World::set_packet_number(::google::protobuf::uint32 value) {
   packet_number_ = value;
 }
 
-// repeated .Epsilon5.PlayerStat players_stat = 6;
+// repeated .Epsilon5.PlayerStat players_stat = 7;
 inline int World::players_stat_size() const {
   return players_stat_.size();
 }
@@ -2402,15 +2677,15 @@ World::mutable_players_stat() {
   return &players_stat_;
 }
 
-// optional .Epsilon5.PlayerInfo player_info = 7;
+// optional .Epsilon5.PlayerInfo player_info = 8;
 inline bool World::has_player_info() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void World::set_has_player_info() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void World::clear_has_player_info() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void World::clear_player_info() {
   if (player_info_ != NULL) player_info_->::Epsilon5::PlayerInfo::Clear();

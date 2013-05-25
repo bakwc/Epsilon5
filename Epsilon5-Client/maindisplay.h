@@ -13,6 +13,7 @@
 #include "menu.h"
 
 #ifdef Q_OS_WIN
+#include "windows.h"
 /*NTSYSAPI NTSTATUS NTAPI NtQuerySystemInformation(
         IN UINT SystemInformationClass,		// information type
         OUT PVOID SystemInformation,		// pointer to buffer

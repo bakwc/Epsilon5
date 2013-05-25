@@ -12,6 +12,7 @@
 #include "maindisplay.h"
 #include "application.h"
 #include <QtOpenGL>
+#include <QGLWidget>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -185,8 +186,6 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
 {
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_LINE_SMOOTH);
     QGLFormat f = QGLFormat::defaultFormat();
     f.setSampleBuffers(true);
     f.setStencilBufferSize(8);

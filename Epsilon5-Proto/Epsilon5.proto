@@ -46,7 +46,13 @@ message Object {
     required int32 y = 3;
     required double angle = 4;
 }
-
+message Vehicle {
+    required int32 id = 1;
+    required int32 x = 2;
+    required int32 y = 3;
+    required double angle = 4;
+    optional int32 playerId = 5;
+}
 message RespPoint {
     required int32 x = 1;
     required int32 y = 2;
@@ -73,10 +79,11 @@ message World {
     repeated Player players = 1;
     repeated Bullet bullets = 2;
     repeated Object objects = 3;
-    repeated RespPoint resp_points = 4;
-    required uint32 packet_number = 5;
-    repeated PlayerStat players_stat = 6;
-    optional PlayerInfo player_info = 7;
+    repeated Vehicle vehicles = 4;
+    repeated RespPoint resp_points = 5;
+    required uint32 packet_number = 6;
+    repeated PlayerStat players_stat = 7;
+    optional PlayerInfo player_info = 8;
 }
 
 message Control {

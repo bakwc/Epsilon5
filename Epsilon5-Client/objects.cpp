@@ -2,6 +2,7 @@
 #include <QTextStream>
 #include <QStringList>
 #include "../utils/uexception.h"
+#include "../utils/ucolonsep.h"
 #include "objects.h"
 
 TObjects::TObjects(QObject* parent)
@@ -9,27 +10,12 @@ TObjects::TObjects(QObject* parent)
 }
 
 void TObjects::LoadObjects(const QString& fileName) {
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        throw UException("Error opening file " + fileName);
-    }
-    QTextStream in(&file);
-    QString line = "";
-    while (!line.isNull()) {
-        line = in.readLine();
-        if (line.isEmpty() || line[0] == '#') {
-            continue;
-        }
-        QStringList objParams = line.split(":");
-        if (objParams.size() != 5) {
-            throw UException("Error loading objects from " + fileName);
-        }
-        QString objName = objParams[4];
-        bool ok = true;
-        size_t id = objParams[0].toInt(&ok);
-        if (!ok) {
-            throw UException("Error loading objects from " + fileName);
-        }
+    UColonSep sep;
+    sep.Load(fileName);
+
+    for (size_t i = 0; i < sep.Rows(); i++) {
+        QString objName = sep.Get(i, 4);
+        size_t id = sep.Get(i, 0);
         QImage* image = new QImage("objects/" + objName + ".png");
         Images.insert(objName, image);
         ImagesById.insert(id, image);

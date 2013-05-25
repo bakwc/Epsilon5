@@ -103,6 +103,24 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         object->set_id(o->GetId());
     }
 
+    for (auto& v: Vehicles) {
+        if (!SendDistance(v->GetX() * OBJECT_SCALE_UP,
+                          v->GetY() * OBJECT_SCALE_UP,
+                playerPos.x() * OBJECT_SCALE_UP,
+                playerPos.y() * OBJECT_SCALE_UP))
+        {
+            continue;
+        }
+        auto vehicle = world.add_vehicles();
+        vehicle->set_x(v->GetX() * OBJECT_SCALE_UP);
+        vehicle->set_y(v->GetY() * OBJECT_SCALE_UP);
+        vehicle->set_angle(v->GetAngle());
+        vehicle->set_id(v->GetId());
+        if (v->HasPlayer()) {
+            vehicle->set_playerid(v->GetPlayer()->GetId());
+        }
+    }
+
     for (auto& b: WorldBorders) {
         auto object = world.add_objects();
         object->set_x(b->GetX() * OBJECT_SCALE_UP);
@@ -201,6 +219,13 @@ void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
     spawnStaticObject(StaticObjects, id, x, y, QSizeF(size.x(), size.y()), angle);
 }
 
+void TWorld::SpawnVehicle(size_t id, int x, int y, double angle) {
+    TVehicleSpawner* spawner =  Application()->GetVehicleSpawner();
+    QPointF position(x * OBJECT_SCALE_UP, y * OBJECT_SCALE_UP);
+    TVehicleBase* vehicle = spawner->CreateVehicle(id, position, angle);
+    Vehicles.insert(Vehicles.end(), vehicle);
+}
+
 void TWorld::ClearObjects() {
     for (auto i: StaticObjects) {
         i->deleteLater();
@@ -218,6 +243,13 @@ void TWorld::ClearBorders() {
         i->deleteLater();
     }
     WorldBorders.clear();
+}
+
+void TWorld::ClearVehicles() {
+    for (auto i: Vehicles) {
+        i->deleteLater();
+    }
+    Vehicles.clear();
 }
 
 void TWorld::NeedFullPacket() {

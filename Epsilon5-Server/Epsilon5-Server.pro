@@ -59,7 +59,8 @@ HEADERS += \
     settings.h \
     redisclient.h \
     vehicle.h \
-    ../utils/ucolonsep.h
+    ../utils/ucolonsep.h \
+    ../utils/umaybe.h
 
 QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 

@@ -20,7 +20,7 @@ class TDynamicObject : public QObject
 {
     Q_OBJECT
 public:
-    explicit TDynamicObject(QPointF pos, QPointF speed, double angle, QObject *parent = 0);
+    explicit TDynamicObject(QPointF pos, QPointF speed, double angle, QObject *parent);
     virtual ~TDynamicObject();
     void SetRectSize(double width, double height);
     // GetX, GetY, GetVx, GetVy now depricated; use GetPosition, GetSpeed

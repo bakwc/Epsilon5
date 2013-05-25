@@ -1,6 +1,9 @@
+#include <QCoreApplication>
+
 #include "../utils/ucolonsep.h"
 
 #include "vehicle.h"
+#include "application.h"
 
 TVehicleSpawner::TVehicleSpawner(QObject *parent)
     : QObject(parent)
@@ -26,10 +29,20 @@ void TVehicleSpawner::LoadVehicles(const QString& fileName) {
     }
 }
 
-TVehicleBase* TVehicleSpawner::CreateVehicle(size_t id) {
-
+TVehicleBase* TVehicleSpawner::CreateVehicle(size_t id, QPointF pos, double angle) {
+    switch (id) {
+        case 1: {
+        return new TGroundTank(1, pos, angle, ((TApplication*)qApp)->GetWorld());
+        }
+    }
+    throw UException("Object not found");
 }
 
 void TGroundTransport::ApplyControl(const Epsilon5::Control &control) {
+
+}
+
+
+void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
 
 }

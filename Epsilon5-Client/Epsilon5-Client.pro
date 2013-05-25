@@ -26,7 +26,8 @@ SOURCES += \
     objects.cpp \
     ../utils/ucast.cpp \
     graphics/basicitem.cpp \
-    menu.cpp
+    menu.cpp \
+    ../utils/ucolonsep.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -43,7 +44,8 @@ HEADERS  += \
     objects.h \
     ../utils/ucast.h \
     graphics/basicitem.h \
-    menu.h
+    menu.h \
+    ../utils/ucolonsep.h
 
 FORMS    +=
 

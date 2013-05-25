@@ -17,6 +17,9 @@ TApplication::TApplication(int& argc, char *argv[])
     connect(Maps, SIGNAL(SpawnObject(size_t, int, int, double)),
             World, SLOT(SpawnObject(size_t, int, int, double)));
 
+    connect(Maps, &TMaps::SpawnVehicle,
+            World, &TWorld::SpawnVehicle);
+
     connect(Maps, SIGNAL(SpawnBorders(QSize)),
             World, SLOT(SpawnBorders(QSize)));
 
@@ -39,6 +42,7 @@ TApplication::TApplication(int& argc, char *argv[])
 void TApplication::Init() {
     srand(time(0));
     Objects->LoadObjects("objects/objects.txt");
+    VehicleSpawner->LoadVehicles("objects/vehicles.txt");
     Maps->LoadMaps();
     Maps->LoadNextMap();
     Server->Start();

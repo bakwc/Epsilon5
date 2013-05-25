@@ -29,7 +29,7 @@ public:
     typedef QList<TStaticObject*> TStaticObjectsList;
     typedef QList<TDynamicObject*> TDynamicObjectsList;
     typedef QHash<size_t, TPlayer*> TPlayersHash;
-    typedef QHash<size_t, TVehicleBase*> TVehiclesHash;
+    typedef QList<TVehicleBase*> TVehiclesList;
 public:
     TWorld(QObject *parent = 0);
     ~TWorld();
@@ -47,10 +47,11 @@ public slots:
     void PlayerKill(size_t id); // When a player killed, id of dead player
     void SpawnBullet(TBullet *bullet);
     void SpawnObject(size_t id, int x, int y, double angle);
-    //void SpawnVehicle(size_t id);
+    void SpawnVehicle(size_t id, int x, int y, double angle);
     void SpawnBorders(const QSize &mapSize);
     void ClearObjects();
     void ClearBorders();
+    void ClearVehicles();
     void NeedFullPacket();
 
 private:
@@ -69,7 +70,7 @@ private:
     TBulletsList Bullets;
     TStaticObjectsList StaticObjects;
     TDynamicObjectsList DynamicObjects;
-    TVehiclesHash Vehicles;
+    TVehiclesList Vehicles;
     TStaticObjectsList WorldBorders;
     size_t CurrentPacketNumber = 0;
     QHash<size_t, QTime> Times;

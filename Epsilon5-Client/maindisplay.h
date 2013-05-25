@@ -199,7 +199,9 @@ private:
             const QPoint& playerPos, const QPoint& widgetCenter);
     void DrawBullets(QPainter& painter, const QPoint& playerPos,
             const QPoint& widgetCenter);
-    void DrawObjects(QPainter& painter, QPainter& miniMap,
+    template<typename T>
+    void DrawObjects(const T& GetObjFunc, TObjects* objects, size_t size,
+            QPainter& painter, QPainter& miniMap,
             const QPoint& playerPos, const QPoint& widgetCenter);
     void DrawRespPoints(QPainter& painter, QPainter& miniMap,
             const QPoint& playerPos, const QPoint& widgetCenter);
@@ -214,6 +216,7 @@ private:
     Epsilon5::Control Control;
     TMap* Map;
     TObjects* Objects;
+    TObjects* Vehicles;
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
     QVector<TRespPoint> RespPoints;

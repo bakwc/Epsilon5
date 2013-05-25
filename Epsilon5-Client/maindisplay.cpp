@@ -13,6 +13,7 @@
 #include "application.h"
 #include <QtOpenGL>
 #include <QGLWidget>
+#include <functional>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -179,6 +180,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , Images(new TImageStorage(this))
     , Map(new TMap(this))
     , Objects(new TObjects(this))
+    , Vehicles(new TObjects(this))
     , CurrentWorld(NULL)
     , ShowStats(false)
     , Menu(Images)
@@ -210,6 +212,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
 void TMainDisplay::Init() {
     Images->LoadAll();
     Objects->LoadObjects("objects/objects.txt");
+    Vehicles->LoadObjects("objects/vehicles.txt");
 
     connect(Application->GetNetwork(), SIGNAL(LoadMap(QString)),
             Map, SLOT(LoadMap(QString)));
@@ -536,12 +539,14 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
     }
 }
 
-void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
+template<typename T>
+void TMainDisplay::DrawObjects(const T& GetObjFunc, TObjects* objects,
+                               size_t size, QPainter& painter, QPainter& miniMap,
                                const QPoint& playerPos, const QPoint& widgetCenter)
 {
     const QImage* img;
-    for (int i = 0; i != CurrentWorld->objects_size(); i++) {
-        const Epsilon5::Object& object = CurrentWorld->objects(i);
+    for (int i = 0; i != size; i++) {
+        const auto& object = GetObjFunc(i);
 
         QPoint currentObjectPos(object.x(), object.y());
         QPoint pos = GetCorrect(playerPos, currentObjectPos);
@@ -550,7 +555,7 @@ void TMainDisplay::DrawObjects(QPainter& painter, QPainter& miniMap,
         if( object.id() < 0 )
             continue;
 
-        img = Objects->GetImageById(object.id());
+        img = objects->GetImageById(object.id());
         QTransform transform;
         transform.rotate(object.angle() * 180 / M_PI);
         QImage rimg = img->transformed(transform);
@@ -657,7 +662,17 @@ void TMainDisplay::DrawWorld(QPainter& painter){
 
         // Drawing staff
         DrawBullets(painter, playerPos, widgetCenter);
-        DrawObjects(painter, miniMap, playerPos, widgetCenter);
+
+        //const Epsilon5::Object& (Epsilon5::World::*pFunc)(int) const = &Epsilon5::World::objects;
+        //std::function<const Epsilon5::Object&(int)> f(std::bind(pFunc, CurrentWorld, std::placeholders::_1));
+
+        DrawObjects([&](int n) { return CurrentWorld->objects(n); }, Objects,
+            CurrentWorld->objects_size(), painter, miniMap, playerPos, widgetCenter);
+
+        DrawObjects([&](int n) { return CurrentWorld->vehicles(n); }, Vehicles,
+            CurrentWorld->vehicles_size(), painter, miniMap, playerPos, widgetCenter);
+
+        //DrawObjects(Vehicles, painter, miniMap, playerPos, widgetCenter);
         DrawPlayers(painter, miniMap, playerPos, widgetCenter);
         DrawRespPoints(painter, miniMap, playerPos, widgetCenter);
         DrawStats(painter);

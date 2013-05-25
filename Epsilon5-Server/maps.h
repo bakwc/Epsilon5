@@ -51,13 +51,16 @@ public:
     QPoint GetSpawnPosition(ETeam team);
 signals:
     void SpawnObject(size_t id, int x, int y, double angle);
+    void SpawnVehicle(size_t id, int x, int y, double angle);
     void SpawnBorders(const QSize& MapSize);
     void ClearObjects();
     void ClearBorders();
+    void ClearVehicles();
     void MapLoaded();
 private:
     void LoadConfig(const QString& fileName);
     void LoadObjects(const QString& fileName);
+    void LoadVehicles(const QString& fileName);
     void LoadRespPoints(const QString& fileName);
 private:
     QStringList MapFiles;

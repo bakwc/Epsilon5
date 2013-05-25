@@ -3,6 +3,7 @@
 #include "../utils/uexception.h"
 #include "../utils/usettings.h"
 #include "../utils/ucast.h"
+#include "../utils/ucolonsep.h"
 #include "maps.h"
 #include <QDir>
 
@@ -35,9 +36,12 @@ void TMaps::LoadNextMap() {
     }
     emit ClearObjects();
     emit ClearBorders();
+    emit ClearVehicles();
     LoadConfig("maps/" + MapFiles[CurrentMap] + "/config.ini");
     LoadObjects("maps/" + MapFiles[CurrentMap] + "/objects.txt");
+    LoadVehicles("maps/" + MapFiles[CurrentMap] + "/vehicles.txt");
     LoadRespPoints("maps/" + MapFiles[CurrentMap] + "/points.txt");
+
     emit SpawnBorders(GetMapSize());
     MapStatus = MS_Ready;
     emit MapLoaded();
@@ -81,6 +85,31 @@ void TMaps::LoadObjects(const QString& fileName) {
 
         emit SpawnObject(id, x, y, angle);
     }
+}
+
+void TMaps::LoadVehicles(const QString &fileName) {
+    UColonSep sep;
+    sep.Load(fileName);
+
+    for (size_t i = 0; i < sep.Rows(); i++) {
+        try {
+        int x,y;
+        double angle;
+        int id;
+
+        x = sep.Get(i, 0);
+        y = sep.Get(i, 1);
+        angle = sep.Get(i, 2);
+        id = sep.Get(i, 3);
+
+        emit SpawnVehicle(id, x, y, angle);
+        } catch (const UException& e) {
+            qDebug() << "Problems with loading: " << fileName;
+        }
+    }
+
+
+
 }
 
 

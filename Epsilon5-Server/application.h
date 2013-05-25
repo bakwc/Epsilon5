@@ -8,6 +8,7 @@
 #include "maps.h"
 #include "weaponpacks.h"
 #include "settings.h"
+#include "vehicle.h"
 
 class TApplication : public QCoreApplication
 {
@@ -33,6 +34,10 @@ public:
     inline TServer* GetServer() {
         return Server;
     }
+    inline TVehicleSpawner* GetVehicleSpawner() {
+        return VehicleSpawner;
+    }
+
 private:
     TSettings* Settings = new TSettings(this);
     TWorld* World = new TWorld(this);
@@ -40,4 +45,5 @@ private:
     TObjects* Objects = new TObjects(this);
     TMaps* Maps = new TMaps(this);
     TWeaponPacks* WeaponPacks = new TWeaponPacks(this);
+    TVehicleSpawner* VehicleSpawner = new TVehicleSpawner(this);
 };

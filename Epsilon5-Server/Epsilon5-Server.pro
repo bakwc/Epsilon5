@@ -62,9 +62,12 @@ HEADERS += \
     ../utils/ucolonsep.h \
     ../utils/umaybe.h
 
-QMAKE_CXXFLAGS += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
 
-LIBS += -lprotobuf -lBox2D
+
+QMAKE_CXXFLAGS_RELEASE += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
+QMAKE_CXXFLAGS_DEBUG += -std=c++0x
+
+LIBS += -lprotobuf -lBox2D -lstdc++
 
 OTHER_FILES += \
     ../Epsilon5-Proto/Epsilon5.proto

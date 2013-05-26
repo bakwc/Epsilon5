@@ -27,7 +27,8 @@ SOURCES += \
     ../utils/ucast.cpp \
     graphics/basicitem.cpp \
     menu.cpp \
-    ../utils/ucolonsep.cpp
+    ../utils/ucolonsep.cpp \
+    ../utils/ucpu.cpp
 
 HEADERS  += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -49,8 +50,8 @@ HEADERS  += \
 
 FORMS    +=
 
-QMAKE_CXXFLAGS += -std=c++0x
-# -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
+QMAKE_CXXFLAGS_RELEASE += -std=c++0x -march=core2 -mfpmath=sse -Ofast -flto -funroll-loops
+QMAKE_CXXFLAGS_DEBUG += -std=c++0x
 
 LIBS += -lprotobuf
 

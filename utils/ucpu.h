@@ -1,6 +1,7 @@
 #pragma once
 #include <qglobal.h>
 double GetCPUUsages();
+void init();
 #ifdef Q_OS_WIN
 #include "windows.h"
 /*NTSYSAPI NTSTATUS NTAPI NtQuerySystemInformation(

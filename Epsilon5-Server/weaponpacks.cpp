@@ -42,9 +42,9 @@ QPointF TWeaponBase::GetRanomizedSpeed(const QPointF& speed) {
 
 void TWeaponBase::EmitShoot(const QPointF& position, const QPointF& speed,
                             const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType) {
-    TBullet* bullet = new TBullet(position, speed, bulletType,
-                                  fireInfo.PlayerId, fireInfo.Team,
-                                  ((TApplication*)(qApp))->GetWorld());
+    TBullet* bullet = CreateBullet(position, speed, bulletType,
+                                   fireInfo.PlayerId, fireInfo.Team,
+                                   ((TApplication*)(qApp))->GetWorld());
     emit SpawnBullet(bullet);
 }
 

@@ -53,7 +53,8 @@ public slots:
     void ClearBorders();
     void ClearVehicles();
     void NeedFullPacket();
-
+    void PlayerEnteredVehicle(size_t id);
+    void PlayerLeftVehicle(size_t id);
 private:
     void timerEvent(QTimerEvent *);
     TApplication* Application();
@@ -64,6 +65,7 @@ private:
             const QSizeF& size, double angle = 0.0);
     void BeginContact(b2Contact* contact);
     QPointF GetPlayerPos(size_t playerId);
+    TVehicleBase* FindNearestVehicle(QPointF position);
 private:
     unique_ptr<b2World> B2World;
     TPlayersHash Players;

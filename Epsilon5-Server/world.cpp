@@ -55,6 +55,7 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         }
         player->set_hp(p->GetHP());
         player->set_team(p->GetTeamBool());
+        player->set_isactive(p->IsActive());
     }
 
     for (auto& b: Bullets) {
@@ -166,6 +167,8 @@ void TWorld::PlayerSpawn(size_t id, ETeam team) {
     connect(player, SIGNAL(Killed(size_t)), SIGNAL(PlayerKilled(size_t)));
     connect(player, SIGNAL(Fire(TFireInfo&)),
             Application()->GetWeaponPacks(), SLOT(ActivateWeapon(TFireInfo&)));
+    connect(player, &TPlayer::EnteredVehicle, this, &TWorld::PlayerEnteredVehicle);
+    connect(player, &TPlayer::LeftVehicle, this, &TWorld::PlayerLeftVehicle);
     Players.insert(id, player);
 }
 
@@ -181,6 +184,10 @@ void TWorld::timerEvent(QTimerEvent *) {
 
     for (auto& p: Players) {
         p->ApplyCustomPhysics();
+    }
+
+    for (auto& v: Vehicles) {
+        v->ApplyCustomPhysics();
     }
 
     for (auto b: Bullets) {
@@ -221,8 +228,15 @@ void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
 
 void TWorld::SpawnVehicle(size_t id, int x, int y, double angle) {
     TVehicleSpawner* spawner =  Application()->GetVehicleSpawner();
-    QPointF position(x * OBJECT_SCALE_UP, y * OBJECT_SCALE_UP);
-    TVehicleBase* vehicle = spawner->CreateVehicle(id, position, angle);
+    QPoint size = Application()->GetVehicleSpawner()->GetVehicleSize(id);
+    TObjectParams params;
+    params.Position.setX(x * OBJECT_SCALE_DOWN);
+    params.Position.setY(y * OBJECT_SCALE_DOWN);
+    params.Size.setX(size.x() * OBJECT_SCALE_DOWN);
+    params.Size.setY(size.y() * OBJECT_SCALE_DOWN);
+    params.Angle = angle;
+
+    TVehicleBase* vehicle = spawner->CreateVehicle(id, params);
     Vehicles.insert(Vehicles.end(), vehicle);
 }
 
@@ -254,6 +268,24 @@ void TWorld::ClearVehicles() {
 
 void TWorld::NeedFullPacket() {
     Application()->GetServer()->NeedFullPacket();
+}
+
+void TWorld::PlayerEnteredVehicle(size_t id) {
+    TPlayer* player = Players[id];
+    QPointF playerPos = player->GetPosition();
+    TVehicleBase* nearestVehicle = FindNearestVehicle(playerPos);
+    if (nearestVehicle == nullptr) {
+        return;
+    }
+    nearestVehicle->SetPlayer(player);
+    player->OnEnteredVehicle(nearestVehicle);
+}
+
+void TWorld::PlayerLeftVehicle(size_t id) {
+    TPlayer* player = Players[id];
+    TVehicleBase* vehicle = player->GetVehicle();
+    player->OnLeftVehicle();
+    vehicle->RemovePlayer();
 }
 
 TApplication* TWorld::Application() {
@@ -303,12 +335,16 @@ void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
     size_t id, QPointF pos, QPointF speed,
     const QSizeF& size, double angle)
 {
-    pos.setX(OBJECT_SCALE_DOWN * pos.x());
-    pos.setY(OBJECT_SCALE_DOWN * pos.y());
+    TObjectParams params;
+    params.Position.setX(OBJECT_SCALE_DOWN * pos.x());
+    params.Position.setY(OBJECT_SCALE_DOWN * pos.y());
+    params.Size.setX(OBJECT_SCALE_DOWN * size.width());
+    params.Size.setY(OBJECT_SCALE_DOWN * size.height());
+    params.Speed = speed;
+    params.Angle = angle;
 
-    TDynamicObject* object = new TDynamicObject(pos, speed, angle, this);
-    object->SetRectSize(OBJECT_SCALE_DOWN * size.width(),
-                        OBJECT_SCALE_DOWN * size.height());
+    TDynamicObject* object = new TDynamicObject(params, this);
+
     object->SetId(id);
     container.insert(container.end(), object);
 }
@@ -374,6 +410,31 @@ QPointF TWorld::GetPlayerPos(size_t playerId) {
         return QPointF(0, 0);
     }
     return Players[playerId]->GetPosition();
+}
+
+inline float GetDistance(const QPointF& a, const QPointF& b) {
+    return sqrt((a.x() - b.x()) * (a.x() - b.x()) +
+                (a.y() - b.y()) * (a.y() - b.y()));
+}
+
+TVehicleBase *TWorld::FindNearestVehicle(QPointF position) {
+    float minDistance = FLT_MAX;
+    TVehicleBase* vehicle = nullptr;
+    for (auto& v: Vehicles) {
+        QPointF vehiclePos = v->GetPosition();
+        float distance = GetDistance(position, vehiclePos);
+        if (distance < minDistance) {
+            TVehicleBase* currentVehicle = &(*v);
+            if (!currentVehicle->HasPlayer()) {
+                vehicle = currentVehicle;
+                minDistance = distance;
+            }
+        }
+    }
+    if (minDistance < VEHICLE_ENTER_DISTANCE) {
+        return vehicle;
+    }
+    return nullptr;
 }
 
 void TWorld::SetPingForPlayer(size_t id, size_t packetNumber) {

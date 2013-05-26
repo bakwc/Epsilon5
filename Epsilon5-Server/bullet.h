@@ -7,7 +7,7 @@ class TBullet : public TDynamicObject
 {
     Q_OBJECT
 public:
-    TBullet(QPointF pos, QPointF speed,
+    TBullet(const TObjectParams& params,
             Epsilon5::Bullet_Type bulletType,
             size_t playerId, ETeam team,
             QObject *parent = 0);
@@ -37,3 +37,8 @@ private:
     size_t PlayerId;
     ETeam Team;
 };
+
+TBullet* CreateBullet(QPointF pos, QPointF speed,
+                      Epsilon5::Bullet_Type bulletType,
+                      size_t playerId, ETeam team,
+                      QObject *parent = 0);

@@ -217,6 +217,13 @@ class Player : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 ping() const;
   inline void set_ping(::google::protobuf::uint32 value);
 
+  // required bool isActive = 11;
+  inline bool has_isactive() const;
+  inline void clear_isactive();
+  static const int kIsActiveFieldNumber = 11;
+  inline bool isactive() const;
+  inline void set_isactive(bool value);
+
   // @@protoc_insertion_point(class_scope:Epsilon5.Player)
  private:
   inline void set_has_id();
@@ -239,6 +246,8 @@ class Player : public ::google::protobuf::Message {
   inline void clear_has_team();
   inline void set_has_ping();
   inline void clear_has_ping();
+  inline void set_has_isactive();
+  inline void clear_has_isactive();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -250,11 +259,12 @@ class Player : public ::google::protobuf::Message {
   ::google::protobuf::uint32 hp_;
   double angle_;
   ::std::string* name_;
-  bool team_;
   ::google::protobuf::uint32 ping_;
+  bool team_;
+  bool isactive_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(11 + 31) / 32];
 
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1275,6 +1285,13 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   inline bool keyattack2() const;
   inline void set_keyattack2(bool value);
 
+  // required bool keyEnter = 7;
+  inline bool has_keyenter() const;
+  inline void clear_keyenter();
+  static const int kKeyEnterFieldNumber = 7;
+  inline bool keyenter() const;
+  inline void set_keyenter(bool value);
+
   // @@protoc_insertion_point(class_scope:Epsilon5.Control.KeyStatus)
  private:
   inline void set_has_keyup();
@@ -1289,6 +1306,8 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   inline void clear_has_keyattack1();
   inline void set_has_keyattack2();
   inline void clear_has_keyattack2();
+  inline void set_has_keyenter();
+  inline void clear_has_keyenter();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1298,9 +1317,10 @@ class Control_KeyStatus : public ::google::protobuf::Message {
   bool keyright_;
   bool keyattack1_;
   bool keyattack2_;
+  bool keyenter_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_Epsilon5_2eproto();
   friend void protobuf_AssignDesc_Epsilon5_2eproto();
@@ -1810,6 +1830,28 @@ inline ::google::protobuf::uint32 Player::ping() const {
 inline void Player::set_ping(::google::protobuf::uint32 value) {
   set_has_ping();
   ping_ = value;
+}
+
+// required bool isActive = 11;
+inline bool Player::has_isactive() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void Player::set_has_isactive() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void Player::clear_has_isactive() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void Player::clear_isactive() {
+  isactive_ = false;
+  clear_has_isactive();
+}
+inline bool Player::isactive() const {
+  return isactive_;
+}
+inline void Player::set_isactive(bool value) {
+  set_has_isactive();
+  isactive_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -2849,6 +2891,28 @@ inline bool Control_KeyStatus::keyattack2() const {
 inline void Control_KeyStatus::set_keyattack2(bool value) {
   set_has_keyattack2();
   keyattack2_ = value;
+}
+
+// required bool keyEnter = 7;
+inline bool Control_KeyStatus::has_keyenter() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Control_KeyStatus::set_has_keyenter() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Control_KeyStatus::clear_has_keyenter() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Control_KeyStatus::clear_keyenter() {
+  keyenter_ = false;
+  clear_has_keyenter();
+}
+inline bool Control_KeyStatus::keyenter() const {
+  return keyenter_;
+}
+inline void Control_KeyStatus::set_keyenter(bool value) {
+  set_has_keyenter();
+  keyenter_ = value;
 }
 
 // -------------------------------------------------------------------

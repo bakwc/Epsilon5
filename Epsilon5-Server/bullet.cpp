@@ -1,47 +1,20 @@
+#include "../utils/uexception.h"
+
 #include "bullet.h"
 
-TBullet::TBullet(QPointF pos, QPointF speed,
+TBullet::TBullet(const TObjectParams& params,
                  Epsilon5::Bullet_Type bulletType,
-                 size_t playerId, ETeam team, QObject *parent)
-    : TDynamicObject(pos, speed, 0, parent)
+                 size_t playerId,
+                 ETeam team,
+                 QObject *parent)
+    : TDynamicObject(params, parent)
     , BulletType(bulletType)
     , PlayerId(playerId)
     , Team(team)
 {
-    b2FixtureDef fixtureDef;
-    b2CircleShape circle;
-
-    switch(bulletType) {
-    case Epsilon5::Bullet_Type_ARBUZ: {
-        circle.m_p.Set(0, 0);
-        circle.m_radius = 0.5f;
-        fixtureDef.shape = &circle;
-        fixtureDef.density = 1.0f;
-    } break;
-    case Epsilon5::Bullet_Type_LITTLE_BULLET: {
-        circle.m_p.Set(0, 0);
-        circle.m_radius = 0.3f;
-        fixtureDef.shape = &circle;
-        fixtureDef.density = 3.0f;
-    } break;
-    default:
-        break;
-    }
-
-    fixtureDef.friction = 0.1f;
-    fixtureDef.restitution = 0.5f;
-    fixtureDef.filter.groupIndex = 1;
-    Body->CreateFixture(&fixtureDef);
-
-    Body->SetBullet(true);
-
-    Body->SetLinearDamping(0.0);
-    Body->SetAngularDamping(0.3);
-
     Body->SetUserData(&CollisionInfo);
     CollisionInfo.ObjType = TObjectInfo::OT_Bullet;
     CollisionInfo.Object = this;
-
     Ttl = 120;
 }
 
@@ -51,4 +24,37 @@ void TBullet::ApplyCustomPhysics() {
     if (Ttl > 0) {
         Ttl--;
     }
+}
+
+
+TBullet *CreateBullet(QPointF pos, QPointF speed,
+                      Epsilon5::Bullet_Type bulletType,
+                      size_t playerId, ETeam team, QObject *parent)
+{
+    TObjectParams params;
+
+    switch(bulletType) {
+    case Epsilon5::Bullet_Type_ARBUZ: {
+        params.Radius = 0.5;
+        params.Density = 1.0;
+    } break;
+    case Epsilon5::Bullet_Type_LITTLE_BULLET: {
+        params.Radius = 0.3;
+        params.Density = 3.0;
+    } break;
+    default:
+        throw UException("Unknown bullet type");
+        break;
+    }
+
+    params.Friction = 0.1;
+    params.Restitution = 0.5;
+    params.GroupIndex = 1;
+    params.IsBullet = true;
+    params.LinearDamping = 0.0;
+    params.AngularDamping = 0.3;
+    params.Position = pos;
+    params.Speed = speed;
+
+    return new TBullet(params, bulletType, playerId, team, parent);
 }

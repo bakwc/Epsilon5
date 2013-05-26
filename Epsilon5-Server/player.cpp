@@ -9,28 +9,11 @@
 const size_t HP_LOST = 45;
 
 TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
-    : TDynamicObject(QPointF(0, 0), QPointF(0, 0), 0, parent)
+    : TDynamicObject(TObjectParams(1.5), parent)
     , Id(id)
     , Maps(maps)
     , Team(team)
 {
-    b2Vec2 pos;
-    QPoint respPos = Maps->GetSpawnPosition(team);
-    pos.x = OBJECT_SCALE_DOWN * respPos.x();
-    pos.y = OBJECT_SCALE_DOWN * respPos.y();
-    Body->SetTransform(pos, Body->GetAngle());
-
-    b2CircleShape circle;
-    circle.m_p.Set(0, 0);
-    circle.m_radius = 1.5f;
-
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &circle;
-    fixtureDef.density = 0.6f;
-    fixtureDef.friction = 0.8f;
-    fixtureDef.filter.groupIndex = 1;
-    Body->CreateFixture(&fixtureDef);
-
     Body->SetUserData(&CollisionInfo);
 
     CollisionInfo.ObjType = TObjectInfo::OT_Player;
@@ -40,9 +23,25 @@ TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
     Force(1) = 0;
 
     WeaponPack = Application()->GetWeaponPacks()->GetPack(0); // TODO: pack number should be passed
+
+    LastVehicleEnter.start();
 }
 
 void TPlayer::ApplyControl(const Epsilon5::Control &control) {
+    if (control.keystatus().keyenter() &&
+            LastVehicleEnter.elapsed() > 1000)
+    {
+        if (Vehicle == nullptr) {
+            emit EnteredVehicle(Id);
+        } else {
+            emit LeftVehicle(Id);
+        }
+    }
+
+    if (Vehicle != nullptr) {
+        Vehicle->ApplyControl(control);
+        return;
+    }
     try {
         if (control.keystatus().keydown()) Force(1) = 10;
         else if (control.keystatus().keyup()) Force(1) = -10;
@@ -126,6 +125,19 @@ void TPlayer::ApplyCustomPhysics()
 
 void TPlayer::SetNickname(const QString& nickName) {
     NickName = nickName;
+}
+
+void TPlayer::OnEnteredVehicle(TVehicleBase* vehicle) {
+    LastVehicleEnter.restart();
+    Vehicle = vehicle;
+    DeActivate();
+}
+
+void TPlayer::OnLeftVehicle() {
+    LastVehicleEnter.restart();
+    Vehicle = nullptr;
+    Activate();
+    // todo: select correct player position
 }
 
 void TPlayer::Hit(size_t playerId, quint8 ffMode) {

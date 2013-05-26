@@ -66,7 +66,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       "Epsilon5.proto");
   GOOGLE_CHECK(file != NULL);
   Player_descriptor_ = file->message_type(0);
-  static const int Player_offsets_[10] = {
+  static const int Player_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, x_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, y_),
@@ -77,6 +77,7 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, hp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, team_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, ping_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Player, isactive_),
   };
   Player_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -244,13 +245,14 @@ void protobuf_AssignDesc_Epsilon5_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Control));
   Control_KeyStatus_descriptor_ = Control_descriptor_->nested_type(0);
-  static const int Control_KeyStatus_offsets_[6] = {
+  static const int Control_KeyStatus_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyup_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keydown_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyleft_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyright_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyattack1_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyattack2_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Control_KeyStatus, keyenter_),
   };
   Control_KeyStatus_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -350,42 +352,43 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\016Epsilon5.proto\022\010Epsilon5\"\207\001\n\006Player\022\n\n"
+    "\n\016Epsilon5.proto\022\010Epsilon5\"\231\001\n\006Player\022\n\n"
     "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\n\n\002vx\030\004 "
     "\001(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007"
     " \001(\t\022\n\n\002hp\030\010 \001(\r\022\014\n\004team\030\t \002(\010\022\014\n\004ping\030\n"
-    " \001(\r\"\251\001\n\006Bullet\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n"
-    "\002vx\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\0221\n\013bullet_type\030\005 \001"
-    "(\0162\025.Epsilon5.Bullet.Type:\005ARBUZ\022\014\n\004team"
-    "\030\006 \002(\010\"0\n\004Type\022\t\n\005ARBUZ\020\000\022\021\n\rLITTLE_BULL"
-    "ET\020\001\022\n\n\006ROCKET\020\002\"9\n\006Object\022\n\n\002id\030\001 \002(\005\022\t"
-    "\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"L\n\007V"
-    "ehicle\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005"
-    "\022\r\n\005angle\030\004 \002(\001\022\020\n\010playerId\030\005 \001(\005\"@\n\tRes"
-    "pPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003 \002"
-    "(\005\022\017\n\007is_main\030\004 \002(\010\"F\n\nPlayerStat\022\n\n\002id\030"
-    "\001 \002(\005\022\r\n\005score\030\002 \002(\005\022\r\n\005kills\030\003 \002(\005\022\016\n\006d"
-    "eaths\030\004 \002(\005\"T\n\nPlayerInfo\022\n\n\002id\030\001 \001(\005\022\013\n"
-    "\003map\030\002 \001(\t\022\016\n\006weapon\030\003 \001(\005\022\017\n\007bullets\030\004 "
-    "\001(\005\022\014\n\004cage\030\005 \001(\005\"\255\002\n\005World\022!\n\007players\030\001"
-    " \003(\0132\020.Epsilon5.Player\022!\n\007bullets\030\002 \003(\0132"
-    "\020.Epsilon5.Bullet\022!\n\007objects\030\003 \003(\0132\020.Eps"
-    "ilon5.Object\022#\n\010vehicles\030\004 \003(\0132\021.Epsilon"
-    "5.Vehicle\022(\n\013resp_points\030\005 \003(\0132\023.Epsilon"
-    "5.RespPoint\022\025\n\rpacket_number\030\006 \002(\r\022*\n\014pl"
-    "ayers_stat\030\007 \003(\0132\024.Epsilon5.PlayerStat\022)"
-    "\n\013player_info\030\010 \001(\0132\024.Epsilon5.PlayerInf"
-    "o\"\214\002\n\007Control\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsil"
-    "on5.Control.KeyStatus\022\r\n\005angle\030\002 \002(\001\022 \n\006"
-    "weapon\030\003 \002(\0162\020.Epsilon5.Weapon\022\025\n\rpacket"
-    "_number\030\004 \002(\r\022\021\n\tneed_full\030\005 \001(\010\032v\n\tKeyS"
-    "tatus\022\r\n\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n"
-    "\007keyLeft\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyA"
-    "ttack1\030\005 \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\"&\n\004Auth"
-    "\022\014\n\004name\030\001 \002(\t\022\020\n\010password\030\002 \001(\t*1\n\006Weap"
-    "on\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007Shotgu"
-    "n\020\002B\'\n\033com.epsilon5.client.networkB\010Prot"
-    "ocol", 1404);
+    " \001(\r\022\020\n\010isActive\030\013 \002(\010\"\251\001\n\006Bullet\022\t\n\001x\030\001"
+    " \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n\002vx\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\022"
+    "1\n\013bullet_type\030\005 \001(\0162\025.Epsilon5.Bullet.T"
+    "ype:\005ARBUZ\022\014\n\004team\030\006 \002(\010\"0\n\004Type\022\t\n\005ARBU"
+    "Z\020\000\022\021\n\rLITTLE_BULLET\020\001\022\n\n\006ROCKET\020\002\"9\n\006Ob"
+    "ject\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r"
+    "\n\005angle\030\004 \002(\001\"L\n\007Vehicle\022\n\n\002id\030\001 \002(\005\022\t\n\001"
+    "x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\022\020\n\010pla"
+    "yerId\030\005 \001(\005\"@\n\tRespPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y"
+    "\030\002 \002(\005\022\014\n\004team\030\003 \002(\005\022\017\n\007is_main\030\004 \002(\010\"F\n"
+    "\nPlayerStat\022\n\n\002id\030\001 \002(\005\022\r\n\005score\030\002 \002(\005\022\r"
+    "\n\005kills\030\003 \002(\005\022\016\n\006deaths\030\004 \002(\005\"T\n\nPlayerI"
+    "nfo\022\n\n\002id\030\001 \001(\005\022\013\n\003map\030\002 \001(\t\022\016\n\006weapon\030\003"
+    " \001(\005\022\017\n\007bullets\030\004 \001(\005\022\014\n\004cage\030\005 \001(\005\"\255\002\n\005"
+    "World\022!\n\007players\030\001 \003(\0132\020.Epsilon5.Player"
+    "\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\022!\n\007o"
+    "bjects\030\003 \003(\0132\020.Epsilon5.Object\022#\n\010vehicl"
+    "es\030\004 \003(\0132\021.Epsilon5.Vehicle\022(\n\013resp_poin"
+    "ts\030\005 \003(\0132\023.Epsilon5.RespPoint\022\025\n\rpacket_"
+    "number\030\006 \002(\r\022*\n\014players_stat\030\007 \003(\0132\024.Eps"
+    "ilon5.PlayerStat\022)\n\013player_info\030\010 \001(\0132\024."
+    "Epsilon5.PlayerInfo\"\237\002\n\007Control\022.\n\tkeySt"
+    "atus\030\001 \002(\0132\033.Epsilon5.Control.KeyStatus\022"
+    "\r\n\005angle\030\002 \002(\001\022 \n\006weapon\030\003 \002(\0162\020.Epsilon"
+    "5.Weapon\022\025\n\rpacket_number\030\004 \002(\r\022\021\n\tneed_"
+    "full\030\005 \001(\010\032\210\001\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022"
+    "\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010key"
+    "Right\030\004 \002(\010\022\022\n\nkeyAttack1\030\005 \002(\010\022\022\n\nkeyAt"
+    "tack2\030\006 \002(\010\022\020\n\010keyEnter\030\007 \002(\010\"&\n\004Auth\022\014\n"
+    "\004name\030\001 \002(\t\022\020\n\010password\030\002 \001(\t*1\n\006Weapon\022"
+    "\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007Shotgun\020\002"
+    "B\'\n\033com.epsilon5.client.networkB\010Protoco"
+    "l", 1441);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -448,6 +451,7 @@ const int Player::kNameFieldNumber;
 const int Player::kHpFieldNumber;
 const int Player::kTeamFieldNumber;
 const int Player::kPingFieldNumber;
+const int Player::kIsActiveFieldNumber;
 #endif  // !_MSC_VER
 
 Player::Player()
@@ -476,6 +480,7 @@ void Player::SharedCtor() {
   hp_ = 0u;
   team_ = false;
   ping_ = 0u;
+  isactive_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -530,6 +535,7 @@ void Player::Clear() {
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     team_ = false;
     ping_ = 0u;
+    isactive_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -697,6 +703,22 @@ bool Player::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(88)) goto parse_isActive;
+        break;
+      }
+
+      // required bool isActive = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_isActive:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isactive_)));
+          set_has_isactive();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -773,6 +795,11 @@ void Player::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(10, this->ping(), output);
   }
 
+  // required bool isActive = 11;
+  if (has_isactive()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->isactive(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -834,6 +861,11 @@ void Player::SerializeWithCachedSizes(
   // optional uint32 ping = 10;
   if (has_ping()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(10, this->ping(), target);
+  }
+
+  // required bool isActive = 11;
+  if (has_isactive()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->isactive(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -911,6 +943,11 @@ int Player::ByteSize() const {
           this->ping());
     }
 
+    // required bool isActive = 11;
+    if (has_isactive()) {
+      total_size += 1 + 1;
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -970,6 +1007,9 @@ void Player::MergeFrom(const Player& from) {
     if (from.has_ping()) {
       set_ping(from.ping());
     }
+    if (from.has_isactive()) {
+      set_isactive(from.isactive());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -987,7 +1027,7 @@ void Player::CopyFrom(const Player& from) {
 }
 
 bool Player::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000107) != 0x00000107) return false;
+  if ((_has_bits_[0] & 0x00000507) != 0x00000507) return false;
 
   return true;
 }
@@ -1004,6 +1044,7 @@ void Player::Swap(Player* other) {
     std::swap(hp_, other->hp_);
     std::swap(team_, other->team_);
     std::swap(ping_, other->ping_);
+    std::swap(isactive_, other->isactive_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3708,6 +3749,7 @@ const int Control_KeyStatus::kKeyLeftFieldNumber;
 const int Control_KeyStatus::kKeyRightFieldNumber;
 const int Control_KeyStatus::kKeyAttack1FieldNumber;
 const int Control_KeyStatus::kKeyAttack2FieldNumber;
+const int Control_KeyStatus::kKeyEnterFieldNumber;
 #endif  // !_MSC_VER
 
 Control_KeyStatus::Control_KeyStatus()
@@ -3732,6 +3774,7 @@ void Control_KeyStatus::SharedCtor() {
   keyright_ = false;
   keyattack1_ = false;
   keyattack2_ = false;
+  keyenter_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3773,6 +3816,7 @@ void Control_KeyStatus::Clear() {
     keyright_ = false;
     keyattack1_ = false;
     keyattack2_ = false;
+    keyenter_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -3875,6 +3919,22 @@ bool Control_KeyStatus::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(56)) goto parse_keyEnter;
+        break;
+      }
+
+      // required bool keyEnter = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_keyEnter:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &keyenter_)));
+          set_has_keyenter();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3927,6 +3987,11 @@ void Control_KeyStatus::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->keyattack2(), output);
   }
 
+  // required bool keyEnter = 7;
+  if (has_keyenter()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->keyenter(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3963,6 +4028,11 @@ void Control_KeyStatus::SerializeWithCachedSizes(
   // required bool keyAttack2 = 6;
   if (has_keyattack2()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->keyattack2(), target);
+  }
+
+  // required bool keyEnter = 7;
+  if (has_keyenter()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->keyenter(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -4003,6 +4073,11 @@ int Control_KeyStatus::ByteSize() const {
 
     // required bool keyAttack2 = 6;
     if (has_keyattack2()) {
+      total_size += 1 + 1;
+    }
+
+    // required bool keyEnter = 7;
+    if (has_keyenter()) {
       total_size += 1 + 1;
     }
 
@@ -4051,6 +4126,9 @@ void Control_KeyStatus::MergeFrom(const Control_KeyStatus& from) {
     if (from.has_keyattack2()) {
       set_keyattack2(from.keyattack2());
     }
+    if (from.has_keyenter()) {
+      set_keyenter(from.keyenter());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -4068,7 +4146,7 @@ void Control_KeyStatus::CopyFrom(const Control_KeyStatus& from) {
 }
 
 bool Control_KeyStatus::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
+  if ((_has_bits_[0] & 0x0000007f) != 0x0000007f) return false;
 
   return true;
 }
@@ -4081,6 +4159,7 @@ void Control_KeyStatus::Swap(Control_KeyStatus* other) {
     std::swap(keyright_, other->keyright_);
     std::swap(keyattack1_, other->keyattack1_);
     std::swap(keyattack2_, other->keyattack2_);
+    std::swap(keyenter_, other->keyenter_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

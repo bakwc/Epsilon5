@@ -201,6 +201,7 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     Control.mutable_keystatus()->set_keyright(false);
     Control.mutable_keystatus()->set_keyup(false);
     Control.mutable_keystatus()->set_keydown(false);
+    Control.mutable_keystatus()->set_keyenter(false);
     Control.set_weapon(Epsilon5::Pistol);
     Thread.start();
 #ifdef Q_OS_LINUX
@@ -296,6 +297,8 @@ void TMainDisplay::SetMovementKeysState(bool state, const QKeyEvent *event)
         Control.mutable_keystatus()->set_keyleft(state);
     if( event->nativeScanCode() == (KEY_D + MAGIC_NUMBER))
         Control.mutable_keystatus()->set_keyright(state);
+    if( event->nativeScanCode() == (KEY_E + MAGIC_NUMBER))
+        Control.mutable_keystatus()->set_keyenter(state);
 #endif
 #ifdef Q_OS_WIN
     if( event->key() == Qt::Key_W || event->nativeVirtualKey() == Qt::Key_W )
@@ -306,6 +309,10 @@ void TMainDisplay::SetMovementKeysState(bool state, const QKeyEvent *event)
         Control.mutable_keystatus()->set_keyleft(state);
     if( event->key() == Qt::Key_D || event->nativeVirtualKey() == Qt::Key_D )
         Control.mutable_keystatus()->set_keyright(state);
+    if( event->key() == Qt::Key_E || event->nativeVirtualKey() == Qt::Key_E ) {
+        Control.mutable_keystatus()->set_keyenter(state);
+        qDebug() << "Key entered " << (state ? "activated" : "deactivated");
+    }
 #endif
     if( event->key() == Qt::Key_Up )
         Control.mutable_keystatus()->set_keyup(state);
@@ -461,6 +468,11 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
         const Epsilon5::Player &player = CurrentWorld->players(i);
         QPoint pos = QPoint(player.x(), player.y()) - playerPos;
         QString nickName;
+
+        if (!player.isactive()) {
+            continue;
+        }
+
         if (player.has_name()) { // New player
             nickName = player.name().c_str();
             PlayerNames[player.id()] = nickName;

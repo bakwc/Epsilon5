@@ -16,13 +16,46 @@ struct TObjectInfo {
     void *Object;
 };
 
+struct TObjectParams {
+    TObjectParams(QPointF position = QPointF(0, 0),
+                  QPointF size = QPointF(0, 0),
+                  QPointF speed = QPointF(0, 0),
+                  double radius = 0)
+        : Position(position)
+        , Size(size)
+        , Speed(speed)
+        , Radius(radius)
+    {
+    }
+    TObjectParams(double radius) {
+        Position.setX(0);
+        Position.setY(0);
+        Speed.setX(0);
+        Speed.setY(0);
+        Size.setX(0);
+        Size.setY(0);
+        Radius = radius;
+    }
+    QPointF Position;
+    QPointF Size;
+    QPointF Speed;
+    double Angle = 0;
+    double Radius = 0;
+    double Density = 0.6;
+    double Friction = 0.8;
+    double LinearDamping = 5.0;
+    double AngularDamping = 2.9;
+    size_t GroupIndex = 0;
+    double Restitution = 0;
+    bool IsBullet = false;
+};
+
 class TDynamicObject : public QObject
 {
     Q_OBJECT
 public:
-    explicit TDynamicObject(QPointF pos, QPointF speed, double angle, QObject *parent);
+    explicit TDynamicObject(const TObjectParams& params, QObject* parent);
     virtual ~TDynamicObject();
-    void SetRectSize(double width, double height);
     // GetX, GetY, GetVx, GetVy now depricated; use GetPosition, GetSpeed
     inline double GetX() {
         return Body->GetPosition()(0);
@@ -80,6 +113,15 @@ public:
         pos.setX(Body->GetLinearVelocity()(0));
         pos.setY(Body->GetLinearVelocity()(1));
         return pos;
+    }
+    inline void Activate() {
+        Body->SetActive(true);
+    }
+    inline void DeActivate() {
+        Body->SetActive(false);
+    }
+    inline bool IsActive() {
+        return Body->IsActive();
     }
 protected:
     b2World* B2World();

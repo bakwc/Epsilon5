@@ -5,8 +5,11 @@
 #include "dynamicobject.h"
 #include "maps.h"
 
+#include "../utils/uexception.h"
+
 class TBullet;
 class TApplication;
+class TVehicleBase;
 
 struct TWeaponInfo {
     Epsilon5::Weapon WeaponType;
@@ -48,14 +51,22 @@ public:
     inline bool GetTeamBool() {
         return Team == T_One;
     }
-
+    void OnEnteredVehicle(TVehicleBase* vehicle);
+    void OnLeftVehicle();
+    inline TVehicleBase* GetVehicle() {
+        if (Vehicle == nullptr) {
+            throw UException("Player is not in vehicle");
+        }
+        return Vehicle;
+    }
 signals:
     void Death(size_t id);
     void Killed(size_t playerId);
     void Fire(TFireInfo& fireInfo);
-
+    void EnteredVehicle(size_t id);
+    void LeftVehicle(size_t id);
 public slots:
-    void ApplyControl(const Epsilon5::Control &control);
+    void ApplyControl(const Epsilon5::Control& control);
 private:
     TApplication* Application();
 private:
@@ -69,4 +80,6 @@ private:
     int Ping;
     QHash<size_t, TWeaponInfo> WeaponPack;
     size_t SelectedWeapon = 0;
+    QTime LastVehicleEnter;
+    TVehicleBase* Vehicle = nullptr;
 };

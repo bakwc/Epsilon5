@@ -29,20 +29,51 @@ void TVehicleSpawner::LoadVehicles(const QString& fileName) {
     }
 }
 
-TVehicleBase* TVehicleSpawner::CreateVehicle(size_t id, QPointF pos, double angle) {
+TVehicleBase* TVehicleSpawner::CreateVehicle(size_t id, const TObjectParams& params) {
     switch (id) {
         case 1: {
-        return new TGroundTank(1, pos, angle, ((TApplication*)qApp)->GetWorld());
+            return new TGroundTank(1, params, ((TApplication*)qApp)->GetWorld());
         }
     }
-    throw UException("Object not found");
+    throw UException("Vehicle not found");
 }
 
-void TGroundTransport::ApplyControl(const Epsilon5::Control &control) {
-
+QPoint TVehicleSpawner::GetVehicleSize(size_t id) {
+    if (Vehicles.find(id) == Vehicles.end()) {
+        throw UException("Vehicle not found");
+    }
+    return Vehicles[id].Size;
 }
-
 
 void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
+    try {
+        if (control.keystatus().keydown()) {
+            double angle = GetAngle();
+            Force(1) = - sin(angle) * 9.0;
+            Force(0) = - cos(angle) * 9.0;
+        } else if (control.keystatus().keyup()) {
+            double angle = GetAngle();
+            Force(1) = sin(angle) * 9.0;
+            Force(0) = cos(angle) * 9.0;
+        } else {
+            Force(0) = 0;
+            Force(1) = 0;
+        }
 
+        if (control.keystatus().keyleft()) {
+            RotateVelocity = - 1.0;
+        } else if (control.keystatus().keyright()) {
+            RotateVelocity = 1.0;
+        } else {
+            RotateVelocity = 0;
+        }
+
+    } catch (const std::exception& e) {
+        qDebug() << "TGroundTank::ApplyControl(): " << e.what();
+    }
+}
+
+void TGroundTank::ApplyCustomPhysics() {
+    Body->ApplyLinearImpulse(Force, Body->GetPosition());
+    Body->SetAngularVelocity(RotateVelocity);
 }

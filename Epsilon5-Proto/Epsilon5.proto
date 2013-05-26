@@ -22,6 +22,8 @@ message Player {
     optional uint32 hp = 8;
     required bool team = 9;
     optional uint32 ping = 10;
+
+    required bool isActive = 11;
 }
 
 message Bullet {
@@ -95,6 +97,7 @@ message Control {
 
         required bool keyAttack1 = 5;
         required bool keyAttack2 = 6;
+        required bool keyEnter = 7;
     }
 
     required KeyStatus keyStatus = 1;

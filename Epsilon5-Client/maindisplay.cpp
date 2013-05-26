@@ -172,7 +172,6 @@ void TMainDisplay::SetMovementKeysState(bool state, const QKeyEvent *event)
         Control.mutable_keystatus()->set_keyright(state);
     if( event->key() == Qt::Key_E || event->nativeVirtualKey() == Qt::Key_E ) {
         Control.mutable_keystatus()->set_keyenter(state);
-        qDebug() << "Key entered " << (state ? "activated" : "deactivated");
     }
 #endif
     if( event->key() == Qt::Key_Up )

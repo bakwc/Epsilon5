@@ -108,6 +108,7 @@ private:
     TObjects* Vehicles;
     const Epsilon5::World* CurrentWorld;
     QHash<size_t, QString> PlayerNames;
+    QHash<size_t, size_t> PlayerToVehicle;
     QVector<TRespPoint> RespPoints;
     QVector<TPlayerStat> Stats;
     bool ShowStats;

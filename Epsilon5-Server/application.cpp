@@ -8,6 +8,9 @@ TApplication::TApplication(int& argc, char *argv[])
     connect(Server, SIGNAL(NewPlayer(size_t, ETeam)),
             World, SLOT(PlayerSpawn(size_t, ETeam)));
 
+    connect(Server, &TServer::PlayerDisconnected,
+            World, &TWorld::PlayerLeftVehicle);
+
     connect(Server, SIGNAL(PlayerDisconnected(size_t)),
             World, SLOT(PlayerKill(size_t)));
 

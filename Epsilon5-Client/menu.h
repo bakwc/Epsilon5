@@ -7,6 +7,11 @@
 #include <QStaticText>
 #include <QPoint>
 #include <QImage>
+#include <QEvent>
+#include <QMouseEvent>
+#include <QBrush>
+#include <QDebug>
+#include <QStaticText>
 #include "imagestorage.h"
 
 class TApplication;

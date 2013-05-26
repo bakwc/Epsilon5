@@ -1,5 +1,3 @@
-#include <QtEndian>
-#include <QAbstractSocket>
 #include "../utils/uexception.h"
 #include "maindisplay.h"
 #include "application.h"

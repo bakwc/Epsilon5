@@ -1,6 +1,3 @@
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
 #include "../utils/uexception.h"
 #include "../utils/ucolonsep.h"
 #include "objects.h"

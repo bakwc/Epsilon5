@@ -1,7 +1,3 @@
-#include <QDebug>
-#include <QFile>
-#include <QTextStream>
-#include <QStringList>
 #include "settings.h"
 
 const char* SETTINGS_FILENAME = "settings.ini";

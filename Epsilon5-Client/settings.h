@@ -1,6 +1,10 @@
 #pragma once
 
 #include <QObject>
+#include <QDebug>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
 #include "../utils/usettings.h"
 
 class TSettings: public QObject {

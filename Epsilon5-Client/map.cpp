@@ -1,13 +1,5 @@
-#include <QFile>
-#include <QTextStream>
-#include <QHash>
-#include <QImage>
-#include <QStringList>
-#include <QDebug>
-#include <QDir>
 #include "../utils/uexception.h"
 #include "../utils/usettings.h"
-
 #include "map.h"
 
 

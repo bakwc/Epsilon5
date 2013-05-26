@@ -3,6 +3,9 @@
 #include <QObject>
 #include <QHash>
 #include <QImage>
+#include <QFile>
+#include <QTextStream>
+#include <QStringList>
 
 class TObjects : public QObject {
     Q_OBJECT

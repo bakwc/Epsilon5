@@ -1,10 +1,6 @@
 #include "menu.h"
-#include <QStaticText>
 #include "application.h"
-#include <QEvent>
-#include <QMouseEvent>
-#include <QBrush>
-#include <QDebug>
+
 
 TMenu::TMenu(TImageStorage* images, QObject* parent)
     : QObject(parent)

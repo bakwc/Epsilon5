@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QtNetwork/QUdpSocket>
 #include <QTime>
+#include <QtEndian>
+#include <QAbstractSocket>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 #include "../Epsilon5-Proto/defines.h"
 

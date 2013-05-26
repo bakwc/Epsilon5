@@ -5,6 +5,13 @@
 #include <QPainter>
 #include <QPoint>
 #include <QColor>
+#include <QFile>
+#include <QTextStream>
+#include <QHash>
+#include <QImage>
+#include <QStringList>
+#include <QDebug>
+#include <QDir>
 
 class TMap : public QObject {
     Q_OBJECT

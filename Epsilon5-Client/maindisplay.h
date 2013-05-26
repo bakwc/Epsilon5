@@ -21,7 +21,7 @@
 #include "menu.h"
 #include "../utils/ufullscreenwrapper.h"
 #include "../utils/uexception.h"
-#include "../utils/ucpu.cpp"
+#include "../utils/ucpu.h"
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
 class TApplication;

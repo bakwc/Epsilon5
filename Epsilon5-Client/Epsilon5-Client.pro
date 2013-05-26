@@ -46,7 +46,8 @@ HEADERS  += \
     ../utils/ucast.h \
     graphics/basicitem.h \
     menu.h \
-    ../utils/ucolonsep.h
+    ../utils/ucolonsep.h \
+    ../utils/ucpu.h
 
 FORMS    +=
 

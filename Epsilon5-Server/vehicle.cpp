@@ -49,12 +49,12 @@ void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
     try {
         if (control.keystatus().keydown()) {
             double angle = GetAngle();
-            Force(1) = - sin(angle) * 9.0;
-            Force(0) = - cos(angle) * 9.0;
+            Force(1) = - sin(angle) * 18.0;
+            Force(0) = - cos(angle) * 18.0;
         } else if (control.keystatus().keyup()) {
             double angle = GetAngle();
-            Force(1) = sin(angle) * 9.0;
-            Force(0) = cos(angle) * 9.0;
+            Force(1) = sin(angle) * 18.0;
+            Force(0) = cos(angle) * 18.0;
         } else {
             Force(0) = 0;
             Force(1) = 0;

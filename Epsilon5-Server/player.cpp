@@ -81,6 +81,13 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
 
 void TPlayer::ApplyCustomPhysics()
 {
+    // If player is in vehicle, just take players coordinated from vehicle
+    if (Vehicle != nullptr) {
+        SetPosition(Vehicle->GetPosition());
+        return;
+    }
+
+    // Really apply physics
     Body->ApplyLinearImpulse(Force, Body->GetPosition());
 
     QSize mapSize = Maps->GetMapSize();

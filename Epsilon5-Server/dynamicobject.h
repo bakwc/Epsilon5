@@ -108,6 +108,10 @@ public:
         pos.setY(Body->GetPosition()(1));
         return pos;
     }
+    inline void SetPosition(const QPointF& position) {
+        b2Vec2 pos(position.x(), position.y());
+        Body->SetTransform(pos, Body->GetAngle());;
+    }
     inline QPointF GetSpeed() {
         QPointF pos;
         pos.setX(Body->GetLinearVelocity()(0));

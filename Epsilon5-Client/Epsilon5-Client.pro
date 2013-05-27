@@ -54,7 +54,7 @@ FORMS    +=
 QMAKE_CXXFLAGS_RELEASE += -std=c++0x -march=core2 -mfpmath=sse -O3 -flto -funroll-loops
 QMAKE_CXXFLAGS_DEBUG += -std=c++0x
 
-LIBS += -lprotobuf
+LIBS += -lprotobuf -lglaux -lopengl32 -lglu32
 
 INCLUDEPATH += 'C:\Qt\qt5-dist\include'
 

@@ -135,13 +135,17 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
 void TMainDisplay::paintGL() // don't work
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    #ifdef GL_MULTISMPLE
     glEnable(GL_MULTISAMPLE);
+    #endif
     glShadeModel(GL_SMOOTH);
 }
 
 void TMainDisplay::initializeGL()
 {
+    #ifdef GL_MULTISMPLE
     glEnable(GL_MULTISAMPLE);
+    #endif
     glShadeModel(GL_SMOOTH);
 }
 

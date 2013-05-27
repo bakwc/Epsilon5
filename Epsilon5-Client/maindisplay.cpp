@@ -190,7 +190,6 @@ void TMainDisplay::SetMovementKeysState(bool state, const QKeyEvent *event)
         Control.mutable_keystatus()->set_keyright(state);
     if( event->key() == Qt::Key_E || event->nativeVirtualKey() == Qt::Key_E ) {
         Control.mutable_keystatus()->set_keyenter(state);
-        qDebug() << "Key entered " << (state ? "activated" : "deactivated");
     }
 #endif
     if( event->key() == Qt::Key_Up )
@@ -345,12 +344,14 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
     nickFont.setPointSize(12);
     for (int i = 0; i != CurrentWorld->players_size(); i++) {
         const Epsilon5::Player &player = CurrentWorld->players(i);
-        QPoint pos = QPoint(player.x(), player.y()) - playerPos;
-        QString nickName;
 
-        if (!player.isactive()) {
+        // If player not active and not in vehicle = don't draw anything
+        if (!player.isactive() && PlayerToVehicle.find(player.id()) == PlayerToVehicle.end()) {
             continue;
         }
+
+        QPoint pos = QPoint(player.x(), player.y()) - playerPos;
+        QString nickName;
 
         if (player.has_name()) { // New player
             nickName = player.name().c_str();
@@ -385,11 +386,14 @@ void TMainDisplay::DrawPlayers(QPainter& painter, QPainter& miniMap,
                 miniMap.setBrush(Qt::yellow);
             }
         }
-        miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
-                                QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
 
-        painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
-                          widgetCenter.y() + pos.y() - img->height() / 2, *img);
+        if (player.isactive()) {
+            miniMap.drawEllipse(Map->GetObjectPosOnMinimap(
+                                    QPoint(player.x(), player.y()), MAX_MINIMAP_SIZE), 1, 1);
+
+            painter.drawImage(widgetCenter.x() + pos.x() - img->width() / 2,
+                              widgetCenter.y() + pos.y() - img->height() / 2, *img);
+        }
 
         // Draw player name
         painter.setFont(nickFont);
@@ -540,6 +544,10 @@ void TMainDisplay::DrawWorld(QPainter& painter){
     try {
         QPoint widgetCenter(width() / 2, height() / 2);
         QPoint playerPos = GetPlayerCoordinatesAndPing();
+
+        for (int i = 0; i < CurrentWorld->vehicles_size(); i++) {
+            PlayerToVehicle[CurrentWorld->vehicles(i).playerid()] = i;
+        }
 
         Map->DrawBackground(playerPos, size(), painter);
 

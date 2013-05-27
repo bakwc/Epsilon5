@@ -36,7 +36,8 @@ SOURCES += main.cpp \
     settings.cpp \
     redisclient.cpp \
     vehicle.cpp \
-    ../utils/ucolonsep.cpp
+    ../utils/ucolonsep.cpp \
+    ../utils/ucpu.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \

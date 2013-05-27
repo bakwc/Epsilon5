@@ -1,5 +1,7 @@
 #pragma once
 #include <QGLWidget>
+#include <GL/glu.h>
+#include <GL/gl.h>
 #include <QImage>
 #include <QThread>
 #include <QQueue>
@@ -71,6 +73,8 @@ public slots:
 
 private:
     void paintEvent(QPaintEvent*);
+    void paintGL();
+    void initializeGL();
     void timerEvent(QTimerEvent*);
     void keyPressEvent(QKeyEvent* event);
     void keyReleaseEvent(QKeyEvent* event);

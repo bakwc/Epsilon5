@@ -35,7 +35,12 @@ static double getAngle(const QPoint& point)
 }
 
 TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
-    : QGLWidget(QGLFormat(QGL::SampleBuffers),parent)
+    : QGLWidget(QGLFormat(QGL::AlphaChannel |
+                          QGL::DoubleBuffer |
+                          QGL::DepthBuffer |
+                          QGL::Rgba |
+                          QGL::SampleBuffers |
+                          QGL::StereoBuffers),parent)
     , UFullscreenWrapper(this)
     , Application(application)
     , Images(new TImageStorage(this))
@@ -47,14 +52,13 @@ TMainDisplay::TMainDisplay(TApplication* application, QGLWidget* parent)
     , Menu(Images)
     , Ping(0)
 {
+    QGLFormat glFormat;
+    glFormat.setSampleBuffers(true);
+    glFormat.setSamples(16);
+    this->setFormat(glFormat);
+
     setBaseSize(BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
     setFixedSize(baseSize());
-    QGLFormat f = QGLFormat::defaultFormat();
-    f.setSampleBuffers(true);
-    f.setStencilBufferSize(8);
-    f.setSamples(4);
-    f.setVersion(QGLFormat::OpenGL_Version_4_0, QGLFormat::OpenGL_Version_4_0);
-    QGLFormat::setDefaultFormat(f);
     Control.set_angle(0);
     Control.mutable_keystatus()->set_keyattack1(false);
     Control.mutable_keystatus()->set_keyattack2(false);
@@ -101,6 +105,7 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
     QPainter painter;
     painter.begin(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
     painter.setRenderHint(QPainter::TextAntialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
@@ -125,6 +130,19 @@ void TMainDisplay::paintEvent(QPaintEvent*) {
         break;
     }
     painter.end();
+}
+
+void TMainDisplay::paintGL() // don't work
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_MULTISAMPLE);
+    glShadeModel(GL_SMOOTH);
+}
+
+void TMainDisplay::initializeGL()
+{
+    glEnable(GL_MULTISAMPLE);
+    glShadeModel(GL_SMOOTH);
 }
 
 void TMainDisplay::mousePressEvent(QMouseEvent* event) {

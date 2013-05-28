@@ -1,6 +1,7 @@
 #include "menu.h"
 #include "application.h"
 
+const qint8 Y_OFFSET = 20;
 
 TMenu::TMenu(TImageStorage* images, QObject* parent)
     : QObject(parent)
@@ -18,26 +19,29 @@ TMenuItem* TMenu::AddMenuItem(TMenuItem* item)
 void TMenu::paint(QPainter* p)
 {
     p->fillRect(0, 0, 1920, 1080, Qt::black);
-    for (int i = 0; i != Items.size(); ++i) {
-        Items[i]->paint(p);
+    for (TMenuItem* menuItem : Items)
+    {
+      menuItem->paint(p);
     }
 }
 
+bool isInsideImage(const QPoint& point, const QRect& imageRect)
+{
+  return imageRect.contains(point, true);
+}
 
 void TMenuItem::paint(QPainter* p)
 {
-    QPoint cursorpos = Application()->GetMainDisplay()->GetCursorPos();
+    QPoint cursorPos = Application()->GetMainDisplay()->GetCursorPos();
+
     QPoint pos = Application()->GetMainDisplay()->GetCenter() + Pos;
     pos.setX(pos.x() - Image.width() / 2);
     pos.setY(pos.y() - Image.height() / 2);
-    if (cursorpos.x() > pos.x() && cursorpos.y() > pos.y()
-            && cursorpos.x() < pos.x() + Image.width()
-            && cursorpos.y() < pos.y() + Image.height())
-    {
-        p->drawImage(pos, ImageHover);
-    } else {
-        p->drawImage(pos, Image);
-    }
+
+    QRect imageRect = Image.rect();
+    imageRect.translate(pos.x(), pos.y());
+
+    p->drawImage(pos, isInsideImage(cursorPos, imageRect) ? ImageHover : Image);
 }
 
 bool TMenuItem::event(QEvent* ev)
@@ -48,10 +52,12 @@ bool TMenuItem::event(QEvent* ev)
         QPoint pos = Application()->GetMainDisplay()->GetCenter() + Pos;
         pos.setX(pos.x() - Image.width() / 2);
         pos.setY(pos.y() - Image.height() / 2);
-        QPoint p = mEv->pos();
+        const QPoint& p = mEv->pos();
 
-        if (p.x() > pos.x() && p.x() < pos.x() + Image.width()
-                && p.y() > pos.y() && p.y() < pos.y() + Image.height())
+        QRect imageRect = Image.rect();
+        imageRect.translate(pos.x(), pos.y());
+
+        if (isInsideImage(p, imageRect))
         {
             emit Clicked();
             Application()->GetMainDisplay()->update();
@@ -75,14 +81,14 @@ void TMenu::Init()
     TMenuItem* item = AddMenuItem(new TMenuItem(
                                       Images->GetImage("menu-connect"),
                                       Images->GetImage("menu-connect-h"),
-                                      QPoint(0, -50),
+                                      QPoint(0, -64),
                                       this));
     connect(item, SIGNAL(Clicked()), Application()->GetNetwork(), SLOT(Start()));
 
     item = AddMenuItem(new TMenuItem(
                                           Images->GetImage("menu-exit"),
                                           Images->GetImage("menu-exit-h"),
-                                          QPoint(0, 50),
+                                          QPoint(0, 64),
                                           this));
     connect(item, SIGNAL(Clicked()), Application(), SLOT(quit()));
 }

@@ -51,7 +51,7 @@ public:
                    QObject *parent = 0);
     void OnDestroy();
 signals:
-    void Boom(QPointF position, float radius);
+    void Boom(QPointF position, float radius, size_t playerId);
 };
 
 TBullet* CreateBullet(QPointF pos, QPointF speed,

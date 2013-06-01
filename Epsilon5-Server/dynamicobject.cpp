@@ -45,3 +45,5 @@ b2World* TDynamicObject::B2World() {
 TDynamicObject::~TDynamicObject() {
     B2World()->DestroyBody(Body);
 }
+
+

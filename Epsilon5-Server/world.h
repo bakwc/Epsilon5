@@ -56,7 +56,7 @@ public slots:
     void NeedFullPacket();
     void PlayerEnteredVehicle(size_t id);
     void PlayerLeftVehicle(size_t id);
-    void Boom(QPointF position, float radius);
+    void Boom(QPointF position, float radius, size_t playerId);
 private:
     void timerEvent(QTimerEvent *);
     TApplication* Application();

@@ -131,6 +131,8 @@ public:
         b2Vec2 impulseVec(impulse.x(), impulse.y());
         Body->ApplyLinearImpulse(impulseVec, Body->GetPosition());
     }
+    virtual void ApplyDamage(float, size_t) {
+    }
 protected:
     b2World* B2World();
 protected:

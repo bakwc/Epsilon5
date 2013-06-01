@@ -62,6 +62,8 @@ public:
     inline bool InVehicle() {
         return Vehicle != nullptr;
     }
+
+    void ApplyDamage(float dmg, size_t playerId);
 signals:
     void Death(size_t id);
     void Killed(size_t playerId);

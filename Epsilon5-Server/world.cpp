@@ -293,7 +293,7 @@ void TWorld::PlayerLeftVehicle(size_t id) {
     vehicle->RemovePlayer();
 }
 
-void TWorld::Boom(QPointF position, float radius) {
+void TWorld::Boom(QPointF position, float radius, size_t playerId) {
     TObjDistanceList objects = GetNearestObjects(position, radius);
     for (auto &o: objects) {
         float distance = o.first;
@@ -301,6 +301,7 @@ void TWorld::Boom(QPointF position, float radius) {
         QPointF direction = GetDirection(position, object->GetPosition());
         QPointF impulse = direction * 1200.0 / distance;
         object->ApplyImpulse(impulse);
+        object->ApplyDamage(130/distance, playerId);
     }
 }
 

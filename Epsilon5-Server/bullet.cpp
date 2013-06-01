@@ -67,7 +67,7 @@ TBullet *CreateBullet(QPointF pos, QPointF speed,
 }
 
 void TGrenadeBullet::OnDestroy() {
-    emit Boom(GetPosition(), 15);
+    emit Boom(GetPosition(), 15, PlayerId);
 }
 
 TGrenadeBullet::TGrenadeBullet(const TObjectParams &params,

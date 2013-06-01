@@ -147,6 +147,20 @@ void TPlayer::OnLeftVehicle() {
     // todo: select correct player position
 }
 
+void TPlayer::ApplyDamage(float dmg, size_t playerId) {
+    int resultHp = HP - dmg;
+    if (resultHp <= 0) {
+        if (GWorld->GetPlayer(playerId)->GetTeam() !=
+                GetTeam())
+        {
+            emit Killed(playerId);
+        }
+        emit Death(Id);
+        return;
+    }
+    HP = resultHp;
+}
+
 void TPlayer::Hit(size_t playerId, quint8 ffMode) {
     size_t hpDelta = HP_LOST * (ffMode > 100 ? 1 : ffMode*0.01);
     if (HP <= hpDelta) {

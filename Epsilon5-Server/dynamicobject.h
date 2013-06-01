@@ -127,6 +127,10 @@ public:
     inline bool IsActive() {
         return Body->IsActive();
     }
+    inline void ApplyImpulse(QPointF impulse) {
+        b2Vec2 impulseVec(impulse.x(), impulse.y());
+        Body->ApplyLinearImpulse(impulseVec, Body->GetPosition());
+    }
 protected:
     b2World* B2World();
 protected:

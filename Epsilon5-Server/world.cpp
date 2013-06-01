@@ -4,6 +4,7 @@
 #include "../utils/uexception.h"
 #include "application.h"
 #include "world.h"
+#include "calcs.h"
 #include "defines.h"
 
 TWorld::TWorld(QObject *parent)
@@ -192,6 +193,7 @@ void TWorld::timerEvent(QTimerEvent *) {
 
     for (auto b: Bullets) {
         if (b->GetTtl() <= 0) {
+            b->OnDestroy();
             b->deleteLater();
         }
     }
@@ -286,6 +288,17 @@ void TWorld::PlayerLeftVehicle(size_t id) {
     TVehicleBase* vehicle = player->GetVehicle();
     player->OnLeftVehicle();
     vehicle->RemovePlayer();
+}
+
+void TWorld::Boom(QPointF position, float radius) {
+    TObjDistanceList objects = GetNearestObjects(position, radius);
+    for (auto &o: objects) {
+        float distance = o.first;
+        TDynamicObject* object = o.second;
+        QPointF direction = GetDirection(position, object->GetPosition());
+        QPointF impulse = direction * 1200.0 / distance;
+        object->ApplyImpulse(impulse);
+    }
 }
 
 TApplication* TWorld::Application() {
@@ -435,6 +448,29 @@ TVehicleBase *TWorld::FindNearestVehicle(QPointF position) {
         return vehicle;
     }
     return nullptr;
+}
+
+TWorld::TObjDistanceList TWorld::GetNearestObjects(QPointF position, float radius) {
+    TObjDistanceList objects;
+    for (auto &p: Players) {
+        float distance = GetDistance(position, p->GetPosition());
+        if (distance <= radius) {
+            objects.push_back(QPair<float, TDynamicObject*>(distance, &(*p)));
+        }
+    }   // TODO: make a template method
+    for (auto &o: DynamicObjects) {
+        float distance = GetDistance(position, o->GetPosition());
+        if (distance <= radius) {
+            objects.push_back(QPair<float, TDynamicObject*>(distance, &(*o)));
+        }
+    }
+    for (auto &v: Vehicles) {
+        float distance = GetDistance(position, v->GetPosition());
+        if (distance <= radius) {
+            objects.push_back(QPair<float, TDynamicObject*>(distance, &(*v)));
+        }
+    }
+    return objects;
 }
 
 void TWorld::SetPingForPlayer(size_t id, size_t packetNumber) {

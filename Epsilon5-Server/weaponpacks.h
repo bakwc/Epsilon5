@@ -78,6 +78,13 @@ public:
     void MakeShot(const TFireInfo& fireInfo);
 };
 
+class TGrenadeWeapon : public TWeaponBase {
+    Q_OBJECT
+public:
+    TGrenadeWeapon(QObject *parent);
+    void MakeShot(const TFireInfo &fireInfo);
+};
+
 class TWeaponPacks : public QObject
 {
     Q_OBJECT

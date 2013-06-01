@@ -11,7 +11,9 @@ public:
             Epsilon5::Bullet_Type bulletType,
             size_t playerId, ETeam team,
             QObject *parent = 0);
-    void ApplyCustomPhysics();
+    virtual void ApplyCustomPhysics();
+    virtual void OnDestroy() {
+    }
     inline size_t GetTtl() {
         return Ttl;
     }
@@ -30,12 +32,26 @@ public:
     inline bool GetTeamBool() {
         return Team == T_One;
     }
-private:
+protected:
     size_t Ttl;
     TObjectInfo CollisionInfo;
     Epsilon5::Bullet_Type BulletType;
     size_t PlayerId;
     ETeam Team;
+};
+
+
+class TGrenadeBullet : public TBullet
+{
+    Q_OBJECT
+public:
+    TGrenadeBullet(const TObjectParams& params,
+                   Epsilon5::Bullet_Type bulletType,
+                   size_t playerId, ETeam team,
+                   QObject *parent = 0);
+    void OnDestroy();
+signals:
+    void Boom(QPointF position, float radius);
 };
 
 TBullet* CreateBullet(QPointF pos, QPointF speed,

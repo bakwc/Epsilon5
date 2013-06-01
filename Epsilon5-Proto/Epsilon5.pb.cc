@@ -356,39 +356,39 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\n\n\002vx\030\004 "
     "\001(\001\022\n\n\002vy\030\005 \001(\001\022\r\n\005angle\030\006 \001(\001\022\014\n\004name\030\007"
     " \001(\t\022\n\n\002hp\030\010 \001(\r\022\014\n\004team\030\t \002(\010\022\014\n\004ping\030\n"
-    " \001(\r\022\020\n\010isActive\030\013 \002(\010\"\251\001\n\006Bullet\022\t\n\001x\030\001"
+    " \001(\r\022\020\n\010isActive\030\013 \002(\010\"\266\001\n\006Bullet\022\t\n\001x\030\001"
     " \002(\005\022\t\n\001y\030\002 \002(\005\022\n\n\002vx\030\003 \001(\001\022\n\n\002vy\030\004 \001(\001\022"
     "1\n\013bullet_type\030\005 \001(\0162\025.Epsilon5.Bullet.T"
-    "ype:\005ARBUZ\022\014\n\004team\030\006 \002(\010\"0\n\004Type\022\t\n\005ARBU"
-    "Z\020\000\022\021\n\rLITTLE_BULLET\020\001\022\n\n\006ROCKET\020\002\"9\n\006Ob"
-    "ject\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r"
-    "\n\005angle\030\004 \002(\001\"L\n\007Vehicle\022\n\n\002id\030\001 \002(\005\022\t\n\001"
-    "x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\022\020\n\010pla"
-    "yerId\030\005 \001(\005\"@\n\tRespPoint\022\t\n\001x\030\001 \002(\005\022\t\n\001y"
-    "\030\002 \002(\005\022\014\n\004team\030\003 \002(\005\022\017\n\007is_main\030\004 \002(\010\"F\n"
-    "\nPlayerStat\022\n\n\002id\030\001 \002(\005\022\r\n\005score\030\002 \002(\005\022\r"
-    "\n\005kills\030\003 \002(\005\022\016\n\006deaths\030\004 \002(\005\"T\n\nPlayerI"
-    "nfo\022\n\n\002id\030\001 \001(\005\022\013\n\003map\030\002 \001(\t\022\016\n\006weapon\030\003"
-    " \001(\005\022\017\n\007bullets\030\004 \001(\005\022\014\n\004cage\030\005 \001(\005\"\255\002\n\005"
-    "World\022!\n\007players\030\001 \003(\0132\020.Epsilon5.Player"
-    "\022!\n\007bullets\030\002 \003(\0132\020.Epsilon5.Bullet\022!\n\007o"
-    "bjects\030\003 \003(\0132\020.Epsilon5.Object\022#\n\010vehicl"
-    "es\030\004 \003(\0132\021.Epsilon5.Vehicle\022(\n\013resp_poin"
-    "ts\030\005 \003(\0132\023.Epsilon5.RespPoint\022\025\n\rpacket_"
-    "number\030\006 \002(\r\022*\n\014players_stat\030\007 \003(\0132\024.Eps"
-    "ilon5.PlayerStat\022)\n\013player_info\030\010 \001(\0132\024."
-    "Epsilon5.PlayerInfo\"\237\002\n\007Control\022.\n\tkeySt"
-    "atus\030\001 \002(\0132\033.Epsilon5.Control.KeyStatus\022"
-    "\r\n\005angle\030\002 \002(\001\022 \n\006weapon\030\003 \002(\0162\020.Epsilon"
-    "5.Weapon\022\025\n\rpacket_number\030\004 \002(\r\022\021\n\tneed_"
-    "full\030\005 \001(\010\032\210\001\n\tKeyStatus\022\r\n\005keyUp\030\001 \002(\010\022"
-    "\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyLeft\030\003 \002(\010\022\020\n\010key"
-    "Right\030\004 \002(\010\022\022\n\nkeyAttack1\030\005 \002(\010\022\022\n\nkeyAt"
-    "tack2\030\006 \002(\010\022\020\n\010keyEnter\030\007 \002(\010\"&\n\004Auth\022\014\n"
-    "\004name\030\001 \002(\t\022\020\n\010password\030\002 \001(\t*1\n\006Weapon\022"
-    "\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001\022\013\n\007Shotgun\020\002"
-    "B\'\n\033com.epsilon5.client.networkB\010Protoco"
-    "l", 1441);
+    "ype:\005ARBUZ\022\014\n\004team\030\006 \002(\010\"=\n\004Type\022\t\n\005ARBU"
+    "Z\020\000\022\021\n\rLITTLE_BULLET\020\001\022\n\n\006ROCKET\020\002\022\013\n\007GR"
+    "ENADE\020\003\"9\n\006Object\022\n\n\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005"
+    "\022\t\n\001y\030\003 \002(\005\022\r\n\005angle\030\004 \002(\001\"L\n\007Vehicle\022\n\n"
+    "\002id\030\001 \002(\005\022\t\n\001x\030\002 \002(\005\022\t\n\001y\030\003 \002(\005\022\r\n\005angle"
+    "\030\004 \002(\001\022\020\n\010playerId\030\005 \001(\005\"@\n\tRespPoint\022\t\n"
+    "\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\022\014\n\004team\030\003 \002(\005\022\017\n\007is_"
+    "main\030\004 \002(\010\"F\n\nPlayerStat\022\n\n\002id\030\001 \002(\005\022\r\n\005"
+    "score\030\002 \002(\005\022\r\n\005kills\030\003 \002(\005\022\016\n\006deaths\030\004 \002"
+    "(\005\"T\n\nPlayerInfo\022\n\n\002id\030\001 \001(\005\022\013\n\003map\030\002 \001("
+    "\t\022\016\n\006weapon\030\003 \001(\005\022\017\n\007bullets\030\004 \001(\005\022\014\n\004ca"
+    "ge\030\005 \001(\005\"\255\002\n\005World\022!\n\007players\030\001 \003(\0132\020.Ep"
+    "silon5.Player\022!\n\007bullets\030\002 \003(\0132\020.Epsilon"
+    "5.Bullet\022!\n\007objects\030\003 \003(\0132\020.Epsilon5.Obj"
+    "ect\022#\n\010vehicles\030\004 \003(\0132\021.Epsilon5.Vehicle"
+    "\022(\n\013resp_points\030\005 \003(\0132\023.Epsilon5.RespPoi"
+    "nt\022\025\n\rpacket_number\030\006 \002(\r\022*\n\014players_sta"
+    "t\030\007 \003(\0132\024.Epsilon5.PlayerStat\022)\n\013player_"
+    "info\030\010 \001(\0132\024.Epsilon5.PlayerInfo\"\237\002\n\007Con"
+    "trol\022.\n\tkeyStatus\030\001 \002(\0132\033.Epsilon5.Contr"
+    "ol.KeyStatus\022\r\n\005angle\030\002 \002(\001\022 \n\006weapon\030\003 "
+    "\002(\0162\020.Epsilon5.Weapon\022\025\n\rpacket_number\030\004"
+    " \002(\r\022\021\n\tneed_full\030\005 \001(\010\032\210\001\n\tKeyStatus\022\r\n"
+    "\005keyUp\030\001 \002(\010\022\017\n\007keyDown\030\002 \002(\010\022\017\n\007keyLeft"
+    "\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyAttack1\030\005"
+    " \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\022\020\n\010keyEnter\030\007 \002"
+    "(\010\"&\n\004Auth\022\014\n\004name\030\001 \002(\t\022\020\n\010password\030\002 \001"
+    "(\t*>\n\006Weapon\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001"
+    "\022\013\n\007Shotgun\020\002\022\013\n\007Grenade\020\003B\'\n\033com.epsilo"
+    "n5.client.networkB\010Protocol", 1467);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -431,6 +431,7 @@ bool Weapon_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -1071,6 +1072,7 @@ bool Bullet_Type_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -1081,6 +1083,7 @@ bool Bullet_Type_IsValid(int value) {
 const Bullet_Type Bullet::ARBUZ;
 const Bullet_Type Bullet::LITTLE_BULLET;
 const Bullet_Type Bullet::ROCKET;
+const Bullet_Type Bullet::GRENADE;
 const Bullet_Type Bullet::Type_MIN;
 const Bullet_Type Bullet::Type_MAX;
 const int Bullet::Type_ARRAYSIZE;

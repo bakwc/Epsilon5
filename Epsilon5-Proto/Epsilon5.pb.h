@@ -49,11 +49,12 @@ class Auth;
 enum Bullet_Type {
   Bullet_Type_ARBUZ = 0,
   Bullet_Type_LITTLE_BULLET = 1,
-  Bullet_Type_ROCKET = 2
+  Bullet_Type_ROCKET = 2,
+  Bullet_Type_GRENADE = 3
 };
 bool Bullet_Type_IsValid(int value);
 const Bullet_Type Bullet_Type_Type_MIN = Bullet_Type_ARBUZ;
-const Bullet_Type Bullet_Type_Type_MAX = Bullet_Type_ROCKET;
+const Bullet_Type Bullet_Type_Type_MAX = Bullet_Type_GRENADE;
 const int Bullet_Type_Type_ARRAYSIZE = Bullet_Type_Type_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Bullet_Type_descriptor();
@@ -69,11 +70,12 @@ inline bool Bullet_Type_Parse(
 enum Weapon {
   Pistol = 0,
   Machinegun = 1,
-  Shotgun = 2
+  Shotgun = 2,
+  Grenade = 3
 };
 bool Weapon_IsValid(int value);
 const Weapon Weapon_MIN = Pistol;
-const Weapon Weapon_MAX = Shotgun;
+const Weapon Weapon_MAX = Grenade;
 const int Weapon_ARRAYSIZE = Weapon_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Weapon_descriptor();
@@ -331,6 +333,7 @@ class Bullet : public ::google::protobuf::Message {
   static const Type ARBUZ = Bullet_Type_ARBUZ;
   static const Type LITTLE_BULLET = Bullet_Type_LITTLE_BULLET;
   static const Type ROCKET = Bullet_Type_ROCKET;
+  static const Type GRENADE = Bullet_Type_GRENADE;
   static inline bool Type_IsValid(int value) {
     return Bullet_Type_IsValid(value);
   }

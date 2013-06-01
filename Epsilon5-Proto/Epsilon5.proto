@@ -6,6 +6,7 @@ enum Weapon {
     Pistol = 0;
     Machinegun = 1;
     Shotgun = 2;
+    Grenade = 3;
 }
 
 message Player {
@@ -36,6 +37,7 @@ message Bullet {
         ARBUZ = 0;
         LITTLE_BULLET = 1;
         ROCKET = 2;
+        GRENADE = 3;
     }
     optional Type bullet_type = 5 [default = ARBUZ];
     required bool team = 6;

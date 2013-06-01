@@ -37,7 +37,8 @@ SOURCES += main.cpp \
     redisclient.cpp \
     vehicle.cpp \
     ../utils/ucolonsep.cpp \
-    ../utils/ucpu.cpp
+    ../utils/ucpu.cpp \
+    calcs.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -61,7 +62,8 @@ HEADERS += \
     redisclient.h \
     vehicle.h \
     ../utils/ucolonsep.h \
-    ../utils/umaybe.h
+    ../utils/umaybe.h \
+    calcs.h
 
 
 

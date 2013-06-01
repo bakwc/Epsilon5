@@ -30,6 +30,7 @@ public:
     typedef QList<TDynamicObject*> TDynamicObjectsList;
     typedef QHash<size_t, TPlayer*> TPlayersHash;
     typedef QList<TVehicleBase*> TVehiclesList;
+    typedef QVector<QPair<float, TDynamicObject *> > TObjDistanceList;
 public:
     TWorld(QObject *parent = 0);
     ~TWorld();
@@ -55,6 +56,7 @@ public slots:
     void NeedFullPacket();
     void PlayerEnteredVehicle(size_t id);
     void PlayerLeftVehicle(size_t id);
+    void Boom(QPointF position, float radius);
 private:
     void timerEvent(QTimerEvent *);
     TApplication* Application();
@@ -66,6 +68,7 @@ private:
     void BeginContact(b2Contact* contact);
     QPointF GetPlayerPos(size_t playerId);
     TVehicleBase* FindNearestVehicle(QPointF position);
+    TObjDistanceList GetNearestObjects(QPointF position, float radius);
 private:
     unique_ptr<b2World> B2World;
     TPlayersHash Players;

@@ -220,6 +220,9 @@ void TMainDisplay::keyPressEvent(QKeyEvent *event)
     case '3':
         Control.set_weapon(Epsilon5::Shotgun);
         break;
+    case '4':
+        Control.set_weapon(Epsilon5::Grenade);
+        break;
     case Qt::Key_Tab:
         ShowStats = true;
         break;
@@ -427,6 +430,9 @@ void TMainDisplay::DrawBullets(QPainter& painter, const QPoint& playerPos,
             break;
         case Epsilon5::Bullet_Type_LITTLE_BULLET:
             img = &Images->GetImage("bullet");
+            break;
+        case Epsilon5::Bullet_Type_GRENADE:
+            img = &Images->GetImage("arbuz");
             break;
         default:
             throw UException("Unknown bullet");

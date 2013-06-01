@@ -41,7 +41,8 @@ QPointF TWeaponBase::GetRanomizedSpeed(const QPointF& speed) {
 }
 
 void TWeaponBase::EmitShoot(const QPointF& position, const QPointF& speed,
-                            const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType) {
+                            const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType)
+{
     TBullet* bullet = CreateBullet(position, speed, bulletType,
                                    fireInfo.PlayerId, fireInfo.Team,
                                    ((TApplication*)(qApp))->GetWorld());
@@ -90,6 +91,7 @@ TWeaponPacks::TWeaponPacks(QObject *parent)
     Weapons.insert(Epsilon5::Pistol, new TPistolWeapon(this));
     Weapons.insert(Epsilon5::Machinegun, new TMachineGunWeapon(this));
     Weapons.insert(Epsilon5::Shotgun, new TShotGunWeapon(this));
+    Weapons.insert(Epsilon5::Grenade, new TGrenadeWeapon(this));
 }
 
 QHash<size_t, TWeaponInfo> TWeaponPacks::GetPack(size_t packId) {
@@ -98,6 +100,7 @@ QHash<size_t, TWeaponInfo> TWeaponPacks::GetPack(size_t packId) {
     pack.insert(0, Weapons[Epsilon5::Pistol]->GetDefault());
     pack.insert(1, Weapons[Epsilon5::Machinegun]->GetDefault());
     pack.insert(2, Weapons[Epsilon5::Shotgun]->GetDefault());
+    pack.insert(3, Weapons[Epsilon5::Grenade]->GetDefault());
     return pack;
 }
 
@@ -134,3 +137,14 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
 }
 
 
+void TGrenadeWeapon::MakeShot(const TFireInfo &fireInfo) {
+    QPointF speed = GetSpeed(200, fireInfo.Angle);
+    QPointF position = GetPosition(speed, fireInfo.Pos);
+    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_GRENADE);
+}
+
+
+TGrenadeWeapon::TGrenadeWeapon(QObject *parent)
+    : TWeaponBase(800, 12, 5, 400, Epsilon5::Grenade, parent)
+{
+}

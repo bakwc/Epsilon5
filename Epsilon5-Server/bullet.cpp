@@ -58,8 +58,12 @@ TBullet *CreateBullet(QPointF pos, QPointF speed,
             params.Radius = 0.5;
             params.Density = 1.0;
             return new TGrenadeBullet(params, bulletType, playerId, team, parent);
-            break;
-        }
+        } break;
+        case Epsilon5::Bullet_Type_ROCKET: {
+            params.Radius = 0.5;
+            params.Density = 1.0;
+            return new TGrenadeBullet(params, bulletType, playerId, team, parent);
+        } break;
     }
 
     throw UException("Unknown bullet type");

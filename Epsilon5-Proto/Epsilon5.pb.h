@@ -71,11 +71,12 @@ enum Weapon {
   Pistol = 0,
   Machinegun = 1,
   Shotgun = 2,
-  Grenade = 3
+  Grenade = 3,
+  Rocket = 4
 };
 bool Weapon_IsValid(int value);
 const Weapon Weapon_MIN = Pistol;
-const Weapon Weapon_MAX = Grenade;
+const Weapon Weapon_MAX = Rocket;
 const int Weapon_ARRAYSIZE = Weapon_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Weapon_descriptor();

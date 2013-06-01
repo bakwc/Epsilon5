@@ -25,7 +25,6 @@ private:
     QHash<size_t, TVehicleParams> Vehicles;
 };
 
-
 class TVehicleBase : public TDynamicObject {
     Q_OBJECT
 public:
@@ -55,7 +54,7 @@ public:
 public slots:
     virtual void ApplyControl(const Epsilon5::Control &control) = 0;
     virtual void ApplyCustomPhysics() = 0;
-private:
+protected:
     size_t Id;
     TPlayer* Player = nullptr;
 };
@@ -71,15 +70,12 @@ public slots:
     virtual void ApplyCustomPhysics() = 0;
 };
 
-class TGroundTank : public TGroundTransport {
+class TGroundTank : public TGroundTransport, public TObjectWithWeapon {
     Q_OBJECT
 public:
-    TGroundTank(size_t id, const TObjectParams& params, QObject* parent)
-        : TGroundTransport(id, params, parent)
-    {
-        Force.x = 0;
-        Force.y = 0;
-    }
+    TGroundTank(size_t id, const TObjectParams& params, QObject* parent);
+signals:
+    void Fire(TFireInfo& fireInfo);
 public slots:
     virtual void ApplyControl(const Epsilon5::Control &control);
     virtual void ApplyCustomPhysics();

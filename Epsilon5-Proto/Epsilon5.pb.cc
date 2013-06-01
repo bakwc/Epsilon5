@@ -386,9 +386,9 @@ void protobuf_AddDesc_Epsilon5_2eproto() {
     "\030\003 \002(\010\022\020\n\010keyRight\030\004 \002(\010\022\022\n\nkeyAttack1\030\005"
     " \002(\010\022\022\n\nkeyAttack2\030\006 \002(\010\022\020\n\010keyEnter\030\007 \002"
     "(\010\"&\n\004Auth\022\014\n\004name\030\001 \002(\t\022\020\n\010password\030\002 \001"
-    "(\t*>\n\006Weapon\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001"
-    "\022\013\n\007Shotgun\020\002\022\013\n\007Grenade\020\003B\'\n\033com.epsilo"
-    "n5.client.networkB\010Protocol", 1467);
+    "(\t*J\n\006Weapon\022\n\n\006Pistol\020\000\022\016\n\nMachinegun\020\001"
+    "\022\013\n\007Shotgun\020\002\022\013\n\007Grenade\020\003\022\n\n\006Rocket\020\004B\'"
+    "\n\033com.epsilon5.client.networkB\010Protocol", 1479);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "Epsilon5.proto", &protobuf_RegisterTypes);
   Player::default_instance_ = new Player();
@@ -432,6 +432,7 @@ bool Weapon_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;

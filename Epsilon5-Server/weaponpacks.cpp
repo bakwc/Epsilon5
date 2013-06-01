@@ -92,15 +92,24 @@ TWeaponPacks::TWeaponPacks(QObject *parent)
     Weapons.insert(Epsilon5::Machinegun, new TMachineGunWeapon(this));
     Weapons.insert(Epsilon5::Shotgun, new TShotGunWeapon(this));
     Weapons.insert(Epsilon5::Grenade, new TGrenadeWeapon(this));
+    Weapons.insert(Epsilon5::Rocket, new TRocketWeapon(this));
 }
 
 QHash<size_t, TWeaponInfo> TWeaponPacks::GetPack(size_t packId) {
-    Q_UNUSED(packId); // TODO: we need several different packs here
     QHash<size_t, TWeaponInfo> pack;
-    pack.insert(0, Weapons[Epsilon5::Pistol]->GetDefault());
-    pack.insert(1, Weapons[Epsilon5::Machinegun]->GetDefault());
-    pack.insert(2, Weapons[Epsilon5::Shotgun]->GetDefault());
-    pack.insert(3, Weapons[Epsilon5::Grenade]->GetDefault());
+    switch (packId) {
+    case 0:
+        pack.insert(0, Weapons[Epsilon5::Pistol]->GetDefault());
+        pack.insert(1, Weapons[Epsilon5::Machinegun]->GetDefault());
+        pack.insert(2, Weapons[Epsilon5::Shotgun]->GetDefault());
+        pack.insert(3, Weapons[Epsilon5::Grenade]->GetDefault());
+        pack.insert(4, Weapons[Epsilon5::Rocket]->GetDefault());
+        break;
+    default:
+        pack.insert(0, Weapons[Epsilon5::Rocket]->GetDefault());
+        pack.insert(1, Weapons[Epsilon5::Machinegun]->GetDefault());
+        break;
+    }
     return pack;
 }
 
@@ -147,4 +156,16 @@ void TGrenadeWeapon::MakeShot(const TFireInfo &fireInfo) {
 TGrenadeWeapon::TGrenadeWeapon(QObject *parent)
     : TWeaponBase(800, 12, 5, 400, Epsilon5::Grenade, parent)
 {
+}
+
+
+TRocketWeapon::TRocketWeapon(QObject *parent)
+    : TWeaponBase(1200, 8, 3, 600, Epsilon5::Grenade, parent)
+{
+}
+
+void TRocketWeapon::MakeShot(const TFireInfo &fireInfo) {
+    QPointF speed = GetSpeed(200, fireInfo.Angle);
+    QPointF position = GetPosition(speed, fireInfo.Pos);
+    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_ROCKET);
 }

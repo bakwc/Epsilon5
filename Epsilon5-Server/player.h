@@ -26,7 +26,12 @@ struct TFireInfo {
     TWeaponInfo* WeaponInfo = 0;
 };
 
-class TPlayer : public TDynamicObject
+class TObjectWithWeapon {
+protected:
+    QHash<size_t, TWeaponInfo> WeaponPack;
+};
+
+class TPlayer : public TDynamicObject, public TObjectWithWeapon
 {
     Q_OBJECT
 public:
@@ -65,9 +70,9 @@ public:
 
     void ApplyDamage(float dmg, size_t playerId);
 signals:
+    void Fire(TFireInfo& fireInfo);
     void Death(size_t id);
     void Killed(size_t playerId);
-    void Fire(TFireInfo& fireInfo);
     void EnteredVehicle(size_t id);
     void LeftVehicle(size_t id);
 public slots:
@@ -83,7 +88,6 @@ private:
     TObjectInfo CollisionInfo;
     ETeam Team;
     int Ping;
-    QHash<size_t, TWeaponInfo> WeaponPack;
     size_t SelectedWeapon = 0;
     QTime LastVehicleEnter;
     TVehicleBase* Vehicle = nullptr;

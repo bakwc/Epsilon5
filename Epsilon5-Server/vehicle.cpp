@@ -4,6 +4,7 @@
 
 #include "vehicle.h"
 #include "application.h"
+#include "defines.h"
 
 TVehicleSpawner::TVehicleSpawner(QObject *parent)
     : QObject(parent)
@@ -32,7 +33,9 @@ void TVehicleSpawner::LoadVehicles(const QString& fileName) {
 TVehicleBase* TVehicleSpawner::CreateVehicle(size_t id, const TObjectParams& params) {
     switch (id) {
         case 1: {
-            return new TGroundTank(1, params, ((TApplication*)qApp)->GetWorld());
+            TGroundTank* tank = new TGroundTank(1, params, ((TApplication*)qApp)->GetWorld());
+            connect(tank, &TGroundTank::Fire, GApp->GetWeaponPacks(), &TWeaponPacks::ActivateWeapon);
+            return tank;
         }
     }
     throw UException("Vehicle not found");
@@ -43,6 +46,14 @@ QPoint TVehicleSpawner::GetVehicleSize(size_t id) {
         throw UException("Vehicle not found");
     }
     return Vehicles[id].Size;
+}
+
+TGroundTank::TGroundTank(size_t id, const TObjectParams& params, QObject* parent)
+    : TGroundTransport(id, params, parent)
+{
+    Force.x = 0;
+    Force.y = 0;
+    WeaponPack = GApp->GetWeaponPacks()->GetPack(1); // TODO: pack number should be passed
 }
 
 void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
@@ -66,6 +77,28 @@ void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
             RotateVelocity = 1.0;
         } else {
             RotateVelocity = 0;
+        }
+
+
+        if (control.keystatus().keyattack1() ||
+                control.keystatus().keyattack2())
+        {
+            TFireInfo fireInfo;
+            fireInfo.Pos = GetPosition();
+            fireInfo.Speed = GetSpeed();
+            fireInfo.Angle = 0;
+
+            size_t weaponId = 0;
+            if (control.keystatus().keyattack2()) {
+                weaponId = 1;
+            }
+
+            fireInfo.PlayerId = Player->GetId();
+            // Secondary attack depricated
+            //fireInfo.PrimaryAttack = control.keystatus().keyattack1();
+            fireInfo.Team = Player->GetTeam();
+            fireInfo.WeaponInfo = &WeaponPack[weaponId];
+            emit Fire(fireInfo);
         }
 
     } catch (const std::exception& e) {

@@ -7,6 +7,7 @@ enum Weapon {
     Machinegun = 1;
     Shotgun = 2;
     Grenade = 3;
+    Rocket = 4;
 }
 
 message Player {

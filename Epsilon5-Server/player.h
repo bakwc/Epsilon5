@@ -59,6 +59,9 @@ public:
         }
         return Vehicle;
     }
+    inline bool InVehicle() {
+        return Vehicle != nullptr;
+    }
 signals:
     void Death(size_t id);
     void Killed(size_t playerId);

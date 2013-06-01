@@ -285,6 +285,9 @@ void TWorld::PlayerEnteredVehicle(size_t id) {
 
 void TWorld::PlayerLeftVehicle(size_t id) {
     TPlayer* player = Players[id];
+    if (!player->InVehicle()) {
+        return;
+    }
     TVehicleBase* vehicle = player->GetVehicle();
     player->OnLeftVehicle();
     vehicle->RemovePlayer();

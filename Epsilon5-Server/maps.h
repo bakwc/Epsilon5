@@ -6,10 +6,18 @@
 #include <QVector>
 #include <QPoint>
 #include <QSize>
+#include <QMap>
 
 #include "defines.h"
 
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
+
+//! Possible terrain zones on map
+enum ETerrain {
+  T_Dirt,
+  T_Water,
+  T_Space
+};
 
 enum EMapStatus {
     MS_NoMap,
@@ -42,6 +50,8 @@ public:
         return RespPoints;
     }
 
+    double GetFrictionByPos(const QPointF &position) const;
+
     void LoadMaps();
 
     QPoint GetSpawnPosition(ETeam team);
@@ -52,16 +62,22 @@ signals:
     void ClearObjects();
     void ClearBorders();
     void ClearVehicles();
+    void ClearTerrains();
     void MapLoaded();
 private:
     void LoadConfig(const QString& fileName);
     void LoadObjects(const QString& fileName);
     void LoadVehicles(const QString& fileName);
     void LoadRespPoints(const QString& fileName);
+    void LoadTerrains(const QString& fileName);
 private:
     QStringList MapFiles;
     int CurrentMap = -1;
     QSize MapSize;
     EMapStatus MapStatus = MS_NoMap;
     QVector<TRespPoint> RespPoints;
+
+    QVector<ETerrain> TerrainAreas; //!< Массив зон для всей карты,
+    QMap<QString, ETerrain> TerrainIds; //!< Идентификаторы зон
+    QMap<ETerrain, double> TerrainFrictions; //!< Набор Зон и соответствующих сил трения
 };

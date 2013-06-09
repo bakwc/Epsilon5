@@ -74,6 +74,13 @@ void TPlayer::ApplyCustomPhysics()
         SetPosition(Vehicle->GetPosition());
         return;
     }
+    const TMaps* const maps = GApp->GetMaps();
+
+    qDebug() << GetPosition();
+
+    const double coeff = maps->GetFrictionByPos(GetPosition());
+
+    Force *= coeff;
 
     // Really apply physics
     Body->ApplyLinearImpulse(Force, Body->GetPosition());

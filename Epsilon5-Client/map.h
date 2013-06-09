@@ -9,9 +9,18 @@
 #include <QTextStream>
 #include <QHash>
 #include <QImage>
+#include <QPixmap>
 #include <QStringList>
 #include <QDebug>
 #include <QDir>
+
+
+enum ETerrain {
+  T_Water,
+  T_Dirt
+};
+
+typedef QHash<ETerrain, QPixmap> ImageHash;
 
 class TMap : public QObject {
     Q_OBJECT
@@ -27,12 +36,21 @@ public:
     // Draw background at correct position
     void DrawBackground(const QPoint& playerPos, const QSize& frameSize, QPainter &painter);
 public slots:
-    void LoadMap(QString map);
+    void LoadMap(const QString& map);
 private:
+
+    void makeBackgroundImage();
+
+    QVector<ETerrain> loadTerrainMap();
+
+    void LoadTiles();
+
     size_t Width;
     size_t Height;
-    QImage* Background;
+    QPixmap* Background;
     QColor Color;
     bool Loaded;
     QPointF WHRatio;
+
+    ImageHash Images;
 };

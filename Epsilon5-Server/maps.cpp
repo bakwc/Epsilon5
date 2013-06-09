@@ -9,6 +9,10 @@
 
 #include <QDebug>
 
+const int X_OFFSET = 100;
+const int Y_OFFSET = 200;
+const int MAP_SCALE = 100;
+
 TMaps::TMaps(QObject *parent)
     : QObject(parent)
 {
@@ -37,10 +41,14 @@ void TMaps::LoadNextMap() {
     emit ClearObjects();
     emit ClearBorders();
     emit ClearVehicles();
-    LoadConfig("maps/" + MapFiles[CurrentMap] + "/config.ini");
-    LoadObjects("maps/" + MapFiles[CurrentMap] + "/objects.txt");
-    LoadVehicles("maps/" + MapFiles[CurrentMap] + "/vehicles.txt");
-    LoadRespPoints("maps/" + MapFiles[CurrentMap] + "/points.txt");
+    emit ClearTerrains();
+
+    QString configDir = "maps/" + MapFiles[CurrentMap];
+    LoadConfig(configDir + "/config.ini");
+    LoadObjects(configDir + "/objects.txt");
+    LoadVehicles(configDir + "/vehicles.txt");
+    LoadRespPoints(configDir + "/points.txt");
+    LoadTerrains(configDir + "/terrains.txt");
 
     emit SpawnBorders(GetMapSize());
     MapStatus = MS_Ready;
@@ -107,9 +115,6 @@ void TMaps::LoadVehicles(const QString &fileName) {
             qDebug() << "Problems with loading: " << fileName;
         }
     }
-
-
-
 }
 
 
@@ -145,6 +150,53 @@ void TMaps::LoadRespPoints(const QString& fileName) {
     }
 }
 
+ETerrain ToTerrainType(const QString str)
+{
+  if (str == "water") return T_Water;
+  if (str == "dirt") return T_Dirt;
+  else throw UException("Unknown terrain requested");
+}
+
+void TMaps::LoadTerrains(const QString &fileName)
+{
+  QFile file(fileName);
+  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+      throw UException("Error opening " + fileName);
+  }
+  QTextStream in(&file);
+  QString line = "";
+
+  while ((line = in.readLine()) != "%%") {
+    if (line.isEmpty() || line[0] == '#') {
+      continue;
+    }
+    QStringList size = line.split(":");
+  }
+
+  line = "";
+  while ((line = in.readLine()) != "%%") {
+    if (line.isEmpty() || line[0] == '#') {
+      continue;
+    }
+    QStringList defs = line.split(":");
+    ETerrain terrain = ToTerrainType(defs[1]);
+    TerrainIds.insert(defs[0], terrain);
+    TerrainFrictions[terrain] = defs[2].toDouble();
+  }
+
+  line = "";
+  while (!in.atEnd()) {
+    line = in.readLine();
+    if (line.isEmpty() || line[0] == '#') {
+      continue;
+    }
+    QStringList row = line.split(":");
+    assert(row.size() == MapSize.width() / MAP_SCALE);
+    for (const QString& id : row)
+      TerrainAreas.append(TerrainIds[id]);
+  }
+}
+
 QString TMaps::GetCurrentMap() {
     if (CurrentMap == -1 || MapFiles.size() < CurrentMap) {
         throw UException("Map not initialised");
@@ -167,6 +219,23 @@ void TMaps::SerialiseRespPoints(Epsilon5::World& world) {
         point->set_is_main(i->IsMain);
         point->set_team(i->Team);
     }
+}
+QPoint translateToTopLeft(const QPointF& position)
+{
+  int x = position.x() + X_OFFSET;
+  int y = position.y() + Y_OFFSET;
+  return QPoint(x, y);
+}
+
+double TMaps::GetFrictionByPos(const QPointF &position) const
+{
+  QPoint newPos = translateToTopLeft(position);
+  size_t x = newPos.x() / 10;
+  size_t y = newPos.y() / 10;
+  size_t index = y * MapSize.width() / MAP_SCALE + x;
+  qDebug() << index;
+
+  return TerrainFrictions[TerrainAreas[index]];
 }
 
 QPoint TMaps::GetSpawnPosition(ETeam team) {

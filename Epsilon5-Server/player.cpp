@@ -8,16 +8,14 @@
 
 const size_t HP_LOST = 45;
 
-TPlayer::TPlayer(size_t id, ETeam team, TMaps *maps, QObject *parent)
-    : TDynamicObject(TObjectParams(1.5), parent)
+TPlayer::TPlayer(size_t id, ETeam team, QObject *parent)
+    : TUnit(team, TObjectParams(1.5), parent)
     , Id(id)
-    , Maps(maps)
-    , Team(team)
 {
-    Body->SetUserData(&CollisionInfo);
+    Body->SetUserData(this);
+    ObjectType = OT_Player;
 
-    CollisionInfo.ObjType = TObjectInfo::OT_Player;
-    CollisionInfo.Object = this;
+    HP = 100;
 
     Force(0) = 0;
     Force(1) = 0;
@@ -51,28 +49,18 @@ void TPlayer::ApplyControl(const Epsilon5::Control &control) {
         else if (control.keystatus().keyright()) Force(0) = 10;
         else Force(0)=0;
 
-        double angle = control.angle();
+        AimAngle = control.angle();
+
+        size_t weaponId = control.weapon();
+
+        if (WeaponPack.find(weaponId) != WeaponPack.end()) {
+            SelectedWeapon = weaponId;
+        }
 
         if (control.keystatus().keyattack1() ||
                 control.keystatus().keyattack2())
         {
-            TFireInfo fireInfo;
-            fireInfo.Pos = GetPosition();
-            fireInfo.Speed = GetSpeed();
-            fireInfo.Angle = angle;
-
-            size_t weaponId = control.weapon();
-
-            if (WeaponPack.find(weaponId) != WeaponPack.end()) {
-                SelectedWeapon = weaponId;
-            }
-
-            fireInfo.PlayerId = Id;
-            // Secondary attack depricated
-            //fireInfo.PrimaryAttack = control.keystatus().keyattack1();
-            fireInfo.Team = GetTeam();
-            fireInfo.WeaponInfo = &WeaponPack[SelectedWeapon];
-            emit Fire(fireInfo);
+            emit Fire(this);
         }
     } catch (const std::exception& e) {
         qDebug() << "TPlayer::ApplyControl(): " << e.what();
@@ -89,45 +77,6 @@ void TPlayer::ApplyCustomPhysics()
 
     // Really apply physics
     Body->ApplyLinearImpulse(Force, Body->GetPosition());
-
-    QSize mapSize = Maps->GetMapSize();
-
-    b2Vec2 pos = Body->GetPosition();
-    b2Vec2 speed = Body->GetLinearVelocity();
-    const quint8 PLAYGROUND_BORDER_SIZE = 100;
-    QRectF playgroundBorders = QRectF(
-            -mapSize.width() / 2 + PLAYGROUND_BORDER_SIZE,
-            -mapSize.height() / 2 + PLAYGROUND_BORDER_SIZE,
-            mapSize.width() - 2 * PLAYGROUND_BORDER_SIZE,
-            mapSize.height() - 2 * PLAYGROUND_BORDER_SIZE);
-
-    if (pos(0) * 10 > playgroundBorders.right()) {
-        speed(0) = 0;
-        pos(0) = 0.1 * (playgroundBorders.right() - 1);
-        Body->SetTransform(pos, Body->GetAngle());
-        Body->SetLinearVelocity(speed);
-    }
-
-    if (pos(1) * 10 > playgroundBorders.bottom()) {
-        speed(1) = 0;
-        pos(1) = 0.1 * (playgroundBorders.bottom() - 1);
-        Body->SetTransform(pos, Body->GetAngle());
-        Body->SetLinearVelocity(speed);
-    }
-
-    if (pos(0) * 10 < playgroundBorders.left()) {
-        speed(0) = 0;
-        pos(0) = 0.1 * (playgroundBorders.left() + 1);
-        Body->SetTransform(pos, Body->GetAngle());
-        Body->SetLinearVelocity(speed);
-    }
-
-    if (pos(1) * 10 < playgroundBorders.top()) {
-        speed(1) = 0;
-        pos(1) = 0.1 * (playgroundBorders.top() + 1);
-        Body->SetTransform(pos, Body->GetAngle());
-        Body->SetLinearVelocity(speed);
-    }
 }
 
 void TPlayer::SetNickname(const QString& nickName) {
@@ -147,7 +96,7 @@ void TPlayer::OnLeftVehicle() {
     // todo: select correct player position
 }
 
-void TPlayer::ApplyDamage(float dmg, size_t playerId) {
+void TPlayer::ApplyDamage(qreal dmg, size_t playerId) {
     int resultHp = HP - dmg;
     if (resultHp <= 0) {
         if (GWorld->GetPlayer(playerId)->GetTeam() !=

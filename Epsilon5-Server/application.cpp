@@ -17,8 +17,8 @@ TApplication::TApplication(int& argc, char *argv[])
     connect(Server, SIGNAL(PlayerDisconnected(size_t)),
             World, SLOT(NeedFullPacket()));
 
-    connect(Maps, SIGNAL(SpawnObject(size_t, int, int, double)),
-            World, SLOT(SpawnObject(size_t, int, int, double)));
+    connect(Maps, SIGNAL(SpawnObject(size_t, int, int, qreal)),
+            World, SLOT(SpawnObject(size_t, int, int, qreal)));
 
     connect(Maps, &TMaps::SpawnVehicle,
             World, &TWorld::SpawnVehicle);

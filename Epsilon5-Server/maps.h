@@ -7,18 +7,14 @@
 #include <QPoint>
 #include <QSize>
 
+#include "defines.h"
+
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
 enum EMapStatus {
     MS_NoMap,
     MS_Loading,
     MS_Ready
-};
-
-enum ETeam {
-    T_One,
-    T_Second,
-    T_Neutral
 };
 
 struct TRespPoint {
@@ -50,8 +46,8 @@ public:
 
     QPoint GetSpawnPosition(ETeam team);
 signals:
-    void SpawnObject(size_t id, int x, int y, double angle);
-    void SpawnVehicle(size_t id, int x, int y, double angle);
+    void SpawnObject(size_t id, int x, int y, qreal angle);
+    void SpawnVehicle(size_t id, int x, int y, qreal angle);
     void SpawnBorders(const QSize& MapSize);
     void ClearObjects();
     void ClearBorders();

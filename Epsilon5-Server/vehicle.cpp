@@ -53,17 +53,18 @@ TGroundTank::TGroundTank(size_t id, const TObjectParams& params, QObject* parent
 {
     Force.x = 0;
     Force.y = 0;
+    HP = 200;
     WeaponPack = GApp->GetWeaponPacks()->GetPack(1); // TODO: pack number should be passed
 }
 
 void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
     try {
         if (control.keystatus().keydown()) {
-            double angle = GetAngle();
+            qreal angle = GetAngle();
             Force(1) = - sin(angle) * 18.0;
             Force(0) = - cos(angle) * 18.0;
         } else if (control.keystatus().keyup()) {
-            double angle = GetAngle();
+            qreal angle = GetAngle();
             Force(1) = sin(angle) * 18.0;
             Force(0) = cos(angle) * 18.0;
         } else {
@@ -79,26 +80,16 @@ void TGroundTank::ApplyControl(const Epsilon5::Control &control) {
             RotateVelocity = 0;
         }
 
+        AimAngle = control.angle();
 
         if (control.keystatus().keyattack1() ||
                 control.keystatus().keyattack2())
         {
-            TFireInfo fireInfo;
-            fireInfo.Pos = GetPosition();
-            fireInfo.Speed = GetSpeed();
-            fireInfo.Angle = 0;
-
-            size_t weaponId = 0;
+            SelectedWeapon = 0;
             if (control.keystatus().keyattack2()) {
-                weaponId = 1;
+                SelectedWeapon = 0;
             }
-
-            fireInfo.PlayerId = Player->GetId();
-            // Secondary attack depricated
-            //fireInfo.PrimaryAttack = control.keystatus().keyattack1();
-            fireInfo.Team = Player->GetTeam();
-            fireInfo.WeaponInfo = &WeaponPack[weaponId];
-            emit Fire(fireInfo);
+            emit Fire(this);
         }
 
     } catch (const std::exception& e) {

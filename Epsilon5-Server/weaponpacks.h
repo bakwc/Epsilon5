@@ -40,13 +40,13 @@ public:
         return info;
     }
 
-    virtual void MakeShot(const TFireInfo& fireInfo) = 0;
+    virtual void MakeShot(TUnit* player) = 0;
 protected:
     QPointF GetRanomizedSpeed(const QPointF& speed);
-    QPointF GetSpeed(size_t speed, double angle);
-    QPointF GetPosition(const QPointF& speed, const QPointF& pos);
+    QPointF GetSpeed(size_t speed, qreal angle);
+    QPointF GetPosition(const QPointF& speed, const QPointF& pos, qreal distance);
     void EmitShoot(const QPointF& position, const QPointF& speed,
-                   const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType);
+                   TUnit* player, Epsilon5::Bullet_Type bulletType);
 signals:
     void SpawnBullet(TBullet* bullet);
 private:
@@ -61,35 +61,35 @@ class TPistolWeapon : public TWeaponBase {
     Q_OBJECT
 public:
     TPistolWeapon(QObject* parent);
-    void MakeShot(const TFireInfo& fireInfo);
+    void MakeShot(TUnit *player);
 };
 
 class TMachineGunWeapon : public TWeaponBase {
     Q_OBJECT
 public:
     TMachineGunWeapon(QObject* parent);
-    void MakeShot(const TFireInfo& fireInfo);
+    void MakeShot(TUnit *player);
 };
 
 class TShotGunWeapon : public TWeaponBase {
     Q_OBJECT
 public:
     TShotGunWeapon(QObject* parent);
-    void MakeShot(const TFireInfo& fireInfo);
+    void MakeShot(TUnit *player);
 };
 
 class TGrenadeWeapon : public TWeaponBase {
     Q_OBJECT
 public:
     TGrenadeWeapon(QObject *parent);
-    void MakeShot(const TFireInfo &fireInfo);
+    void MakeShot(TUnit *player);
 };
 
 class TRocketWeapon : public TWeaponBase {
     Q_OBJECT
 public:
     TRocketWeapon(QObject *parent);
-    void MakeShot(const TFireInfo &fireInfo);
+    void MakeShot(TUnit *player);
 };
 
 class TWeaponPacks : public QObject
@@ -99,7 +99,7 @@ public:
     TWeaponPacks(QObject *parent = 0);
     QHash<size_t, TWeaponInfo> GetPack(size_t packId);
 public slots:
-    void ActivateWeapon(TFireInfo& fireInfo);
+    void ActivateWeapon(TUnit *player);
 signals:
     void SpawnBullet(TBullet* bullet);
 private:

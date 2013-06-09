@@ -1,5 +1,6 @@
 #include "../utils/uexception.h"
 
+#include "application.h"
 #include "defines.h"
 #include "bullet.h"
 
@@ -8,14 +9,13 @@ TBullet::TBullet(const TObjectParams& params,
                  size_t playerId,
                  ETeam team,
                  QObject *parent)
-    : TDynamicObject(params, parent)
+    : TObject(params, parent)
     , BulletType(bulletType)
     , PlayerId(playerId)
     , Team(team)
 {
-    Body->SetUserData(&CollisionInfo);
-    CollisionInfo.ObjType = TObjectInfo::OT_Bullet;
-    CollisionInfo.Object = this;
+    Body->SetUserData(this);
+    ObjectType = OT_Bullet;
     Ttl = 120;
 }
 

@@ -81,7 +81,7 @@ void TMaps::LoadObjects(const QString& fileName) {
         int id = FromString(objectParams[3]);
         int x = FromString(objectParams[0]);
         int y = FromString(objectParams[1]);
-        double angle = FromString(objectParams[2]);
+        qreal angle = FromString(objectParams[2]);
 
         emit SpawnObject(id, x, y, angle);
     }
@@ -94,7 +94,7 @@ void TMaps::LoadVehicles(const QString &fileName) {
     for (size_t i = 0; i < sep.Rows(); i++) {
         try {
         int x,y;
-        double angle;
+        qreal angle;
         int id;
 
         x = sep.Get(i, 0);

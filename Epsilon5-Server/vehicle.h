@@ -2,7 +2,7 @@
 
 #include <QObject>
 #include "../utils/umaybe.h"
-#include "dynamicobject.h"
+#include "object.h"
 #include "player.h"
 
 class TVehicleBase;
@@ -25,11 +25,11 @@ private:
     QHash<size_t, TVehicleParams> Vehicles;
 };
 
-class TVehicleBase : public TDynamicObject {
+class TVehicleBase : public TUnit {
     Q_OBJECT
 public:
     TVehicleBase(size_t id, const TObjectParams& params, QObject* parent)
-        : TDynamicObject(params, parent)
+        : TUnit(T_Neutral, params, parent)
         , Id(id)
     {}
     inline size_t GetId() {
@@ -51,6 +51,12 @@ public:
         Q_ASSERT(Player != nullptr && "Player not exists");
         return Player;
     }
+    virtual size_t GetPlayerId() {
+        if (Player == nullptr) {
+            return (size_t)-1;
+        }
+        return Player->GetId();
+    }
 public slots:
     virtual void ApplyControl(const Epsilon5::Control &control) = 0;
     virtual void ApplyCustomPhysics() = 0;
@@ -70,18 +76,18 @@ public slots:
     virtual void ApplyCustomPhysics() = 0;
 };
 
-class TGroundTank : public TGroundTransport, public TObjectWithWeapon {
+class TGroundTank : public TGroundTransport {
     Q_OBJECT
 public:
     TGroundTank(size_t id, const TObjectParams& params, QObject* parent);
 signals:
-    void Fire(TFireInfo& fireInfo);
+    void Fire(TUnit* unit);
 public slots:
     virtual void ApplyControl(const Epsilon5::Control &control);
     virtual void ApplyCustomPhysics();
 private:
     b2Vec2 Force;
-    double RotateVelocity;
+    qreal RotateVelocity;
 };
 
 /*

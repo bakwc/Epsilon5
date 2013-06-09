@@ -24,13 +24,11 @@ SOURCES += main.cpp \
     application.cpp \
     server.cpp \
     client.cpp \
-    dynamicobject.cpp \
     world.cpp \
     player.cpp \
     bullet.cpp \
     maps.cpp \
     objects.cpp \
-    staticobject.cpp \
     ../utils/ucast.cpp \
     weaponpacks.cpp \
     settings.cpp \
@@ -38,7 +36,9 @@ SOURCES += main.cpp \
     vehicle.cpp \
     ../utils/ucolonsep.cpp \
     ../utils/ucpu.cpp \
-    calcs.cpp
+    calcs.cpp \
+    object.cpp \
+    unit.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -48,13 +48,11 @@ HEADERS += \
     application.h \
     server.h \
     client.h \
-    dynamicobject.h \
     world.h \
     player.h \
     bullet.h \
     maps.h \
     objects.h \
-    staticobject.h \
     ../utils/ucast.h \
     defines.h \
     weaponpacks.h \
@@ -63,7 +61,10 @@ HEADERS += \
     vehicle.h \
     ../utils/ucolonsep.h \
     ../utils/umaybe.h \
-    calcs.h
+    calcs.h \
+    object.h \
+    unit.h \
+    object_type.h
 
 
 

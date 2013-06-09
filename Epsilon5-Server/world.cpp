@@ -27,8 +27,8 @@ TPlayer* TWorld::GetPlayer(size_t id) {
 }
 
 // Returns, if distance between player and object enought for sending packet
-bool SendDistance(double x1, double y1, double x2, double y2) {
-    double dx, dy;
+bool SendDistance(qreal x1, qreal y1, qreal x2, qreal y2) {
+    qreal dx, dy;
     dx = abs(x2 - x1);
     dy = abs(y2 - y1);
     return (dx < 960 && dy < 540); // Half of screen (190x1080)
@@ -85,7 +85,7 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         object->set_x(o->GetX() * OBJECT_SCALE_UP);
         object->set_y(o->GetY() * OBJECT_SCALE_UP);
         object->set_angle(o->GetAngle());
-        object->set_id(o->GetId());
+        object->set_id(o->GetTypeId());
     }
 
     for (auto& o: DynamicObjects) {
@@ -102,7 +102,7 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         object->set_x(o->GetX() * OBJECT_SCALE_UP);
         object->set_y(o->GetY() * OBJECT_SCALE_UP);
         object->set_angle(o->GetAngle());
-        object->set_id(o->GetId());
+        object->set_id(o->GetTypeId());
     }
 
     for (auto& v: Vehicles) {
@@ -128,7 +128,7 @@ QByteArray TWorld::Serialize(size_t playerId, bool needFullPacket) {
         object->set_x(b->GetX() * OBJECT_SCALE_UP);
         object->set_y(b->GetY() * OBJECT_SCALE_UP);
         object->set_angle(b->GetAngle());
-        object->set_id(b->GetId());
+        object->set_id(b->GetTypeId());
     }
 
     if (needFullPacket) {
@@ -163,11 +163,10 @@ void TWorld::Start() {
 }
 
 void TWorld::PlayerSpawn(size_t id, ETeam team) {
-    TPlayer* player = new TPlayer(id, team, Application()->GetMaps(), this);
+    TPlayer* player = new TPlayer(id, team, this);
     connect(player, SIGNAL(Death(size_t)), SLOT(PlayerKill(size_t)));
     connect(player, SIGNAL(Killed(size_t)), SIGNAL(PlayerKilled(size_t)));
-    connect(player, SIGNAL(Fire(TFireInfo&)),
-            Application()->GetWeaponPacks(), SLOT(ActivateWeapon(TFireInfo&)));
+    connect(player, &TPlayer::Fire, Application()->GetWeaponPacks(), &TWeaponPacks::ActivateWeapon);
     connect(player, &TPlayer::EnteredVehicle, this, &TWorld::PlayerEnteredVehicle);
     connect(player, &TPlayer::LeftVehicle, this, &TWorld::PlayerLeftVehicle);
     Players.insert(id, player);
@@ -203,7 +202,7 @@ void TWorld::timerEvent(QTimerEvent *) {
         return b->GetTtl() <= 0;
     }), Bullets.end());
 
-    float step = 1.0f / 50.0f;
+    qreal step = 1.0f / 50.0f;
     qint32 velocityIterations = 5;
     qint32 positionIterations = 2;
     B2World->Step(step, velocityIterations, positionIterations);
@@ -213,7 +212,7 @@ void TWorld::SpawnBullet(TBullet* bullet) {
     Bullets.insert(Bullets.end(), bullet);
 }
 
-void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
+void TWorld::SpawnObject(size_t id, int x, int y, qreal angle) {
     bool dynamic = Application()->GetObjects()->IsDynamicObject(id);
     QPoint size = Application()->GetObjects()->GetObjectSize(id);
     if (dynamic) {
@@ -228,7 +227,7 @@ void TWorld::SpawnObject(size_t id, int x, int y, double angle) {
     spawnStaticObject(StaticObjects, id, x, y, QSizeF(size.x(), size.y()), angle);
 }
 
-void TWorld::SpawnVehicle(size_t id, int x, int y, double angle) {
+void TWorld::SpawnVehicle(size_t id, int x, int y, qreal angle) {
     TVehicleSpawner* spawner =  Application()->GetVehicleSpawner();
     QPoint size = Application()->GetVehicleSpawner()->GetVehicleSize(id);
     TObjectParams params;
@@ -293,11 +292,11 @@ void TWorld::PlayerLeftVehicle(size_t id) {
     vehicle->RemovePlayer();
 }
 
-void TWorld::Boom(QPointF position, float radius, size_t playerId) {
+void TWorld::Boom(QPointF position, qreal radius, size_t playerId) {
     TObjDistanceList objects = GetNearestObjects(position, radius);
     for (auto &o: objects) {
-        float distance = o.first;
-        TDynamicObject* object = o.second;
+        qreal distance = o.first;
+        TObject* object = o.second;
         QPointF direction = GetDirection(position, object->GetPosition());
         QPointF impulse = direction * 1200.0 / distance;
         object->ApplyImpulse(impulse);
@@ -336,13 +335,19 @@ void TWorld::SpawnBorders(const QSize &mapSize) {
 // Spawn static object at (rect.x;rect.y).
 // Center of the object will be in the same position.
 void TWorld::spawnStaticObject(TStaticObjectsList &container, size_t id,
-                       double x, double y, const QSizeF &size, double angle)
+                       qreal x, qreal y, const QSizeF &size, qreal angle)
 {
-    TStaticObject* object = new TStaticObject(OBJECT_SCALE_DOWN * x,
-                                     OBJECT_SCALE_DOWN * y, angle, this);
-    object->SetRectSize(OBJECT_SCALE_DOWN * size.width(),
-                        OBJECT_SCALE_DOWN * size.height());
-    object->SetId(id);
+    TObjectParams objParams;
+    objParams.Position = QPointF(OBJECT_SCALE_DOWN * x, OBJECT_SCALE_DOWN * y);
+    objParams.Size = QPointF(OBJECT_SCALE_DOWN * size.width(),
+                             OBJECT_SCALE_DOWN * size.height());
+    objParams.Angle = angle;
+    objParams.IsDynamic = false;
+    objParams.Type = OT_Static; /// @todo: improve IsDynamic and Type and TypeId
+    objParams.TypeId = id;
+
+    TObject* object = new TObject(objParams, this);
+
     container.insert(container.end(), object);
 }
 
@@ -350,7 +355,7 @@ void TWorld::spawnStaticObject(TStaticObjectsList &container, size_t id,
 // Center of the object will be in the same position.
 void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
     size_t id, QPointF pos, QPointF speed,
-    const QSizeF& size, double angle)
+    const QSizeF& size, qreal angle)
 {
     TObjectParams params;
     params.Position.setX(OBJECT_SCALE_DOWN * pos.x());
@@ -359,19 +364,19 @@ void TWorld::spawnDynamicObject(TDynamicObjectsList &container,
     params.Size.setY(OBJECT_SCALE_DOWN * size.height());
     params.Speed = speed;
     params.Angle = angle;
+    params.TypeId = id;
+    params.Type = OT_Dynamic;
 
-    TDynamicObject* object = new TDynamicObject(params, this);
+    TObject* object = new TObject(params, this);
 
-    object->SetId(id);
+    //object->SetId(id);
     container.insert(container.end(), object);
 }
 
 // Collisions processing
-// All bodies should have user data of type TObjectInfo
-// with object information (type, pointer to object)
 void TWorld::BeginContact(b2Contact* contact) {
-    void* obj1Data = contact->GetFixtureA()->GetBody()->GetUserData();
-    void* obj2Data = contact->GetFixtureB()->GetBody()->GetUserData();
+    TObject* obj1 = (TObject*)contact->GetFixtureA()->GetBody()->GetUserData();
+    TObject* obj2 = (TObject*)contact->GetFixtureB()->GetBody()->GetUserData();
 
     TPlayer* player1 = 0;
     TPlayer* player2 = 0;
@@ -379,23 +384,21 @@ void TWorld::BeginContact(b2Contact* contact) {
     TBullet* bullet1 = 0;
     TBullet* bullet2 = 0;
 
-    if (obj1Data) {
-        TObjectInfo* objInfo = (TObjectInfo*)obj1Data;
-        if (objInfo->ObjType == TObjectInfo::OT_Player) {
-            player1 = (TPlayer*)(objInfo->Object);
+    if (obj1) {
+        if (obj1->GetType() == OT_Player) {
+            player1 = (TPlayer*)obj1;
         }
-        if (objInfo->ObjType == TObjectInfo::OT_Bullet) {
-            bullet1 = (TBullet*)(objInfo->Object);
+        if (obj1->GetType() == OT_Bullet) {
+            bullet1 = (TBullet*)obj1;
         }
     }
 
-    if (obj2Data) {
-        TObjectInfo* objInfo = (TObjectInfo*)obj2Data;
-        if (objInfo->ObjType == TObjectInfo::OT_Player) {
-            player2 = (TPlayer*)(objInfo->Object);
+    if (obj2) {
+        if (obj2->GetType() == OT_Player) {
+            player2 = (TPlayer*)obj2;
         }
-        if (objInfo->ObjType == TObjectInfo::OT_Bullet) {
-            bullet2 = (TBullet*)(objInfo->Object);
+        if (obj2->GetType() == OT_Bullet) {
+            bullet2 = (TBullet*)obj2;
         }
     }
 
@@ -429,17 +432,17 @@ QPointF TWorld::GetPlayerPos(size_t playerId) {
     return Players[playerId]->GetPosition();
 }
 
-inline float GetDistance(const QPointF& a, const QPointF& b) {
+inline qreal GetDistance(const QPointF& a, const QPointF& b) {
     return sqrt((a.x() - b.x()) * (a.x() - b.x()) +
                 (a.y() - b.y()) * (a.y() - b.y()));
 }
 
 TVehicleBase *TWorld::FindNearestVehicle(QPointF position) {
-    float minDistance = FLT_MAX;
+    qreal minDistance = FLT_MAX;
     TVehicleBase* vehicle = nullptr;
     for (auto& v: Vehicles) {
         QPointF vehiclePos = v->GetPosition();
-        float distance = GetDistance(position, vehiclePos);
+        qreal distance = GetDistance(position, vehiclePos);
         if (distance < minDistance) {
             TVehicleBase* currentVehicle = &(*v);
             if (!currentVehicle->HasPlayer()) {
@@ -454,24 +457,24 @@ TVehicleBase *TWorld::FindNearestVehicle(QPointF position) {
     return nullptr;
 }
 
-TWorld::TObjDistanceList TWorld::GetNearestObjects(QPointF position, float radius) {
+TWorld::TObjDistanceList TWorld::GetNearestObjects(QPointF position, qreal radius) {
     TObjDistanceList objects;
     for (auto &p: Players) {
-        float distance = GetDistance(position, p->GetPosition());
+        qreal distance = GetDistance(position, p->GetPosition());
         if (distance <= radius) {
-            objects.push_back(QPair<float, TDynamicObject*>(distance, &(*p)));
+            objects.push_back(QPair<qreal, TObject*>(distance, &(*p)));
         }
     }   // TODO: make a template method
     for (auto &o: DynamicObjects) {
-        float distance = GetDistance(position, o->GetPosition());
+        qreal distance = GetDistance(position, o->GetPosition());
         if (distance <= radius) {
-            objects.push_back(QPair<float, TDynamicObject*>(distance, &(*o)));
+            objects.push_back(QPair<qreal, TObject*>(distance, &(*o)));
         }
     }
     for (auto &v: Vehicles) {
-        float distance = GetDistance(position, v->GetPosition());
+        qreal distance = GetDistance(position, v->GetPosition());
         if (distance <= radius) {
-            objects.push_back(QPair<float, TDynamicObject*>(distance, &(*v)));
+            objects.push_back(QPair<qreal, TObject*>(distance, &(*v)));
         }
     }
     return objects;

@@ -12,9 +12,9 @@
 
 #include "player.h"
 #include "bullet.h"
-#include "staticobject.h"
-#include "dynamicobject.h"
+#include "object.h"
 #include "vehicle.h"
+#include "defines.h"
 
 class QRect;
 class TApplication;
@@ -26,11 +26,11 @@ class TWorld : public QObject, public b2ContactListener
     Q_OBJECT
 public:
     typedef QList<TBullet*> TBulletsList;
-    typedef QList<TStaticObject*> TStaticObjectsList;
-    typedef QList<TDynamicObject*> TDynamicObjectsList;
+    typedef QList<TObject*> TStaticObjectsList;
+    typedef QList<TObject*> TDynamicObjectsList;
     typedef QHash<size_t, TPlayer*> TPlayersHash;
     typedef QList<TVehicleBase*> TVehiclesList;
-    typedef QVector<QPair<float, TDynamicObject *> > TObjDistanceList;
+    typedef QVector<QPair<qreal, TObject *> > TObjDistanceList;
 public:
     TWorld(QObject *parent = 0);
     ~TWorld();
@@ -47,8 +47,8 @@ public slots:
     void PlayerSpawn(size_t id, ETeam team);
     void PlayerKill(size_t id); // When a player killed, id of dead player
     void SpawnBullet(TBullet *bullet);
-    void SpawnObject(size_t id, int x, int y, double angle);
-    void SpawnVehicle(size_t id, int x, int y, double angle);
+    void SpawnObject(size_t id, int x, int y, qreal angle);
+    void SpawnVehicle(size_t id, int x, int y, qreal angle);
     void SpawnBorders(const QSize &mapSize);
     void ClearObjects();
     void ClearBorders();
@@ -56,19 +56,19 @@ public slots:
     void NeedFullPacket();
     void PlayerEnteredVehicle(size_t id);
     void PlayerLeftVehicle(size_t id);
-    void Boom(QPointF position, float radius, size_t playerId);
+    void Boom(QPointF position, qreal radius, size_t playerId);
 private:
     void timerEvent(QTimerEvent *);
     TApplication* Application();
     void spawnStaticObject(TStaticObjectsList &container, size_t id,
-            double x, double y, const QSizeF& size, double angle = 0.0);
+            qreal x, qreal y, const QSizeF& size, qreal angle = 0.0);
     void spawnDynamicObject(TDynamicObjectsList &container, size_t id,
             QPointF pos, QPointF speed,
-            const QSizeF& size, double angle = 0.0);
+            const QSizeF& size, qreal angle = 0.0);
     void BeginContact(b2Contact* contact);
     QPointF GetPlayerPos(size_t playerId);
     TVehicleBase* FindNearestVehicle(QPointF position);
-    TObjDistanceList GetNearestObjects(QPointF position, float radius);
+    TObjDistanceList GetNearestObjects(QPointF position, qreal radius);
 private:
     unique_ptr<b2World> B2World;
     TPlayersHash Players;

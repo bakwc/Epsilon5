@@ -6,28 +6,27 @@
 #include <Box2D/Box2D.h>
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
 
-struct TObjectInfo {
-    enum EObjType {
-        OT_Player,
-        OT_Bullet,
-        OT_Other
-    };
-    EObjType ObjType;
-    void *Object;
+enum EObjectType {
+    OT_Undefined,
+    OT_Player,
+    OT_Static,
+    OT_Dynamic,
+    OT_Bullet,
+    OT_Vehicle
 };
 
 struct TObjectParams {
     TObjectParams(QPointF position = QPointF(0, 0),
                   QPointF size = QPointF(0, 0),
                   QPointF speed = QPointF(0, 0),
-                  double radius = 0)
+                  qreal radius = 0)
         : Position(position)
         , Size(size)
         , Speed(speed)
         , Radius(radius)
     {
     }
-    TObjectParams(double radius) {
+    TObjectParams(qreal radius) {
         Position.setX(0);
         Position.setY(0);
         Speed.setX(0);
@@ -39,69 +38,72 @@ struct TObjectParams {
     QPointF Position;
     QPointF Size;
     QPointF Speed;
-    double Angle = 0;
-    double Radius = 0;
-    double Density = 0.6;
-    double Friction = 0.8;
-    double LinearDamping = 5.0;
-    double AngularDamping = 2.9;
+    qreal Angle = 0;
+    qreal Radius = 0;
+    qreal Density = 0.6;
+    qreal Friction = 0.8;
+    qreal LinearDamping = 5.0;
+    qreal AngularDamping = 2.9;
     size_t GroupIndex = 0;
-    double Restitution = 0;
+    qreal Restitution = 0;
     bool IsBullet = false;
+    bool IsDynamic = true;
+    size_t TypeId = 0;
+    EObjectType Type = OT_Undefined;
 };
 
-class TDynamicObject : public QObject
+class TObject : public QObject
 {
     Q_OBJECT
 public:
-    explicit TDynamicObject(const TObjectParams& params, QObject* parent);
-    virtual ~TDynamicObject();
+    explicit TObject(const TObjectParams& params, QObject* parent);
+    virtual ~TObject();
     // GetX, GetY, GetVx, GetVy now depricated; use GetPosition, GetSpeed
-    inline double GetX() {
+    inline qreal GetX() {
         return Body->GetPosition()(0);
     }
-    inline double GetY() {
+    inline qreal GetY() {
         return Body->GetPosition()(1);
     }
-    inline double GetVx() {
+    inline qreal GetVx() {
         return Body->GetLinearVelocity()(0);
     }
-    inline double GetVy() {
+    inline qreal GetVy() {
         return Body->GetLinearVelocity()(1);
     }
-    inline double GetAngle() {
+    inline qreal GetAngle() {
         return Body->GetAngle();
     }
-    inline void setX(double x) {
+    inline void setX(qreal x) {
         b2Vec2 pos = Body->GetPosition();
         pos(0) = x;
         Body->SetTransform(pos, Body->GetAngle());
     }
-    inline void setY(double y) {
+    inline void setY(qreal y) {
         b2Vec2 pos = Body->GetPosition();
         pos(1) = y;
         Body->SetTransform(pos, Body->GetAngle());
     }
-    inline void setVx(double vx) {
+    inline void setVx(qreal vx) {
         b2Vec2 speed = Body->GetLinearVelocity();
         speed(0) = vx;
         Body->SetLinearVelocity(speed);
     }
-    inline void setVy(double vy) {
+    inline void setVy(qreal vy) {
         b2Vec2 speed = Body->GetLinearVelocity();
         speed(1) = vy;
         Body->SetLinearVelocity(speed);
     }
-    inline void setAngle(double angle) {
+    inline void setAngle(qreal angle) {
         Body->SetTransform(Body->GetPosition(), angle);
     }
     virtual void ApplyCustomPhysics() {}
-    inline void SetId(size_t id) {
+    /*inline void SetId(size_t id) {
         Id = id;
     }
     inline size_t GetId() {
         return Id;
-    }
+    }*/
     inline QPointF GetPosition() {
         QPointF pos;
         pos.setX(Body->GetPosition()(0));
@@ -131,11 +133,29 @@ public:
         b2Vec2 impulseVec(impulse.x(), impulse.y());
         Body->ApplyLinearImpulse(impulseVec, Body->GetPosition());
     }
-    virtual void ApplyDamage(float, size_t) {
+    virtual void ApplyDamage(qreal, size_t) {
+    }
+    inline bool IsDynamic() {
+        return Body->GetType() == b2_dynamicBody;
+    }
+    inline EObjectType GetType() {
+        return ObjectType;
+    }
+    inline size_t GetTypeId() {
+        return TypeId;
+    }
+    inline qreal GetRadius() {
+        return Radius;
     }
 protected:
     b2World* B2World();
 protected:
     b2Body* Body;
-    size_t Id = 0;
+//    size_t Id = 0;
+    EObjectType ObjectType = OT_Undefined;
+    /*  TypeId - concrete subtype of object, e. g.
+      if ObjectType == OT_Static or OT_Dynamic, subtypes described
+      in objects.txt file */
+    size_t TypeId = 0;
+    qreal Radius;
 };

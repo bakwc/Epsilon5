@@ -1,9 +1,9 @@
 #pragma once
 #include "../Epsilon5-Proto/Epsilon5.pb.h"
-#include "dynamicobject.h"
+#include "object.h"
 #include "maps.h"
 
-class TBullet : public TDynamicObject
+class TBullet : public TObject
 {
     Q_OBJECT
 public:
@@ -34,7 +34,6 @@ public:
     }
 protected:
     size_t Ttl;
-    TObjectInfo CollisionInfo;
     Epsilon5::Bullet_Type BulletType;
     size_t PlayerId;
     ETeam Team;
@@ -51,7 +50,7 @@ public:
                    QObject *parent = 0);
     void OnDestroy();
 signals:
-    void Boom(QPointF position, float radius, size_t playerId);
+    void Boom(QPointF position, qreal radius, size_t playerId);
 };
 
 TBullet* CreateBullet(QPointF pos, QPointF speed,

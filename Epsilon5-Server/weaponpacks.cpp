@@ -22,17 +22,17 @@ TWeaponBase::TWeaponBase(size_t rechargeTime,
     connect(this, SIGNAL(SpawnBullet(TBullet*)), p, SIGNAL(SpawnBullet(TBullet*)));
 }
 
-QPointF TWeaponBase::GetSpeed(size_t speed, double angle) {
+QPointF TWeaponBase::GetSpeed(size_t speed, qreal angle) {
     QPointF res;
     res.setX(speed * sin(angle + M_PI / 2));
     res.setY(speed * cos(angle + M_PI / 2));
     return res;
 }
 
-QPointF TWeaponBase::GetPosition(const QPointF& speed, const QPointF& pos) {
+QPointF TWeaponBase::GetPosition(const QPointF& speed, const QPointF& pos, qreal distance) {
     QPointF res;
-    res.setX(pos.x() + 1.6*speed.x()/qAbs(speed.x()));
-    res.setY(pos.y() + 1.6*speed.y()/qAbs(speed.y()));
+    res.setX(pos.x() + distance * speed.x() / qAbs(speed.x()));
+    res.setY(pos.y() + distance * speed.y() / qAbs(speed.y()));
     return res;
 }
 
@@ -41,10 +41,10 @@ QPointF TWeaponBase::GetRanomizedSpeed(const QPointF& speed) {
 }
 
 void TWeaponBase::EmitShoot(const QPointF& position, const QPointF& speed,
-                            const TFireInfo& fireInfo, Epsilon5::Bullet_Type bulletType)
+                            TUnit* player, Epsilon5::Bullet_Type bulletType)
 {
     TBullet* bullet = CreateBullet(position, speed, bulletType,
-                                   fireInfo.PlayerId, fireInfo.Team,
+                                   player->GetPlayerId(), player->GetTeam(),
                                    ((TApplication*)(qApp))->GetWorld());
     emit SpawnBullet(bullet);
 }
@@ -54,10 +54,10 @@ TPistolWeapon::TPistolWeapon(QObject *parent)
 {
 }
 
-void TPistolWeapon::MakeShot(const TFireInfo& fireInfo) {
-    QPointF speed = GetSpeed(200, fireInfo.Angle);
-    QPointF position = GetPosition(speed, fireInfo.Pos);
-    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_ARBUZ);
+void TPistolWeapon::MakeShot(TUnit* player) {
+    QPointF speed = GetSpeed(200, player->GetAimAngle());
+    QPointF position = GetPosition(speed, player->GetPosition(), player->GetBulletSpawnDistance());
+    EmitShoot(position, speed, player, Epsilon5::Bullet_Type_ARBUZ);
 }
 
 TMachineGunWeapon::TMachineGunWeapon(QObject* parent)
@@ -65,10 +65,10 @@ TMachineGunWeapon::TMachineGunWeapon(QObject* parent)
 {
 }
 
-void TMachineGunWeapon::MakeShot(const TFireInfo& fireInfo) {
-    QPointF speed = GetSpeed(200, fireInfo.Angle);
-    QPointF position = GetPosition(speed, fireInfo.Pos);
-    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_LITTLE_BULLET);
+void TMachineGunWeapon::MakeShot(TUnit *player) {
+    QPointF speed = GetSpeed(200, player->GetAimAngle());
+    QPointF position = GetPosition(speed, player->GetPosition(), player->GetBulletSpawnDistance());
+    EmitShoot(position, speed, player, Epsilon5::Bullet_Type_LITTLE_BULLET);
 }
 
 TShotGunWeapon::TShotGunWeapon(QObject* parent)
@@ -76,11 +76,11 @@ TShotGunWeapon::TShotGunWeapon(QObject* parent)
 {
 }
 
-void TShotGunWeapon::MakeShot(const TFireInfo& fireInfo) {
-    QPointF speed = GetSpeed(200, fireInfo.Angle);
-    QPointF position = GetPosition(speed, fireInfo.Pos);
+void TShotGunWeapon::MakeShot(TUnit *player) {
+    QPointF speed = GetSpeed(200, player->GetAimAngle());
+    QPointF position = GetPosition(speed, player->GetPosition(), player->GetBulletSpawnDistance());
     for (size_t i = 0; i < 5; i++) {
-        EmitShoot(position, GetRanomizedSpeed(speed), fireInfo, Epsilon5::Bullet_Type_LITTLE_BULLET);
+        EmitShoot(position, GetRanomizedSpeed(speed), player, Epsilon5::Bullet_Type_LITTLE_BULLET);
     }
 }
 
@@ -113,11 +113,11 @@ QHash<size_t, TWeaponInfo> TWeaponPacks::GetPack(size_t packId) {
     return pack;
 }
 
-void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
-    Epsilon5::Weapon weaponType = fireInfo.WeaponInfo->WeaponType;
-    size_t& bulletsLeft = fireInfo.WeaponInfo->BulletsLeft;
-    size_t& cagesLeft = fireInfo.WeaponInfo->CagesLeft;
-    QTime& shotTime = fireInfo.WeaponInfo->LastShoot;
+void TWeaponPacks::ActivateWeapon(TUnit *player) {
+    auto weaponType = player->GetWeaponInfo().WeaponType;
+    auto bulletsLeft = player->GetWeaponInfo().BulletsLeft;
+    auto cagesLeft = player->GetWeaponInfo().CagesLeft;
+    auto shotTime = player->GetWeaponInfo().LastShoot;
 
     if (bulletsLeft == 0) {
         if (cagesLeft == 0) {
@@ -135,21 +135,23 @@ void TWeaponPacks::ActivateWeapon(TFireInfo& fireInfo) {
 
     Q_ASSERT(bulletsLeft > 0 && "something wrong with bullets number");
 
+    qDebug() << shotTime.elapsed() << (int)Weapons[weaponType]->GetTimeBetweenShots();
+
     if (shotTime.elapsed() <= (int)Weapons[weaponType]->GetTimeBetweenShots()) {
         // Still waiting
         return;
     }
 
-    Weapons[weaponType]->MakeShot(fireInfo);
+    Weapons[weaponType]->MakeShot(player);
     bulletsLeft--;
-    shotTime.restart();
+    player->ResetLastShoot();
 }
 
 
-void TGrenadeWeapon::MakeShot(const TFireInfo &fireInfo) {
-    QPointF speed = GetSpeed(200, fireInfo.Angle);
-    QPointF position = GetPosition(speed, fireInfo.Pos);
-    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_GRENADE);
+void TGrenadeWeapon::MakeShot(TUnit *player) {
+    QPointF speed = GetSpeed(200, player->GetAimAngle());
+    QPointF position = GetPosition(speed, player->GetPosition(), player->GetBulletSpawnDistance());
+    EmitShoot(position, speed, player, Epsilon5::Bullet_Type_GRENADE);
 }
 
 
@@ -164,8 +166,8 @@ TRocketWeapon::TRocketWeapon(QObject *parent)
 {
 }
 
-void TRocketWeapon::MakeShot(const TFireInfo &fireInfo) {
-    QPointF speed = GetSpeed(200, fireInfo.Angle);
-    QPointF position = GetPosition(speed, fireInfo.Pos);
-    EmitShoot(position, speed, fireInfo, Epsilon5::Bullet_Type_ROCKET);
+void TRocketWeapon::MakeShot(TUnit *player) {
+    QPointF speed = GetSpeed(200, player->GetAimAngle());
+    QPointF position = GetPosition(speed, player->GetPosition(), player->GetBulletSpawnDistance());
+    EmitShoot(position, speed, player, Epsilon5::Bullet_Type_ROCKET);
 }

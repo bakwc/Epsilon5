@@ -33,9 +33,15 @@ namespace ExceptionImpl {
     }
 
     template <typename Exception>
-    inline void throwException(std::ostringstream& stream, const char* exception, const char* file, int line) {
-        stream << ".";
+    inline void throwException(std::ostringstream& stream) {
         throw Exception(stream.str());
+    }
+
+    template <typename Exception>
+    inline void throwException(std::ostringstream& stream, const char* exception, const char* file, int line) {
+        prepareException(stream, exception, file, line);
+        stream << ".";
+        throwException<Exception>(stream);
     }
 
     template <typename Exception, typename T>
@@ -44,7 +50,7 @@ namespace ExceptionImpl {
     {
         prepareException(stream, exception, file, line);
         stream << ", " << arg;
-        throwException<Exception>(stream, exception, file, line);
+        throwException<Exception>(stream);
     }
 
     template <typename Exception, typename T1, typename T2>
@@ -53,7 +59,7 @@ namespace ExceptionImpl {
     {
         prepareException(stream, exception, file, line);
         stream << ", " << arg1 << ", " << arg2;
-        throwException<Exception>(stream, exception, file, line);
+        throwException<Exception>(stream);
     }
 
 }

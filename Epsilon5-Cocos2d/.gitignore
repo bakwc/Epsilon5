@@ -1,0 +1,15 @@
+# Libraries
+/cocos2dx
+/CocosDenshion
+/google
+
+# Visual Studio
+Debug.*
+Release.*
+*.suo
+*.sdf
+*.opensdf
+*.vcxproj.user
+
+# Windows
+[Tt]humbs.db

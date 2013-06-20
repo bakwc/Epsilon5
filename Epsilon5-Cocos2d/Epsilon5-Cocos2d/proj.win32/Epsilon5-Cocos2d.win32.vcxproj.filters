@@ -58,6 +58,12 @@
     <ClCompile Include="..\..\..\Epsilon5-Proto\Epsilon5.pb.cc">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Context.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Settings.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -97,6 +103,15 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Epsilon5-Proto\PacketType.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Context.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Settings.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\Cast.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

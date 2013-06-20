@@ -12,12 +12,12 @@
 
 #define check_(expression, exception, ...) \
     (!(expression) ? ExceptionImpl::throwException<exception>(\
-        std::ostringstream(), #exception, __FILE__, __LINE__, ##__VA_ARGS__) : void())
+        ExceptionImpl::prepareException(std::ostringstream(), #exception, __FILE__, __LINE__),\
+        ##__VA_ARGS__) : void())
 
 class Exception : public std::runtime_error {
 public:
     explicit Exception(const std::string& message) : std::runtime_error(message) {
-        puts(message.c_str());
     }
 };
 
@@ -28,37 +28,36 @@ inline void handleException(Exception& e) {
 
 namespace ExceptionImpl {
 
-    inline void prepareException(std::ostringstream& stream, const char* exception, const char* file, int line) {
+    inline std::ostringstream& prepareException(std::ostringstream& stream,
+        const char* exception, const char* file, int line)
+    {
         stream << exception << ": file " << file << ", line " << line;
+        return stream;
     }
 
     template <typename Exception>
-    inline void throwException(std::ostringstream& stream) {
-        throw Exception(stream.str());
-    }
-
-    template <typename Exception>
-    inline void throwException(std::ostringstream& stream, const char* exception, const char* file, int line) {
-        prepareException(stream, exception, file, line);
+    inline void throwException(std::ostringstream& stream)
+    {
         stream << ".";
-        throwException<Exception>(stream);
+
+        const std::string message = stream.str();
+        puts(message.c_str());
+        throw Exception(message);
     }
 
     template <typename Exception, typename T>
-    inline void throwException(std::ostringstream& stream, const char* exception, const char* file, int line,
+    inline void throwException(std::ostringstream& stream,
         const T& arg)
     {
-        prepareException(stream, exception, file, line);
         stream << ", " << arg;
         throwException<Exception>(stream);
     }
 
     template <typename Exception, typename T1, typename T2>
-    inline void throwException(std::ostringstream& stream, const char* exception, const char* file, int line,
+    inline void throwException(std::ostringstream& stream,
         const T1& arg1, const T2& arg2, ...)
     {
-        prepareException(stream, exception, file, line);
-        stream << ", " << arg1 << ", " << arg2;
+        stream << ", " << arg1; << ", " << arg2;
         throwException<Exception>(stream);
     }
 

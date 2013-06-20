@@ -4,8 +4,7 @@
 
 #include "cocos2d.h"
 
-class World;
-class NetworkService;
+class Context;
 
 class AppDelegate : private cocos2d::CCApplication
 {
@@ -18,6 +17,5 @@ public:
     virtual void applicationWillEnterForeground();
 
 private:
-    std::shared_ptr<World> mWorld;
-    std::shared_ptr<NetworkService> mNetwork;
+    std::shared_ptr<Context> mContext;
 };

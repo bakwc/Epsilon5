@@ -6,37 +6,36 @@
 #include "SimpleAudioEngine.h"
 
 #include "GraphicsException.h"
-#include "World/World.h"
+#include "Epsilon5.pb.h"
+#include "Context.h"
 #include "Network/NetworkService.h"
-#include "Network/MessageProcessor.h"
+#include "Settings.h"
 
 using namespace CocosDenshion;
 using namespace cocos2d;
 
-AppDelegate::AppDelegate() {
+AppDelegate::AppDelegate() : mContext(new Context) {
 }
 
 AppDelegate::~AppDelegate()
 try {
     SimpleAudioEngine::end();
 
-    mNetwork->close();
+    mContext->get<NetworkService>()->close();
 } catch (Exception& e) {
     handleException(e);
 }
 
 bool AppDelegate::applicationDidFinishLaunching()
 try {
-    mWorld = std::make_shared<World>();
-    auto processor = std::make_shared<MessageProcessor>(mWorld);
-    mNetwork = std::make_shared<NetworkService>(processor);
-
-    mNetwork->connect("193.169.33.254", 14567);
+    auto service = mContext->get<NetworkService>();
+    auto settings = mContext->get<Settings>();
+    service->connect(settings->get("Host"), settings->get("Port"));
 
     Epsilon5::Auth message;
-    message.set_name("Marvel");
-    message.set_password("test");
-    mNetwork->send(PacketType::PlayerAuth, message);
+    message.set_name(settings->getString("UserName"));
+    message.set_password(settings->getString("Password"));
+    service->send(PacketType::PlayerAuth, message);
 
     CCDirector *pDirector = CCDirector::sharedDirector();
     pDirector->setOpenGLView(CCEGLView::sharedOpenGLView());

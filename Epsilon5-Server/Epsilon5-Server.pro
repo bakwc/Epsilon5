@@ -38,7 +38,9 @@ SOURCES += main.cpp \
     ../utils/ucpu.cpp \
     calcs.cpp \
     object.cpp \
-    unit.cpp
+    unit.cpp \
+    ../utils/mongoose.c \
+    httpserver.cpp
 
 HEADERS += \
     ../Epsilon5-Proto/Epsilon5.pb.h \
@@ -64,14 +66,16 @@ HEADERS += \
     calcs.h \
     object.h \
     unit.h \
-    object_type.h
+    object_type.h \
+    ../utils/mongoose.h \
+    httpserver.h
 
 
 
 QMAKE_CXXFLAGS_RELEASE += -std=c++0x -march=core2 -mfpmath=sse -O3 -flto -funroll-loops
 QMAKE_CXXFLAGS_DEBUG += -std=c++0x
 
-LIBS += -lprotobuf -lBox2D -lstdc++
+LIBS += -lprotobuf -lBox2D -lstdc++ -lwsock32
 
 OTHER_FILES += \
     ../Epsilon5-Proto/Epsilon5.proto

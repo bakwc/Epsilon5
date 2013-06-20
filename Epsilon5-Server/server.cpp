@@ -4,6 +4,7 @@
 #include "client.h"
 #include "server.h"
 #include "player.h"
+#include "httpserver.h"
 
 TServer::TServer(QObject *parent)
     : QObject(parent)
@@ -17,6 +18,7 @@ void TServer::Start() {
         Application()->GetSettings()->GetServerPort()))
     {
         this->startTimer(20); // TODO: Remove MN
+        StartHttpServer();
     } else {
         throw UException(QString("Can't listen to port %1")
             .arg(Application()->GetSettings()->GetServerPort()));
@@ -181,4 +183,9 @@ void TServer::NeedFullPacket(size_t id) {
             throw UException("TServer::NeedFullPacket(): Client not found");
         }
     }
+}
+
+void TServer::StartHttpServer()
+{
+
 }

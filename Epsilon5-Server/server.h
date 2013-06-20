@@ -21,6 +21,7 @@ public:
     void SerialiseStats(Epsilon5::World& world);
     ETeam AutoBalance();
     void NeedFullPacket(size_t id = -1);
+    void StartHttpServer();
 signals:
     void NewPlayer(size_t id, ETeam);
     void PlayerDisconnected(size_t id);

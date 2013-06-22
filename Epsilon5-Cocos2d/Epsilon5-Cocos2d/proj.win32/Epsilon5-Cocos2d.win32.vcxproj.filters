@@ -64,6 +64,9 @@
     <ClCompile Include="..\Classes\Settings.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\World\Controller.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -112,6 +115,9 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Util\Cast.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\World\Controller.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>

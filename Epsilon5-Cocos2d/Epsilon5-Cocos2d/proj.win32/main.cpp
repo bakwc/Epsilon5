@@ -3,6 +3,7 @@
 #include "CCEGLView.h"
 
 #include "Graphics/AppDelegate.h"
+#include "Context.h"
 
 using namespace cocos2d;
 
@@ -24,8 +25,9 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     freopen("CONOUT$", "w", stderr);
 #endif
 
-    // create the application instance
-    AppDelegate app;
+    std::unique_ptr<Context> context(new Context);
+    
+    AppDelegate app(context.get());
     CCEGLView* eglView = CCEGLView::sharedOpenGLView();
     eglView->setFrameSize(480, 320);
 

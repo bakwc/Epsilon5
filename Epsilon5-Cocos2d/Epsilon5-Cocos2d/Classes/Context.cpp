@@ -4,32 +4,45 @@
 #include "World/World.h"
 #include "Network/MessageProcessor.h"
 #include "Network/NetworkService.h"
-
-#define SINGLETON(className, ...) \
-    (m##className ? m##className : m##className = std::make_shared<className>(__VA_ARGS__))
+#include "World/Controller.h"
 
 Context::Context() {
+    mSettings.reset(new Settings);
+    mWorld.reset(new World);
+    mMessageProcessor.reset(new MessageProcessor(mWorld.get()));
+    mNetworkService.reset(new NetworkService(mMessageProcessor.get()));
+    mController.reset(new Controller(mNetworkService.get()));
 }
 
 Context::~Context() {
 }
 
-template <>
-std::shared_ptr<Settings> Context::get() {
-    return SINGLETON(Settings);
+template <typename T>
+T* Context::get() {
+    static_assert(false, "Not implemented yet.");
 }
 
 template <>
-std::shared_ptr<World> Context::get() {
-    return SINGLETON(World);
+Settings* Context::get() {
+    return mSettings.get();
 }
 
 template <>
-std::shared_ptr<MessageProcessor> Context::get() {
-    return SINGLETON(MessageProcessor, get<World>());
+World* Context::get() {
+    return mWorld.get();
 }
 
 template <>
-std::shared_ptr<NetworkService> Context::get() {
-    return SINGLETON(NetworkService, get<MessageProcessor>());
+MessageProcessor* Context::get() {
+    return mMessageProcessor.get();
+}
+
+template <>
+NetworkService* Context::get() {
+    return mNetworkService.get();
+}
+
+template <>
+Controller* Context::get() {
+    return mController.get();
 }

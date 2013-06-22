@@ -29,8 +29,9 @@ namespace {
     }
 }
 
-NetworkService::NetworkService(std::shared_ptr<MessageProcessor> processor)
+NetworkService::NetworkService(MessageProcessor* processor)
     : mProcessor(checkNotNull(processor))
+    , mPacketNumber(0)
 {
 }
 
@@ -51,6 +52,10 @@ void NetworkService::close() {
         mThread->join();
         mThread.reset();
     }
+}
+
+std::uint32_t NetworkService::makePacketNumber() {
+    return ++mPacketNumber;
 }
 
 void NetworkService::send(PacketType type, const google::protobuf::Message& message) {

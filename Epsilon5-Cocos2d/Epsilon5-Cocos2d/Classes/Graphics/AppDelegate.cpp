@@ -14,7 +14,7 @@
 using namespace CocosDenshion;
 using namespace cocos2d;
 
-AppDelegate::AppDelegate() : mContext(new Context) {
+AppDelegate::AppDelegate(Context* context) : mContext(context) {
 }
 
 AppDelegate::~AppDelegate()
@@ -42,7 +42,7 @@ try {
 
     pDirector->setDisplayStats(true);
 
-    CCScene *pScene = GameScene::scene();
+    CCScene *pScene = GameScene::scene(mContext->get<World>(), mContext->get<Controller>());
     pDirector->runWithScene(pScene);
     return true;
 } catch (Exception& e) {

@@ -6,6 +6,7 @@ class Settings;
 class World;
 class MessageProcessor;
 class NetworkService;
+class Controller;
 
 class Context
 {
@@ -14,11 +15,12 @@ public:
     ~Context();
 
     template <typename T>
-    std::shared_ptr<T> get();
+    T* get();
 
 private:
-    std::shared_ptr<Settings> mSettings;
-    std::shared_ptr<World> mWorld;
-    std::shared_ptr<MessageProcessor> mMessageProcessor;
-    std::shared_ptr<NetworkService> mNetworkService;
+    std::unique_ptr<Settings> mSettings;
+    std::unique_ptr<World> mWorld;
+    std::unique_ptr<MessageProcessor> mMessageProcessor;
+    std::unique_ptr<NetworkService> mNetworkService;
+    std::unique_ptr<Controller> mController;
 };

@@ -3,7 +3,7 @@
 #include "NetworkException.h"
 #include "World/World.h"
 
-MessageProcessor::MessageProcessor(std::shared_ptr<World> world)
+MessageProcessor::MessageProcessor(World* world)
     : mWorld(world)
 {
 }

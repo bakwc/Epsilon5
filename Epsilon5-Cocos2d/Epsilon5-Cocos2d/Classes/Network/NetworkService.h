@@ -14,12 +14,13 @@ class MessageProcessor;
 
 class NetworkService {
 public:
-    NetworkService(std::shared_ptr<MessageProcessor> processor);
+    NetworkService(MessageProcessor* processor);
     ~NetworkService();
 
     void connect(const std::string& host, int port);
     void close();
 
+    std::uint32_t makePacketNumber();
     void send(PacketType type, const google::protobuf::Message& message);
 
 private:
@@ -31,7 +32,8 @@ private:
     };
 
 private:
-    const std::shared_ptr<MessageProcessor> mProcessor;
+    std::uint32_t mPacketNumber;
+    MessageProcessor* mProcessor;
     Socket mSocket;
     Buffer mRawBuffer;
     Buffer mNetBuffer;

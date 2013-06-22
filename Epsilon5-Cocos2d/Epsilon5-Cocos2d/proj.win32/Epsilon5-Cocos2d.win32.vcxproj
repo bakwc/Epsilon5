@@ -135,6 +135,7 @@
     <ClCompile Include="..\Classes\Network\NetworkService.cpp" />
     <ClCompile Include="..\Classes\Network\Socket.cpp" />
     <ClCompile Include="..\Classes\Settings.cpp" />
+    <ClCompile Include="..\Classes\World\Controller.cpp" />
     <ClCompile Include="..\Classes\World\World.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -152,6 +153,7 @@
     <ClInclude Include="..\Classes\Network\Socket.h" />
     <ClInclude Include="..\Classes\Settings.h" />
     <ClInclude Include="..\Classes\Util\Cast.h" />
+    <ClInclude Include="..\Classes\World\Controller.h" />
     <ClInclude Include="..\Classes\World\World.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />

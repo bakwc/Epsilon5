@@ -9,13 +9,13 @@ class Context;
 class AppDelegate : private cocos2d::CCApplication
 {
 public:
-    AppDelegate();
+    AppDelegate(Context* context);
     virtual ~AppDelegate();
 
-    virtual bool applicationDidFinishLaunching();
-    virtual void applicationDidEnterBackground();
-    virtual void applicationWillEnterForeground();
+    virtual bool applicationDidFinishLaunching() override;
+    virtual void applicationDidEnterBackground() override;
+    virtual void applicationWillEnterForeground() override;
 
 private:
-    std::shared_ptr<Context> mContext;
+    Context* mContext;
 };

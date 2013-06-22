@@ -128,17 +128,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Epsilon5-Proto\Epsilon5.pb.cc" />
+    <ClCompile Include="..\Classes\Context.cpp" />
     <ClCompile Include="..\Classes\Graphics\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Graphics\GameScene.cpp" />
     <ClCompile Include="..\Classes\Network\MessageProcessor.cpp" />
     <ClCompile Include="..\Classes\Network\NetworkService.cpp" />
     <ClCompile Include="..\Classes\Network\Socket.cpp" />
+    <ClCompile Include="..\Classes\Settings.cpp" />
     <ClCompile Include="..\Classes\World\World.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Epsilon5-Proto\Epsilon5.pb.h" />
     <ClInclude Include="..\..\..\Epsilon5-Proto\PacketType.h" />
+    <ClInclude Include="..\Classes\Context.h" />
     <ClInclude Include="..\Classes\Exception.h" />
     <ClInclude Include="..\Classes\Graphics\AppDelegate.h" />
     <ClInclude Include="..\Classes\Graphics\GameScene.h" />
@@ -147,6 +150,8 @@
     <ClInclude Include="..\Classes\Network\NetworkException.h" />
     <ClInclude Include="..\Classes\Network\NetworkService.h" />
     <ClInclude Include="..\Classes\Network\Socket.h" />
+    <ClInclude Include="..\Classes\Settings.h" />
+    <ClInclude Include="..\Classes\Util\Cast.h" />
     <ClInclude Include="..\Classes\World\World.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="resource.h" />
